@@ -10,7 +10,7 @@ const {
   ContractCallContext,
 } = require("ethereum-multicall");
 
-export const etherscan = "goerli.etherscan"
+export const etherscan = "etherscan" //"goerli.etherscan"
 
 export const elvesContract = "0x13BdEE5Dfe487A055f3fa523feCdcF8ecDd3B889"
 const mirenContract = "0xFfCB4a8e3616B07f8d01546c0Bb376aF9d6B8b02"
