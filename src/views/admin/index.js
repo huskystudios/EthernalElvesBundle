@@ -4,6 +4,7 @@ import { useMoralis } from "react-moralis";
 import {elvesAbi, elvesContract} from "../../utils/interact"
 import './style.css'
 import Signature from "./Signature";
+import WhitelistExport from "./WhitelistExport";
 
 const Admin = () => {
 
@@ -119,6 +120,8 @@ return (
 
             <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
             <p>ADMIN CONSOLE</p>
+
+            <WhitelistExport />
            
             <div className="mint-instructions">
                 <p>Press this button if peoples elves dont show up. It will loop through the current supply so be patient</p>
@@ -167,6 +170,8 @@ return (
 
 
         <Signature />
+
+       
 
 
 
