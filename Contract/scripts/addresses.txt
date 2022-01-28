@@ -1,0 +1,26 @@
+
+Goerli
+let invetoryAddress = "0x20051ce393bf24118e750b3705bce1a699f0234a"
+let campaignAddress = "0xDE5D398dD4ad4DA226eB9cA5eFA2cD125E35fB7B"
+let renAddress =  "0x9f4b65278c6c9c5df4ed430642d46e2193d7b3a6"
+let elvesAddress = "0x365271EA323BAf27B97886Fa78872C7ef5505Db1"
+
+Mumbai
+Compilation finished successfully
+Inventory 0x20051cE393bf24118E750B3705bCE1a699F0234a
+Campaigns 0x597d97b11a9cf0e491b69686d2ed7fee8e0deec8
+Miren 0xde5d398dd4ad4da226eb9ca5efa2cd125e35fb7b set minter and init
+Elves 0x12047E66d3e1CFd506efca80bb23BDB7c72a6D82
+
+
+
+///////////////////22 JAN
+deploying elves imp: 0x078ec7adb7b79475839927ffd7c9377964d02aea
+Elves 0xd86A8e58D9455877D6B831dE70Aa718EBC71a0a8
+deploying art contracts
+deploying inventory manager
+Inventory 0xA5163753BD468e62122523293f45B5931Bb5c498
+deploying campaigns
+Campaigns 0x1B249E2Fa3656eA782B5DB519F35F58ad561CA5c
+deploying ren
+Miren 0x62dccEBAb42EBA60AaF9BfB78b0D9fb8296BDD2B

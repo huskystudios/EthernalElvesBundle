@@ -1,0 +1,65 @@
+[
+    {
+        "id": 1101,
+        "thumbnail": "https://i.ibb.co/sJjnDKg/Untitled.png",
+        "image": "https://cdn.discordapp.com/attachments/918388896226770984/923066058418569266/Night_Bleeder_Sprite_Large.png",
+        "health": 5,
+        "level": 16,
+        "attack": 47,
+        "points": 8474,
+        "inventory": [
+            {
+                "id": 0,
+                "name": "Ring of Enchantment",
+                "description": "Reduces Health Cooldown by 100%",
+                "image": "https://cdn.discordapp.com/attachments/918388896226770984/923096861655580694/Ring_of_Enchantment_1.png"
+            },
+            {
+                "id": 0,
+                "name": "Ring of Enchantment",
+                "description": "Reduces Health Cooldown by 100%",
+                "image": "https://cdn.discordapp.com/attachments/918388896226770984/923096861655580694/Ring_of_Enchantment_1.png"
+            }
+        ]
+    },
+    {
+        "id": 1102,
+        "thumbnail": "https://i.ibb.co/sJjnDKg/Untitled.png",
+        "image": "https://cdn.discordapp.com/attachments/918388896226770984/923066058418569266/Night_Bleeder_Sprite_Large.png",
+        "health": 45,
+        "level": 5,
+        "attack": 47,
+        "points": 8474,
+        "inventory": []
+    },
+    {
+        "id": 1103,
+        "thumbnail": "https://i.ibb.co/sJjnDKg/Untitled.png",
+        "image": "https://cdn.discordapp.com/attachments/918388896226770984/923066058418569266/Night_Bleeder_Sprite_Large.png",
+        "health": 246,
+        "level": 25,
+        "attack": 47,
+        "points": 8474,
+        "inventory": []
+    },
+    {
+        "id": 1104,
+        "thumbnail": "https://i.ibb.co/sJjnDKg/Untitled.png",
+        "image": "https://cdn.discordapp.com/attachments/918388896226770984/923066058418569266/Night_Bleeder_Sprite_Large.png",
+        "health": 255,
+        "level": 12,
+        "attack": 47,
+        "points": 8474,
+        "inventory": []
+    },
+    {
+        "id": 1105,
+        "thumbnail": "https://i.ibb.co/sJjnDKg/Untitled.png",
+        "image": "https://cdn.discordapp.com/attachments/918388896226770984/923066058418569266/Night_Bleeder_Sprite_Large.png",
+        "health": 130,
+        "level": 25,
+        "attack": 20,
+        "points": 8474,
+        "inventory": []
+    }
+]

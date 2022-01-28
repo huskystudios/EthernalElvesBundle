@@ -1,0 +1,21 @@
+[
+    {
+        "id": 1,
+        "name": "Mount Eluna",
+        "image": "https://i.ibb.co/nDR3kK8/enchanted-forest.png",
+        "time": 1.2
+    },
+    {
+        "id": 2,
+        "name": "enchanted forest",
+        "image": "https://i.ibb.co/ZmF61wy/ca2.png",
+        "time": 1.5
+    },
+    {
+        "id": 3,
+        "name": "Whispering Woods",
+        "image": "https://i.ibb.co/YNSYBvX/ca1.png",
+        "time": 0.6
+    }
+]
+

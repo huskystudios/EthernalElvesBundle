@@ -21,3 +21,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.env
+src/utils/blockchain.js
+src/utils/App.js
+package-lock.json
+package-lock.json

@@ -1,0 +1,265 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "ElfCampaigns",
+  "sourceName": "contracts/ElfCampaigns.sol",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        }
+      ],
+      "name": "LastKill",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "MAX_LEVEL",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "REGEN_TIME",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "TIME_CONSTANT",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint16",
+          "name": "baseRewards_",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "creatureCount_",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "expPoints_",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "creatureHealth_",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "minLevel_",
+          "type": "uint16"
+        }
+      ],
+      "name": "addCamp",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "camps",
+      "outputs": [
+        {
+          "internalType": "uint32",
+          "name": "baseRewards",
+          "type": "uint32"
+        },
+        {
+          "internalType": "uint32",
+          "name": "creatureCount",
+          "type": "uint32"
+        },
+        {
+          "internalType": "uint32",
+          "name": "creatureHealth",
+          "type": "uint32"
+        },
+        {
+          "internalType": "uint32",
+          "name": "expPoints",
+          "type": "uint32"
+        },
+        {
+          "internalType": "uint32",
+          "name": "minLevel",
+          "type": "uint32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_campId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_sector",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_level",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_attackPoints",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_healthPoints",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_inventory",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "_useItem",
+          "type": "bool"
+        }
+      ],
+      "name": "gameEngine",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "level",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "rewards",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "inventory",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_elfcontract",
+          "type": "address"
+        }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
+}

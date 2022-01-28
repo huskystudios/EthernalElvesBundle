@@ -1,38 +1,181 @@
-.App {
-  text-align: center;
-}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+  .App {
+    background-color: #3f3f3f;
+    font-family: 'Montserrat';
+    text-transform: uppercase;
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  button {
+    font-family: 'Montserrat';
+    color: white;
   }
-  to {
-    transform: rotate(360deg);
+  input {
+    font-family: 'Montserrat';
+    width: 190px;
+    height: 30px;
+    border-radius: 5px;
+    border: 1px solid #3f3f3f;
+    background-color: #3f3f3f;
+    color: white;
+    
+
   }
+  .app {
+    height: 100vh;
+    /*max-width: 1366px;*/
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    font-weight: 600;
+    background-image: url(./assets/images/mobileframe.png);
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-y: bottom;
+    background-position-x: center;
+  }
+  
+  .app-header {
+    background-image: url(./assets/images/navbar.png);
+    background-size: 100% 86px;
+    background-repeat: no-repeat;
+    min-height: 86px;
+    /*width: 1366px;*/
+    position: relative;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    font-size: 16px;
+  }
+  
+  .header-body {
+    display: none;
+    position: absolute;
+    height: 86px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 36px;
+  }
+
+  
+  .btn-connect {
+    cursor: pointer;
+    background-image: url(./assets/images/btn_connect.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    width: 280px;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    /* margin-top: 60px; */
+    color: white;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .btn-connect:hover {
+    -webkit-text-shadow: 1px 1px 3px cyan;
+    -moz-text-shadow: 1px 1px 3px cyan;
+    text-shadow: 1px 1px 3px cyan;
+    /* color: cyan; */
+  }
+  
+  .nav-item {
+    text-decoration: none;
+    color: white;
+    width: 100px;
+    text-transform: uppercase;
+    cursor:  pointer;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    
+
+  }
+  .nav-item:hover, .nav-item.active {
+    -webkit-box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
+    -moz-box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
+    box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
 }
+  
+  .header-background {
+    margin-bottom: -75px;
+  }
+  
+  .app-body {
+    height: 100vh;
+ 
+  }
+  
+  .search {
+    position: absolute;
+    right: 50px;
+    height: 100%;
+    display: none;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .mobile-header {
+    left: 20%;
+    position: fixed;
+    bottom: 0;
+
+  }
+  
+
+  
+  .search button {
+    background-image: url(./assets/images/title_bar.png);
+    background-size: 100% 100%;
+    border: none;
+    height: 40px;
+    border-radius: 5px;
+    padding: 4px 12px;
+    font-size: 16px;
+    width: 150px;
+  }
+  .search button:hover {
+    -webkit-box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
+    -moz-box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
+    box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
+  }
+  
+  .app-logo {
+    height: 55px;
+    pointer-events: none;
+    position: absolute;
+    left: 50px;
+    margin-top: 15px;
+    display: none;
+  }
+  
+
+    /*/ header-body class display flex at desktop */
+    @media (min-width: 1168px) {
+      .header-body {
+        display: flex;
+        width: 800px;
+      }
+      .search {
+        display: flex;
+      }
+      .mobile-header {
+        display: none;
+  
+      }
+      .app-logo {
+        display: flex;
+      }
+
+      .app-body {
+        background-image: url(./assets/images/background.png);
+        background-size: cover;
+        background-position: center;
+      }
+      .app-header {
+      display: flex;
+      }
+    }

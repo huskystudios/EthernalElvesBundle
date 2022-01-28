@@ -5,9 +5,109 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-transform: uppercase;
+  color: white;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+button {
+  border: none;
+  background-color: rgba(0,0,0,0)
+}
+
+.d-flex {
+  display: flex;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.flex-row {
+  flex-direction: row;
+}
+.flex-column {
+  flex-direction: column;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-around {
+  justify-content: space-around;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.items-center {
+  align-items: center;
+}
+.h-full {
+  height: 100%
+}
+.w-full {
+  width: 100%
+}
+.dark-500 {
+  background-color: rgba(0, 0, 0, 0.7)
+}
+.dark-1000 {
+  background-color: rgba(0, 0, 0, 0.9)
+}
+
+.text-white {
+  color: white;
+}
+.text-center {
+  text-align: center; 
+}
+.font-size-md {
+  font-size: 18px;
+}
+
+.btn {
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+  background-size: 100% 100%;
+  padding: 12px 36px;
+  font-size: 16px;
+  min-width: 184px;
+  margin: 0px 12px;
+  text-align: center;
+}
+.btn:hover {
+  -webkit-text-shadow: 1px 1px 3px cyan;
+  -moz-text-shadow: 1px 1px 3px cyan;
+  text-shadow: 1px 1px 3px cyan;
+  /* color: cyan; */
+}
+.btn-red {
+  background-image: url(./assets/images/btn_back.png);
+}
+.btn-green {
+  background-image: url(./assets/images/btn_next.png);
+}
+.btn-blue {
+  background-image: url(./assets/images/btn_blue.png);
+}
+
+.p-relative {
+  position: relative !important;
+}
+.p-absolute {
+  position: absolute !important;
+}
+
+.mb-2 {
+  margin-bottom: 2rem ;
+}
+
+.btn-next:disabled,
+.btn-prev:disabled {
+  cursor: default;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+
