@@ -16,6 +16,15 @@
     bottom: 0px;
 }
 
+.responsive {
+    width: 100%;
+    height: auto;
+  }
+
+.image-container {
+    max-height: 700px;
+}
+
 .btn-select {
     cursor: pointer;
     position:absolute;
@@ -824,6 +833,14 @@
 
 .modal-content {
     width: 50%;
+    padding: 16px;
+    background: black;
+    display: flex;
+    flex-direction: column;
+}
+
+.image-modal-content {
+    max-width: 600px;
     padding: 16px;
     background: black;
     display: flex;

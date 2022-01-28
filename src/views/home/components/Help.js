@@ -14,7 +14,7 @@ const gamemodes = [{src:gameModes, name:"Game Modes"}, {src:items, name:"Items"}
 const Help = () => {
 
     const [modal, setModal] = useState({show: false, content: ""})
-    const [healModal, setHealModal] = useState(false)
+
    
 
     const renderModal = () => {
@@ -22,11 +22,14 @@ const Help = () => {
 
         return (
             <div className="modal">
-                <div className="modal-content">
+                <div className="image-modal-content">
                     <span className="close-modal" onClick={() => setModal({show: false, content: ""})}>X</span>
                     <h3>{modal.heading}</h3>
                     
-                    <img src={modal.src} />
+                    <div className="image-container">
+                    <img  className="responsive" src={modal.src} />
+                    </div>
+                   
 
                     <div className="d-flex flex-row justify-around align-center">
                         <div className="d-flex flex-column">
