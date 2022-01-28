@@ -85,7 +85,7 @@ describe("Ethernal Elves Contracts", function () {
   await inventory.setWeapons([16,17,18,19,20,21,22,23,24,25,26,27,28,29,30], weapons2.address)
   await inventory.setWeapons([31,32,33,34,35,36,37,38,39,40,41,42,43,44,45], weapons3.address)
 
-  await inventory.setAccessories([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], accessories.address)
+  await inventory.setAccessories([1,2,8,9,15,16], accessories.address)
    
   await campaigns.initialize(elves.address);
 
@@ -93,10 +93,7 @@ describe("Ethernal Elves Contracts", function () {
  
   await ren.setMinter(elves.address, 1)
   await ren.setMinter(owner.address, 1)
-  //await ren.setMinter(terminus.address, 1)
-
-  //await elves.addManyToWhitelist([addr4.address],2);
-  //await elves.addManyToWhitelist([addr5.address],3);
+ //await ren.setMinter(terminus.address, 1)
 
   await elves.flipWhitelist();
   await elves.flipMint();
@@ -105,32 +102,32 @@ describe("Ethernal Elves Contracts", function () {
   
 
   });
+  describe("Testing for random stuff", function () {
+    it("Testbench", async function () {
 
-  describe("Whitelist Mint", function () {
-    it("WL Mint", async function () {
       await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
       let elfDNA1 = "17691036343230485324738241289359943272271446159665921088562437665677377536"
 
       await elves.modifyElfDNA(1, elfDNA1)
       console.log(await elves.tokenURI(1))
-////RECENT SIG""0x7249abdb34a26fe6a817ba8b04834a024dfbab7d1e73654e66bfa01c4e946eab5c02bbbe4857a50b1c814a792b5036b34d5676331eaa9094260b57cf97deb4c31c""
-///"0x2730F644E9C5838D1C8292dB391C0ADE1f65c42d"
 
-///1
-      let sig = "0x7221c757e6d25dae8d27492d92358632cad888e3df177cabc4b398cd0302aad038171183a1057b5e5b012ddc2aa2362b8321fbfff894d5c2e980cd8d50dfa4a41c"
-      let a   = "0x04028198E451f64212c33CA22cB3b1FbA6272459"
-      let b   = 0
-      let hash = "0x991bf8654110e6de8f1d6aee76084b501322360bc5ffa64d75b5ff94b2cac767"
+    });});
+
+  describe("Whitelist Mint", function () {
+    it("WL Mint", async function () {
     
-      await elves.connect(addr3).whitelistMint(2,a, b, sig, { value: ethers.utils.parseEther("0.155")})
 
-     // await elves.connect(addr3).whitelistMint(1,a, b, sig, { value: ethers.utils.parseEther("0.155")})
-       console.log("message", await elves.encodeForSignature(a, b))
-       console.log(await elves.whoisSigner(hash, sig))
+      let sig3 = "0xdc32af9449379cbe2590d10906a4d75a54068b567d1bc7e5e513e60c560805944c850fd88b42e23415a939e18c85c39c4026faa2642d185b282e3cf1d88c666c1b"
+      let sig4 = "0x839627587bd83e3c53f33a3d9ee73568c5120f65ab17359815a7b0cd40d61be00ad95184ca00101af08fcfa88e1802533980bae3f151166f794c95e5bccf1d061b"
+      let sig5 = "0x20868c80932018ff173bb5eca6628b8071c0664e547cebcf040eab374a525af22ee2669a8afb218e1c56709ac4058898f82298e3a83b10a0e5454e6b6fa4bc3d1c" 
 
-       //
-       //0x991bf8654110e6de8f1d6aee76084b501322360bc5ffa64d75b5ff94b2cac767
-    
+      console.log(addr3.address) //0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC
+      console.log(addr4.address) // 0x90F79bf6EB2c4f870365E785982E1f101E93b906
+      console.log(addr5.address) //0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65
+
+      await elves.connect(addr3).whitelistMint(2,addr3.address, 0, sig3, { value: ethers.utils.parseEther("0.00")})
+      //await elves.connect(addr4).whitelistMint(2,addr4.address, 1, sig4, { value: ethers.utils.parseEther("0.044")})
+     // await elves.connect(addr5).whitelistMint(2,addr5.address, 2, sig5, { value: ethers.utils.parseEther("0.176")})
 
 
       await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
@@ -175,19 +172,26 @@ describe("Ethernal Elves Contracts", function () {
       await elves.setAccountBalance(addr5.address, ethers.BigNumber.from("100000000000000000000"));
       
       let totalsupply = 0
-      let maxSupply = 8 //parseInt(await elves.maxSupply())
+      let maxSupply = 4//parseInt(await elves.maxSupply())
       let initialSupply = parseInt(await elves.INIT_SUPPLY())
       let i = 1
       while (totalsupply < maxSupply) {
         
           totalsupply<=initialSupply ? await elves.connect(beff).mint({ value: ethers.utils.parseEther(mintPrice)}) :   await elves.connect(beff).mint();
+          await elves.tokenURI(i)
           i++;
-          totalsupply<=initialSupply ? await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)}) :  await elves.connect(addr3).mint();
+          totalsupply<=initialSupply ? await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)}) :  await elves.connect(addr3).mint(); 
+          await elves.tokenURI(i)
+          i++;
           totalsupply<=initialSupply ? await elves.connect(addr4).mint({ value: ethers.utils.parseEther(mintPrice)}) :  await elves.connect(addr4).mint();
+          await elves.tokenURI(i)
+          i++;
           totalsupply<=initialSupply ? await elves.connect(addr5).mint({ value: ethers.utils.parseEther(mintPrice)}) :  await elves.connect(addr5).mint();
-      await elves.tokenURI(i)
+          await elves.tokenURI(i)
+          i++;
+          
         totalsupply = parseInt(await elves.totalSupply())
-       
+        console.log(i)
         increaseWorldTimeinSeconds(1,true);
         
     

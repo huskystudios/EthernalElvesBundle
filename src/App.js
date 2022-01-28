@@ -21,7 +21,8 @@ function App() {
 
   let husky ="0xCcB6D1e4ACec2373077Cb4A6151b1506F873a1a5"
   let beff = "0x3296D61C5E737F9847bA52267b1DeBB8Dbff139F"
-  let adminWallet = [husky.toLowerCase(), beff.toLowerCase()]
+  let deployer = "0x6B635fE980681B4b5f1eCf371ce76eF6826c0552" //change this
+  let adminWallet = [husky.toLowerCase(), beff.toLowerCase(), deployer.toLowerCase()]
 
   useEffect(async() => {
     const {address} = await getCurrentWalletConnected()
