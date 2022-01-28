@@ -111,25 +111,6 @@ describe("Ethernal Elves Contracts", function () {
       await elves.modifyElfDNA(1, elfDNA1)
       console.log(await elves.tokenURI(1))
 
-    });});
-
-  describe("Whitelist Mint", function () {
-    it("WL Mint", async function () {
-    
-
-      let sig3 = "0xdc32af9449379cbe2590d10906a4d75a54068b567d1bc7e5e513e60c560805944c850fd88b42e23415a939e18c85c39c4026faa2642d185b282e3cf1d88c666c1b"
-      let sig4 = "0x839627587bd83e3c53f33a3d9ee73568c5120f65ab17359815a7b0cd40d61be00ad95184ca00101af08fcfa88e1802533980bae3f151166f794c95e5bccf1d061b"
-      let sig5 = "0x20868c80932018ff173bb5eca6628b8071c0664e547cebcf040eab374a525af22ee2669a8afb218e1c56709ac4058898f82298e3a83b10a0e5454e6b6fa4bc3d1c" 
-
-      console.log(addr3.address) //0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC
-      console.log(addr4.address) // 0x90F79bf6EB2c4f870365E785982E1f101E93b906
-      console.log(addr5.address) //0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65
-
-      await elves.connect(addr3).whitelistMint(2,addr3.address, 0, sig3, { value: ethers.utils.parseEther("0.00")})
-      //await elves.connect(addr4).whitelistMint(2,addr4.address, 1, sig4, { value: ethers.utils.parseEther("0.044")})
-     // await elves.connect(addr5).whitelistMint(2,addr5.address, 2, sig5, { value: ethers.utils.parseEther("0.176")})
-
-
       await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
       console.log(await elves.tokenURI(2))
       console.log(await elves.attributes(2))
@@ -144,7 +125,34 @@ describe("Ethernal Elves Contracts", function () {
       await elves.setAccountBalance(addr3.address, ethers.BigNumber.from("1000000000000000000000"));
 
       expect(await elves.bankBalances(addr3.address).value).to.equal(ethers.BigNumber.from("1000000000000000000000").value);
+
+    });});
+
+  describe("Whitelist Mint", function () {
+    it("WL Mint Qty 2", async function () {
+    
+
+      let sig3 = "0xdc32af9449379cbe2590d10906a4d75a54068b567d1bc7e5e513e60c560805944c850fd88b42e23415a939e18c85c39c4026faa2642d185b282e3cf1d88c666c1b"
+      let sig4 = "0x839627587bd83e3c53f33a3d9ee73568c5120f65ab17359815a7b0cd40d61be00ad95184ca00101af08fcfa88e1802533980bae3f151166f794c95e5bccf1d061b"
+      let sig5 = "0x20868c80932018ff173bb5eca6628b8071c0664e547cebcf040eab374a525af22ee2669a8afb218e1c56709ac4058898f82298e3a83b10a0e5454e6b6fa4bc3d1c" 
+
+      await elves.connect(addr3).whitelistMint(2,addr3.address, 0, sig3, { value: ethers.utils.parseEther("0.00")})
+      await elves.connect(addr4).whitelistMint(2,addr4.address, 1, sig4, { value: ethers.utils.parseEther("0.088")})
+      await elves.connect(addr5).whitelistMint(2,addr5.address, 2, sig5, { value: ethers.utils.parseEther("0.176")})
+    
       });
+    it("WL Mint Qty 1", async function () {
+    
+
+        let sig3 = "0xdc32af9449379cbe2590d10906a4d75a54068b567d1bc7e5e513e60c560805944c850fd88b42e23415a939e18c85c39c4026faa2642d185b282e3cf1d88c666c1b"
+        let sig4 = "0x839627587bd83e3c53f33a3d9ee73568c5120f65ab17359815a7b0cd40d61be00ad95184ca00101af08fcfa88e1802533980bae3f151166f794c95e5bccf1d061b"
+        let sig5 = "0x20868c80932018ff173bb5eca6628b8071c0664e547cebcf040eab374a525af22ee2669a8afb218e1c56709ac4058898f82298e3a83b10a0e5454e6b6fa4bc3d1c" 
+  
+        await elves.connect(addr3).whitelistMint(1,addr3.address, 0, sig3, { value: ethers.utils.parseEther("0.00")})
+        await elves.connect(addr4).whitelistMint(1,addr4.address, 1, sig4, { value: ethers.utils.parseEther("0.044")})
+        await elves.connect(addr5).whitelistMint(1,addr5.address, 2, sig5, { value: ethers.utils.parseEther("0.088")})
+      
+        });
     it("Withdraw funds from player credit account to player wallet", async function () {
       await elves.setAccountBalance(addr3.address, ethers.BigNumber.from("1000000000000000000000"));
       await elves.connect(addr3).withdrawTokenBalance();
@@ -180,18 +188,22 @@ describe("Ethernal Elves Contracts", function () {
           totalsupply<=initialSupply ? await elves.connect(beff).mint({ value: ethers.utils.parseEther(mintPrice)}) :   await elves.connect(beff).mint();
           await elves.tokenURI(i)
           i++;
+          console.log(i)
           totalsupply<=initialSupply ? await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)}) :  await elves.connect(addr3).mint(); 
           await elves.tokenURI(i)
           i++;
+          console.log(i)
           totalsupply<=initialSupply ? await elves.connect(addr4).mint({ value: ethers.utils.parseEther(mintPrice)}) :  await elves.connect(addr4).mint();
           await elves.tokenURI(i)
           i++;
+          console.log(i)
           totalsupply<=initialSupply ? await elves.connect(addr5).mint({ value: ethers.utils.parseEther(mintPrice)}) :  await elves.connect(addr5).mint();
           await elves.tokenURI(i)
           i++;
+          console.log(i)
           
         totalsupply = parseInt(await elves.totalSupply())
-        console.log(i)
+        
         increaseWorldTimeinSeconds(1,true);
         
     
@@ -215,55 +227,47 @@ describe("Game Play", function () {
 
       increaseWorldTimeinSeconds(10,true);
 
-      //console.log("After Mint    : " + await elves.getElf(1));
-     // await elves.connect(addr3).doAction([1],0,0,0,0,0,1);
-    //  console.log("After Stake   : " + await elves.getElf(1));
+
       await elves.connect(addr3).sendCampaign([1],1,4,0,1,0);
       console.log (await elves.attributes(1))
-      increaseWorldTimeinSeconds(5000,true);
-      await elves.connect(addr3).sendCampaign([1],1,4,0,1,0);
-      increaseWorldTimeinSeconds(5000,true);
+      increaseWorldTimeinSeconds(100000,true);
+      console.log("FAIL")
+//      await elves.connect(addr3).sendCampaign([1],1,4,0,1,0);
+      increaseWorldTimeinSeconds(100000,true);
       console.log (await elves.attributes(1))
       await elves.connect(addr3).sendCampaign([1],1,5,1,1,2);
-      console.log (await elves.attributes(1))
 
+      increaseWorldTimeinSeconds(100000,true);
       
-      
+      console.log("After Campaig1n:");
       await elves.connect(addr3).passive([3])
-      increaseWorldTimeinSeconds(5000,true);
+      increaseWorldTimeinSeconds(100000,true);
       await elves.connect(addr3).unStake([1])
+      console.log("After Campaig2n:");
       await elves.connect(addr3).returnPassive([3]);
       await elves.connect(addr3).forging([4], {value: ethers.utils.parseEther("0.01")})
+      console.log("After Campaig3n:");
       await elves.connect(addr3).merchant([4], {value: ethers.utils.parseEther("0.01")})
+      console.log("After Campai4gn:");
       //await elves.connect(addr3).heal(3,4)
       await elves.connect(addr3).bloodThirst([5],1,1)
-      increaseWorldTimeinSeconds(5000,true);
+      increaseWorldTimeinSeconds(100000,true);
+      console.log("After Campa5ign:");
       await elves.connect(addr3).bloodThirst([5],1,1)
-      increaseWorldTimeinSeconds(5000,true);
+      increaseWorldTimeinSeconds(100000,true);
+      console.log("After Campai6gn:");
       await elves.connect(addr3).rampage([5],1,1)
 
       
 
       // await elves.connect(addr3).unStake([1])
-      increaseWorldTimeinSeconds(5000,true);
+      increaseWorldTimeinSeconds(100000,true);
       await elves.connect(addr3).passive([6])
       
       //await elves.connect(addr3).test(2)
 
       console.log("Creatures left in camps", await campaigns.camps(1))
-
-     /* for(i=1; i<= 6; i++){
-      console.log(await elves.elves(i))
-      console.log(await elves.attributes(i))
-      }
-       */
-     // console.log("Creatures left in camps", await campaigns.camps(2))
-      ///This
-     // console.log(await elves.elves(1))
-    //  console.log(await elves.attributes(1))
-       //console.log(await elves.tokenURI(2))
-    //  console.log("Wallet Balances for player3", await elves.bankBalances(addr3.address))
-    //  console.log("FAIL")      
+ 
       
       });
 
@@ -323,7 +327,7 @@ describe("Admin Functions", function () {
     });
   it("Add new camp for quests and see if correct rewards are loaded", async function () {
       await campaigns.addCamp(6, 99, 500, 9, 10, 1);
-      //console.log(await elves.getCamps(6))
+     
       
     });
     it("Flip game active status", async function () {

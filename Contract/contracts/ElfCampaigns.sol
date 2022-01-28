@@ -19,8 +19,8 @@ struct Camps {
     address elfcontract;
     
     uint256 public MAX_LEVEL = 100;
-    uint256 public TIME_CONSTANT = 1 minutes; //CHANGE! 1 hours
-    uint256 public REGEN_TIME = 300 minutes; //CHANGE!! 300 hours
+    uint256 public TIME_CONSTANT = 1 hours; //CHANGE! 1 hours
+    uint256 public REGEN_TIME = 300 hours; //CHANGE!! 300 hours
     
     mapping(uint256 => Camps) public camps; //memory slot for campaigns
     
@@ -75,7 +75,7 @@ returns(uint256 level, uint256 rewards, uint256 timestamp, uint256 inventory){
 
   level = level < MAX_LEVEL ? level + (uint256(camp.expPoints)/3) : level;
                              
-  uint256 creatureHealth =  ((_sector - 1) * 12) + camp.creatureHealth; //  DataStructures.calcCreatureHealth(_sector, camp.creatureHealth);
+  uint256 creatureHealth =  ((_sector - 1) * 12) + camp.creatureHealth; 
   uint256 attackTime = creatureHealth/_attackPoints;
   
   attackTime = attackTime > 0 ? attackTime * TIME_CONSTANT : 0;

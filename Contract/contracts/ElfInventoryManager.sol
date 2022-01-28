@@ -72,8 +72,8 @@ contract ElfMetadataHandler {
         returns (string memory)
     {
         DataStructures.Token memory token = DataStructures.getToken(sentinel);
-         console.log( token.primaryWeapon);
-         console.log( token.weaponTier);
+         //console.log( token.primaryWeapon);
+         //console.log( token.weaponTier);
 
         string memory svg = Base64.encode(
             bytes(

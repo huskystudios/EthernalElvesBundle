@@ -130,7 +130,7 @@ function _isSignedByValidator(bytes32 _hash, bytes memory _signature) public vie
 }
 
 function whoisSigner(bytes32 _hash, bytes memory _signature) public view returns (address) {
-    console.log(_signature.length);
+    //console.log(_signature.length);
     return _hash.recover(_signature);
 }
 
@@ -145,7 +145,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
     require(_remaining[roleIndex] > 0, "noneLeft");
     require(qty > 0 && qty <= 2, "max 2"); //max 2
     
-    //Role:0 SOG 2 free Role:1 OG 1 free 1 paid Role:2 2 WL paid
+    /*Role:0 SOG 2 free Role:1 OG 1 free 1 paid Role:2 2 WL paid
 
       bytes32 messageHash = encodeForSignature(to, roleIndex);
       bool isValid = _isSignedByValidator(messageHash, signature);
@@ -153,6 +153,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
         if(isValid){
             console.log("valid");
         }
+    */
 
     uint256 amount = msg.value;
     
@@ -167,7 +168,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
             }
 
         }else if(roleIndex == 1){
-            
+           
             require(amount >= price * qty/2, "NotEnoughEther");
             for (uint i = 0; i < qty; i++) {
                 _mintElf(to);
@@ -406,7 +407,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                     
                     require(elf.action == 3);                    
 
-                    actions.timeDiff = (block.timestamp - elf.timestamp) / 1 minutes; //amount of time spent in camp CHANGE TO 1 DAYS!
+                    actions.timeDiff = (block.timestamp - elf.timestamp) / 1 days; //amount of time spent in camp CHANGE TO 1 DAYS!
 
                     //actions.timeDiff number of days in campaign
                     //rewards are 100 per week, 300 per 14 days and 1000 per 30 days
@@ -454,7 +455,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                     console.log("healing loop");
                     console.log(elf.sentinelClass);
                 
-                    elf.timestamp = block.timestamp + (12 minutes); //CHANGE to 12 HOURS!
+                    elf.timestamp = block.timestamp + (12 hours); //CHANGE to 12 HOURS!
 
                     elf.level = elf.level + 1;
                     
