@@ -1,3 +1,6 @@
+const fs = require('fs-extra')
+const path = require('path')
+
 const { expect } = require("chai");
 const { ethers, waffle } = require("hardhat");
 const {initEthers, assertThrowsMessage, signPackedData, getTimestamp, increaseBlockTimestampBy} = require('./helpers')
@@ -99,7 +102,7 @@ describe("Ethernal Elves Contracts", function () {
   await inventory.setWeapons([3,30,31,32,33,34,35,36,37], weapons5.address)
   await inventory.setWeapons([43,44,45,5,6,7,8,9], weapons6.address)
 
-  await inventory.setAccessories([15,16,4,5,8,9], accessories.address)
+  await inventory.setAccessories([15,16,4,5,8,9,1,2], accessories.address)
    
   await campaigns.initialize(elves.address);
 
@@ -119,9 +122,17 @@ describe("Ethernal Elves Contracts", function () {
   describe("Testing for random stuff", function () {
     it("Testbench", async function () {
 
-      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+///loop to run this 20 times
 
-      let elfDNA1  = "19476728411145404904939108980889792433612437299835034759661545075133846431"
+      for (let i = 0; i < 20; i++) {
+
+        await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+
+      }
+
+
+
+      let elfDNA1  = "49968264009275017539535670417909670943111024596189459600049271000653441505398"
       let elfDNA2  = "90639261325515095916550229504372966434485488009035142111393150935086015709184"
       let elfDNA3  = "95199535037357583831230196232214470496524951124881320671361977318428717079228"
       let elfDNA4  = "176733018922766793863456232764223026231761172710780386921529813803013918803"
@@ -144,35 +155,46 @@ describe("Ethernal Elves Contracts", function () {
 
       const arrayofDNA = [elfDNA1, elfDNA2, elfDNA3, elfDNA4, elfDNA5, elfDNA6, elfDNA7, elfDNA8, elfDNA9, elfDNA10, elfDNA11, elfDNA12, elfDNA13, elfDNA14, elfDNA15, elfDNA16, elfDNA17, elfDNA18, elfDNA19, elfDNA20]
 
+      await elves.modifyElfDNA(1, elfDNA4)
+      await elves.modifyElfDNA(2, elfDNA10)
+      await elves.modifyElfDNA(3, elfDNA12)
+      await elves.modifyElfDNA(4, elfDNA19)
 
+      await elves.tokenURI(1)
+      await elves.tokenURI(2)
+      await elves.tokenURI(3)
+      await elves.tokenURI(4)
 
-      arrayofDNA.forEach(async (dna, index) => {
+      console.log("Why fail?")
+/*
 
-        await elves.modifyElfDNA(1, dna)
-      console.log(await elves.getToken(1))
-      console.log("Test #",index, await elves.tokenURI(1))
+      let results = arrayofDNA.forEach(async (dna, index) => {
 
-      })
+        await elves.modifyElfDNA(index+1, dna)
+
       
 
+      })
 
-    
+      //loop 20 times
+
+      for (let i = 0; i < 20; i++) {
+
+        try{
+         await elves.tokenURI(i+1)
+        }catch(e){
+          console.log("token", i+1, "FAILED")
+          console.log(await elves.attributes(i+1))
+        }
+
+        
+        
+
+      }
+
+*/
 
 
-      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
-      console.log(await elves.tokenURI(2))
-      console.log(await elves.attributes(2))
-
-      await ren.mint(addr3.address,  ethers.BigNumber.from("6000000000000000000000")); 
-      console.log("SUPPLY:", await elves.totalSupply());
-      console.log("Balance:", await elves.balanceOf(addr3.address));
-
-      //console.log (await terminus.connect(addr3).travel([1], 0))
-     // await terminus.connect(addr3).travel([1], ethers.BigNumber.from("6000000000000000000000"));
-     
-      await elves.setAccountBalance(addr3.address, ethers.BigNumber.from("1000000000000000000000"));
-
-      expect(await elves.bankBalances(addr3.address).value).to.equal(ethers.BigNumber.from("1000000000000000000000").value);
 
     });});
 
@@ -227,26 +249,31 @@ describe("Ethernal Elves Contracts", function () {
       await elves.setAccountBalance(addr4.address, ethers.BigNumber.from("120000000000000000000"));
       await elves.setAccountBalance(addr5.address, ethers.BigNumber.from("100000000000000000000"));
       
-      let totalsupply = 0
-      let maxSupply = 4//parseInt(await elves.maxSupply())
+      let totalsupply = 1
+      let maxSupply = 8//parseInt(await elves.maxSupply())
+      await elves.setInitialSupply(4)
       let initialSupply = parseInt(await elves.INIT_SUPPLY())
       let i = 1
+
+      console.log("Actual Max Mint", parseInt(await elves.maxSupply()))
+      
       while (totalsupply < maxSupply) {
         
           totalsupply<=initialSupply ? await elves.connect(beff).mint({ value: ethers.utils.parseEther(mintPrice)}) :   await elves.connect(beff).mint();
-          await elves.tokenURI(i)
+          console.log(i)
+          elves.tokenURI(i)
           i++;
           console.log(i)
           totalsupply<=initialSupply ? await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)}) :  await elves.connect(addr3).mint(); 
-          await elves.tokenURI(i)
+          elves.tokenURI(i)
           i++;
           console.log(i)
           totalsupply<=initialSupply ? await elves.connect(addr4).mint({ value: ethers.utils.parseEther(mintPrice)}) :  await elves.connect(addr4).mint();
-          await elves.tokenURI(i)
+          elves.tokenURI(i)
           i++;
           console.log(i)
           totalsupply<=initialSupply ? await elves.connect(addr5).mint({ value: ethers.utils.parseEther(mintPrice)}) :  await elves.connect(addr5).mint();
-          await elves.tokenURI(i)
+          elves.tokenURI(i)
           i++;
           console.log(i)
           
@@ -315,7 +342,13 @@ describe("Game Play", function () {
       //await elves.connect(addr3).test(2)
 
       console.log("Creatures left in camps", await campaigns.camps(1))
- 
+      
+      elves.tokenURI(1)
+      elves.tokenURI(2)
+      elves.tokenURI(3)
+      elves.tokenURI(4)
+      elves.tokenURI(5)
+      elves.tokenURI(6)
       
       });
 
@@ -340,6 +373,12 @@ describe("Game Play", function () {
         increaseWorldTimeinSeconds(604800,true);
         increaseWorldTimeinSeconds(604800,true);
         await elves.connect(addr3).returnPassive([4]);
+
+
+        elves.tokenURI(1)
+        elves.tokenURI(2)
+        elves.tokenURI(3)
+        elves.tokenURI(4)
         
         
         

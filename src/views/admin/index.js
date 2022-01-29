@@ -5,7 +5,7 @@ import {elvesAbi, elvesContract} from "../../utils/interact"
 import './style.css'
 import Signature from "./Signature";
 import WhitelistExport from "./WhitelistExport";
-import ImageApp from "./ImageApp";
+
 
 const Admin = () => {
 

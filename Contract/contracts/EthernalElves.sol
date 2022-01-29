@@ -26,8 +26,7 @@ contract EthernalElves is ERC721 {
     
     using ECDSA for bytes32;
     
-//STATE
-   
+//STATE   
 
     bool public isGameActive;
     bool public isMintOpen;
@@ -49,8 +48,9 @@ contract EthernalElves is ERC721 {
     mapping(address => bool)    public auth;
     mapping(address => uint16)  public whitelist; 
 
-    
-    //////////NOTE MOVE THESE UP BEFORE DEPLOYMENT... had to do this cause of storage colission
+/////NEW STORAGE FROM THIS LINE///////////////////////////////////////////////////////
+
+
    
        function initialize(address _dev1Address, address _dev2Address) public {
     
@@ -105,7 +105,7 @@ contract EthernalElves is ERC721 {
 //Whitelist permissions 
 
 ///MAKE THESE PRIVATE LATER
-function encodeForSignature(address to, uint256 roleIndex) public pure returns (bytes32) {
+function encodeForSignature(address to, uint256 roleIndex) private pure returns (bytes32) {
      return keccak256(
             abi.encodePacked("\x19Ethereum Signed Message:\n32", 
                 keccak256(
@@ -114,7 +114,7 @@ function encodeForSignature(address to, uint256 roleIndex) public pure returns (
                     );
 }       
   
-function _isSignedByValidator(bytes32 _hash, bytes memory _signature) public view returns (bool) {
+function _isSignedByValidator(bytes32 _hash, bytes memory _signature) private view returns (bool) {
     
     bytes32 r;
     bytes32 s;
@@ -130,13 +130,16 @@ function _isSignedByValidator(bytes32 _hash, bytes memory _signature) public vie
   
 }
 
+/*
+
 function whoisSigner(bytes32 _hash, bytes memory _signature) public view returns (address) {
     //console.log(_signature.length);
     return _hash.recover(_signature);
 }
 
+*/
 
-///////////////IMPORTANT CHANGE TO MSG SENDER
+
 function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory signature) public payable  {
     
     isPlayer();
@@ -160,7 +163,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
     
     _remaining[roleIndex] = _remaining[roleIndex] - qty;
 
-    whitelist[to] = 1; //indicate that adress is used
+    whitelist[to] = 1; //indicate that address is used
 
         if(roleIndex == 0){
             

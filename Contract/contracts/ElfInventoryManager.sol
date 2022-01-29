@@ -54,6 +54,8 @@ contract ElfMetadataHandler {
     ) public view returns (string memory) {
       
         uint8 accessoriesIndex = (accessories_ - 1) % 7; 
+        //console.log("AI",accessoriesIndex);
+        //console.log("a",accessories_);
         return
             string(
                 abi.encodePacked(
@@ -168,9 +170,10 @@ contract ElfMetadataHandler {
     {
         (bool succ, bytes memory ret) = source.staticcall(sig);
         require(succ, "failed to get data");
-
+        
         svg = abi.decode(ret, (string));
-       
+        //  console.log("part?");
+       //  console.log(svg);
     }
 
     function get(Part part, uint8 id)
