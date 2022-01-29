@@ -47,17 +47,25 @@ describe("Ethernal Elves Contracts", function () {
 
   ///Deploy art contracts
   const Hair = await ethers.getContractFactory("Hair");
-  const Race = await ethers.getContractFactory("Race");
+  const Race1 = await ethers.getContractFactory("Race1");
+  const Race2 = await ethers.getContractFactory("Race2");
   const Weapons1 = await ethers.getContractFactory("Weapons1");
   const Weapons2 = await ethers.getContractFactory("Weapons2");
   const Weapons3 = await ethers.getContractFactory("Weapons3");
+  const Weapons4 = await ethers.getContractFactory("Weapons4");
+  const Weapons5 = await ethers.getContractFactory("Weapons5");
+  const Weapons6 = await ethers.getContractFactory("Weapons6");
   const Accessories = await ethers.getContractFactory("Accessories");
 
   const hair = await Hair.deploy();
-  const race = await Race.deploy();
+  const race1 = await Race1.deploy();
+  const race2 = await Race2.deploy();
   const weapons1 = await Weapons1.deploy();
   const weapons2 = await Weapons2.deploy();
   const weapons3 = await Weapons3.deploy();
+  const weapons4 = await Weapons4.deploy();
+  const weapons5 = await Weapons5.deploy();
+  const weapons6 = await Weapons6.deploy();
   const accessories = await Accessories.deploy();
   
   ///Body x 3, Hair x 3, Weapons x 3, 
@@ -79,13 +87,19 @@ describe("Ethernal Elves Contracts", function () {
   await elves.setAddresses(ren.address, inventory.address, campaigns.address, "0x80861814a8775de20F9506CF41932E95f80f7035");
   //await elves.setTerminus(terminus.address);
 
-  await inventory.setRace([1,2,3,4,5,6,7,8,9,10,11,12], race.address)
+  await inventory.setRace([1,10,11,12,2,3], race1.address)
+  await inventory.setRace([4,5,6,7,8,9], race2.address)
+  
   await inventory.setHair([1,2,3,4,5,6,7,8,9], hair.address)
-  await inventory.setWeapons([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], weapons1.address)
-  await inventory.setWeapons([16,17,18,19,20,21,22,23,24,25,26,27,28,29,30], weapons2.address)
-  await inventory.setWeapons([31,32,33,34,35,36,37,38,39,40,41,42,43,44,45], weapons3.address)
 
-  await inventory.setAccessories([1,2,8,9,15,16], accessories.address)
+  await inventory.setWeapons([1,10,11,12,13,14,15], weapons1.address)
+  await inventory.setWeapons([23,24,25,26,27,28,29], weapons2.address)
+  await inventory.setWeapons([38,39,4,40,41,42], weapons3.address)
+  await inventory.setWeapons([16,17,18,19,2,20,21,22], weapons4.address)  
+  await inventory.setWeapons([3,30,31,32,33,34,35,36,37], weapons5.address)
+  await inventory.setWeapons([43,44,45,5,6,7,8,9], weapons6.address)
+
+  await inventory.setAccessories([15,16,4,5,8,9], accessories.address)
    
   await campaigns.initialize(elves.address);
 
@@ -106,10 +120,44 @@ describe("Ethernal Elves Contracts", function () {
     it("Testbench", async function () {
 
       await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
-      let elfDNA1 = "17691036343230485324738241289359943272271446159665921088562437665677377536"
 
-      await elves.modifyElfDNA(1, elfDNA1)
-      console.log(await elves.tokenURI(1))
+      let elfDNA1  = "19476728411145404904939108980889792433612437299835034759661545075133846431"
+      let elfDNA2  = "90639261325515095916550229504372966434485488009035142111393150935086015709184"
+      let elfDNA3  = "95199535037357583831230196232214470496524951124881320671361977318428717079228"
+      let elfDNA4  = "176733018922766793863456232764223026231761172710780386921529813803013918803"
+      let elfDNA5  = "104033998254104457207711809265765656967889567937609029390669730133219418002369"
+      let elfDNA6  = "59191419749820083844107925745858946274976875014918368020617787010845471101889"
+      let elfDNA7  = "90815946031992934349508562257833123001073733307295035239166916948156653502464"
+      let elfDNA8  = "45584661173457321254210612575540283532315034336415019445197323810554419236947"
+      let elfDNA9  = "49773876323416838558183632265792507461038671773506009186207359560517675620470"
+      let elfDNA10 = "6901966021651367493376097821974886246768691696752418565839722454712320"
+      let elfDNA11 = "59173772011371700022731505099784111231298686074016119538850815865905960715602"
+      let elfDNA12 = "4735198446261624554463632327648465479673774052825815774396680581171493685145"
+      let elfDNA13 = "95356784453082806703713815866790210446375368577071444989389267502054795149410"
+      let elfDNA14 = "50127245682452623696737260134537041351245350833946112612745239999574885826658"
+      let elfDNA15 = "45407976466979478000438069827830037564784373802913882425348141403720501952512"
+      let elfDNA16 = "68202754074119754718325224628472035297083319101600443536698985813728326463356"
+      let elfDNA17 = "96794991062066071185182783707510834643536423770272588297922691022990101710162"
+      let elfDNA18 = "45233741880468332057974432411730820454743962524764814876565262334216502390652"
+      let elfDNA19 = "18465802039954328031528884409992477310725845948101327756316868140935397126012"
+      let elfDNA20 = "49968264009275017539535670417909670943111024596189459600049271000653441505398"
+
+      const arrayofDNA = [elfDNA1, elfDNA2, elfDNA3, elfDNA4, elfDNA5, elfDNA6, elfDNA7, elfDNA8, elfDNA9, elfDNA10, elfDNA11, elfDNA12, elfDNA13, elfDNA14, elfDNA15, elfDNA16, elfDNA17, elfDNA18, elfDNA19, elfDNA20]
+
+
+
+      arrayofDNA.forEach(async (dna, index) => {
+
+        await elves.modifyElfDNA(1, dna)
+      console.log(await elves.getToken(1))
+      console.log("Test #",index, await elves.tokenURI(1))
+
+      })
+      
+
+
+    
+
 
       await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
       console.log(await elves.tokenURI(2))

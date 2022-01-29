@@ -49,18 +49,20 @@ contract ElfMetadataHandler {
         uint8 race_,
         uint8 hair_,
         uint8 primaryWeapon_,
-        uint8 accessories_
+        uint8 accessories_,
+        uint8 sentinelClass_
     ) public view returns (string memory) {
       
-    
+        uint8 accessoriesIndex = (accessories_ - 1) % 7; 
         return
             string(
                 abi.encodePacked(
                     header,
                     get(Part.race, race_),
+                    accessoriesIndex <= 3 ? get(Part.accessories, accessories_) : "",//layer 2 armband necklace RANGE AND ASSASSIN
                     get(Part.hair, hair_),
                     primaryWeapon_ == 69 ? "" : get(Part.primaryWeapon, primaryWeapon_),                    
-                    get(Part.accessories, accessories_),
+                    accessoriesIndex > 3 ? get(Part.accessories, accessories_) : "",//layer 5 gloves for druids and spcials DRUID
                     footer
                 )
             );
@@ -81,7 +83,8 @@ contract ElfMetadataHandler {
                     token.race,
                     token.hair,
                     token.primaryWeapon,
-                    token.accessories
+                    token.accessories,
+                    token.sentinelClass
                 )
             )
         );

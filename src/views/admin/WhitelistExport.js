@@ -18,7 +18,7 @@ const WhitelistExport = ({text, size}) => {
 	const [loading, setLoading] = useState(true)
 
 	const getData = async () => {
-		console.log("yo")
+		
 		const ElvesWhiteList = Moralis.Object.extend("ElvesWhitelist");
 		const query = new Moralis.Query(ElvesWhiteList);
 		let limit = 100
@@ -49,7 +49,9 @@ const WhitelistExport = ({text, size}) => {
 			{ label: "roleIndex", key: "roleIndex" },
 			{ label: "roleName", key: "roleName" },
 			{ label: "username", key: "username" },
-			{ label: "walletAddress", key: "walletAddress" }]
+			{ label: "walletAddress", key: "walletAddress"},
+			{ label: "signature", key: "signature"},
+		]
 
 		alert("Successfully retrieved " + results.length + " ids.");
 		let arrObj = []
@@ -62,7 +64,10 @@ const WhitelistExport = ({text, size}) => {
 							roleName: object.get('roleName'),
 							username: object.get('username'),
 							walletAddress: object.get('walletAddress'),
-							createdAt: object.createdAt})
+							createdAt: object.createdAt,
+							//signature: object.get('signature'),
+						})
+							
 						}
 			
 

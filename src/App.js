@@ -13,6 +13,7 @@ import Faq from './views/faq';
 import { getCurrentWalletConnected } from './utils/interact'
 import { useState, useEffect } from 'react';
 
+
   
 function App() {
   const [wallet, setWallet] = useState("")
@@ -51,6 +52,7 @@ function App() {
               </Route>
               <Route exact path="/faq">
                 <Faq />
+               
               </Route>
             </Switch>
           </MainLayout>

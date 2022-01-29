@@ -18,6 +18,7 @@ contract EthernalElves is ERC721 {
        
     using DataStructures for DataStructures.ActionVariables;
     using DataStructures for DataStructures.Elf;
+    using DataStructures for DataStructures.Token; //REMOVE
 
     IElfMetaDataHandler elfmetaDataHandler;
     ICampaigns campaigns;
@@ -299,7 +300,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                 
                 elf.action = elf.weaponTier = elf.inventory = 0;
                 
-                elf.primaryWeapon = 69;
+                elf.primaryWeapon = 69; //69 is the default weapon - fists.
 
                 (,elf.level) = getMintPriceLevel();
 
@@ -309,7 +310,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
 
                 elf.hair = elf.race == 3 ? 0 : uint16(_randomize(rand, "Hair", id)) % 3;/// 0:brown white dark
 
-                elf.accessories = uint16(_randomize(rand, "Accessories", id)) % 2; //2 accessories MAX 7 
+                elf.accessories = elf.sentinelClass == 0 ? (uint16(_randomize(rand, "Accessories", id)) % 2) + 3 : uint16(_randomize(rand, "Accessories", id)) % 2; //2 accessories MAX 7 
 
                 uint256 _traits = DataStructures.packAttributes(elf.hair, elf.race, elf.accessories);
                 uint256 _class =  DataStructures.packAttributes(elf.sentinelClass, elf.weaponTier, elf.inventory);
@@ -546,6 +547,13 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
 
 function getSentinel(uint256 _id) external view returns(uint256 sentinel){
     return sentinel = sentinels[_id];
+}
+
+///////////////TEST FUNCTION
+function getToken(uint256 _id) external view returns(DataStructures.Token memory token){
+    
+   
+    return DataStructures.getToken(sentinels[_id]);
 }
 
 function elves(uint256 _id) external view returns(address owner, uint timestamp, uint action, uint healthPoints, uint attackPoints, uint primaryWeapon, uint level) {
