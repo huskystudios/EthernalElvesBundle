@@ -54,8 +54,7 @@
   width: 100%;
   border: 1px solid #454545;
   overflow-y: auto;
-  height: 50%;
-  max-height: calc(100vh - 570px);
+  max-height: 20em;
   padding: 12px;
   font-size: 12px;
 }
