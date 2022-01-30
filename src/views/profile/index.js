@@ -104,7 +104,7 @@ const Profile = () => {
         useEffect(() => {
             const getData = async () => {
                 const {address} = await getCurrentWalletConnected();
-                setStatus("connceted to address: " + address)
+                setStatus("connected to address: " + address)
                 address && await getUserData(address)
             }
             

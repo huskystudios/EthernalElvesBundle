@@ -39,7 +39,11 @@ module.exports = {
       timeout: 120000
     },
    networks: {
-      hardhat: {},
+      hardhat: { 
+         forking: {
+         url: MAINNET_API_URL,
+          }
+      },
       mainnet: {
          url: MAINNET_API_URL,
          accounts: [`0x${MAINNET_PRIVATE_KEY}`]
