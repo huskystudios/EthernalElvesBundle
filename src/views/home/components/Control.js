@@ -87,7 +87,13 @@ const Control = ({data, activities, onSelect}) => {
     }
     return (
         <div className="control-panel">
-            <span className="btn-select" onClick={() => onSelect(clicked)}>select {clicked.length > 0 ? clicked.length : ""}</span>
+            <button
+                className="btn-select"
+                disabled={clicked.length <= 0}
+                onClick={() => onSelect(clicked)}
+            >
+                Select {clicked.length > 0 ? clicked.length : ""}
+            </button>
             <div className="nft-wrapper">
                 {nfts.map((character, index) => {
                     let classes = "nft"
