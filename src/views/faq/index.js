@@ -25,7 +25,7 @@ const Faq = () => {
                                 <div className="sector-selection-item" key={faq.id}>
                                     <div className="sector-selection-item-header">
                                         {faq.cat && <h2>{faq.cat}</h2>}
-                                        <div className="subcat">{faq.subcat}</div>
+                                        {faq.subcat && <div className="subcat">{faq.subcat}</div>}
                                             <div className="question">{faq.question}</div>
                                             <div className="answer">{faq.answer}</div>
                                      </div>

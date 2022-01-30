@@ -218,7 +218,7 @@ export const faqs = [
       "cat": "",
       "subcat": "",
       "question": "How many items and weapons can be in an Elf’s inventory at one time?",
-      "answer": "???",
+      "answer": "One at a time",
       "id": 33
     },
     {
