@@ -109,6 +109,43 @@
         {
           "indexed": true,
           "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "campaign",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "sector",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Campaigns",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
           "name": "from",
           "type": "address"
         },
@@ -136,30 +173,6 @@
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "_hash",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "bytes",
-          "name": "_signature",
-          "type": "bytes"
-        }
-      ],
-      "name": "_isSignedByValidator",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
         }
       ],
       "stateMutability": "view",
@@ -389,30 +402,6 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "roleIndex",
-          "type": "uint256"
-        }
-      ],
-      "name": "encodeForSignature",
-      "outputs": [
-        {
-          "internalType": "bytes32",
-          "name": "",
-          "type": "bytes32"
-        }
-      ],
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
       "inputs": [],
       "name": "flipActiveStatus",
       "outputs": [],
@@ -466,6 +455,24 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "getMintPriceLevel",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "mintCost",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "mintLevel",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "internalType": "uint256",
@@ -479,6 +486,92 @@
           "internalType": "uint256",
           "name": "sentinel",
           "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "getToken",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "action",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "healthPoints",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "attackPoints",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "primaryWeapon",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "level",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "hair",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "race",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "accessories",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "sentinelClass",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "weaponTier",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "inventory",
+              "type": "uint8"
+            }
+          ],
+          "internalType": "struct DataStructures.Token",
+          "name": "token",
+          "type": "tuple"
         }
       ],
       "stateMutability": "view",
@@ -714,24 +807,6 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "owner_",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "ids",
-          "type": "uint256[]"
-        }
-      ],
-      "name": "pull",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "uint256[]",
           "name": "ids",
           "type": "uint256[]"
@@ -750,6 +825,19 @@
       "name": "rampage",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "receiveEth",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "payable",
       "type": "function"
     },
     {
@@ -1032,12 +1120,12 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "_terminus",
-          "type": "address"
+          "internalType": "uint256",
+          "name": "_initialSupply",
+          "type": "uint256"
         }
       ],
-      "name": "setTerminus",
+      "name": "setInitialSupply",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -1161,6 +1249,35 @@
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "roleIndex",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "_signature",
+          "type": "bytes"
+        }
+      ],
+      "name": "validSignature",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "validator",
       "outputs": [
@@ -1218,30 +1335,6 @@
       "name": "whitelistMint",
       "outputs": [],
       "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "_hash",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "bytes",
-          "name": "_signature",
-          "type": "bytes"
-        }
-      ],
-      "name": "whoisSigner",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
       "type": "function"
     },
     {

@@ -19,7 +19,7 @@ const WhitelistMint = ({mintcreds}) => {
     const [signature, setSignature] = useState(mintcreds.signature);
     const [roleIndex, setRoleIndex] = useState(mintcreds.role);
     const [toWallet, setToWallet] = useState(mintcreds.address);
-    const [quantity, setQuantity] = useState(1);
+    const [quantity, setQuantity] = useState(0);
     const [price, setPrice] = useState();
 
     const [tooltip, setTooltip] = useState({

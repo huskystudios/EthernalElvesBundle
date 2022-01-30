@@ -76,16 +76,19 @@ describe("Ethernal Elves Contracts", function () {
  //Deploying the contracts
   ren = await Miren.deploy(); 
    //whitelist = await Whitelist.deploy();
-  campaigns = await Campaigns.deploy();
+  
   //terminus = await Terminus.deploy();
   //fxBaseRootTunnel = await Bridge.deploy();
 
   //fxBaseRootTunnel.initialize(terminus.address,terminus.address)
   //fxBaseRootTunnel.setAuth([terminus.address], true)
   elves = await upgrades.deployProxy(Elves, [owner.address, beff.address]);
+  
   inventory = await upgrades.deployProxy(MetadataHandler);
 
   await elves.deployed();
+  campaigns = await upgrades.deployProxy(Campaigns, [elves.address]);
+  await campaigns.deployed();
 
   await elves.setAddresses(ren.address, inventory.address, campaigns.address, "0x80861814a8775de20F9506CF41932E95f80f7035");
   //await elves.setTerminus(terminus.address);
@@ -104,7 +107,7 @@ describe("Ethernal Elves Contracts", function () {
 
   await inventory.setAccessories([15,16,4,5,8,9,1,2], accessories.address)
    
-  await campaigns.initialize(elves.address);
+//  await campaigns.initialize(elves.address);
 
   //await terminus.initialize(fxBaseRootTunnel.address, elves.address, ren.address);
  

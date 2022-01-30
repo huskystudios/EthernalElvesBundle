@@ -9,7 +9,7 @@ import "./Interfaces.sol";
 
 // We are the Ethernal. The Ethernal Elves         
 // Written by 0xHusky & Beff Jezos. Everything is on-chain for all time to come.
-// Version 1.0.1
+// Version 1.0.0
 
 contract EthernalElves is ERC721 {
 
@@ -135,10 +135,6 @@ function validSignature(address to, uint256 roleIndex, bytes memory _signature) 
 
 }
 
-function receiveEth() public payable returns (string memory)  {
-
-    return ("Received ETH");
-}   
 
 function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory signature) public payable  {
     

@@ -53,10 +53,11 @@ async function deployArt() {
     return inventory
 }
 
-async function deployCampaigns() {
+async function deployCampaigns(elves) {
+  
   const Campaigns = await ethers.getContractFactory("ElfCampaigns");
   console.log("deploying campaigns")
-  let campaigns = await Campaigns.deploy();
+  const campaigns = await upgrades.deployProxy(Campaigns, [elves]);
   await campaigns.deployed();
   return campaigns
 }
@@ -91,8 +92,8 @@ async function main() {
   const elves = await deployElves()
   console.log("Elves", elves.address)
   
-  const campaigns = await deployCampaigns()
-  console.log("Campaigns", campaigns.address)
+  //const campaigns = await deployCampaigns(elves.address)
+  //console.log("Campaigns", campaigns.address)
 
   //const inventory = await deployArt()
   //console.log("Inventory", inventory.address)

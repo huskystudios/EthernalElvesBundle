@@ -12,9 +12,9 @@ const {
 
 export const etherscan = "etherscan" //"goerli.etherscan"
 
-export const elvesContract = "0x13BdEE5Dfe487A055f3fa523feCdcF8ecDd3B889"
-const mirenContract = "0xFfCB4a8e3616B07f8d01546c0Bb376aF9d6B8b02"
-const campaignsContract = "0x6e8AAD4EbeBc5A61432c98DA05eBb62c621Df549"
+export const elvesContract = "0xA351B769A01B445C04AA1b8E6275e03ec05C1E75"
+const mirenContract = "0xe6b055abb1c40b6c0bf3a4ae126b6b8dbe6c5f3f"
+const campaignsContract = "0x367Dd3A23451B8Cc94F7EC1ecc5b3db3745D254e"
 
 export const elvesAbi = require('./ABI/elves.json')
 const mirenAbi = require('./ABI/miren.json') 
