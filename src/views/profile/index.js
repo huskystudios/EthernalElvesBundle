@@ -260,9 +260,9 @@ if(actionString === "Passive Campaign"){
                     </div>
                 </div>
 
-                <MintPass />  
+               
 
-                {/** 
+   
 
                 <div className="d-flex">           
                 <div className="column">
@@ -279,7 +279,7 @@ if(actionString === "Passive Campaign"){
                 
                 </div>
 
-                    */}
+                 
                  
 
                 {/* 
