@@ -21,7 +21,7 @@
 
   }
   .app {
-    height: 100vh;
+    min-height: 100vh;
     /*max-width: 1366px;*/
     width: 100%;
     margin: auto;
@@ -105,7 +105,7 @@
   }
   
   .app-body {
-    height: 100vh;
+    min-height: 100vh;
  
   }
   
