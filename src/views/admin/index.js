@@ -118,7 +118,7 @@ const flipGameState = async (_index) => {
 
 return (
     <>
-       <div className="dark-1000 h-full d-flex home justify-center items-center">
+       <div className="dark-1000 h-full d-flex home justify-center items-center black">
       
             <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
             <p>ADMIN CONSOLE</p>
