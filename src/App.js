@@ -12,7 +12,7 @@ import Profile from './views/profile';
 import Faq from './views/faq';
 import { getCurrentWalletConnected } from './utils/interact'
 import { useState, useEffect } from 'react';
-import MintPass from './views/mint/MintPass';
+
 
 require('dotenv').config();
 
@@ -49,9 +49,6 @@ function App() {
               </Route>
               <Route exact path="/mint">
                 <Mint />
-              </Route>
-              <Route exact path="/whitelist">
-                <MintPass />
               </Route>
               <Route exact path="/profile">
                 <Profile />

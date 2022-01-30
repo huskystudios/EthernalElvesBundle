@@ -27,12 +27,9 @@ const checkWhitelist = async () => {
             
 			const params =  {wallet: wallet}
 		
-            const  response = await Moralis.Cloud.run("checkWhitelist", params);
-            
-            setResponse(response)
-
-          
-           setLoading(false)
+            const  response = await Moralis.Cloud.run("checkWhitelist", params);            
+            setResponse(response)          
+            setLoading(false)
 
 			
 		} catch (error) {

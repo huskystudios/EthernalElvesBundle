@@ -16,7 +16,7 @@ import {
     Link,
     useLocation
   } from "react-router-dom";
-import MintPass from "./MintPass";
+
 
   function useQuery() {
     const { search } = useLocation();

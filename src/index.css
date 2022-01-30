@@ -19,6 +19,10 @@ button {
   background-color: rgba(0,0,0,0)
 }
 
+.column {
+  flex: 50%;
+}
+
 .d-flex {
   display: flex;
 }

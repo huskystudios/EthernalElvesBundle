@@ -5,6 +5,7 @@ import "./style.css"
 import { actionString } from "../home/config"
 import {lookupMultipleElves, getCurrentWalletConnected} from "../../utils/interact"
 import Countdown from 'react-countdown';
+import MintPass from "./MintPass"
 
 
 
@@ -229,7 +230,7 @@ if(actionString === "Passive Campaign"){
         <>
 
 
-            <div className="dark-1000 h-full d-flex flex-column justify-center profile">           
+            <div className="dark-1000 h-full d-flex flex-column profile">           
 
                 <div className="d-flex statistic justify-start">
                     <div className="d-flex flex-column">
@@ -258,12 +259,20 @@ if(actionString === "Passive Campaign"){
                     </div>
                 </div>
 
-             
+                <div className="d-flex">           
+                <div className="column">
                 <h2>My Elves</h2>
                 <ShowElfTable  />
                 <h2>Activity Log</h2>
-                <ShowTransactionTable />    
+                <ShowTransactionTable /> 
+                </div>
+                <div className="column">
+                <MintPass />  
 
+                </div>
+
+                
+                </div>
 
 
                  
