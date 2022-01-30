@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useMemo } from "react"
 import hBar from "../../../assets/images/health_bar.png"
 import lBar from "../../../assets/images/level_bar.png"
 import Countdown from 'react-countdown';
@@ -68,10 +68,8 @@ const Control = ({data, activities, onSelect}) => {
         }
   }
 
-
-
     useEffect(() => {
- 
+
         if(PAGE_COUNT * currentPage < data.length){
             const showNfts = data.slice(currentPage * PAGE_COUNT, (currentPage + 1) * PAGE_COUNT)
             setNfts(showNfts);
@@ -164,8 +162,16 @@ const Control = ({data, activities, onSelect}) => {
             </>}
             { activeNft && <img className="active-thumb" src={activeNft.image} alt="level bar" /> }
             <span className="active-id">{activeNft ? `#${activeNft.id}` : ''}</span>
-            <button className="btn-prev" onClick={() => onPageChange(-1)} />
-            <button className="btn-next" onClick={() => onPageChange(1)} />
+            <button
+                className="btn-prev"
+                onClick={() => onPageChange(-1)}
+                disabled={currentPage === 0}
+            />
+            <button
+                className="btn-next"
+                onClick={() => onPageChange(1)}
+                disabled={(currentPage + 1) * PAGE_COUNT > data.length}
+            />
             {tooltip.show && showTooltip(tooltip.value)}
             <pre className="activities">  
                 {activeNft ? 

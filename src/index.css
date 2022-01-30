@@ -111,6 +111,11 @@ button {
   margin-bottom: 2rem ;
 }
 
+.btn-next,
+.btn-prev {
+  transition: background 300ms ease-in-out;
+}
+
 .btn-next:disabled,
 .btn-prev:disabled {
   cursor: default;
