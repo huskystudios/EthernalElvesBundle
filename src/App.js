@@ -12,7 +12,9 @@ import Profile from './views/profile';
 import Faq from './views/faq';
 import { getCurrentWalletConnected } from './utils/interact'
 import { useState, useEffect } from 'react';
+import MintPass from './views/mint/MintPass';
 
+require('dotenv').config();
 
   
 function App() {
@@ -20,10 +22,11 @@ function App() {
   const [flip, setFlip] = useState(false)
   
 
-  let husky ="0xCcB6D1e4ACec2373077Cb4A6151b1506F873a1a5"
-  let beff = "0x3296D61C5E737F9847bA52267b1DeBB8Dbff139F"
-  let deployer = "0x6B635fE980681B4b5f1eCf371ce76eF6826c0552" //change this
-  let adminWallet = [husky.toLowerCase(), beff.toLowerCase(), deployer.toLowerCase()]
+  let dev1 = process.env.REACT_APP_DEV1
+  let dev2 = process.env.REACT_APP_DEV2
+  let dev3 = process.env.REACT_APP_DEV3
+
+  let adminWallet = [dev1.toLowerCase(), dev2.toLowerCase(), dev3.toLowerCase()]
 
   useEffect(async() => {
     const {address} = await getCurrentWalletConnected()
@@ -46,6 +49,9 @@ function App() {
               </Route>
               <Route exact path="/mint">
                 <Mint />
+              </Route>
+              <Route exact path="/whitelist">
+                <MintPass />
               </Route>
               <Route exact path="/profile">
                 <Profile />

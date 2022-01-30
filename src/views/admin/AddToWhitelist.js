@@ -57,24 +57,24 @@ return (
          
           <div className="d-flex flex-column text-white justify-center px-4 text-uppercase wl-dialog">
                 <p>Add to Whitelist</p>
-                <div class="flex flex-col items-center justify-center">
-                    <div class="flex flex-col items-center justify-center">
-                        <label class="text-xl">Wallet Address</label>
-                        <input class="w-full p-2 border border-gray-500" type="text" value={wallet} onChange={e => setWallet(e.target.value)}/>
+                <div className="flex flex-col items-center justify-center">
+                    <div className="flex flex-col items-center justify-center">
+                        <label className="text-xl">Wallet Address</label>
+                        <input className="w-full p-2 border border-gray-500" type="text" value={wallet} onChange={e => setWallet(e.target.value)}/>
                     </div>
-                    <div class="flex flex-col items-center justify-center">
-                        <label class="text-xl">Username</label>
-                        <input class="w-full p-2 border border-gray-500" type="text" value={username} onChange={e => setUsername(e.target.value)}/>
+                    <div className="flex flex-col items-center justify-center">
+                        <label className="text-xl">Username</label>
+                        <input className="w-full p-2 border border-gray-500" type="text" value={username} onChange={e => setUsername(e.target.value)}/>
                     </div>
-                    <div class="flex flex-col items-center justify-center">
-                        <label class="text-xl">Role Index</label>
-                        <input class="w-full p-2 border border-gray-500" type="text" value={roleIndex} onChange={e => setRoleIndex(e.target.value)}/>
+                    <div className="flex flex-col items-center justify-center">
+                        <label className="text-xl">Role Index</label>
+                        <input className="w-full p-2 border border-gray-500" type="text" value={roleIndex} onChange={e => setRoleIndex(e.target.value)}/>
                     </div>
-                    <div class="flex flex-col items-center justify-center">
-                        {!loading && <button class="btn btn-blue" onClick={updateWhiteList}>Submit</button>}
+                    <div className="flex flex-col items-center justify-center">
+                        {!loading && <button className="btn btn-blue" onClick={updateWhiteList}>Submit</button>}
                     </div>
                 </div>  
-                {errorMsg ? <p class="text-xl">{errorMsg}</p> : null}
+                {errorMsg ? <p className="text-xl">{errorMsg}</p> : null}
             </div>
             </>
 

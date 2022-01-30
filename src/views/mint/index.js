@@ -16,6 +16,7 @@ import {
     Link,
     useLocation
   } from "react-router-dom";
+import MintPass from "./MintPass";
 
   function useQuery() {
     const { search } = useLocation();
@@ -121,6 +122,7 @@ const Mint = () => {
         
         wl ? <WhitelistMint mintcreds={mintcredentials}/> :
         <>
+       
         <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
             <p>SUMMON ETHERNAL ELF</p>
            

@@ -130,7 +130,7 @@ return (
             <div className="d-flex flex-row justify-center">
             {!loading ? ( 
             <button className="btn btn-green" onClick={refreshMetaData}>Update Elf Metadata</button>) : ( 
-            <button disabled><div class="animate-bounce">Loading... {progress.toFixed(0)} %</div></button>)}
+            <button disabled><div className="animate-bounce">Loading... {progress.toFixed(0)} %</div></button>)}
             </div>
             <div className="mint-instructions">
                 <p>$ETH Withdrawal to founders.</p>
@@ -138,7 +138,7 @@ return (
 
 
             <div className="d-flex flex-row justify-center">
-            <button className="btn btn-green" onClick={()=> flipGameState(4)}><div class="animate-bounce">Withdraw</div></button>
+            <button className="btn btn-green" onClick={()=> flipGameState(4)}><div className="animate-bounce">Withdraw</div></button>
             </div>
 
             
@@ -150,15 +150,15 @@ return (
             <div className="justify-center">
             {!loading && 
             <>
-             <button className={`btn ${gameStatus.gameActive ? "btn-green" : "btn-red"}`} onClick={()=> flipGameState(1)}><div class="animate-bounce">flip Active... </div></button>
+             <button className={`btn ${gameStatus.gameActive ? "btn-green" : "btn-red"}`} onClick={()=> flipGameState(1)}><div className="animate-bounce">flip Active... </div></button>
              <div className="mint-instructions">
                 <p>{gameStatus.gameActive ? "Game is Active" : "Game is Inactive"}</p>
             </div>
-             <button className={`btn ${gameStatus.publicMint ? "btn-green" : "btn-red"}`} onClick={()=> flipGameState(2)}><div class="animate-bounce">flip Mint... </div></button>
+             <button className={`btn ${gameStatus.publicMint ? "btn-green" : "btn-red"}`} onClick={()=> flipGameState(2)}><div className="animate-bounce">flip Mint... </div></button>
              <div className="mint-instructions">
                 <p>{gameStatus.publicMint ? "Public Minting is Active" : "Public Minting is Inactive"}</p>
             </div>
-             <button className={`btn ${gameStatus.wlMint ? "btn-green" : "btn-red"}`} onClick={()=> flipGameState(3)}><div class="animate-bounce">flip Whitelist... </div></button>
+             <button className={`btn ${gameStatus.wlMint ? "btn-green" : "btn-red"}`} onClick={()=> flipGameState(3)}><div className="animate-bounce">flip Whitelist... </div></button>
              <div className="mint-instructions">
                 <p>{gameStatus.wlMint ? "Whitelist Minting is Active" : "Whitelist Minting is Inactive"}</p>
             </div>

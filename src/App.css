@@ -151,6 +151,10 @@
     margin-top: 15px;
     display: none;
   }
+
+  .break-all {
+    word-break: break-all;
+  }
   
 
     /*/ header-body class display flex at desktop */

@@ -51,7 +51,7 @@ const Campaign = ({onChangeIndex, onSetCampaign}) => {
                     <div className="campaign-slide">
                         <img className="campaign-thumb" src={campaignArray[campaign].image} alt="campaign" />
                         <div className="campaign-title">{campaignArray[campaign].name}</div>
-                       <div class="campaign-tip">
+                       <div className="campaign-tip">
                         <div> Creatures remaining: {campaignArray[campaign].creatureCount}</div>
                         <div> Minimum Reward:  {campaignArray[campaign].baseRewads}</div>
                         <div> Min Creature Health: {campaignArray[campaign].creatureHealth}</div>
