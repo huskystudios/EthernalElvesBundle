@@ -437,7 +437,7 @@ contract ElfMetadataHandler {
                 if (id < 13) {
                     return
                         id == 10 ? "Forsaken Souls" : id == 11
-                            ? "Ether Malevance "
+                            ? "Ether Malevance"
                             : "Souls of the Ancient";
                 }
                 return

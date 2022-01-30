@@ -69,7 +69,7 @@ return loaded ? (
     <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
         {/* I'm not Sullof. No easter eggs here*/}
         <p>
-        {`WELCOME ${discordMeta.name}`} <br/><br/>Our time is here. You are on the whitelist with the role {discordMeta.roleName} </p>
+        {`WELCOME ${discordMeta.name}`} <br/><br/> You are on the whitelist with the role {discordMeta.roleName} </p>
         
         <div className="border-2 p-3">
         <div>Mint Credentials</div>
@@ -103,7 +103,7 @@ return loaded ? (
           {errorMsg ? <p className="text-xl">{errorMsg}</p> : null}
   
         
-              <p>Get your mint credentials <button className="btn btn-blue" onClick={getWLcreds}>Reveal my signature!</button></p>
+              <button className="btn btn-blue" onClick={getWLcreds}>Reveal my signature!</button>
 
 
 

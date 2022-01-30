@@ -33,7 +33,10 @@ const updateWhiteList = async () => {
             const  response = await Moralis.Cloud.run("addToWhitelist", params);
             
             setErrorMsg(response)
-
+            setWallet("")
+            setUsername("")
+            setRoleIndex("")
+            
           
            setLoading(false)
 
