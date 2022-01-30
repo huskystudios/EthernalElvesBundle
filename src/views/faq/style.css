@@ -10,13 +10,13 @@
     background-color: black;
 }
 
-h1 {
+.heading {
     font-size: 44px;
     font-weight: bold;
    
 }
 
-h2 {
+.cat {
     font-size: 34px;
     font-weight: bold;
     text-align: left;
