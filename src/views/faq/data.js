@@ -260,7 +260,7 @@ export const faqs = [
       "cat": "// TEAM",
       "subcat": "",
       "question": "Who created Ethernal Elves?",
-      "answer": "Sid aka OxHusky & R**** aka Beff Jezos",
+      "answer": "Beff Jezos & 0xHusky",
       "id": 39
     }
   ]
