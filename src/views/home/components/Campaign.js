@@ -42,7 +42,7 @@ const Campaign = ({onChangeIndex, onSetCampaign}) => {
      return campaignArray ? (
         <div className="d-flex flex-column campaign-panel">
             <div className="d-flex flex-column">
-                <span>{"Where would you like to campaign???"}</span>
+                <span>{"Where would you like to campaign?"}</span>
                 <div className="carousel">
                     <button className="btn_prev" onClick={() => setCampaign(campaign === 0 ? campaignArray.length - 1 : campaign - 1)} />
                     <div className="campaign-slide-passive">
