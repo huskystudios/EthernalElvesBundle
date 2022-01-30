@@ -17,6 +17,7 @@ const MintPass = () => {
 
 
     const [loading, setLoading] = useState(false)
+    const [verifyCreds, setVerifyCreds] = useState(false)
 	
 	const { Moralis} = useMoralis();
 
@@ -27,8 +28,13 @@ const MintPass = () => {
     const [showButton, setShowButton] = useState(false)
     const [errorMsg, setErrorMsg] = useState(false)
 
-  
-                         
+const checkValidSignature = async () => {
+
+            const params =  {address: discordMeta.wallet, roleIndex: discordMeta.roleIndex, signature: discordMeta.signature}
+            let response = await Moralis.Cloud.run("checkSignature", params);
+            console.log(response)
+            setVerifyCreds(response)
+}                         
   
 const getWLcreds = async () => {
     
@@ -93,17 +99,22 @@ return loaded ? (
         </p>
         </div>
         </div>
-       
-        <br />
-        <p>Use these details to mint your whitelist allocation by clicking the button below.</p>
-        <p>
+
+
+            <div className="d-flex flex-row justify-center">
+            <button className={`btn ${verifyCreds ? "btn-green" : "btn-red"}`} onClick={checkValidSignature}>  
+
+               Verify Credentials {verifyCreds ? "✅" : "❌"}
+            </button>
+
+   
             
         {showButton && <button className='btn btn-blue' onClick={(e) => {
         e.preventDefault();
         window.location.href=`https://app.ethernalelves.com/mint?wl=${discordMeta.roleIndex}&signature=${discordMeta.signature}&address=${discordMeta.wallet}`;
         }}
             >Go to mint</button>}
-        </p>
+            </div>  
 
                 
         </ div>         
