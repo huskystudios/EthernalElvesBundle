@@ -1,4 +1,7 @@
 import React from "react";
+import { faqs } from "./data";
+import './style.css'    
+
 
 
 const Faq = () => {
@@ -9,8 +12,8 @@ const Faq = () => {
 
     return (
         <>
-            <div className="dark-1000 h-full d-flex home justify-center items-center">
-                <div className="d-flex flex-column campaign-panel">
+            <div className="dark-1000 d-flex faq justify-center items-center">
+                <div className="faq-container">
                     <div className="d-flex flex-column">
                         <h1>
                             FAQ
@@ -18,25 +21,16 @@ const Faq = () => {
                         <div className="sector-selection">
 
 
-                            <ol>
-                                <li>
-                                    <p>Put your questions here</p>
-                                    <p>Put your questions here</p>
-                                </li>
-                                <li>
-                                    <p>Put your questions here</p>
-                                    <p>Put your questions here</p>
-                                </li>
-                                <li>
-                                    <p>Put your questions here</p>
-                                    <p>Put your questions here</p>
-                                </li>
-                                <li>
-                                    <p>Put your questions here</p>
-                                    <p>Put your questions here</p>
-                                </li>
-                            </ol>
-
+                            {faqs.map(faq => (
+                                <div className="sector-selection-item" key={faq.id}>
+                                    <div className="sector-selection-item-header">
+                                        {faq.cat && <h2>{faq.cat}</h2>}
+                                        <div className="subcat">{faq.subcat}</div>
+                                            <div className="question">{faq.question}</div>
+                                            <div className="answer">{faq.answer}</div>
+                                     </div>
+                                </div> ))}      
+                                            
 
                         </div>
                     </div>

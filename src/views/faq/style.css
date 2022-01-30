@@ -1,0 +1,46 @@
+
+.faq{
+    background-color: black;
+}
+.faq-container {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    background-color: black;
+}
+
+h1 {
+    font-size: 44px;
+    font-weight: bold;
+   
+}
+
+h2 {
+    font-size: 34px;
+    font-weight: bold;
+    text-align: left;
+    padding-top: 20px;
+}
+
+.subcat {
+    font-size: 22px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.question {
+    font-size: 18px;
+    padding-bottom: 10px;
+    padding-top: 50px;
+   text-align: left;
+}
+
+.answer {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: left;
+    word-break: break-all;
+    line-height: 140%;
+    
+}
