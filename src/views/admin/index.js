@@ -6,6 +6,7 @@ import './style.css'
 import Signature from "./Signature";
 import WhitelistExport from "./WhitelistExport";
 import AddToWhitelist from "./AddToWhitelist";
+import CheckWhitelist from "./CheckWhitelist";
 
 
 const Admin = () => {
@@ -169,9 +170,16 @@ return (
         
         </div>  
 
+              <div>
               <AddToWhitelist />
+              <CheckWhitelist />
+              </div>
+              
 
+              
         <Signature />
+
+
 
        
 

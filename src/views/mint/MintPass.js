@@ -94,9 +94,17 @@ return loaded ? (
         </div>
        
         <br />
-        <p>Use these details to mint your whitelist allocation by clicking <a href={`https://app.ethernalelves.com/mint?wl=${discordMeta.roleIndex}&signature=${discordMeta.signature}&address=${discordMeta.wallet}`} rel={'noreferrer'} target={"_blank"}> here</a></p>
-        <p>Pro tip: copy and paste these values as they are here into the mint GUI or the contract</p>
-        
+        <p>Use these details to mint your whitelist allocation by clicking the button below.</p>
+        <p>
+            
+        <button className='btn btn-blue' onClick={(e) => {
+        e.preventDefault();
+        window.location.href=`https://app.ethernalelves.com/mint?wl=${discordMeta.roleIndex}&signature=${discordMeta.signature}&address=${discordMeta.wallet}`;
+        }}
+            >Go to mint</button>
+        </p>
+
+                
         </ div>         
       ) : (
         <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">

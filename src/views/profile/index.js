@@ -7,6 +7,7 @@ import {lookupMultipleElves, getCurrentWalletConnected} from "../../utils/intera
 import Countdown from 'react-countdown';
 
 
+
 const Profile = () => {
     const [loading, setLoading] = useState(true)
     const [supply, setSupply] = useState("3000")
@@ -262,7 +263,8 @@ if(actionString === "Passive Campaign"){
                 <ShowElfTable  />
                 <h2>Activity Log</h2>
                 <ShowTransactionTable />    
-             
+
+
 
                  
 

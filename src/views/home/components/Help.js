@@ -9,7 +9,7 @@ import utility from "../../../assets/images/help/utility.png"
 import creatureHeal from "../../../assets/images/help/creatureHeal.png";
 
 const characters = [{src:assassinHelp, name:"Assassins"}, {src:druidHelp, name:"Druids"}, {src:rangerHelp, name:"Rangers"}] 
-const gamemodes = [{src:gameModes, name:"Game Modes"}, {src:items, name:"Items"}, {src:rewards, name:"Rewards"}, {src:utility, name:"Utility"}, {src:creatureHeal, name:"Creature \n\n Health"}]
+const gamemodes = [{src:gameModes, name:"Game Modes"}, {src:items, name:"Items"}, {src:rewards, name:"Rewards"}, {src:utility, name:"Utility"}, {src:creatureHeal, name:"Creature Health"}]
 
 const Help = () => {
 
