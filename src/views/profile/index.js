@@ -20,6 +20,7 @@ const Profile = () => {
     const [data, setData] = useState({})
     const [actionData, setActionData] = useState({})
     const { Moralis, authenticate } = useMoralis();
+    const [status, setStatus] = useState("")
 
    
 
@@ -73,7 +74,7 @@ const Profile = () => {
         //concat ren and res
         let data = res.concat(ren)
 
-        console.log(data, ren, res)
+        setStatus("getting actions and transactions")
 
 
 
@@ -86,13 +87,13 @@ const Profile = () => {
     
         const params =  {address: address}
         const userTokenArray = await Moralis.Cloud.run("getElvesFromDb", params);
-        
+        setStatus("army of elves")
         const elves = await lookupMultipleElves(userTokenArray)
         elves.sort((a, b) => a.id - b.id)
         console.log(elves)
         setData(elves)        
 
-
+        setStatus("done")
         elves && setLoading(false)
     
     }
@@ -103,7 +104,7 @@ const Profile = () => {
         useEffect(() => {
             const getData = async () => {
                 const {address} = await getCurrentWalletConnected();
-                                
+                setStatus("connceted to address: " + address)
                 address && await getUserData(address)
             }
             
@@ -226,7 +227,7 @@ if(actionString === "Passive Campaign"){
         <>
 
         
-        {loading ? <Loader /> :
+        {loading ? <Loader text={status} /> :
         <>
 
 
