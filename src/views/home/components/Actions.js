@@ -22,10 +22,10 @@ const Actions = ({onChangeIndex, actions, setGameMode}) => {
                     <h2>choose game mode</h2>
                     <div className="selection-content d-flex">
                         {actions.map((action, i) => 
-                            <div className="d-flex flex-column w-full items-center" key={action.id}>
+                            <div className={`d-flex flex-column w-full items-center ${action.disabled ? "disabled" : ""}`} key={action.id}>
                                 <img src={action.image} alt={action.text} />
                                 <button
-                                    className="btn-action" 
+                                    className="btn-action"
                                     onClick={() => {if(i === 2) return; handleClick(1 + i)}}
                                     onMouseEnter={() => i === 2 && setShow(true)}
                                     onMouseLeave={() => i === 2 && setShow(false)} 

@@ -11,9 +11,9 @@ export const sentinelClass = ["Druid", "Assassin", "Ranger"]
 
 export const actions = 
 [
-    {id: 0, text: 'passive', image: stakeImg},
-    {id: 1, text: 'campaign', image: campaignImg},
-    {id: 2, text: 'bloodThirst', image: bloodImg}
+    {id: 0, text: 'Passive', image: stakeImg},
+    {id: 1, text: 'Campaign', image: campaignImg},
+    {id: 2, text: 'Blood Thirst', image: bloodImg, disabled: true}
 ]
 
 export const actionString =
