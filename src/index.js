@@ -6,8 +6,8 @@ import App from './App';
 import { MoralisProvider } from "react-moralis";
 require('dotenv').config();
 
-//const creds = {appId: "", serverUrl: "https://ehxlulvkbgjz.usemoralis.com:2053/server"}; //Goerli
-const creds = {appId: process.env.REACT_APP_MORALIS_APPID, serverUrl: "https://btx7uykjbmv4.usemoralis.com:2053/server"}; //Mainnet
+const creds = {appId: "KnfKr2SVFs4ahX9JcuTyE4Lz39uJF6h9WiQVFRQA", serverUrl: "https://ehxlulvkbgjz.usemoralis.com:2053/server"}; //Goerli
+//const creds = {appId: process.env.REACT_APP_MORALIS_APPID, serverUrl: "https://btx7uykjbmv4.usemoralis.com:2053/server"}; //Mainnet
 
 ReactDOM.render(
   <MoralisProvider appId={creds.appId} serverUrl={creds.serverUrl}>
