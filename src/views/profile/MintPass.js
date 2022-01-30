@@ -22,8 +22,9 @@ const MintPass = () => {
 
 
   
-    const [discordMeta, setDiscordMeta] = useState({name: null, server: null, roleIndex: null, roleName: null})
+    const [discordMeta, setDiscordMeta] = useState({name: "Not on whitelist", server: null, roleIndex: null, roleName: "No Role"})
     const [loaded, setLoaded] = useState(false)
+    const [showButton, setShowButton] = useState(false)
     const [errorMsg, setErrorMsg] = useState(false)
 
   
@@ -48,7 +49,7 @@ const getWLcreds = async () => {
                             signature: response.s, 
                             wallet: response.w})
         
-            
+                        response && setShowButton(true)
            response && setLoaded(true)                
            setLoading(false)
 
@@ -69,7 +70,7 @@ return loaded ? (
     <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
         {/* I'm not Sullof. No easter eggs here*/}
         <p>
-        {`WELCOME ${discordMeta.name}`} <br/><br/> You are on the whitelist with the role {discordMeta.roleName} </p>
+        {`WELCOME ${discordMeta.name}`} <br/><br/> Whitelist Role: {discordMeta.roleName} </p>
         
         <div className="border-2 p-3">
         <div>Mint Credentials</div>
@@ -97,11 +98,11 @@ return loaded ? (
         <p>Use these details to mint your whitelist allocation by clicking the button below.</p>
         <p>
             
-        <button className='btn btn-blue' onClick={(e) => {
+        {showButton && <button className='btn btn-blue' onClick={(e) => {
         e.preventDefault();
         window.location.href=`https://app.ethernalelves.com/mint?wl=${discordMeta.roleIndex}&signature=${discordMeta.signature}&address=${discordMeta.wallet}`;
         }}
-            >Go to mint</button>
+            >Go to mint</button>}
         </p>
 
                 
