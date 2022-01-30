@@ -16,6 +16,7 @@ const WhitelistExport = ({text, size}) => {
 	const { Moralis, authenticate, isAuthenticated, user} = useMoralis();
 	const [csvReport, setCsvReport] = useState([1,2,3])
 	const [loading, setLoading] = useState(true)
+	const [progress, setProgress] = useState(0)
 
 	const getData = async () => {
 		
@@ -36,6 +37,7 @@ const WhitelistExport = ({text, size}) => {
 			let currentIndex = limit * (page)
 			currentIndex > response.count ? hasMore = false : hasMore = true
 			page++
+			setProgress(currentIndex / response.count * 100)
 			
 			console.log(hasMore, response)
 			results = results.concat(response.results)
@@ -91,7 +93,7 @@ const WhitelistExport = ({text, size}) => {
 
 
 {!loading ? <CSVLink {...csvReport}>Export to CSV</CSVLink> : <button className="btn btn-blue" onClick={getData}>Get Whitelist</button>}
-
+{progress}
 
 
         </>         
