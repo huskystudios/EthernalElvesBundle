@@ -3,6 +3,7 @@ const hre = require("hardhat");
 let huskyAddress = "0xCcB6D1e4ACec2373077Cb4A6151b1506F873a1a5"
 let beffAddress =  "0x3296D61C5E737F9847bA52267b1DeBB8Dbff139F"
 let validator = "0x80861814a8775de20F9506CF41932E95f80f7035"
+
 const isEthereum = true
 
 async function deployArt() {
@@ -90,14 +91,14 @@ async function main() {
   const elves = await deployElves()
   console.log("Elves", elves.address)
   
-  const inventory = await deployArt()
-  console.log("Inventory", inventory.address)
-
   const campaigns = await deployCampaigns()
   console.log("Campaigns", campaigns.address)
+
+  //const inventory = await deployArt()
+  //console.log("Inventory", inventory.address)
   
-  const ren = await deployMiren()
-  console.log("Miren", ren.address)
+  //const ren = await deployMiren()
+  //console.log("Miren", ren.address)
  
   console.log("done")
 

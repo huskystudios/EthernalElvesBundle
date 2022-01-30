@@ -130,14 +130,13 @@ function _isSignedByValidator(bytes32 _hash, bytes memory _signature) private vi
   
 }
 
-/*
 
-function whoisSigner(bytes32 _hash, bytes memory _signature) public view returns (address) {
-    //console.log(_signature.length);
-    return _hash.recover(_signature);
+
+function validSignature(address to, uint256 roleIndex, bytes memory _signature) public view returns (bool) {
+    
+    return _isSignedByValidator(encodeForSignature(to, roleIndex), _signature);
+
 }
-
-*/
 
 
 function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory signature) public payable  {

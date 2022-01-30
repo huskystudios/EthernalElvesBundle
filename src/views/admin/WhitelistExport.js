@@ -65,7 +65,7 @@ const WhitelistExport = ({text, size}) => {
 							username: object.get('username'),
 							walletAddress: object.get('walletAddress'),
 							createdAt: object.createdAt,
-							//signature: object.get('signature'),
+							signature: object.get('signature'),
 						})
 							
 						}

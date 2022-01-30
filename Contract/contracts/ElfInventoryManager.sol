@@ -409,10 +409,10 @@ contract ElfMetadataHandler {
         returns (string memory hairName)
     {
         ///create a binary search for the hair name from ids 1 to 9
-        hairName = id == 1 ? "Short" : id == 2 ? 
-        "Medium" : id == 3 ? "Long" : id == 4 ? "Bald" : id == 5 ? 
-        "Short" : id == 6 ? "Medium" : id == 7 ? "Long" : id == 8 ? 
-        "Bald" : "Medium";
+        hairName = id == 1 ? "Hood" : id == 2 ? 
+        "Hood + Cape" : id == 3 ? "Antlers" : id == 4 ? "Assassin Brown" : id == 5 ? 
+        "Assassin Dark" : id == 6 ? "Assassin Light" : id == 7 ? "Blue" : id == 8 ? 
+        "Blonde" : "Purple";
 
     }
 
@@ -424,81 +424,80 @@ contract ElfMetadataHandler {
             if (id < 10) {
                 if (id < 5) {
                     if (id < 3) {
-                        return id == 1 ? "Pickaxe" : "Nothing";
+                        return id == 1 ? "Staff of the North" : "Enchanted Cane";
                     }
-                    return id == 3 ? "Club" : "Pleb Staff";
+                    return id == 3 ? "Decitful Spire" : "Wand of the Meadows";
                 }
-                if (id < 7) return id == 5 ? "Short Sword +1" : "Dagger +1";
+                if (id < 7) return id == 5 ? "Scepter of the Moon" : "Etheral Wand";
                 return
-                    id == 7 ? "Simple Axe +1" : id == 8
-                        ? "Fiery Poker +1"
-                        : "Large Axe +2";
+                    id == 7 ? "Elemental Staff" : 
+                    id == 8 ? "Orchids Bliss" : "Infintiy Wand";
             }
             if (id <= 15) {
                 if (id < 13) {
                     return
-                        id == 10 ? "Iron Hammer +2" : id == 11
-                            ? "Iron Mace +2"
-                            : "Jagged Axe +2";
+                        id == 10 ? "Forsaken Souls" : id == 11
+                            ? "Ether Malevance "
+                            : "Souls of the Ancient";
                 }
                 return
-                    id == 13 ? "Enchanted Poker +3" : id == 14
-                        ? "Curved Sword +3"
-                        : "Ultra Mallet +3";
+                    id == 13 ? "Luficers Scepter" : id == 14
+                        ? "Scythe of Enchantment"
+                        : "Staff of Miranda";
             }
             if (id < 18)
-                return id == 16 ? "Disciple Staff +3" : "Assassin Blade +4";
-            return id == 18 ? "Swamp Staff +4" : "Simple Wand +4";
+                return id == 16 ? "Rensipper" : "Decitful Dagger";
+            return id == 18 ? "War Pike" : "Cutlass of the Night";
         }
 
         if (id < 30) {
             if (id < 25) {
                 if (id < 23) {
                     return
-                        id == 20 ? "Royal Blade +4" : id == 21
-                            ? "Skull Shield +5"
-                            : "Skull Crusher Axe +5";
+                        id == 20 ? "Enchanted Lancer" : id == 21
+                            ? "Ether Reaper"
+                            : "Wraith Axe";
                 }
-                return id == 23 ? "Flaming Staff +5" : "Flaming Royal Blade +5";
+                return id == 23 ? "Excalibur Glaives" : "Axe of Haladan";
             }
 
             if (id < 27)
-                return id == 25 ? "Berserker Sword +6" : "Necromancer Staff +6";
+                return id == 25 ? "Glaives of Khopesh" : "Emerald Ravage";
             return
-                id == 27 ? "Flaming Skull Shield +6" : id == 28
-                    ? "Frozen Scythe +6"
-                    : "Blood Sword +7";
+                id == 27 ? "Soul Snatcher" : id == 28
+                    ? "Blades of Illhaladan"
+                    : "Luficers Glaives";
         }
         if (id <= 35) {
             if (id < 33) {
                 return
-                    id == 30 ? "Dark Lord Staff +7" : id == 31
-                        ? "Bow of Artemis +7"
-                        : "Ice Sword +7";
+                    id == 30 ? "Halberd of Miranda" : id == 31
+                        ? "Boomerang Glaives"
+                        : "Meadow's Bow";
             }
             return
-                id == 33 ? "Cryptic Staff +8" : id == 34
-                    ? "Nether Lance +8"
-                    : "Demonic Axe +8";
+                id == 33 ? "Rope of Vengence" : id == 34
+                    ? "Cursed Soulblades"
+                    : "Bow of Janus";
         }
 
         if (id <= 40) {
             if (id < 39) {
                 return
-                    id == 36 ? "Royal Blade +4" : id == 37
-                        ? "Skull Shield +5"
-                        : "Skull Crusher Axe +5";
+                    id == 36 ? "Orchid Javelin" : id == 37
+                        ? "Glaives of Enchanted"
+                        : "Meteors of the Dark Moon";
             }
-            return id == 39 ? "Flaming Staff +5" : "Flaming Royal Blade +5";
+            return id == 39 ? "Ethernal Wraith" : "Glaives of Eluna";
         }
         if (id <= 45) {
             if (id < 44) {
                 return
-                    id == 41 ? "Royal Blade +4" : id == 42
-                        ? "Skull Shield +5"
-                        : "Skull Crusher Axe +43";
+                    id == 41 ? "Abyssal Bow" : id == 42
+                        ? "Arrow's of Miranda"
+                        : "Glimmering Moon Glaives";
             }
-            return id == 44 ? "Flaming Staff +5" : "Flaming Royal Blade +45";
+            return id == 44 ? "Cursed Souls" : "Monson of Ethernals";
         }
     }
 
@@ -507,34 +506,40 @@ contract ElfMetadataHandler {
             if (id < 10) {
                 if (id < 5) {
                     if (id < 3) {
-                        return id == 1 ? "None" : "None";
+                        return id == 1 ? "Druid 1" : "Druid 2";
                     }
-                    return id == 3 ? "None" : "None";
+                    return id == 3 ? "Druid 3" : "Druid 4";
                 }
                 if (id < 7)
                     return
-                        id == 5 ? "Wooden Shield +1" : "Paper Hands Shield +1";
+                        id == 5 ? "Druid 5" : "Druid 6";
                 return
-                    id == 7 ? "Dagger +1" : id == 8
-                        ? "Pirate Hook +1"
-                        : "Offhand Axe +2";
+                    id == 7 ? "Druid 7" : id == 8
+                        ? "Assassin 8"
+                        : "Assassin 9";
             }
             if (id <= 15) {
                 if (id < 13) {
                     return
-                        id == 10 ? "Offhand Slasher +2" : id == 11
-                            ? "Large Shield +2"
-                            : "Bomb +2";
+                        id == 10 ? "Assassin 10" : id == 11
+                            ? "Assassin 11"
+                            : "Assassin 12";
                 }
                 return
-                    id == 13 ? "Offhand Poker +3" : id == 14
-                        ? "Reinforced Shield +3"
-                        : "War Banner +3";
+                    id == 13 ? "Assassin 13" : id == 14
+                        ? "Assassin 14"
+                        : "Range 15";
             }
             if (id < 18)
-                return id == 16 ? "Hand Cannon +3" : "Metal Kite Shield +4";
-            return id == 18 ? "Crossbow +4" : "Cursed Skull +4";
+                return id == 16 ? "Range 16" : "Range 17";
+            return id == 18 ? "Range 18" : "Range 19";
         }
+            if (id < 22) {
+                    return
+                        id == 20 ? "Range 20" : "Range 21";
+                }
+        
+
 
        
        
