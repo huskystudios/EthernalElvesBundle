@@ -1,5 +1,5 @@
 import React from "react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import {elvesAbi, elvesContract} from "../utils/interact"
 import {useMoralis} from "react-moralis"
 import {
@@ -75,15 +75,22 @@ useEffect( () => {
         console.log(receipt)
       })
                   
-    }  
+    } 
+
+    const displayBalance = useMemo(() => Moralis.Units.FromWei(balance), [Moralis, balance]);
 
   
     return (
     <>
-    <button 
-    onMouseEnter={() => setTooltip(`Claim ${Moralis.Units.FromWei(balance)} $REN`)}
-    onMouseLeave={() => setTooltip("")} 
-    onClick={withdrawTokenBalance}> {Moralis.Units.FromWei(balance)} $REN</button>
+      <button
+        hidden={isNaN(displayBalance)}
+        className="ren-claim-button"
+        onMouseEnter={() => setTooltip(`Claim ${displayBalance} $REN`)}
+        onMouseLeave={() => setTooltip("")} 
+        onClick={withdrawTokenBalance}
+      >
+        {displayBalance} $REN
+      </button>
      {showTooltip(tooltip)}
     </>
     )
