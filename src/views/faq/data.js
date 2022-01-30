@@ -225,7 +225,7 @@ export const faqs = [
       "cat": "// GAME GUIDE",
       "subcat": "",
       "question": "What is the Elven Lounge?",
-      "answer": "The Elven Lounge is where you can purchase items and forge new weapons.",
+      "answer": "The Elven Lounge is where you can roll the dice for new items and weapons.",
       "id": 34
     },
     {
@@ -239,13 +239,14 @@ export const faqs = [
       "cat": "",
       "subcat": "",
       "question": "What can be purchased from the Merchant?",
+      "answer": "You re-roll for another item. Items help you complete campaigns faster by doubling your attack points, health points and allow you to earn $REN faster.",
       "id": 36
     },
     {
       "cat": "",
       "subcat": "",
       "question": "What is Healing and when can I do it?",
-      "answer": "Explain healing",
+      "answer": "Druids have a special ability called Healing. You can use Healing to heal your Ranger or Assassin elf. Druids cool down for 12 hours after healing.",
       "id": 37
     },
     {
