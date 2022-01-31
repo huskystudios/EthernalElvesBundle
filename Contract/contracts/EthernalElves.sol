@@ -224,6 +224,8 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
           }
     }
 
+/*NOTE Add in V2
+
     function bloodThirst(uint256[] calldata ids, uint256 campaign_, uint256 sector_) external {
           isPlayer();          
 
@@ -240,6 +242,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
           }
     }
 
+*/
     function passive(uint256[] calldata ids) external {
           isPlayer();         
 
@@ -311,8 +314,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
 
                 elf.race = rand % 100 > 97 ? 3 : uint16(_randomize(rand, "Race", id)) % 3;
 
-                elf.hair = elf.race == 3 ? 0 : uint16(_randomize(rand, "Hair", id)) % 3;/// 0:brown white dark hair tied to race
-                //elf.hair = uint16(_randomize(rand, "Hair", id)) % 4; /// 0:brown white dark hair random
+                elf.hair = elf.race == 3 ? 0 : uint16(_randomize(rand, "Hair", id)) % 3;            
 
                 elf.accessories = elf.sentinelClass == 0 ? (uint16(_randomize(rand, "Accessories", id)) % 2) + 3 : uint16(_randomize(rand, "Accessories", id)) % 2; //2 accessories MAX 7 
 
@@ -414,8 +416,8 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
 
                     actions.timeDiff = (block.timestamp - elf.timestamp) / 1 days; //amount of time spent in camp CHANGE TO 1 DAYS!
 
-                    //actions.timeDiff number of days in campaign
-                    //rewards are 100 per week, 300 per 14 days and 1000 per 30 days
+                    
+                    //NOTE THIS IS OVERPOWERED AND NEEDS TO BE LESS POWERFUL
         
                     if(actions.timeDiff >= 7){
                         actions.reward = 140 ether;
@@ -430,11 +432,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                     elf.level = elf.level + (actions.timeDiff * 2); //two levels per day
                     elf.level = elf.level > 100 ? 100 : elf.level;
 
-                   
-                    
-                    //console.log("days in campaign", actions.timeDiff);
-                    //console.log("passive campaign rewards", actions.reward);
-
+ 
                     _setAccountBalance(msg.sender, actions.reward, false);
                 
                 }else if(action == 5){//forge loop for weapons
@@ -456,11 +454,8 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                     require(elf.action != 3, "cant heal while passive"); //Cant heal in passve mode
                     require(elf.timestamp < block.timestamp, "elf busy");
                     
-
-                  //  console.log("healing loop");
-                 //   console.log(elf.sentinelClass);
-                
-                    elf.timestamp = block.timestamp + (12 hours); //CHANGE to 12 HOURS!
+                    
+                    elf.timestamp = block.timestamp + (12 hours);
 
                     elf.level = elf.level + 1;
                     
@@ -511,7 +506,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
             _subtract ? bankBalances[_owner] -= _amount : bankBalances[_owner] += _amount;
             emit BalanceChanged(_owner, _amount, _subtract);
     }
-
+    //NOTE BEFF WE NEED TO CHANGE THIS
     function getMintPriceLevel() public view returns (uint256 mintCost, uint256 mintLevel) {
             
             if (totalSupply <= INIT_SUPPLY) return  (price, 1);

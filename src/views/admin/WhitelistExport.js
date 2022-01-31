@@ -93,7 +93,7 @@ const WhitelistExport = ({text, size}) => {
 
 
 {!loading ? <CSVLink {...csvReport}>Export to CSV</CSVLink> : <button className="btn btn-blue" onClick={getData}>Get Whitelist</button>}
-{progress}
+{progress.toFixed(0)}%
 
 
         </>         

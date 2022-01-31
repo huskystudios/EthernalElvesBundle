@@ -16,6 +16,7 @@ const [loading, setLoading] = useState(true);
 const [progress, setProgress] = useState(0);
 const [cloudSupply, setCloudSupply] = useState(0);
 const [gameStatus, setGameStatus] = useState(0);
+const [setWL, getWL] = useState(0);
 const { Moralis } = useMoralis();
 const Elves = Moralis.Object.extend("Elves");
 
@@ -25,6 +26,11 @@ useEffect(() => {
       
       setCloudSupply(await Moralis.Cloud.run("getTokenSupply"));
       setGameStatus(await Moralis.Cloud.run("getGameStatus"))
+
+      getWL(await Moralis.Cloud.run("getWhitelistRemains"))
+
+      
+
       setLoading(false);
 
 
@@ -122,6 +128,15 @@ return (
       
             <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
             <p>ADMIN CONSOLE</p>
+{console.log(setWL)}
+            {setWL && <>
+            <div>
+            SOG: {setWL.sog} | OG: {setWL.og} | wl: {setWL.wl}
+            </div>
+            
+           
+           
+            </>}
 
             <WhitelistExport />
            
