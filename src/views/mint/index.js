@@ -53,7 +53,7 @@ const Mint = () => {
             contractAddress: elvesContract,
             functionName: "mint",
             abi: elvesAbi.abi   ,
-            msgValue: parseInt(supply.current) <= parseInt(supply.initial) ?  Moralis.Units.ETH(Moralis.Units.FromWei(supply.mintPrice)) : null,
+            msgValue: Moralis.Units.ETH(Moralis.Units.FromWei(".088")), //parseInt(supply.current) <= parseInt(supply.initial) ?  Moralis.Units.ETH(Moralis.Units.FromWei(supply.mintPrice)) : null,
             awaitReceipt: false // should be switched to false
           };
           
@@ -122,26 +122,26 @@ const Mint = () => {
         
         wl ? <WhitelistMint mintcreds={mintcredentials}/> :
         <>
-       {/*   
+        
         <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
             <p>SUMMON ETHERNAL ELF</p>
            
            
             <div className="d-flex flex-row justify-center">
              <button onClick={moralisMint} className="btn btn-green">
-             {parseInt(supply.current) <= parseInt(supply.initial) ? `Mint with ${ Moralis.Units.FromWei(supply.mintPrice)} Eth` : `Mint with ${ Moralis.Units.FromWei(supply.mintPrice)} $REN`}
+                 Mint with .088 ETH
+             {/*parseInt(supply.current) <= parseInt(supply.initial) ? `Mint with ${ Moralis.Units.FromWei(supply.mintPrice)} Eth` : `Mint with ${ Moralis.Units.FromWei(supply.mintPrice)} $REN`*/}
             </button>
             </div>
-         <div className="mint-instructions">
+      {/*   <div className="mint-instructions">
             <p>Elves Minted: {supply.current}/{supply.total}</p>
                 <p>the first {supply.initial} elves will be minted with Eth.</p>
                 <p>$REN will be required to spawn the next set of elves. Look up the cost in FAQ's.</p>
             </div>
-            
+    */}   
             {tooltip.show && showAlert(tooltip.value)}
         </div>        
-        
-       */}
+      
         </>
 
 
