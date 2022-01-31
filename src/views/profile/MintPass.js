@@ -81,23 +81,24 @@ return loaded ? (
         <div className="border-2 p-3">
         <div>Mint Credentials</div>
 
-        <div className="break-all">
+
+        <p>Wallet:{" "}</p>
+           <input style={{width: 338}} type="text" value={discordMeta.wallet} readOnly/>
+
+
+
         <p>Role Index:{" "}
             <b>{discordMeta.roleIndex} </b> 
         </p>
-        </div>
         
-        <div className="break-all">
-        <p>Signature:{" "}
-           <b>{discordMeta.signature}</b>
-        </p>
-        </div>
-    
-        <div className="break-all">
-        <p>Wallet:{" "}
-            <b>{discordMeta.wallet} </b> 
-        </p>
-        </div>
+        
+
+        <p>Signature:{" "}</p>
+        
+        <textarea cols="40" rows="5" type="text" value={discordMeta.signature} readOnly/>
+        
+
+
         </div>
 
 
