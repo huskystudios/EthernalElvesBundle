@@ -247,7 +247,7 @@ const getElvesfromMoralis = async (address) => {
                 
             </div>
             <div className="dark-1000 h-full d-flex home-mobile justify-center items-center">
-            <div className="btn-lounge">Play</div>
+            <div className="btn-lounge" onClick={() => window.location.href="/profile" }>Whitelist Mint</div>
             <div className="btn-lounge" onClick={() => window.location.href="/mint" }>Mint</div>
             </div>
           
