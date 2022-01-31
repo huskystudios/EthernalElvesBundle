@@ -48,7 +48,7 @@ const refreshMetaData = async () => {
   let results = []
 
   let start = 1
-  let supply = parseInt(cloudSupply.supply) ///tokenSupply
+  let supply = 3300//parseInt(cloudSupply.supply) ///tokenSupply
   let stop = 0
   let steps = supply < 44 ? supply : 44
 
