@@ -28,7 +28,7 @@ const MainLayout = (props) => {
                     <NavLink className="nav-item" to="/faq">faq</NavLink>
                 </div>
                <div className="search">
-                        <Withdraw address={wallet} />
+                    {/*    <Withdraw address={wallet} />*/}
                 </div>
             </div>
             <div className="mobile-header">
