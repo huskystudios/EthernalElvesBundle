@@ -118,7 +118,7 @@ const WhitelistMint = ({mintcreds}) => {
             setSupply({current: response.supply, total: response.maxSupply, initial: response.initialSupply})
            
         } 
-        getMoralisTokenSupply()       
+       // getMoralisTokenSupply()       
     }, [txReceipt]);
 
 
