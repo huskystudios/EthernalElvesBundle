@@ -29,7 +29,7 @@ const Mint = () => {
     const { Moralis } = useMoralis();
     const [supply, setSupply] = useState("...");
     const [txReceipt, setTxReceipt] = useState();
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const query = useQuery();
     const wlflag = query.get("wl");
     const address = query.get("address");
@@ -82,9 +82,8 @@ const Mint = () => {
 
     }
 
-    /*
     
-    useEffect(() => {      
+ /*   useEffect(() => {      
         
         const getMoralisTokenSupply = async ()=>{
             await Moralis.enableWeb3();
@@ -123,7 +122,7 @@ const Mint = () => {
         
         wl ? <WhitelistMint mintcreds={mintcredentials}/> :
         <>
-       
+       {/*   
         <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
             <p>SUMMON ETHERNAL ELF</p>
            
@@ -133,16 +132,16 @@ const Mint = () => {
              {parseInt(supply.current) <= parseInt(supply.initial) ? `Mint with ${ Moralis.Units.FromWei(supply.mintPrice)} Eth` : `Mint with ${ Moralis.Units.FromWei(supply.mintPrice)} $REN`}
             </button>
             </div>
-            <div className="mint-instructions">
+         <div className="mint-instructions">
             <p>Elves Minted: {supply.current}/{supply.total}</p>
                 <p>the first {supply.initial} elves will be minted with Eth.</p>
                 <p>$REN will be required to spawn the next set of elves. Look up the cost in FAQ's.</p>
             </div>
-
+            
             {tooltip.show && showAlert(tooltip.value)}
         </div>        
         
-       
+       */}
         </>
 
 

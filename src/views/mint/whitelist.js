@@ -108,7 +108,7 @@ const WhitelistMint = ({mintcreds}) => {
     }
 
     
- /*   useEffect(() => {      
+/*    useEffect(() => {      
         
         const getMoralisTokenSupply = async ()=>{
             await Moralis.enableWeb3();
@@ -120,8 +120,8 @@ const WhitelistMint = ({mintcreds}) => {
         } 
         getMoralisTokenSupply()       
     }, [txReceipt]);
-*/
 
+*/
     
     const showAlert = ({title, content}) => {
 
@@ -178,7 +178,7 @@ const WhitelistMint = ({mintcreds}) => {
             </div>
             <div className="mint-instructions">
                 <p> get these values from <a href="https://ethernalelves.com/whitelist "> here </a>  </p>
-            <p>Elves Minted:{supply.current}/{supply.total}</p>
+           {/* <p>Elves Minted:{supply.current}/{supply.total}</p>*/}
            
             </div>
 

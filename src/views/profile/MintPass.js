@@ -103,11 +103,11 @@ return loaded ? (
 
 
             <div className="d-flex flex-row justify-center">
-            <button className={`btn ${verifyCreds ? "btn-green" : "btn-red"}`} onClick={checkValidSignature}>  
+           {/* <button className={`btn ${verifyCreds ? "btn-green" : "btn-red"}`} onClick={checkValidSignature}>  
 
                Verify Credentials {verifyCreds ? "✅" : "❌"}
             </button>
-
+*/}
    
             
         {showButton && <button className='btn btn-blue' onClick={(e) => {
