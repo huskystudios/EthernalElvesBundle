@@ -53,11 +53,11 @@ const Help = () => {
                     <div className="collection-panel">
 
 
-                        <div className="collection-selection" >
-                            
-                            <div className="collection-heading">
+                    <div className="collection-heading">
                               Game Guide
                             </div>
+                        <div className="collection-selection" >
+                            
                 <h1>Sentinels</h1>
                 <div className="d-flex flex-row justify-around flex-wrap p-">
                 {characters.map((character, index) => {
