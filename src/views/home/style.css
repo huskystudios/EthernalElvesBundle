@@ -757,12 +757,14 @@
 
 .collection-heading {
     position:absolute;
-    left: 382px;
-    top: -64px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: -52px;
     width: 300px;
     height: 50px;
     font-size: 16px;
-    padding: 12px;    
+    text-align: center;
 }
 
 .collection-image img{
@@ -780,6 +782,7 @@
     border: olive;
     border-width: 1px;
     border-style: double;
+    text-align: center;
   }
 
 .alert {
@@ -787,7 +790,6 @@
     background-color:rgba(0, 0, 0, 0.7);
     padding: 24px;
     position: absolute;
-    word-break: break-all;
     top: 100px;
     left: 50px;
     border-radius: 8px;
