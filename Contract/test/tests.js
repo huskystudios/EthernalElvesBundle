@@ -43,7 +43,8 @@ describe("Ethernal Elves Contracts", function () {
   
   const MetadataHandler = await ethers.getContractFactory("ElfMetadataHandler");
   const Miren = await ethers.getContractFactory("Miren");
-  const Elves = await ethers.getContractFactory("EthernalElves");
+  //const Elves = await ethers.getContractFactory("EthernalElves");
+  const Elves = await ethers.getContractFactory("EthernalElvesV2");
   const Campaigns = await ethers.getContractFactory("ElfCampaigns");
   //const Terminus = await ethers.getContractFactory("Terminus");
   //const Bridge = await ethers.getContractFactory("FxBaseRootTunnel");
@@ -58,7 +59,7 @@ describe("Ethernal Elves Contracts", function () {
   const Weapons4 = await ethers.getContractFactory("Weapons4");
   const Weapons5 = await ethers.getContractFactory("Weapons5");
   const Weapons6 = await ethers.getContractFactory("Weapons6");
-  const Accessories = await ethers.getContractFactory("Accessories");
+  const Accessories = await ethers.getContractFactory("Accessories1");
 
   const hair = await Hair.deploy();
   const race1 = await Race1.deploy();
@@ -133,35 +134,13 @@ describe("Ethernal Elves Contracts", function () {
 
       }
 
-
-
       let elfDNA1  = "49968264009275017539535670417909670943111024596189459600049271000653441505398"
       let elfDNA2  = "90639261325515095916550229504372966434485488009035142111393150935086015709184"
       let elfDNA3  = "95199535037357583831230196232214470496524951124881320671361977318428717079228"
       let elfDNA4  = "176733018922766793863456232764223026231761172710780386921529813803013918803"
       let elfDNA5  = "104033998254104457207711809265765656967889567937609029390669730133219418002369"
-      let elfDNA6  = "59191419749820083844107925745858946274976875014918368020617787010845471101889"
-      let elfDNA7  = "90815946031992934349508562257833123001073733307295035239166916948156653502464"
-      let elfDNA8  = "45584661173457321254210612575540283532315034336415019445197323810554419236947"
-      let elfDNA9  = "49773876323416838558183632265792507461038671773506009186207359560517675620470"
-      let elfDNA10 = "6901966021651367493376097821974886246768691696752418565839722454712320"
-      let elfDNA11 = "59173772011371700022731505099784111231298686074016119538850815865905960715602"
-      let elfDNA12 = "4735198446261624554463632327648465479673774052825815774396680581171493685145"
-      let elfDNA13 = "95356784453082806703713815866790210446375368577071444989389267502054795149410"
-      let elfDNA14 = "50127245682452623696737260134537041351245350833946112612745239999574885826658"
-      let elfDNA15 = "45407976466979478000438069827830037564784373802913882425348141403720501952512"
-      let elfDNA16 = "68202754074119754718325224628472035297083319101600443536698985813728326463356"
-      let elfDNA17 = "96794991062066071185182783707510834643536423770272588297922691022990101710162"
-      let elfDNA18 = "45233741880468332057974432411730820454743962524764814876565262334216502390652"
-      let elfDNA19 = "18465802039954328031528884409992477310725845948101327756316868140935397126012"
-      let elfDNA20 = "49968264009275017539535670417909670943111024596189459600049271000653441505398"
 
-      const arrayofDNA = [elfDNA1, elfDNA2, elfDNA3, elfDNA4, elfDNA5, elfDNA6, elfDNA7, elfDNA8, elfDNA9, elfDNA10, elfDNA11, elfDNA12, elfDNA13, elfDNA14, elfDNA15, elfDNA16, elfDNA17, elfDNA18, elfDNA19, elfDNA20]
-
-      await elves.modifyElfDNA(1, elfDNA4)
-      await elves.modifyElfDNA(2, elfDNA10)
-      await elves.modifyElfDNA(3, elfDNA12)
-      await elves.modifyElfDNA(4, elfDNA19)
+      const arrayofDNA = [elfDNA1, elfDNA2, elfDNA3, elfDNA4, elfDNA5]
 
       await elves.tokenURI(1)
       await elves.tokenURI(2)
@@ -255,7 +234,7 @@ describe("Ethernal Elves Contracts", function () {
       await elves.setAccountBalance(addr5.address, ethers.BigNumber.from("100000000000000000000"));
       
       let totalsupply = 1
-      let maxSupply = 8//parseInt(await elves.maxSupply())
+      let maxSupply = 12//parseInt(await elves.maxSupply())
       await elves.setInitialSupply(4)
       let initialSupply = parseInt(await elves.INIT_SUPPLY())
       let i = 1
@@ -330,13 +309,13 @@ describe("Game Play", function () {
       await elves.connect(addr3).merchant([4], {value: ethers.utils.parseEther("0.01")})
       console.log("After Campai4gn:");
       //await elves.connect(addr3).heal(3,4)
-      await elves.connect(addr3).bloodThirst([5],1,1)
+      //await elves.connect(addr3).bloodThirst([5],1,1)
       increaseWorldTimeinSeconds(100000,true);
       console.log("After Campa5ign:");
-      await elves.connect(addr3).bloodThirst([5],1,1)
+      //await elves.connect(addr3).bloodThirst([5],1,1)
       increaseWorldTimeinSeconds(100000,true);
       console.log("After Campai6gn:");
-      await elves.connect(addr3).rampage([5],1,1)
+      //await elves.connect(addr3).rampage([5],1,1)
 
       
 

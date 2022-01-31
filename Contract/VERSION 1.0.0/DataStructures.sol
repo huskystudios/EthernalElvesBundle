@@ -173,24 +173,24 @@ returns (uint256 newWeaponTier, uint256 newWeapon, uint256 newInventory) {
 
    if(rollOption_ == 1 || rollOption_ == 3){
        //Weapons
-        uint256 weaponTier = levelTier;
+        uint256 weaponTier = sectorIndex_ > levelTier ? sectorIndex_ : levelTier;
         uint16  chance = uint16(_randomize(rand, "Weapon", levelTier)) % 100;
         
-                if(chance > 10 && chance < 80){
-        
-                              newWeaponTier = weaponTier;
-        
-                        }else if (chance > 80 ){
-        
-                              newWeaponTier = weaponTier + 1 > 5 ? 5 : weaponTier + 1;
-        
-                        }else{
+        if(levelTier >= sectorIndex_){
 
-                                newWeaponTier = weaponTier - 1 < 1 ? 1 : weaponTier - 1;          
+                        if(chance < 85){
+                              newWeaponTier = weaponTier;
+                        }else{
+                              newWeaponTier = weaponTier + 1 > 5 ? 5 : weaponTier + 1;
+                        }
+        }else{
+                        if(chance < 50){
+                              newWeaponTier = levelTier;
+                        }else{
+                              newWeaponTier = levelTier - 1;
                         }
 
-                                         
-        
+        }
 
         newWeapon = newWeaponTier == 0 ? 0 : ((newWeaponTier - 1) * 3) + (rand % 3);  
         

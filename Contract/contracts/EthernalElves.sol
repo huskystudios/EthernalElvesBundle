@@ -510,11 +510,13 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
     function getMintPriceLevel() public view returns (uint256 mintCost, uint256 mintLevel) {
             
             if (totalSupply <= INIT_SUPPLY) return  (price, 1);
-            if (totalSupply < 4500) return  (  40  ether, 3);
-            if (totalSupply < 5500) return  ( 120  ether, 5);
-            if (totalSupply < 6000) return  ( 400  ether, 15);
-            if (totalSupply < 6333) return  ( 600  ether, 25);
-            if (totalSupply < 6666) return  ( 840  ether, 45);
+            if (totalSupply < 4000) return  (  60 ether, 3);
+            if (totalSupply < 4500) return  ( 180 ether, 5);
+            if (totalSupply < 5000) return  ( 360 ether, 15);
+            if (totalSupply < 5500) return  ( 600 ether, 25);
+            if (totalSupply < 6000) return  ( 900 ether, 35);
+            if (totalSupply < 6333) return  ( 1800 ether, 45);
+            if (totalSupply < 6666) return  ( 2700  ether, 60);
 
     }
 
