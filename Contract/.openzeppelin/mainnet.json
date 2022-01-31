@@ -57,6 +57,11 @@
       "address": "0xBE55aBFcd0Bc8863A7472a735E7001509ff0b7B8",
       "txHash": "0xa4524b1da595a255c4b0703b0439b37660d983b03d8482e270bc1218c17bd37f",
       "kind": "transparent"
+    },
+    {
+      "address": "0x04ff3733a737ffE5f79D0B8F29EAD0E31d512ffD",
+      "txHash": "0x753830c9b3f016d01fc3694e02568c0136ba8f12b2bb47dfbca192d165b896dc",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -591,6 +596,70 @@
           },
           "t_mapping(t_address,t_mapping(t_address,t_bool))": {
             "label": "mapping(address => mapping(address => bool))"
+          }
+        }
+      }
+    },
+    "0198b6f8ab0f2bccb573423c52c3415af1edab685c23717992cf6e92755170ec": {
+      "address": "0x8FD9A8a9Dfe97257bfBe5bDdEaeEafd385Db0FFD",
+      "txHash": "0x14a62f68ad61458b579de23e18221ecd8dac31d630bfc80b33afa36fb185a789",
+      "layout": {
+        "storage": [
+          {
+            "contract": "ElfMetadataHandler",
+            "label": "impl_",
+            "type": "t_address",
+            "src": "contracts\\ElfInventoryManager.sol:10"
+          },
+          {
+            "contract": "ElfMetadataHandler",
+            "label": "manager",
+            "type": "t_address",
+            "src": "contracts\\ElfInventoryManager.sol:11"
+          },
+          {
+            "contract": "ElfMetadataHandler",
+            "label": "initialized",
+            "type": "t_bool",
+            "src": "contracts\\ElfInventoryManager.sol:12"
+          },
+          {
+            "contract": "ElfMetadataHandler",
+            "label": "race",
+            "type": "t_mapping(t_uint8,t_address)",
+            "src": "contracts\\ElfInventoryManager.sol:21"
+          },
+          {
+            "contract": "ElfMetadataHandler",
+            "label": "hair",
+            "type": "t_mapping(t_uint8,t_address)",
+            "src": "contracts\\ElfInventoryManager.sol:22"
+          },
+          {
+            "contract": "ElfMetadataHandler",
+            "label": "primaryWeapon",
+            "type": "t_mapping(t_uint8,t_address)",
+            "src": "contracts\\ElfInventoryManager.sol:23"
+          },
+          {
+            "contract": "ElfMetadataHandler",
+            "label": "accessories",
+            "type": "t_mapping(t_uint8,t_address)",
+            "src": "contracts\\ElfInventoryManager.sol:24"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_mapping(t_uint8,t_address)": {
+            "label": "mapping(uint8 => address)"
+          },
+          "t_uint8": {
+            "label": "uint8"
           }
         }
       }

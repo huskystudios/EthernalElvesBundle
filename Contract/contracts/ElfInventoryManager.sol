@@ -2,7 +2,7 @@
 pragma solidity 0.8.7;
 
 import "./DataStructures.sol";
-import "hardhat/console.sol";
+//import "hardhat/console.sol";
 
 contract ElfMetadataHandler {
     using DataStructures for DataStructures.Token;
@@ -409,95 +409,98 @@ contract ElfMetadataHandler {
         returns (string memory hairName)
     {
         ///create a binary search for the hair name from ids 1 to 9
-        hairName = id == 1 ? "Hood" : id == 2 ? 
-        "Hood + Cape" : id == 3 ? "Antlers" : id == 4 ? "Assassin Brown" : id == 5 ? 
-        "Assassin Dark" : id == 6 ? "Assassin Light" : id == 7 ? "Blue" : id == 8 ? 
-        "Blonde" : "Purple";
+        hairName = id == 1 ? "Antlers" 
+        : id == 2 ? "Hood & Mask" 
+        : id == 3 ? "Hood" 
+        : id == 4 ? "Brown" 
+        : id == 5 ? "Dark" 
+        : id == 6 ? "Light" 
+        : id == 7 ? "Blue" : id == 8 ? "Blonde" : "Purple";
 
     }
 
     function getPrimaryWeapon(uint8 id) public pure returns (string memory) {
         if(id == 69){
-            return "Fist";
+            return "Fists";
         }
         if (id < 20) {
             if (id < 10) {
                 if (id < 5) {
                     if (id < 3) {
-                        return id == 1 ? "Staff of the North" : "Enchanted Cane";
+                        return id == 1 ? "Wand of the North" : "Wandherline";
                     }
-                    return id == 3 ? "Decitful Spire" : "Wand of the Meadows";
+                    return id == 3 ? "Flayer's Bane" : "Scepter of the Moon";
                 }
-                if (id < 7) return id == 5 ? "Scepter of the Moon" : "Etheral Wand";
+                if (id < 7) return id == 5 ? "Meadow's Wand" : "Cranium Staff";
                 return
-                    id == 7 ? "Elemental Staff" : 
-                    id == 8 ? "Orchids Bliss" : "Infintiy Wand";
+                    id == 7 ? "Apiaries Indigo" : 
+                    id == 8 ? "Rumi's Staff" : "Forsaken Souls";
             }
             if (id <= 15) {
                 if (id < 13) {
                     return
-                        id == 10 ? "Forsaken Souls" : id == 11
-                            ? "Ether Malevance"
-                            : "Souls of the Ancient";
+                        id == 10 ? "Ether Malevolence " : id == 11
+                            ? "Souls of Ethernals"
+                            : "Scepter of Miranda";
                 }
                 return
-                    id == 13 ? "Luficers Scepter" : id == 14
-                        ? "Scythe of Enchantment"
-                        : "Staff of Miranda";
+                    id == 13 ? "Scythe of Drakon" : id == 14
+                        ? "Luna's Staff of Divinity"
+                        : "Forbidden Scepter of Lucifer";
             }
             if (id < 18)
-                return id == 16 ? "Rensipper" : "Decitful Dagger";
-            return id == 18 ? "War Pike" : "Cutlass of the Night";
+                return id == 16 ? "Daggafeets" : "Decitful Dagger";
+            return id == 18 ? "Cutlass of the Night" : "Axe of Haladan";
         }
 
         if (id < 30) {
             if (id < 25) {
                 if (id < 23) {
                     return
-                        id == 20 ? "Enchanted Lancer" : id == 21
-                            ? "Ether Reaper"
-                            : "Wraith Axe";
+                        id == 20 ? "Meadow's Lancer" : id == 21
+                            ? "Excalibur Glaives"
+                            : "Reaper of the Ancients";
                 }
-                return id == 23 ? "Excalibur Glaives" : "Axe of Haladan";
+                return id == 23 ? "Emerald's Ravage" : "Primeborne's Resurgence";
             }
 
             if (id < 27)
-                return id == 25 ? "Glaives of Khopesh" : "Emerald Ravage";
+                return id == 25 ? "Corruptors Scythe" : "Soul Prowler";
             return
-                id == 27 ? "Soul Snatcher" : id == 28
-                    ? "Blades of Illhaladan"
+                id == 27 ? "Blades of Illhaladan" : id == 28
+                    ? "Twin Blades of Behemoth"
                     : "Luficers Glaives";
         }
         if (id <= 35) {
             if (id < 33) {
                 return
                     id == 30 ? "Halberd of Miranda" : id == 31
-                        ? "Boomerang Glaives"
-                        : "Meadow's Bow";
+                        ? "Rope Dagger"
+                        : "Boomerang of Lilith";
             }
             return
-                id == 33 ? "Rope of Vengence" : id == 34
-                    ? "Cursed Soulblades"
-                    : "Bow of Janus";
+                id == 33 ? "Meadows Bow" : id == 34
+                    ? "Soul-Taker"
+                    : "Ethernal Boomerang";
         }
 
         if (id <= 40) {
             if (id < 39) {
                 return
-                    id == 36 ? "Orchid Javelin" : id == 37
-                        ? "Glaives of Enchanted"
-                        : "Meteors of the Dark Moon";
+                    id == 36 ? "Bow of Janus" : id == 37
+                        ? "Death by Anchors"
+                        : "Glaives of Succubus";
             }
-            return id == 39 ? "Ethernal Wraith" : "Glaives of Eluna";
+            return id == 39 ? "Meteors of the Dark Moon" : "Searing Daggerjack";
         }
         if (id <= 45) {
             if (id < 44) {
                 return
-                    id == 41 ? "Abyssal Bow" : id == 42
-                        ? "Arrow's of Miranda"
-                        : "Glimmering Moon Glaives";
+                    id == 41 ? "Glimmering Moon Glaives" : id == 42
+                        ? "Arrows of Miranda"
+                        : "Cursed Venom";
             }
-            return id == 44 ? "Cursed Souls" : "Monson of Ethernals";
+            return id == 44 ? "Monson of Ethernals" : "Nimbus Astrape";
         }
     }
 
@@ -508,15 +511,15 @@ contract ElfMetadataHandler {
                     if (id < 3) {
                         return id == 1 ? "Druid 1" : "Druid 2";
                     }
-                    return id == 3 ? "Druid 3" : "Druid 4";
+                    return id == 3 ? "Druid 3" : "None";
                 }
                 if (id < 7)
                     return
-                        id == 5 ? "Druid 5" : "Druid 6";
+                        id == 5 ? "Claws" : "Druid 6";
                 return
                     id == 7 ? "Druid 7" : id == 8
-                        ? "Assassin 8"
-                        : "Assassin 9";
+                        ? "Necklace"
+                        : "Necklace & Armband";
             }
             if (id <= 15) {
                 if (id < 13) {
@@ -526,12 +529,10 @@ contract ElfMetadataHandler {
                             : "Assassin 12";
                 }
                 return
-                    id == 13 ? "Assassin 13" : id == 14
-                        ? "Assassin 14"
-                        : "Range 15";
-            }
+                    id == 13 ? "Assassin 13" : id == 14 ? "Assassin 14" : "Wristband";
+                      }
             if (id < 18)
-                return id == 16 ? "Range 16" : "Range 17";
+                return id == 16 ? "Wristband & Necklace" : "Range 17";
             return id == 18 ? "Range 18" : "Range 19";
         }
             if (id < 22) {
@@ -539,9 +540,6 @@ contract ElfMetadataHandler {
                         id == 20 ? "Range 20" : "Range 21";
                 }
         
-
-
-       
        
         
     }

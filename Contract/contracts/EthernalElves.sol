@@ -11,7 +11,7 @@ import "./Interfaces.sol";
 // Written by 0xHusky & Beff Jezos. Everything is on-chain for all time to come.
 // Version 1.0.1
 
-contract EthernalElves is ERC721 {
+contract EthernalElvesV2 is ERC721 {
 
     function name() external pure returns (string memory) { return "Ethernal Elves"; }
     function symbol() external pure returns (string memory) { return "ELV"; }

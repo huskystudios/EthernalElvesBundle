@@ -4,7 +4,7 @@ const { ethers } = require("hardhat");
 let huskyAddress = "0xCcB6D1e4ACec2373077Cb4A6151b1506F873a1a5"
 let beffAddress =  "0x3296D61C5E737F9847bA52267b1DeBB8Dbff139F"
 let validator = "0x80861814a8775de20F9506CF41932E95f80f7035"
-const deployer = "0xe7AF77629e7ECEd41C7B7490Ca9C4788F7c385E5"
+const deployer = huskyAddress//"0xe7AF77629e7ECEd41C7B7490Ca9C4788F7c385E5"
 
 const elvesContract = "0xA351B769A01B445C04AA1b8E6275e03ec05C1E75"
 const mirenContract = "0xe6b055abb1c40b6c0bf3a4ae126b6b8dbe6c5f3f"
@@ -69,15 +69,26 @@ async function main() {
   
   //const campaigns = await deployCampaigns(elves.address)
   //console.log("Campaigns", campaigns.address)
-  const signer = await hre.network.provider.request({
+  //impersonate deployer and then deploy the contracts
+  
+  await hre.network.provider.request({
     method: "hardhat_impersonateAccount",
     params: [deployer],
   });
+
+
+
+  const signer = await ethers.getSigner(deployer)
+  
+  console.log(signer.address)
+
+  
   const Miren = await ethers.getContractFactory("Miren");
   const Elves = await ethers.getContractFactory("EthernalElves");
   const Campaigns = await ethers.getContractFactory("ElfCampaigns");
 
-  await Miren.attach(mirenContract).setMinter(deployer, 1)
+  //await Miren.connect(signer).attach(mirenContract).setMinter(deployer, 1)
+  console.log(await Elves.attach(elvesContract).flipWhitelist())
 
 
 
