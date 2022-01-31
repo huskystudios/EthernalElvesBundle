@@ -82,6 +82,7 @@ const Mint = () => {
 
     }
 
+    /*
     
     useEffect(() => {      
         
@@ -97,7 +98,7 @@ const Mint = () => {
         
     }, [txReceipt]);
 
-  
+  */
     
     const showAlert = ({title, content}) => {
 
