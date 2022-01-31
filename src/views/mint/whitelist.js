@@ -108,7 +108,7 @@ const WhitelistMint = ({mintcreds}) => {
     }
 
     
-    useEffect(() => {      
+ /*   useEffect(() => {      
         
         const getMoralisTokenSupply = async ()=>{
             await Moralis.enableWeb3();
@@ -118,9 +118,9 @@ const WhitelistMint = ({mintcreds}) => {
             setSupply({current: response.supply, total: response.maxSupply, initial: response.initialSupply})
            
         } 
-       // getMoralisTokenSupply()       
+        getMoralisTokenSupply()       
     }, [txReceipt]);
-
+*/
 
     
     const showAlert = ({title, content}) => {
