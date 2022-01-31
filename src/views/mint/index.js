@@ -53,7 +53,7 @@ const Mint = () => {
             contractAddress: elvesContract,
             functionName: "mint",
             abi: elvesAbi.abi   ,
-            msgValue: Moralis.Units.ETH(Moralis.Units.FromWei(".088")), //parseInt(supply.current) <= parseInt(supply.initial) ?  Moralis.Units.ETH(Moralis.Units.FromWei(supply.mintPrice)) : null,
+            msgValue: Moralis.Units.ETH(.088), //parseInt(supply.current) <= parseInt(supply.initial) ?  Moralis.Units.ETH(Moralis.Units.FromWei(supply.mintPrice)) : null,
             awaitReceipt: false // should be switched to false
           };
           
