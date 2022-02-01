@@ -9,7 +9,8 @@ import "./Interfaces.sol";
 
 // We are the Ethernal. The Ethernal Elves         
 // Written by 0xHusky & Beff Jezos. Everything is on-chain for all time to come.
-// Version 1.0.1
+// Version 1.0.2 
+//patch notes: HealerFix 
 
 contract EthernalElvesV2 is ERC721 {
 
@@ -388,7 +389,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                     if(options > 0){
                        (elf.weaponTier, elf.primaryWeapon, elf.inventory) 
 
-                                    = DataStructures.roll(elf.level, sector_, _rand(), options, elf.weaponTier, elf.primaryWeapon, elf.inventory);                                    
+                                    = DataStructures.roll(id_, elf.level, _rand(), options, elf.weaponTier, elf.primaryWeapon, elf.inventory);                                    
                                     
                     }
                     
@@ -439,20 +440,28 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                    
                     require(msg.value >= .01 ether);  
                     require(elf.action != 3); //Cant roll in passve mode                      
-                    (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(elf.level, 0, rand, 1, elf.weaponTier, elf.primaryWeapon, elf.inventory);
+                    (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, rand, 1, elf.weaponTier, elf.primaryWeapon, elf.inventory);
                     
                 
                 }else if(action == 6){//item or merchant loop
                    
                     require(msg.value >= .01 ether); 
                     require(elf.action != 3); //Cant roll in passve mode
-                    (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(elf.level, 0, rand, 2, elf.weaponTier, elf.primaryWeapon, elf.inventory);                      
+                    (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, rand, 2, elf.weaponTier, elf.primaryWeapon, elf.inventory);                      
 
                 }else if(action == 7){//healing loop
+
 
                     require(elf.sentinelClass == 0, "not a healer"); 
                     require(elf.action != 3, "cant heal while passive"); //Cant heal in passve mode
                     require(elf.timestamp < block.timestamp, "elf busy");
+
+                        if(ownerOf[id_] != address(this)){
+                        _transfer(elfOwner, address(this), id_);
+                        elf.owner = elfOwner;
+                        }
+
+
                     
                     
                     elf.timestamp = block.timestamp + (12 hours);

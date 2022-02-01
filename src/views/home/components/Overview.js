@@ -63,7 +63,7 @@ const Overview = ({nft, onChangeIndex, onRunWeb3}) => {
                     <span className="close-modal" onClick={() => setHealModal(false)}>X</span>
                     <h3>how do you wish to heal?</h3>
                    
-                    <input placeholder="#1017" className="heal-input" value={tokenId} onChange={handleChange} />
+                    <input placeholder="1017" className="heal-input" value={tokenId} onChange={handleChange} />
                     <button className="btn-modal" onClick={heal}>confirm</button>
                 </div>
             </div>

@@ -2,19 +2,19 @@
   "manifestVersion": "3.2",
   "admin": {
     "address": "0x927b167526bAbB9be047421db732C663a0b77B11",
-    "txHash": "0x588eb5b263743fc4fd9a5d667a0c0d8c39790a56ec58c258e9ec445d0ea10d85",
+    "txHash": "0x1723e78987722af4efe1049192b6e93a823b5d12c348ebce0164038bc413090c",
     "deployTransaction": {
-      "hash": "0x588eb5b263743fc4fd9a5d667a0c0d8c39790a56ec58c258e9ec445d0ea10d85",
+      "hash": "0x1723e78987722af4efe1049192b6e93a823b5d12c348ebce0164038bc413090c",
       "type": 2,
       "accessList": [],
-      "blockHash": "0x46d5ba25c8011fa16c257288dfa34283274eef1798806b8d076c9051fc915baa",
-      "blockNumber": 14121306,
+      "blockHash": "0x66730df88e1e7ae4e1238dce73e36deb063540ae3b49bbe0338af8eb90747c77",
+      "blockNumber": 14122397,
       "transactionIndex": 0,
       "confirmations": 1,
       "from": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
       "gasPrice": {
         "type": "BigNumber",
-        "hex": "0x0cd9670c2e"
+        "hex": "0x0fcd1e0fc3"
       },
       "maxPriorityFeePerGas": {
         "type": "BigNumber",
@@ -22,7 +22,7 @@
       },
       "maxFeePerGas": {
         "type": "BigNumber",
-        "hex": "0x1977334e5c"
+        "hex": "0x1f5ea15586"
       },
       "gasLimit": {
         "type": "BigNumber",
@@ -35,8 +35,8 @@
       },
       "nonce": 144,
       "data": "0x608060405234801561001057600080fd5b50600080546001600160a01b031916339081178255604051909182917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908290a350610759806100616000396000f3fe60806040526004361061007b5760003560e01c80639623609d1161004e5780639623609d1461011157806399a88ec414610124578063f2fde38b14610144578063f3b7dead146101645761007b565b8063204e1c7a14610080578063715018a6146100bc5780637eff275e146100d35780638da5cb5b146100f3575b600080fd5b34801561008c57600080fd5b506100a061009b366004610515565b610184565b6040516001600160a01b03909116815260200160405180910390f35b3480156100c857600080fd5b506100d1610215565b005b3480156100df57600080fd5b506100d16100ee366004610554565b610292565b3480156100ff57600080fd5b506000546001600160a01b03166100a0565b6100d161011f36600461058c565b61031c565b34801561013057600080fd5b506100d161013f366004610554565b6103ad565b34801561015057600080fd5b506100d161015f366004610515565b610405565b34801561017057600080fd5b506100a061017f366004610515565b6104ef565b6000806000836001600160a01b03166040516101aa90635c60da1b60e01b815260040190565b600060405180830381855afa9150503d80600081146101e5576040519150601f19603f3d011682016040523d82523d6000602084013e6101ea565b606091505b5091509150816101f957600080fd5b8080602001905181019061020d9190610538565b949350505050565b6000546001600160a01b031633146102485760405162461bcd60e51b815260040161023f906106c0565b60405180910390fd5b600080546040516001600160a01b03909116907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908390a3600080546001600160a01b0319169055565b6000546001600160a01b031633146102bc5760405162461bcd60e51b815260040161023f906106c0565b6040516308f2839760e41b81526001600160a01b038281166004830152831690638f283970906024015b600060405180830381600087803b15801561030057600080fd5b505af1158015610314573d6000803e3d6000fd5b505050505050565b6000546001600160a01b031633146103465760405162461bcd60e51b815260040161023f906106c0565b60405163278f794360e11b81526001600160a01b03841690634f1ef286903490610376908690869060040161065d565b6000604051808303818588803b15801561038f57600080fd5b505af11580156103a3573d6000803e3d6000fd5b5050505050505050565b6000546001600160a01b031633146103d75760405162461bcd60e51b815260040161023f906106c0565b604051631b2ce7f360e11b81526001600160a01b038281166004830152831690633659cfe6906024016102e6565b6000546001600160a01b0316331461042f5760405162461bcd60e51b815260040161023f906106c0565b6001600160a01b0381166104945760405162461bcd60e51b815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201526564647265737360d01b606482015260840161023f565b600080546040516001600160a01b03808516939216917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a3600080546001600160a01b0319166001600160a01b0392909216919091179055565b6000806000836001600160a01b03166040516101aa906303e1469160e61b815260040190565b600060208284031215610526578081fd5b81356105318161070b565b9392505050565b600060208284031215610549578081fd5b81516105318161070b565b60008060408385031215610566578081fd5b82356105718161070b565b915060208301356105818161070b565b809150509250929050565b6000806000606084860312156105a0578081fd5b83356105ab8161070b565b925060208401356105bb8161070b565b9150604084013567ffffffffffffffff808211156105d7578283fd5b818601915086601f8301126105ea578283fd5b8135818111156105fc576105fc6106f5565b604051601f8201601f19908116603f01168101908382118183101715610624576106246106f5565b8160405282815289602084870101111561063c578586fd5b82602086016020830137856020848301015280955050505050509250925092565b600060018060a01b038416825260206040818401528351806040850152825b818110156106985785810183015185820160600152820161067c565b818111156106a95783606083870101525b50601f01601f191692909201606001949350505050565b6020808252818101527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604082015260600190565b634e487b7160e01b600052604160045260246000fd5b6001600160a01b038116811461072057600080fd5b5056fea2646970667358221220d849f96f3086b9f82cdcf665adb8c697ace05638da1c7c16ab2d26293717af6764736f6c63430008020033",
-      "r": "0x19943d896f2207ca851d5b657a2aab5f46ad3eff799398a86d1f318f4052f82c",
-      "s": "0x1e3e0af436af14ce0c987977af20a2d17e4d79abc4c8e47ddf1d5000dee6aee0",
+      "r": "0x2691d91a5b7e87a2f85ec5ef3a408c8a11f392b537878973a8ce4120abbba777",
+      "s": "0x52f3325ee4dbcab3f0422cd268d59605b1ea6298bbe0400cd6a076449fff70f6",
       "v": 0,
       "creates": "0x927b167526bAbB9be047421db732C663a0b77B11",
       "chainId": 31337
@@ -525,77 +525,77 @@
     },
     {
       "address": "0x32EEce76C2C2e8758584A83Ee2F522D4788feA0f",
-      "txHash": "0x698189dd789bd7f4c9ebff42ad4b39b4e8cc916129ec0654fbd8bd6ed9d9ed53",
+      "txHash": "0x24263c7e11cc3f5aeac956170cae3c24fa01db2808e52068c417a8d6087cd1ff",
       "kind": "transparent"
     },
     {
       "address": "0x02b0B4EFd909240FCB2Eb5FAe060dC60D112E3a4",
-      "txHash": "0x681d59139739a4de27a82657d8e8d05ad97f9330fbcfcb2f6b6b8aeb8fc65393",
+      "txHash": "0xd3838ef56800cb4c7c30c3cf7ec6c86afa7349c4bc4609727eff634f8d9f9798",
       "kind": "transparent"
     },
     {
       "address": "0x6C2d83262fF84cBaDb3e416D527403135D757892",
-      "txHash": "0x5224a0063a33135dd0a5a8928104707cdcaa63edb9d5ad1a11c744cdf0861fbe",
+      "txHash": "0x5ff223853cf8e0a6044f7ef705735396642187bc763448cde53cfbd662a3ce4c",
       "kind": "transparent"
     },
     {
       "address": "0xaB7B4c595d3cE8C85e16DA86630f2fc223B05057",
-      "txHash": "0xb496eaa09a7233b7451dc4bd54c84b7e94fd455609a74c8a670e0f3159b5e0b8",
+      "txHash": "0x0850a85ab1428ff404fa6ae5dd7b9e176d67703f55e1edeb175234802b57671b",
       "kind": "transparent"
     },
     {
       "address": "0xAD523115cd35a8d4E60B3C0953E0E0ac10418309",
-      "txHash": "0xffda9f8da40db32267892f76d76ed0aa37bc74b03f1406d9b1a6e49070bfea5b",
+      "txHash": "0x9d6c16378c7c37fcaf9a52f80720e13ce6eab2a90b5702f4bbb93be69fe2c40d",
       "kind": "transparent"
     },
     {
       "address": "0x045857BDEAE7C1c7252d611eB24eB55564198b4C",
-      "txHash": "0x086452d0cf3c92f63317f99f18e950558af5ae67e8903f7a98da830ca4c10d14",
+      "txHash": "0xbc5f461c02cf7b5c9965eaed79043274447d9c152b08cc67b5f541f36405f55c",
       "kind": "transparent"
     },
     {
       "address": "0x3904b8f5b0F49cD206b7d5AABeE5D1F37eE15D8d",
-      "txHash": "0x69accc1c7e6548d7a775e4794dea6f16ef218795fd84a4c259042dc6aeeef4d5",
+      "txHash": "0xd52d1a94da4dc5e3d04ff00f913857a27c1b773cff248e49c8620385ac72f672",
       "kind": "transparent"
     },
     {
       "address": "0x2Dd78Fd9B8F40659Af32eF98555B8b31bC97A351",
-      "txHash": "0x96813fd718bd3fbc795ef796eb1e0d0817e57395f2cc5f7c5055dc31796d5aee",
+      "txHash": "0xf675308d1a81f705733dcda267baf1bb26ae877f14ffee73bc802601202d62b8",
       "kind": "transparent"
     },
     {
       "address": "0x56fC17a65ccFEC6B7ad0aDe9BD9416CB365B9BE8",
-      "txHash": "0x299c16f18c8ed3c48245067b0f0eccca453dfbc8e83812cf73c5e0df24d6215c",
+      "txHash": "0xc5d06d062f2a408f035a0d5360fd42b9ae77aafefa039eba9f1280ed73e03145",
       "kind": "transparent"
     },
     {
       "address": "0xcC4c41415fc68B2fBf70102742A83cDe435e0Ca7",
-      "txHash": "0x02d77ded64cd6294e021ddd1f7c67ed1ff7d3ff39378558a3b8141d4f8e657c4",
+      "txHash": "0x3bde6689589d94a0243167e8635a658060bf7ebaa184dbd334edd7033ea8bcdd",
       "kind": "transparent"
     },
     {
       "address": "0xa722bdA6968F50778B973Ae2701e90200C564B49",
-      "txHash": "0x15d06cd9b8d1af9b9b88df6fa438712f42d94e654b9004351d310bdbb9e86847",
+      "txHash": "0xe32b556695fd0a21c43caa1aba5c6eeaa7d8b1807962e1989859c925f227bc98",
       "kind": "transparent"
     },
     {
       "address": "0xc7cDb7A2E5dDa1B7A0E792Fe1ef08ED20A6F56D4",
-      "txHash": "0x515e6d3b948430fe8644a97e87e4df1190528fba6df7204b8cded7dff4e13a6c",
+      "txHash": "0x89fa6fb96fa90b6770445c634f118d28222a481af4e16b3e3f017085a8ffd8be",
       "kind": "transparent"
     },
     {
       "address": "0xd3FFD73C53F139cEBB80b6A524bE280955b3f4db",
-      "txHash": "0x4477b5284d99521ce6ab2625233307e4e86400fffeec111b24d2b504b18dfe2a",
+      "txHash": "0xb8c1f910762b7a3da1da515a085aebf34432e106b0c92df6c2c5cf8fe408a459",
       "kind": "transparent"
     },
     {
       "address": "0x512F7469BcC83089497506b5df64c6E246B39925",
-      "txHash": "0xf353539b7695cdbf88907de3776001a145f24375dfeeb0eb4e62699c318320d0",
+      "txHash": "0x99a449b6e052ad76ad82300080e9e0c3b3a681b75c44547b311169506eb2ddac",
       "kind": "transparent"
     },
     {
       "address": "0x9fD16eA9E31233279975D99D5e8Fc91dd214c7Da",
-      "txHash": "0x1f86bd0383ce72c34714259039653e7efbd5a01f6543498327b94e8ea5de2547",
+      "txHash": "0xa5740b2d02aa434e73c5047c148c3a796199dba0cec97dad069f63188ac77c1b",
       "kind": "transparent"
     },
     {
@@ -711,7 +711,7 @@
     },
     "49bdc76eae76e09f3e199384a22f37d048a01bb75bf87108cbebb733e0aac19b": {
       "address": "0x638A246F0Ec8883eF68280293FFE8Cfbabe61B44",
-      "txHash": "0x3d1185093d7a9dcfb4cd6037e028f0db1c89c27d0c23e4da7375b8cb197c82a0",
+      "txHash": "0xbe60451aed7d7126633ab135538ee26f3a14e235382764972ea70e0d6cb489d3",
       "layout": {
         "storage": [
           {
@@ -753,7 +753,7 @@
           {
             "contract": "ElfCampaigns",
             "label": "camps",
-            "type": "t_mapping(t_uint256,t_struct(Camps)3485_storage)",
+            "type": "t_mapping(t_uint256,t_struct(Camps)2152_storage)",
             "src": "contracts\\ElfCampaigns.sol:25"
           },
           {
@@ -773,10 +773,10 @@
           "t_uint256": {
             "label": "uint256"
           },
-          "t_mapping(t_uint256,t_struct(Camps)3485_storage)": {
+          "t_mapping(t_uint256,t_struct(Camps)2152_storage)": {
             "label": "mapping(uint256 => struct ElfCampaigns.Camps)"
           },
-          "t_struct(Camps)3485_storage": {
+          "t_struct(Camps)2152_storage": {
             "label": "struct ElfCampaigns.Camps",
             "members": [
               {
@@ -812,7 +812,7 @@
     },
     "0198b6f8ab0f2bccb573423c52c3415af1edab685c23717992cf6e92755170ec": {
       "address": "0x01c1DeF3b91672704716159C9041Aeca392DdFfb",
-      "txHash": "0x08d375d73cfd5fca8bf01ef7452f6f0a9c1a07cc769dac5b8e8201c7828686b0",
+      "txHash": "0x3657a44567e27745bbe7b6e481a24c75d573da5274c9c9761bce0bdc686fd746",
       "layout": {
         "storage": [
           {
@@ -874,9 +874,9 @@
         }
       }
     },
-    "41406b775d2a976364d2285a83954b689f6b60e0ea578a6e8b982c362494963d": {
+    "707e0f8790999e02c8c9b5c3109eb8fb6e019d635027cb3cb2c9f0a27d111007": {
       "address": "0xfcDB4564c18A9134002b9771816092C9693622e3",
-      "txHash": "0x435082c29eeb90e75a46e0856ed355311e10822c8f7e1a53219a6b4935512075",
+      "txHash": "0x3ec05e28cd7ffc3277df3d736c1e69f212f4a86e5f4569cdd6cedc6727553117",
       "layout": {
         "storage": [
           {
@@ -930,126 +930,126 @@
           {
             "contract": "EthernalElvesV2",
             "label": "elfmetaDataHandler",
-            "type": "t_contract(IElfMetaDataHandler)4754",
-            "src": "contracts\\EthernalElves.sol:23"
-          },
-          {
-            "contract": "EthernalElvesV2",
-            "label": "campaigns",
-            "type": "t_contract(ICampaigns)4780",
+            "type": "t_contract(IElfMetaDataHandler)4771",
             "src": "contracts\\EthernalElves.sol:24"
           },
           {
             "contract": "EthernalElvesV2",
-            "label": "ren",
-            "type": "t_contract(IERC20Lite)4744",
+            "label": "campaigns",
+            "type": "t_contract(ICampaigns)4797",
             "src": "contracts\\EthernalElves.sol:25"
+          },
+          {
+            "contract": "EthernalElvesV2",
+            "label": "ren",
+            "type": "t_contract(IERC20Lite)4761",
+            "src": "contracts\\EthernalElves.sol:26"
           },
           {
             "contract": "EthernalElvesV2",
             "label": "isGameActive",
             "type": "t_bool",
-            "src": "contracts\\EthernalElves.sol:31"
+            "src": "contracts\\EthernalElves.sol:32"
           },
           {
             "contract": "EthernalElvesV2",
             "label": "isMintOpen",
             "type": "t_bool",
-            "src": "contracts\\EthernalElves.sol:32"
+            "src": "contracts\\EthernalElves.sol:33"
           },
           {
             "contract": "EthernalElvesV2",
             "label": "isWlOpen",
             "type": "t_bool",
-            "src": "contracts\\EthernalElves.sol:33"
+            "src": "contracts\\EthernalElves.sol:34"
           },
           {
             "contract": "EthernalElvesV2",
             "label": "initialized",
             "type": "t_bool",
-            "src": "contracts\\EthernalElves.sol:34"
+            "src": "contracts\\EthernalElves.sol:35"
           },
           {
             "contract": "EthernalElvesV2",
             "label": "dev1Address",
             "type": "t_address",
-            "src": "contracts\\EthernalElves.sol:36"
+            "src": "contracts\\EthernalElves.sol:37"
           },
           {
             "contract": "EthernalElvesV2",
             "label": "dev2Address",
             "type": "t_address",
-            "src": "contracts\\EthernalElves.sol:37"
+            "src": "contracts\\EthernalElves.sol:38"
           },
           {
             "contract": "EthernalElvesV2",
             "label": "terminus",
             "type": "t_address",
-            "src": "contracts\\EthernalElves.sol:38"
+            "src": "contracts\\EthernalElves.sol:39"
           },
           {
             "contract": "EthernalElvesV2",
             "label": "validator",
             "type": "t_address",
-            "src": "contracts\\EthernalElves.sol:39"
+            "src": "contracts\\EthernalElves.sol:40"
           },
           {
             "contract": "EthernalElvesV2",
             "label": "INIT_SUPPLY",
             "type": "t_uint256",
-            "src": "contracts\\EthernalElves.sol:41"
+            "src": "contracts\\EthernalElves.sol:42"
           },
           {
             "contract": "EthernalElvesV2",
             "label": "price",
             "type": "t_uint256",
-            "src": "contracts\\EthernalElves.sol:42"
+            "src": "contracts\\EthernalElves.sol:43"
           },
           {
             "contract": "EthernalElvesV2",
             "label": "ketchup",
             "type": "t_bytes32",
-            "src": "contracts\\EthernalElves.sol:43"
+            "src": "contracts\\EthernalElves.sol:44"
           },
           {
             "contract": "EthernalElvesV2",
             "label": "_remaining",
             "type": "t_array(t_uint256)dyn_storage",
-            "src": "contracts\\EthernalElves.sol:45"
+            "src": "contracts\\EthernalElves.sol:46"
           },
           {
             "contract": "EthernalElvesV2",
             "label": "sentinels",
             "type": "t_mapping(t_uint256,t_uint256)",
-            "src": "contracts\\EthernalElves.sol:46"
+            "src": "contracts\\EthernalElves.sol:47"
           },
           {
             "contract": "EthernalElvesV2",
             "label": "bankBalances",
             "type": "t_mapping(t_address,t_uint256)",
-            "src": "contracts\\EthernalElves.sol:47"
+            "src": "contracts\\EthernalElves.sol:48"
           },
           {
             "contract": "EthernalElvesV2",
             "label": "auth",
             "type": "t_mapping(t_address,t_bool)",
-            "src": "contracts\\EthernalElves.sol:48"
+            "src": "contracts\\EthernalElves.sol:49"
           },
           {
             "contract": "EthernalElvesV2",
             "label": "whitelist",
             "type": "t_mapping(t_address,t_uint16)",
-            "src": "contracts\\EthernalElves.sol:49"
+            "src": "contracts\\EthernalElves.sol:50"
           }
         ],
         "types": {
-          "t_contract(IElfMetaDataHandler)4754": {
+          "t_contract(IElfMetaDataHandler)4771": {
             "label": "contract IElfMetaDataHandler"
           },
-          "t_contract(ICampaigns)4780": {
+          "t_contract(ICampaigns)4797": {
             "label": "contract ICampaigns"
           },
-          "t_contract(IERC20Lite)4744": {
+          "t_contract(IERC20Lite)4761": {
             "label": "contract IERC20Lite"
           },
           "t_bool": {

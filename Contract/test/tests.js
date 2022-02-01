@@ -297,8 +297,15 @@ describe("Game Play", function () {
       await elves.connect(addr3).forging([4], {value: ethers.utils.parseEther("0.01")})
       console.log("After Campaig3n:");
       await elves.connect(addr3).merchant([4], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).forging([5], {value: ethers.utils.parseEther("0.01")})
+      console.log("After Campaig3n:");
+      await elves.connect(addr3).merchant([5], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).forging([6], {value: ethers.utils.parseEther("0.01")})
+      console.log("After Campaig3n:");
+      await elves.connect(addr3).merchant([6], {value: ethers.utils.parseEther("0.01")})
+
       console.log("After Campai4gn:");
-      //await elves.connect(addr3).heal(3,4)
+      await elves.connect(addr3).heal(3,4)
       //await elves.connect(addr3).bloodThirst([5],1,1)
       increaseWorldTimeinSeconds(100000,true);
       console.log("After Campa5ign:");

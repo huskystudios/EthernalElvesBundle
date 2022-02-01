@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
-import "hardhat/console.sol"; ///REMOVE BEFORE DEPLOYMENT
+//import "hardhat/console.sol"; ///REMOVE BEFORE DEPLOYMENT
 
 library DataStructures {
 
@@ -160,8 +160,8 @@ function calcCreatureHealth(uint256 sector, uint256 baseCreatureHealth) internal
         return creatureHealth;
 }
 
-function roll(uint256 level_, uint256 sectorIndex_, uint256 rand, uint256 rollOption_, uint256 weaponTier_, uint256 primaryWeapon_, uint256 inventory_) 
-internal pure 
+function roll(uint256 id_, uint256 level_, uint256 rand, uint256 rollOption_, uint256 weaponTier_, uint256 primaryWeapon_, uint256 inventory_) 
+internal view 
 returns (uint256 newWeaponTier, uint256 newWeapon, uint256 newInventory) {
 
    uint256 levelTier = level_ == 100 ? 5 : uint256((level_/20) + 1);
@@ -173,20 +173,20 @@ returns (uint256 newWeaponTier, uint256 newWeapon, uint256 newInventory) {
 
    if(rollOption_ == 1 || rollOption_ == 3){
        //Weapons
-        uint256 weaponTier = levelTier;
-        uint16  chance = uint16(_randomize(rand, "Weapon", levelTier)) % 100;
-        
+       // uint256 weaponTier = levelTier; stack to deep, use levelTier instead
+        uint16  chance = uint16(_randomize(rand, "Weapon", id_)) % 100;
+       // console.log("chance: ", chance);
                 if(chance > 10 && chance < 80){
         
-                              newWeaponTier = weaponTier;
+                              newWeaponTier = levelTier;
         
                         }else if (chance > 80 ){
         
-                              newWeaponTier = weaponTier + 1 > 5 ? 5 : weaponTier + 1;
+                              newWeaponTier = levelTier + 1 > 5 ? 5 : levelTier + 1;
         
                         }else{
 
-                                newWeaponTier = weaponTier - 1 < 1 ? 1 : weaponTier - 1;          
+                                newWeaponTier = levelTier - 1 < 1 ? 1 : levelTier - 1;          
                         }
 
                                          
@@ -199,10 +199,12 @@ returns (uint256 newWeaponTier, uint256 newWeapon, uint256 newInventory) {
        //Inventory
        //console.log("Inventory ENTERED");
        
-        uint16 morerand = uint16(_randomize(rand, "Inventory", level_));
-        uint16 diceRoll = uint16(_randomize(rand, "Dice", level_));
-        
-        diceRoll = (diceRoll % 6) + 1;
+        uint16 morerand = uint16(_randomize(rand, "Inventory", id_));
+        uint16 diceRoll = uint16(_randomize(rand, "Dice", id_));
+       // console.log("morerand: ", morerand);
+      //  console.log("diceRoll: ", diceRoll);
+
+        diceRoll = (diceRoll % 6);
         
         if(diceRoll % 2 == 1){
 
