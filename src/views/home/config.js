@@ -1,8 +1,8 @@
 
 
-import campaignImage1 from "../../assets/images/camp1.png"
-import campaignImage2 from "../../assets/images/camp2.png"
-import campaignImage3 from "../../assets/images/camp3.png"
+import mount from "../../assets/images/mount.png"
+import woods from "../../assets/images/woods.png"
+import meadows from "../../assets/images/meadows.png"
 import campaignImg from "../../assets/images/campaign.png"
 import stakeImg from "../../assets/images/stake.png"
 import bloodImg from "../../assets/images/bloodthirst.png"
@@ -44,19 +44,19 @@ export const campaigns =
     {
         "id": 1,
         "name": "Whispering Woods",
-        "image": campaignImage1,
+        "image": woods,
         "time": 1.2
     },
     {
         "id": 2,
         "name": "enchanted meadows",
-        "image": campaignImage2,
+        "image": meadows,
         "time": 1.5
     },
     {
         "id": 3,
         "name": "Mount Eluna",
-        "image": campaignImage3,
+        "image": mount,
         "time": 0.6
     }
 ]

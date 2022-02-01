@@ -123,63 +123,51 @@ describe("Ethernal Elves Contracts", function () {
   
 
   });
-  describe("Testing for random stuff", function () {
-    it("Testbench", async function () {
 
-///loop to run this 20 times
-
-      for (let i = 0; i < 20; i++) {
-
-        await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
-
-      }
-
-      let elfDNA1  = "49968264009275017539535670417909670943111024596189459600049271000653441505398"
-      let elfDNA2  = "90639261325515095916550229504372966434485488009035142111393150935086015709184"
-      let elfDNA3  = "95199535037357583831230196232214470496524951124881320671361977318428717079228"
-      let elfDNA4  = "176733018922766793863456232764223026231761172710780386921529813803013918803"
-      let elfDNA5  = "104033998254104457207711809265765656967889567937609029390669730133219418002369"
-
-      const arrayofDNA = [elfDNA1, elfDNA2, elfDNA3, elfDNA4, elfDNA5]
-
-      await elves.tokenURI(1)
-      await elves.tokenURI(2)
-      await elves.tokenURI(3)
-      await elves.tokenURI(4)
-
-      console.log("Why fail?")
-/*
-
-      let results = arrayofDNA.forEach(async (dna, index) => {
-
-        await elves.modifyElfDNA(index+1, dna)
+  describe("Test Transfers", function () {
+    it("Testing all the erc721 transfer functions", async function () {
 
       
 
-      })
+        console.log("testing")
+        await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)}); //1
+        await elves.connect(addr4).mint({ value: ethers.utils.parseEther(mintPrice)}); //2
+        await elves.connect(addr5).mint({ value: ethers.utils.parseEther(mintPrice)}); //3
 
-      //loop 20 times
+        console.log(await elves.ownerOf(1))
+        console.log(await elves.ownerOf(2))
+        console.log(await elves.ownerOf(3))
 
-      for (let i = 0; i < 20; i++) {
 
-        try{
-         await elves.tokenURI(i+1)
-        }catch(e){
-          console.log("token", i+1, "FAILED")
-          console.log(await elves.attributes(i+1))
-        }
+        await elves.connect(addr3).approve(addr4.address, 1)
 
+        await elves.connect(addr4).transferFrom(addr3.address, addr5.address, 1)
+        //await elves.connect(addr5).safeTransferFrom(addr5.address, addr3.address, 3)
         
-        
+        console.log(await elves.ownerOf(1))
+        console.log(await elves.ownerOf(2))
+        console.log(await elves.ownerOf(3))
+      
 
-      }
+  expect(await elves.ownerOf(1)).to.equal(addr5.address);
 
-*/
+    })});
+
+
+
+    /*
+  describe("Testing for random stuff", function () {
+    it("Testbench", async function () {
+
 
 
 
     });});
+*/
 
+
+ 
+/*
   describe("Whitelist Mint", function () {
     it("WL Mint Qty 2", async function () {
     
@@ -216,6 +204,8 @@ describe("Ethernal Elves Contracts", function () {
 
     });  
 
+*/
+/*
 
   describe("Deployment and ERC20 and ERC721 Minting", function () {
     it("Check contract deployer is owner", async function () {
@@ -234,8 +224,8 @@ describe("Ethernal Elves Contracts", function () {
       await elves.setAccountBalance(addr5.address, ethers.BigNumber.from("100000000000000000000"));
       
       let totalsupply = 1
-      let maxSupply = 12//parseInt(await elves.maxSupply())
-      await elves.setInitialSupply(4)
+      let maxSupply = 6//parseInt(await elves.maxSupply())
+      await elves.setInitialSupply(2)
       let initialSupply = parseInt(await elves.INIT_SUPPLY())
       let i = 1
 
@@ -273,7 +263,7 @@ describe("Ethernal Elves Contracts", function () {
 
         
   })
-
+*/
 
 describe("Game Play", function () {
     it("Tests staking and actions", async function () {

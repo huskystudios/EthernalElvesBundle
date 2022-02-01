@@ -92,7 +92,11 @@ contract ERC721 {
         emit ApprovalForAll(msg.sender, operator, approved);
     }
 
-    function transferFrom(address from, address to, uint256 tokenId) public {
+    function transferFrom(
+        address,
+        address to,
+        uint256 tokenId
+    ) public {
         address owner_ = ownerOf[tokenId];
 
         require(
@@ -102,15 +106,24 @@ contract ERC721 {
             "NOT_APPROVED"
         );
 
-        _transfer(from, to, tokenId);
+        _transfer(owner_, to, tokenId);
     }
 
-    function safeTransferFrom(address from, address to, uint256 tokenId) external {
-        safeTransferFrom(from, to, tokenId, "");
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) external {
+        safeTransferFrom(address(0), to, tokenId, "");
     }
 
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) public {
-        transferFrom(from, to, tokenId);
+    function safeTransferFrom(
+        address,
+        address to,
+        uint256 tokenId,
+        bytes memory data
+    ) public {
+        transferFrom(address(0), to, tokenId);
 
         if (to.code.length != 0) {
             // selector = `onERC721Received(address,address,uint,bytes)`
@@ -118,7 +131,7 @@ contract ERC721 {
                 abi.encodeWithSelector(
                     0x150b7a02,
                     msg.sender,
-                    from, 
+                    address(0),
                     tokenId,
                     data
                 )
@@ -134,8 +147,11 @@ contract ERC721 {
                           INTERNAL UTILS
     //////////////////////////////////////////////////////////////*/
 
-    function _transfer(address from, address to, uint256 tokenId) internal {
-        
+    function _transfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal {
         require(ownerOf[tokenId] == from);
 
         balanceOf[from]--;
