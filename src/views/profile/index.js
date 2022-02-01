@@ -233,7 +233,7 @@ if(actionString === "Passive Campaign"){
 
             <div className="dark-1000 h-full d-flex flex-column profile">           
 
-          {/*      <div className="d-flex statistic justify-start">
+          <div className="d-flex statistic justify-start">
                     <div className="d-flex flex-column">
                         <span>current supply:</span>
                         <span>{supply.current}</span>
@@ -259,11 +259,7 @@ if(actionString === "Passive Campaign"){
                         <span>{null}</span>
                     </div>
                 </div>
-    */}
-                <MintPass />  
-
-                {/** 
-
+   
                 <div className="d-flex">           
                 <div className="column">
                 <h2>My Elves</h2>
@@ -279,7 +275,7 @@ if(actionString === "Passive Campaign"){
                 
                 </div>
 
-                    */}
+                   
                  
 
                 {/* 
