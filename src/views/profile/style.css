@@ -54,7 +54,7 @@
   width: 100%;
   border: 1px solid #454545;
   overflow-y: auto;
-  height: 70%;
+  height: 100%;
   max-height: calc(100vh - 570px);
   padding: 12px;
   font-size: 12px;
