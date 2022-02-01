@@ -1,6 +1,6 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "EthernalElves",
+  "contractName": "EthernalElvesV2",
   "sourceName": "contracts/EthernalElves.sol",
   "abi": [
     {
@@ -327,29 +327,6 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256[]",
-          "name": "ids",
-          "type": "uint256[]"
-        },
-        {
-          "internalType": "uint256",
-          "name": "campaign_",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "sector_",
-          "type": "uint256"
-        }
-      ],
-      "name": "bloodThirst",
-      "outputs": [],
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -802,29 +779,6 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256[]",
-          "name": "ids",
-          "type": "uint256[]"
-        },
-        {
-          "internalType": "uint256",
-          "name": "campaign_",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "sector_",
-          "type": "uint256"
-        }
-      ],
-      "name": "rampage",
-      "outputs": [],
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {

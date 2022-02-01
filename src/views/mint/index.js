@@ -27,13 +27,20 @@ import {
 const Mint = () => {
 
     const { Moralis } = useMoralis();
-    const [supply, setSupply] = useState("...");
     const [txReceipt, setTxReceipt] = useState();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const query = useQuery();
     const wlflag = query.get("wl");
     const address = query.get("address");
     const signature = query.get("signature");
+
+    const [max, setMax] = useState(0);
+    const [supply, setSupply] = useState(0);
+    const [init, setInit] = useState(0);
+    const [currentPrice, setCurrentPrice] = useState(0);
+
+    const [status, setStatus] = useState("");
+
 
     let mintcredentials = {role: wlflag, address:address, signature: signature}
 
@@ -43,6 +50,10 @@ const Mint = () => {
         show: false,
         value: {title: "...", content: "..."}
     })
+
+   
+
+   
    
 
     const moralisMint = async () => {
@@ -53,7 +64,7 @@ const Mint = () => {
             contractAddress: elvesContract,
             functionName: "mint",
             abi: elvesAbi.abi   ,
-            msgValue: Moralis.Units.ETH(.088), //parseInt(supply.current) <= parseInt(supply.initial) ?  Moralis.Units.ETH(Moralis.Units.FromWei(supply.mintPrice)) : null,
+            msgValue: parseInt(supply) <= parseInt(init) ?  Moralis.Units.ETH(Moralis.Units.FromWei(currentPrice)) : null,
             awaitReceipt: false // should be switched to false
           };
           
@@ -82,22 +93,53 @@ const Mint = () => {
 
     }
 
-    
- /*   useEffect(() => {      
-        
-        const getMoralisTokenSupply = async ()=>{
-            await Moralis.enableWeb3();
-            //let tokenSupply = await getTokenSupply()      use as a failsafe
-            const response = await Moralis.Cloud.run("getTokenSupply");
-            console.log(response)
-            setSupply({current: response.supply, total: response.maxSupply, initial: response.initialSupply, mintPrice: response.mintPrice})
-            setLoading(false)
-        } 
-        getMoralisTokenSupply()       
-        
-    }, [txReceipt]);
 
-  */
+
+    function readOptions(contractMethod) {
+
+  const options = {
+            contractAddress: elvesContract,
+            functionName: contractMethod,
+            abi: elvesAbi.abi
+    
+        };
+
+return options
+    }
+
+
+   
+
+    useEffect(() => {   
+         
+    const getMoralisTokenSupply = async ()=>{
+
+      await Moralis.enableWeb3();     
+           
+      setStatus("getting current supply")
+      const initsupply = await Moralis.executeFunction(readOptions("INIT_SUPPLY"));
+      const maxSupply = await Moralis.executeFunction(readOptions("maxSupply"));
+      setStatus("getting current price")
+      const price = await Moralis.executeFunction(readOptions("price"));
+      setStatus("getting total supply")
+      const totalSupply = await Moralis.executeFunction(readOptions("totalSupply"));
+      setStatus("done")
+      setInit(initsupply);
+      setMax(maxSupply);
+      setSupply(totalSupply);
+      setCurrentPrice(price);
+
+      
+
+            setLoading(false)
+            } 
+      
+        getMoralisTokenSupply()
+    }, [txReceipt])
+    
+ 
+
+ 
     
     const showAlert = ({title, content}) => {
 
@@ -128,17 +170,17 @@ const Mint = () => {
            
            
             <div className="d-flex flex-row justify-center">
-             <button onClick={moralisMint} className="btn btn-green">
-                 Mint with .088 ETH
-             {/*parseInt(supply.current) <= parseInt(supply.initial) ? `Mint with ${ Moralis.Units.FromWei(supply.mintPrice)} Eth` : `Mint with ${ Moralis.Units.FromWei(supply.mintPrice)} $REN`*/}
+             <button onClick={()=> console.log("wait up!")/*moralisMint*/} className="btn btn-red">
+              public sale not active
+             {/*parseInt(supply) <= parseInt(init) ? `Mint with ${ Moralis.Units.FromWei(currentPrice)} Eth` : `Mint with ${ Moralis.Units.FromWei(currentPrice)} $REN`*/}
             </button>
             </div>
-      {/*   <div className="mint-instructions">
-            <p>Elves Minted: {supply.current}/{supply.total}</p>
-                <p>the first {supply.initial} elves will be minted with Eth.</p>
+        <div className="mint-instructions">
+            <p>Elves Minted: {supply}/{max}</p>
+                <p>the first {init} elves will be minted with Eth.</p>
                 <p>$REN will be required to spawn the next set of elves. Look up the cost in FAQ's.</p>
             </div>
-    */}   
+       
             {tooltip.show && showAlert(tooltip.value)}
         </div>        
       
@@ -146,7 +188,7 @@ const Mint = () => {
 
 
 
-    ) : <Loader />
+    ) : <Loader text={status} />
 }
 
 export default Mint

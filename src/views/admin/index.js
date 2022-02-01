@@ -24,7 +24,7 @@ const Elves = Moralis.Object.extend("Elves");
 useEffect(() => {
     async function init() {
       
-      setCloudSupply(await Moralis.Cloud.run("getTokenSupply"));
+     // setCloudSupply(await Moralis.Cloud.run("getTokenSupply"));
       setGameStatus(await Moralis.Cloud.run("getGameStatus"))
 
       getWL(await Moralis.Cloud.run("getWhitelistRemains"))
