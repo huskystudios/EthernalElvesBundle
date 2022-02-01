@@ -157,7 +157,7 @@ const Mint = () => {
 
     return !loading ? (
         
-        wl ? <WhitelistMint mintcreds={mintcredentials}/> :
+      
         <>
         
         <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
@@ -179,6 +179,67 @@ const Mint = () => {
     
             {tooltip.show && showAlert(tooltip.value)}
         </div>        
+
+        <div>
+        
+        <div className="d-flex flex-column justify-center px-4 text-uppercase dialog">
+            <p>MINT TABLE</p>
+        <div className="table mint-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Total Supply Under</th>
+                        <th>$REN</th>
+                        <th>Starting Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>4000</td>
+                        <td>60</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>4500</td>
+                        <td>180</td>
+                        <td>5</td>
+                    </tr>
+                    <tr>
+                        <td>5000</td>
+                        <td>360</td>
+                        <td>15</td>
+                    </tr>
+                    <tr>
+                        <td>5500</td>
+                        <td>600</td>
+                        <td>25</td>
+                    </tr>
+                    <tr>
+                        <td>6000</td>
+                        <td>900</td>
+                        <td>35</td>
+                    </tr>
+                    <tr>
+                        <td>6333</td>
+                        <td>1800</td>
+                        <td>45</td>
+                    </tr>
+                    <tr>
+                        <td>6666</td>
+                        <td>2700</td>
+                        <td>60</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+
+        </div>
+        </div>
+
+
+
+        </div>
       
         </>
 
