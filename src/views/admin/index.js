@@ -66,7 +66,7 @@ useEffect(() => {
       
      // setCloudSupply(await Moralis.Cloud.run("getTokenSupply"));
       setGameStatus(await Moralis.Cloud.run("getGameStatus"))
-      getWL(await Moralis.Cloud.run("getWhitelistRemains"))
+      //getWL(await Moralis.Cloud.run("getWhitelistRemains"))
 
       setLoading(false);
 
@@ -165,18 +165,7 @@ return (
       
             <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
             <p>ADMIN CONSOLE</p>
-{console.log(setWL)}
-            {setWL && <>
-            <div>
-            SOG: {setWL.sog} | OG: {setWL.og} | wl: {setWL.wl}
-            </div>
-            
-           
-           
-            </>}
 
-            <WhitelistExport />
-           
             <div className="mint-instructions">
                 <p>Press this button if peoples elves dont show up. It will loop through the current supply so be patient</p>
             </div>
