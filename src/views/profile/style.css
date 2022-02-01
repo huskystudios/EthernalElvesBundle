@@ -50,11 +50,11 @@
 	background-color: #333;
 }
 .table {
-  max-width: 913px;
+  max-width: 999px;
   width: 100%;
   border: 1px solid #454545;
   overflow-y: auto;
-  height: 50%;
+  height: 70%;
   max-height: calc(100vh - 570px);
   padding: 12px;
   font-size: 12px;

@@ -5,7 +5,7 @@ import "./style.css"
 import { actionString } from "../home/config"
 import {lookupMultipleElves, getCurrentWalletConnected} from "../../utils/interact"
 import Countdown from 'react-countdown';
-import MintPass from "./MintPass"
+
 
 
 
@@ -129,32 +129,48 @@ const Profile = () => {
         <th>level</th>
         <th>class</th>
         <th>Action Taken</th>
+        <th>Ready In</th>
         </tr>
       </thead>
       <tbody>
           
 
             {data.map((line, index) => {
-/*
-if(actionString === "Passive Campaign"){
-    let timesince = Math.floor(((new Date() - date) / 1000)/(60*60*24))
-    passiveString = `Time spent in ${actionString}: ${timesince} days`
-}
+
+
+                const date = new Date(line.time * 1000)
+                const isActive = new Date() > date
+                let passiveString = ""
+                
+                let passiveFlag = false
+                
 
 
 
-{!isActive &&  <pre>Ready in:{" "}<Countdown date={date} /></pre>}
-*/
+                    if(line.action === 3){
+                        let timesince = Math.floor(((new Date() - date) / 1000)/(60*60*24))
+                        passiveString = `${timesince} days`
+                    }
+
+                    
+
+
+
 
                 return( <tr key={index}> 
                     <td>{line.name}</td>
                     <td>{line.inventoryString}</td>
-                    {/*<td>{line.primaryWeapon}</td>        */}
+                    {/*<td>{line.primaryWeapon}</td>        */} 
                     <td>{line.attributes[3].value}</td>        
                     <td>{line.weaponTier}</td>     
                     <td>{line.level}</td>
                     <td>{line.classString}</td>
                     <td>{line.actionString}</td>
+                    <td>{!isActive &&  !passiveFlag && <pre> {<Countdown date={date} />} </pre>}
+                    <pre>{passiveString}</pre>
+                    
+                    
+                    </td>
                 </tr>)
             }
              
@@ -264,14 +280,12 @@ if(actionString === "Passive Campaign"){
                 <div className="column">
                 <h2>My Elves</h2>
                 <ShowElfTable  />
+                </div>
+                <div className="column">
                 <h2>Activity Log</h2>
                 <ShowTransactionTable /> 
                 </div>
-                <div className="column">
               
-
-                </div>
-
                 
                 </div>
 
