@@ -23,6 +23,8 @@ const [tokenSupply, setTokenSupply] = useState(0);
 const [init, setInit] = useState(0);
 const [currentPrice, setCurrentPrice] = useState(0);
 
+
+
 const Elves = Moralis.Object.extend("Elves");
 
 
@@ -54,7 +56,7 @@ useEffect(() => {
     const initsupply = await Moralis.executeFunction(readOptions("INIT_SUPPLY"));
     const maxSupply = await Moralis.executeFunction(readOptions("maxSupply"));
 
-    const price = await Moralis.executeFunction(readOptions("price"));
+    const price = await Moralis.executeFunction(readOptions("getMintPriceLevel"));
 
     const totalSupply = await Moralis.executeFunction(readOptions("totalSupply"));
     
@@ -165,6 +167,8 @@ return (
       
             <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
             <p>ADMIN CONSOLE</p>
+
+            <div>Supply: {tokenSupply} <br/> Current Price:{currentPrice.mintCost/1000000000000000000}</div>
 
             <div className="mint-instructions">
                 <p>Press this button if peoples elves dont show up. It will loop through the current supply so be patient</p>
