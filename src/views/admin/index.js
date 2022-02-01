@@ -205,14 +205,7 @@ return (
         
         </div>  
 
-              <div>
-              <AddToWhitelist />
-              <CheckWhitelist />
-              </div>
-              
-
-              
-        <Signature />
+             
 
 
 
