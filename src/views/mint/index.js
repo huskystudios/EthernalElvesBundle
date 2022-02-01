@@ -117,16 +117,16 @@ const Mint = () => {
       await Moralis.enableWeb3();     
            
       setStatus("getting current supply")
-  //    const initsupply = await Moralis.executeFunction(readOptions("INIT_SUPPLY"));
-  //    const maxSupply = await Moralis.executeFunction(readOptions("maxSupply"));
+      const initsupply = await Moralis.executeFunction(readOptions("INIT_SUPPLY"));
+      const maxSupply = await Moralis.executeFunction(readOptions("maxSupply"));
       setStatus("getting current price")
-      const price = await Moralis.executeFunction(readOptions("price"));
+      const price = await Moralis.executeFunction(readOptions("getMintPriceLevel"));
       setStatus("getting total supply")
- //     const totalSupply = await Moralis.executeFunction(readOptions("totalSupply"));
+      const totalSupply = await Moralis.executeFunction(readOptions("totalSupply"));
       setStatus("done")
- //     setInit(initsupply);
-//      setMax(maxSupply);
-//      setSupply(totalSupply);
+      setInit(initsupply);
+      setMax(maxSupply);
+      setSupply(totalSupply);
       setCurrentPrice(price);
 
       
@@ -171,16 +171,17 @@ const Mint = () => {
            
             <div className="d-flex flex-row justify-center">
              <button onClick={moralisMint} className="btn btn-green">
-             Mint for .088 ETH
-             {/*parseInt(supply) <= parseInt(init) ? `Mint with ${ Moralis.Units.FromWei(currentPrice)} Eth` : `Mint with ${ Moralis.Units.FromWei(currentPrice)} $REN`*/}
+           
+             Mint with ${ Moralis.Units.FromWei(currentPrice.mintCost)} $REN
             </button>
             </div>
-    {/*    <div className="mint-instructions">
+        <div className="mint-instructions">
             <p>Elves Minted: {supply}/{max}</p>
-                <p>the first {init} elves will be minted with Eth.</p>
-                <p>$REN will be required to spawn the next set of elves. Look up the cost in FAQ's.</p>
+                <p>the first {init} elves will be minted with Eth.
+                $REN will be required to spawn the next set of elves.</p>
+                <div>The price will be updated with the increase in total supply.</div>
             </div>
-    */}
+    
             {tooltip.show && showAlert(tooltip.value)}
         </div>        
       

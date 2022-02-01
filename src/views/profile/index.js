@@ -268,7 +268,7 @@ if(actionString === "Passive Campaign"){
                 <ShowTransactionTable /> 
                 </div>
                 <div className="column">
-                <MintPass />  
+              
 
                 </div>
 
@@ -279,6 +279,8 @@ if(actionString === "Passive Campaign"){
                  
 
                 {/* 
+
+                  <MintPass />  
                 <div className="elves d-flex">
                     {elves.map((elf) => 
                         <div key={elf.id} className="elf-card d-flex flex-column">
