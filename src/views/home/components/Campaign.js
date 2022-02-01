@@ -13,7 +13,7 @@ const Campaign = ({onChangeIndex, onSetCampaign}) => {
     useEffect(() => {
         const getCampaignData = async() => {
             const campaignArry = []
-            for(let i = 1; i < campaigns.length + 1; i++){
+            for(let i = 0; i < campaigns.length; i++){
 
                 await getCampaign(campaigns[i].id).then(res => {
 

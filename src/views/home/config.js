@@ -43,19 +43,19 @@ export const campaigns =
 [
     {
         "id": 1,
-        "name": "Mount Eluna",
+        "name": "Whispering Woods",
         "image": campaignImage1,
         "time": 1.2
     },
     {
         "id": 2,
-        "name": "enchanted forest",
+        "name": "enchanted meadows",
         "image": campaignImage2,
         "time": 1.5
     },
     {
         "id": 3,
-        "name": "Whispering Woods",
+        "name": "Mount Eluna",
         "image": campaignImage3,
         "time": 0.6
     }
