@@ -14,22 +14,59 @@ const Admin = () => {
 const [loading, setLoading] = useState(true);
 // const [showData, setShowData] = useState(false);
 const [progress, setProgress] = useState(0);
-const [cloudSupply, setCloudSupply] = useState(0);
+
 const [gameStatus, setGameStatus] = useState(0);
 const [setWL, getWL] = useState(0);
 const { Moralis } = useMoralis();
+const [max, setMax] = useState(0);
+const [tokenSupply, setTokenSupply] = useState(0);
+const [init, setInit] = useState(0);
+const [currentPrice, setCurrentPrice] = useState(0);
+
 const Elves = Moralis.Object.extend("Elves");
+
+
+function readOptions(contractMethod) {
+
+  const options = {
+contractAddress: elvesContract,
+functionName: contractMethod,
+abi: elvesAbi.abi
+
+};
+
+return options
+}
+
+
+
+
+
 
 
 useEffect(() => {
     async function init() {
+
+
+      await Moralis.enableWeb3();     
+
+
+    const initsupply = await Moralis.executeFunction(readOptions("INIT_SUPPLY"));
+    const maxSupply = await Moralis.executeFunction(readOptions("maxSupply"));
+
+    const price = await Moralis.executeFunction(readOptions("price"));
+
+    const totalSupply = await Moralis.executeFunction(readOptions("totalSupply"));
+    
+    setInit(initsupply);
+    setMax(maxSupply);
+    setTokenSupply(totalSupply);
+    setCurrentPrice(price);
+
       
      // setCloudSupply(await Moralis.Cloud.run("getTokenSupply"));
       setGameStatus(await Moralis.Cloud.run("getGameStatus"))
-
       getWL(await Moralis.Cloud.run("getWhitelistRemains"))
-
-      
 
       setLoading(false);
 
@@ -48,7 +85,7 @@ const refreshMetaData = async () => {
   let results = []
 
   let start = 1
-  let supply = 3300//parseInt(cloudSupply.supply) ///tokenSupply
+  let supply = tokenSupply//parseInt(cloudSupply.supply) ///tokenSupply
   let stop = 0
   let steps = supply < 44 ? supply : 44
 

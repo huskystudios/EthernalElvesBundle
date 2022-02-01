@@ -97,14 +97,14 @@ const Mint = () => {
 
     function readOptions(contractMethod) {
 
-  const options = {
+              const options = {
             contractAddress: elvesContract,
             functionName: contractMethod,
             abi: elvesAbi.abi
     
-        };
+         };
 
-return options
+            return options
     }
 
 
