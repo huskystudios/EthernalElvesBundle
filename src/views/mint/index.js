@@ -152,12 +152,7 @@ const Mint = () => {
         )
     }
    
-   
-    
-        
-    
-
-                        
+              
 
 
     return !loading ? (
