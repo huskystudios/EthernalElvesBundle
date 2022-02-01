@@ -50,7 +50,9 @@ const Control = ({data, activities, onSelect}) => {
                             
         const tOne = new Date(character.time * 1000)
         const tZero = new Date()
-        let healthBar = (tOne - tZero)/ 500000 * 100
+        let healthBar = (tOne - tZero)/ 11298185100 * 100
+        console.log("health")
+        console.log(tOne - tZero)
 
         healthBar = healthBar < 0 ? 100 : healthBar
         setActiveNftHealth(healthBar)
