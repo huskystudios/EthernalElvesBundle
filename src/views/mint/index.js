@@ -172,7 +172,7 @@ const Mint = () => {
             <div className="d-flex flex-row justify-center">
              <button onClick={moralisMint} className="btn btn-green">
            
-             Mint with ${ Moralis.Units.FromWei(currentPrice.mintCost)} $REN
+             Mint with {Moralis.Units.FromWei(currentPrice.mintCost)} $REN
             </button>
             </div>
         <div className="mint-instructions">
