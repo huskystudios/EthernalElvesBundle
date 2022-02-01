@@ -12,13 +12,18 @@ const Withdraw = () => {
 
   const { Moralis } = useMoralis();
   const [tooltip, setTooltip] = useState("");
-  const [balance, setBalance] = useState();
+  const [balance, setBalance] = useState(0);
+  const [miren, setMiren] = useState(0);
   const [txReceipt, setTxReceipt] = useState();
 
 const getRenBalance = async (address) => {
+  await Moralis.enableWeb3();
+  const renBalanceContract = await Moralis.Cloud.run("getBalance", {address});//in contract
+  const renBalanceWallet = await Moralis.Cloud.run("getMiren", {address});//in wallet
 
-  const renBalance = await Moralis.Cloud.run("getBalance", {address});
-  setBalance(renBalance);
+  
+  setBalance(renBalanceContract/1000000000000000000);
+  setMiren(renBalanceWallet/1000000000000000000);
 
 }
 
@@ -81,9 +86,9 @@ useEffect( () => {
     return (
     <>
     <button 
-    onMouseEnter={() => setTooltip(`Claim ${Moralis.Units.FromWei(balance)} $REN`)}
+    onMouseEnter={() => setTooltip(`Claim ${balance} $REN?`)}
     onMouseLeave={() => setTooltip("")} 
-    onClick={withdrawTokenBalance}> {Moralis.Units.FromWei(balance)} $REN</button>
+    onClick={withdrawTokenBalance}> {miren + balance} $REN</button>
      {showTooltip(tooltip)}
     </>
     )

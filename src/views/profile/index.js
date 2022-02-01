@@ -281,6 +281,7 @@ const Profile = () => {
                 <h2>My Elves</h2>
                 <ShowElfTable  />
                 </div>
+           
                 <div className="column">
                 <h2>Activity Log</h2>
                 <ShowTransactionTable /> 

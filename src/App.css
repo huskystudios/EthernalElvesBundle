@@ -136,6 +136,7 @@
     padding: 4px 12px;
     font-size: 16px;
     width: 150px;
+    cursor: pointer;
   }
   .search button:hover {
     -webkit-box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
