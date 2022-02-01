@@ -174,14 +174,8 @@ return (
             <button className="btn btn-green" onClick={refreshMetaData}>Update Elf Metadata</button>) : ( 
             <button disabled><div className="animate-bounce">Loading... {progress.toFixed(0)} %</div></button>)}
             </div>
-            <div className="mint-instructions">
-                <p>$ETH Withdrawal to founders.</p>
-            </div>
+    
 
-
-            <div className="d-flex flex-row justify-center">
-            <button className="btn btn-green" onClick={()=> flipGameState(4)}><div className="animate-bounce">Withdraw</div></button>
-            </div>
 
             
                 <p>FLIP GAME STATE</p>
