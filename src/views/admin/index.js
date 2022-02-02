@@ -8,6 +8,7 @@ import WhitelistExport from "./WhitelistExport";
 import AddToWhitelist from "./AddToWhitelist";
 import CheckWhitelist from "./CheckWhitelist";
 import ExportGame from "./ExportGame";
+import CampaignAdmin from "./Campaign";
 
 const Admin = () => {
 
@@ -214,7 +215,10 @@ return (
              
 
 
-
+        <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
+              <CampaignAdmin />
+              
+          </div>
        
 
 
