@@ -90,7 +90,7 @@ const Profile = () => {
         const userTokenArray = await Moralis.Cloud.run("getElvesFromDb", params);
         setStatus("army of elves")
         const elves = await lookupMultipleElves(userTokenArray)
-        elves.sort((a, b) => a.id - b.id)
+        elves.sort((a, b) => a.time - b.time) 
         console.log(elves)
         setData(elves)        
 
