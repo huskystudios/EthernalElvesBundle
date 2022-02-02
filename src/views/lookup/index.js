@@ -46,9 +46,9 @@ function GetAttributes({elfData}) {
   let attributesSection =  elfData.attributes.map((a, i)=>{
  
        return(<div key={elfData.name + i}>
-       <div class="flex justify-between border-b-2">
-       <div class="text-sm capitalize">{a['trait_type'] /*//fix this laer */}</div> 
-       <div class="font-semibold text-sm">{a.value}</div>
+       <div className="flex justify-between border-b-2">
+       <div className="text-sm capitalize">{a['trait_type'] /*//fix this laer */}</div> 
+       <div className="font-semibold text-sm">{a.value}</div>
        
        </div>  
        </div>)
@@ -68,34 +68,11 @@ return (
 
       <h1>Look up Elf</h1>
 
-    <div className="flex flex-wrap">
-      <div className="w-50">
-     
-      <div className="w-66 p-10 justify-between">
-      {showMetaImage &&
-      <>
-      <p>{elfObject.name}</p>
-     
       
-      <img src={elfObject.image}/>
-      <p className="pt-4 text-xs">{elfObject.description}</p>
-      <GetAttributes elfData={elfObject} />     
-      <br/>
-      {elfObject.time}
-      <p>Cooldown in? <Countdown date={new Date(elfObject.time)*1000} /></p>
-      <p>Last Action: {elfObject.actionString}</p>
-      <p>Owner: {elfObject.owner}</p>
-
-
-
-      </>}
-      
-      </div>
-      </div>
-      <div className="w-50">
-        <p>Enter TOKEN # here</p>
+      <div className="flex">
+       
       <input value={textAreaSample} onChange={(e) => setTextArea(e.target.value)} id="text" />
-      <button className="btn btn-green" onClick={getMeta}>Get Token</button>{"  "}
+      <button className="btn btn-green" onClick={getMeta}>Fetch Elf</button>{"  "}
       <button className="btn btn-blue" onClick={() => {
       toPng(document.getElementById('elf')).then(dataUrl => {
         const link = document.createElement('a');
@@ -105,6 +82,47 @@ return (
       });
     }}>Download</button>
       </div>
+
+    <div className="flex flex-wrap">
+      
+      
+      {showMetaImage &&
+      <>
+      <div id="elf" className="w-25">
+      <p>{elfObject.name}</p>
+      <img src={elfObject.image}/>   
+      <GetAttributes elfData={elfObject} />     
+      <br/>
+      <div className="flex justify-between border-b-2">
+      <div className="font-semibold text-sm">Cooldown in?</div>
+      <div className="font-semibold text-sm"><Countdown date={new Date(elfObject.time)*1000} /></div>
+      </div>
+
+      <div className="flex justify-between border-b-2">
+      <div className="font-semibold text-sm">Last Action</div>
+      <div className="font-semibold text-sm">{elfObject.actionString}</div>
+      </div>
+
+        <div className="flex justify-between border-b-2">
+        <div className="font-semibold text-sm">Owner</div>
+        <div className="font-semibold text-sm">{elfObject.owner}</div>
+        </div>
+
+        <div className="flex justify-between border-b-2">
+        <div className="font-semibold text-sm">Status</div>
+        <div className="font-semibold text-sm">{elfObject.elfStatus}</div>
+        </div>
+
+
+      </div>
+
+
+      </>}
+
+      
+      
+      
+      </div>
       
       </div>
 
@@ -112,8 +130,6 @@ return (
 
 
 
-
-</div>
   )
 }
 
