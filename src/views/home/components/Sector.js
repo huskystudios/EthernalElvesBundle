@@ -91,9 +91,21 @@ const Sector = ({campaign, onChangeIndex, onSendCampaign, data, mode}) => {
                         {console.log(campaign)}
                         <span>{`Game Mode: ${mode}`}</span>
                         <span>{`sector: ${sector}`}</span>
-                        <span>{`reroll weapon: ${rerollWeapon ? "YES" : "NO"}`}</span>
-                        <span>{`reroll item: ${rerollItem ? "YES" : "NO"}`}</span>
-                        <span>{`use item: ${useItemValue ? "YES" : "NO"}`}</span>
+                        <span>
+                            reroll weapon:
+                            {" "}
+                            {rerollWeapon ? <b>YES</b> : <strong>NO</strong>}
+                        </span>
+                        <span>
+                            reroll item: 
+                            {" "}
+                            {rerollItem ? <b>YES</b> : <strong>NO</strong>}
+                        </span>
+                        <span>
+                            use item:
+                            {" "}
+                            {useItemValue ? <b>YES</b> : <strong>NO</strong>}
+                        </span>
                         <br/>
                         <span>{`miren rewards: ${mirenRewards}`} $REN</span>
                         <span>{`creature health: ${creatureHealth}`}</span>

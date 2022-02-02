@@ -888,6 +888,14 @@
     gap: 2px;
 }
 
+.game-info b {
+    color: #8FD30F;
+}
+
+.game-info strong {
+    color: #505E6A;
+}
+
 .elves-panel {
     /* background-color:rgba(17, 148, 249, 0.43); */
     position:absolute;
