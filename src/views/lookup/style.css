@@ -67,3 +67,35 @@
     font-weight: 600;
 }
 
+#text {
+    max-width: 8ch;
+}
+
+.mt-1 {
+    margin-top: 1em;
+}
+
+.mb-1 {
+    margin-bottom: 1em;
+}
+
+.mh-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.race-darkborne .text-sm:last-child {
+    color: #707BC6;
+}
+
+.race-lightborne .text-sm:last-child {
+    color: #F0D1D7;
+}
+
+.race-primeborne .text-sm:last-child {
+    color: #A369BD;
+}
+
+.race-woodborne .text-sm:last-child {
+    color: #D86561;
+}
