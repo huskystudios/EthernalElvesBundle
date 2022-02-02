@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import React, { useCallback, useRef } from 'react';
 import { toPng } from 'html-to-image';
 import {lookupMultipleElves} from '../../utils/interact'
@@ -46,7 +46,7 @@ function GetAttributes({elfData}) {
   let attributesSection =  elfData.attributes.map((a, i)=>{
  
        return(<div key={elfData.name + i}>
-       <div className="flex justify-between border-b-2">
+       <div className="flex justify-between mt-1">
        <div className="text-sm capitalize">{a['trait_type'] /*//fix this laer */}</div> 
        <div className="font-semibold text-sm">{a.value}</div>
        
@@ -56,22 +56,41 @@ function GetAttributes({elfData}) {
      
        return(attributesSection)
      }
+     
 
+     const raceClassName = useMemo(() => {
+      switch(elfObject?.race) {
+        case 3:
+          return "race-woodborne";
+        case 2:
+          return "race-primeborne";
+        case 1:
+          return "race-lightborne";
+        case 0:
+        default:
+          return "race-darkborne";
+      }
+     }, [elfObject]);
 
-
-
-
-
+     const ownerTruncated = 
+      elfObject?.owner.slice(0, 6) +
+      "..." +
+      elfObject?.owner.slice(-4);
 
 return (
   <div className="dark-1000 h-full d-flex flex-column profile">           
 
-      <h1>Look up Elf</h1>
+      <h1 className="text-center">Look up Elf</h1>
 
       
-      <div className="flex">
+      <div className="flex mh-auto mb-1">
        
-      <input value={textAreaSample} onChange={(e) => setTextArea(e.target.value)} id="text" />
+      <input
+        value={textAreaSample}
+        type="number"
+        onChange={(e) => setTextArea(e.target.value)}
+        id="text"
+      />
       <button className="btn btn-green" onClick={getMeta}>Fetch Elf</button>{"  "}
       <button className="btn btn-blue" onClick={() => {
       toPng(document.getElementById('elf')).then(dataUrl => {
@@ -88,27 +107,27 @@ return (
       
       {showMetaImage &&
       <>
-      <div id="elf" className="w-25">
-      <p>{elfObject.name}</p>
-      <img src={elfObject.image}/>   
+      <div id="elf" className={`w-25 mh-auto ${raceClassName}`}>
+      <h2 className="text-center">{elfObject.name}</h2>
+      <img src={elfObject.image}/>
       <GetAttributes elfData={elfObject} />     
       <br/>
-      <div className="flex justify-between border-b-2">
+      <div className="flex justify-between mt-1">
       <div className="font-semibold text-sm">Cooldown in?</div>
       <div className="font-semibold text-sm"><Countdown date={new Date(elfObject.time)*1000} /></div>
       </div>
 
-      <div className="flex justify-between border-b-2">
+      <div className="flex justify-between mt-1">
       <div className="font-semibold text-sm">Last Action</div>
       <div className="font-semibold text-sm">{elfObject.actionString}</div>
       </div>
 
-        <div className="flex justify-between border-b-2">
+        <div className="flex justify-between mt-1">
         <div className="font-semibold text-sm">Owner</div>
-        <div className="font-semibold text-sm">{elfObject.owner}</div>
+        <div className="font-semibold text-sm">{ownerTruncated}</div>
         </div>
 
-        <div className="flex justify-between border-b-2">
+        <div className="flex justify-between mt-1">
         <div className="font-semibold text-sm">Status</div>
         <div className="font-semibold text-sm">{elfObject.elfStatus}</div>
         </div>
