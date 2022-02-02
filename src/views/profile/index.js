@@ -9,6 +9,7 @@ import Countdown from 'react-countdown';
 
 
 
+
 const Profile = () => {
     const [loading, setLoading] = useState(true)
     const [supply, setSupply] = useState("3000")
@@ -289,7 +290,7 @@ const Profile = () => {
               
                 
                 </div>
-
+              
                    
                  
 

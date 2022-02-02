@@ -326,7 +326,7 @@
           {
             "contract": "ElfCampaigns",
             "label": "camps",
-            "type": "t_mapping(t_uint256,t_struct(Camps)2174_storage)",
+            "type": "t_mapping(t_uint256,t_struct(Camps)2152_storage)",
             "src": "contracts\\ElfCampaigns.sol:25"
           },
           {
@@ -346,10 +346,10 @@
           "t_uint256": {
             "label": "uint256"
           },
-          "t_mapping(t_uint256,t_struct(Camps)2174_storage)": {
+          "t_mapping(t_uint256,t_struct(Camps)2152_storage)": {
             "label": "mapping(uint256 => struct ElfCampaigns.Camps)"
           },
-          "t_struct(Camps)2174_storage": {
+          "t_struct(Camps)2152_storage": {
             "label": "struct ElfCampaigns.Camps",
             "members": [
               {
@@ -1311,6 +1311,107 @@
           },
           "t_mapping(t_address,t_mapping(t_address,t_bool))": {
             "label": "mapping(address => mapping(address => bool))"
+          }
+        }
+      }
+    },
+    "530720583f36c50f03a871d611817a621407fa7c2029d7f4d7c982b97269ac3a": {
+      "address": "0x858c52bbC608435F035B1913eC0228322aC54c2E",
+      "txHash": "0xc639efb4a34735f27d2cabe8b1c5a8517a3b7a67309ea52743f0ac694d1b8740",
+      "layout": {
+        "storage": [
+          {
+            "contract": "ElfCampaignsV2",
+            "label": "initialized",
+            "type": "t_bool",
+            "src": "contracts\\ElfCampaigns.sol:17"
+          },
+          {
+            "contract": "ElfCampaignsV2",
+            "label": "elfcontract",
+            "type": "t_address",
+            "src": "contracts\\ElfCampaigns.sol:18"
+          },
+          {
+            "contract": "ElfCampaignsV2",
+            "label": "MAX_LEVEL",
+            "type": "t_uint256",
+            "src": "contracts\\ElfCampaigns.sol:20"
+          },
+          {
+            "contract": "ElfCampaignsV2",
+            "label": "TIME_CONSTANT",
+            "type": "t_uint256",
+            "src": "contracts\\ElfCampaigns.sol:21"
+          },
+          {
+            "contract": "ElfCampaignsV2",
+            "label": "REGEN_TIME",
+            "type": "t_uint256",
+            "src": "contracts\\ElfCampaigns.sol:22"
+          },
+          {
+            "contract": "ElfCampaignsV2",
+            "label": "admin",
+            "type": "t_address",
+            "src": "contracts\\ElfCampaigns.sol:23"
+          },
+          {
+            "contract": "ElfCampaignsV2",
+            "label": "camps",
+            "type": "t_mapping(t_uint256,t_struct(Camps)2152_storage)",
+            "src": "contracts\\ElfCampaigns.sol:25"
+          },
+          {
+            "contract": "ElfCampaignsV2",
+            "label": "ketchup",
+            "type": "t_bytes32",
+            "src": "contracts\\ElfCampaigns.sol:27"
+          }
+        ],
+        "types": {
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_mapping(t_uint256,t_struct(Camps)2152_storage)": {
+            "label": "mapping(uint256 => struct ElfCampaignsV2.Camps)"
+          },
+          "t_struct(Camps)2152_storage": {
+            "label": "struct ElfCampaignsV2.Camps",
+            "members": [
+              {
+                "label": "baseRewards",
+                "type": "t_uint32"
+              },
+              {
+                "label": "creatureCount",
+                "type": "t_uint32"
+              },
+              {
+                "label": "creatureHealth",
+                "type": "t_uint32"
+              },
+              {
+                "label": "expPoints",
+                "type": "t_uint32"
+              },
+              {
+                "label": "minLevel",
+                "type": "t_uint32"
+              }
+            ]
+          },
+          "t_uint32": {
+            "label": "uint32"
+          },
+          "t_bytes32": {
+            "label": "bytes32"
           }
         }
       }

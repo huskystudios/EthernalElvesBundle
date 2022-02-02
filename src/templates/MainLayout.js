@@ -26,6 +26,7 @@ const MainLayout = (props) => {
                     <ConnectWallet setStatus={setStatus} onSetWallet={setWallet} />
                     <NavLink className="nav-item" to="/mint">mint</NavLink>
                     <NavLink className="nav-item" to="/faq">faq</NavLink>
+                    <NavLink className="nav-item" to="/lookup">lookup</NavLink>
                 </div>
                <div className="search">
                        <Withdraw address={wallet} />

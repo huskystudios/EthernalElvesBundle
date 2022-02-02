@@ -45,7 +45,7 @@ describe("Ethernal Elves Contracts", function () {
   const Miren = await ethers.getContractFactory("Miren");
   //const Elves = await ethers.getContractFactory("EthernalElves");
   const Elves = await ethers.getContractFactory("EthernalElvesV2");
-  const Campaigns = await ethers.getContractFactory("ElfCampaigns");
+  const Campaigns = await ethers.getContractFactory("ElfCampaignsV2");
   //const Terminus = await ethers.getContractFactory("Terminus");
   //const Bridge = await ethers.getContractFactory("FxBaseRootTunnel");
 
@@ -155,15 +155,22 @@ describe("Ethernal Elves Contracts", function () {
 
 
 
-    /*
-  describe("Testing for random stuff", function () {
-    it("Testbench", async function () {
+    
+    describe("Test Levels", function () {
+      it("Testing correct item leveling", async function () {
 
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
 
+      await elves.setElfManually(1,1,1,6,12,10,4)
+
+      await elves.connect(addr3).sendCampaign([1],1,5,1,1,1);
+
+      //10 + 3 * 2 = 16
+      console.log(await elves.elves(1))
 
 
     });});
-*/
+
 
 
  

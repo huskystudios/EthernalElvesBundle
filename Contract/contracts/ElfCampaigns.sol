@@ -4,7 +4,7 @@ pragma solidity 0.8.7;
 import "./DataStructures.sol";
 //import "hardhat/console.sol";
 
-contract ElfCampaigns {
+contract ElfCampaignsV2 {
 
 struct Camps {
             uint32 baseRewards; 
@@ -63,19 +63,22 @@ returns(uint256 level, uint256 rewards, uint256 timestamp, uint256 inventory){
   rewards = camp.baseRewards + (2 * (_sector - 1));
   
   rewards = rewards * (1 ether);
+
+  level = (uint256(camp.expPoints)/3); //convetrt xp to levels
  
   if(_useItem){
          _attackPoints = _inventory == 1 ? _attackPoints * 2   : _attackPoints;
          _healthPoints = _inventory == 2 ? _healthPoints * 2   : _healthPoints; 
           rewards      = _inventory == 3 ?  rewards * 2        : rewards;
-          level        = _inventory == 4 ? _level * 2          : _level;
+          level        = _inventory == 4 ?  level * 2          : level; //if inventory is 4, level reward is doubled
          _healthPoints = _inventory == 5 ? _healthPoints + 200 : _healthPoints; 
          _attackPoints = _inventory == 6 ? _attackPoints * 3   : _attackPoints;
          
          inventory = 0;
   }
 
-  level = level < MAX_LEVEL ? level + (uint256(camp.expPoints)/3) : level;
+  level = _level + level;  //add level to current level
+  level = level < MAX_LEVEL ? level : MAX_LEVEL; //if level is greater than max level, set to max level
                              
   uint256 creatureHealth =  ((_sector - 1) * 12) + camp.creatureHealth; 
   uint256 attackTime = creatureHealth/_attackPoints;
