@@ -13,7 +13,7 @@ import Sector from "./components/Sector"
 import Success from "./components/Success"
 import Collection from "./components/Collection"
 import { actions, actionString } from "./config"
-import {elvesAbi, elvesContract, etherscan} from "../../utils/interact"
+import {elvesAbi, elvesContract, etherscan ,sendCampaign} from "../../utils/interact"
 import { useMoralis } from "react-moralis";
 import Staking from "./components/Staking"
 import Help from "./components/Help"
@@ -42,10 +42,24 @@ const Home = () => {
 
 
 
-    const sendCampaign = async (params) => {
-      
+    const sendCampaignFunction = async (params) => {
+        
+        console.log("sendCampaignFunction", params)
+        let {success, status, txHash} = await sendCampaign(params)
+
+        success && resetVariables()
+
+        setAlert({show: true, value: {
+            title: "Tx Sent", 
+            content: (status)            
+      }})
+        
+     //   
+
+        console.log("sendCampaign", params)
+        /* 
+
         await Moralis.enableWeb3();
-       
         const options = {
                 contractAddress: elvesContract,
                 functionName: "sendCampaign",
@@ -54,7 +68,7 @@ const Home = () => {
                 awaitReceipt: false // should be switched to false
               };
 
-              const tx = await Moralis.executeFunction(options);
+           const tx = await Moralis.executeFunction(options);
              
               tx.on("transactionHash", (hash) => { 
                 resetVariables()
@@ -80,7 +94,7 @@ const Home = () => {
            
             })
                      
-             
+           */  
    
         }
 
@@ -244,7 +258,7 @@ const getElvesfromMoralis = async (address) => {
                 {index === 2 &&  <Actions doAction={doAction} actions={actions} onChangeIndex={onChangeIndex} setGameMode={setGameMode} />}
                 {index === 3 &&  <Staking nft={activeNfts} onRunWeb3={doAction} onChangeIndex={onChangeIndex} />}
                 {index === 4 &&  <Campaign onSetCampaign={setCampaign} onChangeIndex={onChangeIndex} />}
-                {index === 5 &&  <Sector campaign={campaign} data={activeNfts} onSendCampaign={sendCampaign} onChangeIndex={onChangeIndex} mode={gameMode} /> }
+                {index === 5 &&  <Sector campaign={campaign} data={activeNfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} mode={gameMode} /> }
                 {index === 6 &&  <Success success={success} sector={sector} campaign={campaign} data={activeNfts} onChangeIndex={onChangeIndex}/>}
                 {index === 7 &&  <Receive onChangeIndex={onChangeIndex} />}
                 {index === 0  && data && wallet && <Control data={data} activities={getActivities} onSelect={onSelect} />}               

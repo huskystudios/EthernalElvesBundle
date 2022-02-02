@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react"
 import forgeIcon from "../../../assets/images/forge.png";
 import merchantIcon from "../../../assets/images/merchant.png";
+import { sendCampaign } from "../../../utils/interact";
 
 const Sector = ({campaign, onChangeIndex, onSendCampaign, data, mode}) => {
     const [confirm, setConfirm] = useState(false);
     const [rerollWeapon, setRerollWeapon] = useState(false);
     const [rerollItem, setRerollItem] = useState(false);
-    const [useItem, setUseItem] = useState(false);
+    const [useItemValue, setUseItemValue] = useState(false);
     const [sector, setSector] = useState(1)
     const [tooltip, setTooltip] = useState("");
     const [modal, setModal] = useState({show: false, nft: null})
@@ -20,17 +21,32 @@ const Sector = ({campaign, onChangeIndex, onSendCampaign, data, mode}) => {
     setCreatureHealth(((parseInt(value) - 1) * 12) + parseInt(campaign.creatureHealth))
     
     }
-    const handleChangeIndex = (value) => {
+    const handleChangeIndex = async (value) => {
+     
+        let tryTokenids = data.map(nft => {return(nft.id)})
+        let tryCampaign = campaign.id.toString()
+        let trySection = sector.toString()
+        let tryWeapon = rerollWeapon
+        let tryItem = rerollItem
+        let useItem = useItemValue
+
 
         const params = {
             ids: data.map(nft => {return(nft.id)}),
             campaign_: campaign.id.toString(),
             sector_: sector.toString(),
-            rollWeapons_: rerollWeapon ? "true" : "false",
-            rollItems_: rerollItem ? "true" : "false",
-            useitem_: useItem ? "true" : "false",
+            rollWeapons_: rerollWeapon ? true : false,
+            rollItems_: rerollItem ? true : false,
+            useitem_: useItemValue ? true : false,
         }
-        value > 0 && onSendCampaign(params)
+
+       value > 0 && onSendCampaign({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem})
+
+        
+        //value > 0 && await sendCampaign({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem})
+
+
+      
 
         onChangeIndex(value)
     }
@@ -77,7 +93,7 @@ const Sector = ({campaign, onChangeIndex, onSendCampaign, data, mode}) => {
                         <span>{`sector: ${sector}`}</span>
                         <span>{`reroll weapon: ${rerollWeapon ? "YES" : "NO"}`}</span>
                         <span>{`reroll item: ${rerollItem ? "YES" : "NO"}`}</span>
-                        <span>{`use item: ${useItem ? "YES" : "NO"}`}</span>
+                        <span>{`use item: ${useItemValue ? "YES" : "NO"}`}</span>
                         <br/>
                         <span>{`miren rewards: ${mirenRewards}`} $REN</span>
                         <span>{`creature health: ${creatureHealth}`}</span>
@@ -168,8 +184,8 @@ const Sector = ({campaign, onChangeIndex, onSendCampaign, data, mode}) => {
                         </div>
                         <div className="d-flex items-center">
                         <div 
-                            className={useItem ? "btn-sector-option active" : "btn-sector-option"} 
-                            onClick={() => mode === "campaign" && setUseItem(state => !state)}
+                            className={useItemValue ? "btn-sector-option active" : "btn-sector-option"} 
+                            onClick={() => mode === "campaign" && setUseItemValue(state => !state)}
                             onMouseEnter={() => setTooltip(`Do you use your item in {${"item in stash"}}?`)}
                             onMouseLeave={() => setTooltip("")}
                         >

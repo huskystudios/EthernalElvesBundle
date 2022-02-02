@@ -22,6 +22,7 @@ const [max, setMax] = useState(0);
 const [tokenSupply, setTokenSupply] = useState(0);
 const [init, setInit] = useState(0);
 const [currentPrice, setCurrentPrice] = useState(0);
+const [renSupply, setRenSupply] = useState(0);
 
 
 
@@ -59,11 +60,14 @@ useEffect(() => {
     const price = await Moralis.executeFunction(readOptions("getMintPriceLevel"));
 
     const totalSupply = await Moralis.executeFunction(readOptions("totalSupply"));
+
+    const totalRenSupply = 0 //await Moralis.executeFunction(readOptions("totalRenSupply"));
     
     setInit(initsupply);
     setMax(maxSupply);
     setTokenSupply(totalSupply);
     setCurrentPrice(price);
+    setRenSupply(totalRenSupply);
 
       
      // setCloudSupply(await Moralis.Cloud.run("getTokenSupply"));
@@ -168,14 +172,14 @@ return (
             <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
             <p>ADMIN CONSOLE</p>
 
-            <div>Supply: {tokenSupply} <br/> Current Price:{currentPrice.mintCost/1000000000000000000}</div>
-
+            <div>Sentinel Supply: {tokenSupply} <br/> Current Price:{currentPrice.mintCost/1000000000000000000}</div>
+            <div>$REN in circulation{renSupply}</div>
             <div className="mint-instructions">
                 <p>Press this button if peoples elves dont show up. It will loop through the current supply so be patient</p>
             </div>
             <div className="d-flex flex-row justify-center">
             {!loading ? ( 
-            <button className="btn btn-green" onClick={refreshMetaData}>Update Elf Metadata</button>) : ( 
+            <button className="btn btn-blue" onClick={refreshMetaData}>Update Elf Metadata</button>) : ( 
             <button disabled><div className="animate-bounce">Loading... {progress.toFixed(0)} %</div></button>)}
             </div>
     
@@ -198,10 +202,8 @@ return (
              <div className="mint-instructions">
                 <p>{gameStatus.publicMint ? "Public Minting is Active" : "Public Minting is Inactive"}</p>
             </div>
-             <button className={`btn ${gameStatus.wlMint ? "btn-green" : "btn-red"}`} onClick={()=> flipGameState(3)}><div className="animate-bounce">flip Whitelist... </div></button>
-             <div className="mint-instructions">
-                <p>{gameStatus.wlMint ? "Whitelist Minting is Active" : "Whitelist Minting is Inactive"}</p>
-            </div>
+         
+            
             </>}
             </div>
 

@@ -222,6 +222,44 @@ return elfArry
 
 }
 
+
+export const sendCampaign = async({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem}) => {
+  
+  let txData 
+  console.log("params:", tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem)
+    txData = nftContract.methods.sendCampaign(tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem).encodeABI()
+  
+  
+   
+  
+
+  let tx = await txPayload(txData)
+ 
+  //sign the transaction via Metamask
+try {
+  const txHash = await window.ethereum
+      .request({
+          method: 'eth_sendTransaction',
+          params: [tx],
+      })
+      
+return {
+      success: true,
+      status: (<>✅ Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+      txHash: txHash,
+
+  }
+} catch (error) {
+  return {
+      success: false,
+      status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+  }
+
+}
+
+}
+
+
 export async function getContractEvents(){
 
   const init = {method: 'GET', headers: { }}

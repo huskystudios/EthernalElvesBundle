@@ -64,9 +64,10 @@ const Control = ({data, activities, onSelect}) => {
         }else if(diff < 48){
             healthBar = 2
         }
-            
-
+            console.log(diff)
+        let fullHealth = tZero.getTime() > tOne.getTime() ? true : false
         
+        healthBar = fullHealth ? 100 : healthBar
         
 
       
