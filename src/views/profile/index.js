@@ -126,7 +126,7 @@ const Profile = () => {
         <th>Inventory</th>
         {/*<th>Weapon Index</th>*/}
         <th>Weapon Name</th>
-        <th>Weapon Tier</th>
+         {/*<th>Weapon Tier</th>*/}
         <th>level</th>
         <th>class</th>
         <th>Action Taken</th>
@@ -161,8 +161,8 @@ const Profile = () => {
                     <td>{line.name}</td>
                     <td>{line.inventoryString}</td>
                     {/*<td>{line.primaryWeapon}</td>        */} 
-                    <td>{line.attributes[3].value}</td>        
-                    <td>{line.weaponTier}</td>     
+                    <td>{line.attributes[3].value} +{line.weaponTier}</td>        
+                    
                     <td>{line.level}</td>
                     <td>{line.classString}</td>
                     <td>{line.actionString}</td>
