@@ -172,24 +172,22 @@ const Mint = () => {
             </div>
         <div className="mint-instructions">
             <p>Elves Minted: {supply}/{max}</p>
-                <p>the first {init} elves will be minted with Eth.
-                $REN will be required to spawn the next set of elves.</p>
-                <div>The price will be updated with the increase in total supply.</div>
+               
+            <p> $REN will be required to spawn the next set of elves.</p>
+               
             </div>
     
             {tooltip.show && showAlert(tooltip.value)}
-        </div>        
-
-        <div>
+       
         
-        <div className="d-flex flex-column justify-center px-4 text-uppercase dialog">
+       
             <p>MINT TABLE</p>
         <div className="table mint-table">
             <table>
                 <thead>
                     <tr>
                         <th>Total Supply Under</th>
-                        <th>$REN</th>
+                        <th>$REN required</th>
                         <th>Starting Level</th>
                     </tr>
                 </thead>
@@ -239,7 +237,7 @@ const Mint = () => {
 
 
 
-        </div>
+       
       
         </>
 
