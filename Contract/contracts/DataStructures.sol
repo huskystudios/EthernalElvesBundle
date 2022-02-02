@@ -201,17 +201,13 @@ returns (uint256 newWeaponTier, uint256 newWeapon, uint256 newInventory) {
        
         uint16 morerand = uint16(_randomize(rand, "Inventory", id_));
         uint16 diceRoll = uint16(_randomize(rand, "Dice", id_));
-        console.log("morerand: ", morerand);
-        console.log("diceRoll chance: ", diceRoll);
-
-        diceRoll = (diceRoll % 6);
-
-        console.log("diceRoll result: ", diceRoll);
         
-        if(diceRoll % 2 == 1){
+        diceRoll = (diceRoll % 6);
+        
+        if(diceRoll == 1 || diceRoll == 4){
 
             newInventory = levelTier > 3 ? morerand % 3 + 3: morerand % 6 + 1;
-            console.log("newInventory: ", newInventory);
+            console.log("newITEM: ", newInventory);
         } 
 
    }

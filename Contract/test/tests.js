@@ -165,12 +165,13 @@ describe("Ethernal Elves Contracts", function () {
       await elves.connect(addr5).mint({ value: ethers.utils.parseEther(mintPrice)});
       await elves.connect(addr5).mint({ value: ethers.utils.parseEther(mintPrice)});
 
-      await elves.connect(addr3).merchant(1);
-      await elves.connect(addr3).merchant(2);
-      await elves.connect(addr4).merchant(3);
-      await elves.connect(addr4).merchant(4);
-      await elves.connect(addr5).merchant(5);
-      await elves.connect(addr5).merchant(6);
+      await elves.connect(addr3).merchant([1], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([2], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr4).merchant([3], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr4).merchant([4], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr5).merchant([5], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr5).merchant([6], {value: ethers.utils.parseEther("0.01")})
+      
         
       console.log(await elves.elves(1))
       console.log(await elves.elves(2))
@@ -190,13 +191,33 @@ describe("Ethernal Elves Contracts", function () {
       it("Testing correct item leveling", async function () {
 
       await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
 
       await elves.setElfManually(1,1,1,6,12,10,4)
 
       await elves.connect(addr3).sendCampaign([1],1,5,1,1,1);
 
-      //10 + 3 * 2 = 16
-      console.log(await elves.elves(1))
+      await elves.connect(addr3).sendCampaign([2],1,1,1,1,1);
+
+      //10 + (3 * 2) = 16
+      console.log("LEVELLLLS")
+      console.log("level 16", await elves.elves(1))
+      console.log("level 4", await elves.elves(2))
+
+
+      console.log("After Campai4gn:");
+      await elves.connect(addr3).heal(3,4)
+     
+
+      //await elves.connect(addr3).bloodThirst([5],1,1)
+      increaseWorldTimeinSeconds(10000000,true);
+      await elves.connect(addr3).sendCampaign([3],1,1,1,1,1);
+      console.log("level 5", await elves.elves(3))
+      increaseWorldTimeinSeconds(10000000,true);
+      await elves.connect(addr3).sendCampaign([3],1,1,1,1,1);
+      console.log("level 8", await elves.elves(3))
 
 
     });});

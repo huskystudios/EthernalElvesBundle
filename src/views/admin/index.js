@@ -7,7 +7,7 @@ import Signature from "./Signature";
 import WhitelistExport from "./WhitelistExport";
 import AddToWhitelist from "./AddToWhitelist";
 import CheckWhitelist from "./CheckWhitelist";
-
+import ExportGame from "./ExportGame";
 
 const Admin = () => {
 
@@ -183,7 +183,7 @@ return (
             <button disabled><div className="animate-bounce">Loading... {progress.toFixed(0)} %</div></button>)}
             </div>
     
-
+            <ExportGame />
 
             
                 <p>FLIP GAME STATE</p>

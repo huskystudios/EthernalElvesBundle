@@ -452,7 +452,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                 }else if(action == 7){//healing loop
 
 
-                    require(elf.sentinelClass == 0, "not a healer"); 
+                  //  require(elf.sentinelClass == 0, "not a healer"); 
                     require(elf.action != 3, "cant heal while passive"); //Cant heal in passve mode
                     require(elf.timestamp < block.timestamp, "elf busy");
 
