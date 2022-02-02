@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
-//import "hardhat/console.sol"; ///REMOVE BEFORE DEPLOYMENT
+import "hardhat/console.sol"; ///REMOVE BEFORE DEPLOYMENT
 
 library DataStructures {
 
@@ -201,15 +201,17 @@ returns (uint256 newWeaponTier, uint256 newWeapon, uint256 newInventory) {
        
         uint16 morerand = uint16(_randomize(rand, "Inventory", id_));
         uint16 diceRoll = uint16(_randomize(rand, "Dice", id_));
-       // console.log("morerand: ", morerand);
-      //  console.log("diceRoll: ", diceRoll);
+        console.log("morerand: ", morerand);
+        console.log("diceRoll chance: ", diceRoll);
 
         diceRoll = (diceRoll % 6);
+
+        console.log("diceRoll result: ", diceRoll);
         
         if(diceRoll % 2 == 1){
 
             newInventory = levelTier > 3 ? morerand % 3 + 3: morerand % 6 + 1;
-            
+            console.log("newInventory: ", newInventory);
         } 
 
    }

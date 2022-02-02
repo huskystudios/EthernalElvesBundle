@@ -81,7 +81,8 @@ return (
       <p className="pt-4 text-xs">{elfObject.description}</p>
       <GetAttributes elfData={elfObject} />     
       <br/>
-      <p>Cooldown in? <Countdown date={new Date(elfObject.time)} /></p>
+      {elfObject.time}
+      <p>Cooldown in? <Countdown date={new Date(elfObject.time)*1000} /></p>
       <p>Last Action: {elfObject.actionString}</p>
       <p>Owner: {elfObject.owner}</p>
 

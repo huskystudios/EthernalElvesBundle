@@ -155,6 +155,36 @@ describe("Ethernal Elves Contracts", function () {
 
 
 
+    describe("Test Re-roll", function () {
+      it("Reroll probabailities", async function () {
+
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr4).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr4).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr5).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr5).mint({ value: ethers.utils.parseEther(mintPrice)});
+
+      await elves.connect(addr3).merchant(1);
+      await elves.connect(addr3).merchant(2);
+      await elves.connect(addr4).merchant(3);
+      await elves.connect(addr4).merchant(4);
+      await elves.connect(addr5).merchant(5);
+      await elves.connect(addr5).merchant(6);
+        
+      console.log(await elves.elves(1))
+      console.log(await elves.elves(2))
+      console.log(await elves.elves(3))
+      console.log(await elves.elves(4))
+      console.log(await elves.elves(5))
+      console.log(await elves.elves(6))
+
+
+
+    });});
+
+
+
     
     describe("Test Levels", function () {
       it("Testing correct item leveling", async function () {
