@@ -145,17 +145,16 @@ const Profile = () => {
                 
                 let passiveFlag = false
                 
-
-
-
+                    ///turn date in tto hours if less than 24 then into days    
                     if(line.action === 3){
-                        let timesince = Math.floor(((new Date() - date) / 1000)/(60*60*24))
-                        passiveString = `${timesince} days`
+                        let timesince = Math.floor(((new Date() - date) / 1000)/(60*60))
+                        if(timesince < 24){
+                            passiveString = `${timesince} hours`
+                        }else{
+                            let timesince = Math.floor(((new Date() - date) / 1000)/(60*60*24))
+                            passiveString = `${timesince} days`
+                        }
                     }
-
-                    
-
-
 
 
                 return( <tr key={index}> 
