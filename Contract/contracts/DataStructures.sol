@@ -202,11 +202,12 @@ returns (uint256 newWeaponTier, uint256 newWeapon, uint256 newInventory) {
         uint16 morerand = uint16(_randomize(rand, "Inventory", id_));
         uint16 diceRoll = uint16(_randomize(rand, "Dice", id_));
         
-        diceRoll = (diceRoll % 6);
+        diceRoll = (diceRoll % 100);
         
-        if(diceRoll == 1 || diceRoll == 4){
+        if(diceRoll <= 20){
 
             newInventory = levelTier > 3 ? morerand % 3 + 3: morerand % 6 + 1;
+            console.log("Token#: ", id_);
             console.log("newITEM: ", newInventory);
         } 
 

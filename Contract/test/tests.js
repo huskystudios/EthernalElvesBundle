@@ -124,7 +124,7 @@ describe("Ethernal Elves Contracts", function () {
 
   });
 
-  describe("Test Transfers", function () {
+ /* describe("Test Transfers", function () {
     it("Testing all the erc721 transfer functions", async function () {
 
       
@@ -152,7 +152,7 @@ describe("Ethernal Elves Contracts", function () {
   expect(await elves.ownerOf(1)).to.equal(addr5.address);
 
     })});
-
+*/
 
 
     describe("Test Re-roll", function () {
@@ -160,6 +160,26 @@ describe("Ethernal Elves Contracts", function () {
 
       await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
       await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+
+
       await elves.connect(addr4).mint({ value: ethers.utils.parseEther(mintPrice)});
       await elves.connect(addr4).mint({ value: ethers.utils.parseEther(mintPrice)});
       await elves.connect(addr5).mint({ value: ethers.utils.parseEther(mintPrice)});
@@ -167,18 +187,34 @@ describe("Ethernal Elves Contracts", function () {
 
       await elves.connect(addr3).merchant([1], {value: ethers.utils.parseEther("0.01")})
       await elves.connect(addr3).merchant([2], {value: ethers.utils.parseEther("0.01")})
-      await elves.connect(addr4).merchant([3], {value: ethers.utils.parseEther("0.01")})
-      await elves.connect(addr4).merchant([4], {value: ethers.utils.parseEther("0.01")})
-      await elves.connect(addr5).merchant([5], {value: ethers.utils.parseEther("0.01")})
-      await elves.connect(addr5).merchant([6], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([3], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([4], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([5], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([6], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([7], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([8], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([9], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([10], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([11], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([12], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([13], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([14], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([15], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([16], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([17], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([18], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([19], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([20], {value: ethers.utils.parseEther("0.01")})
+      increaseWorldTimeinSeconds(10000000,true);
+      await elves.connect(addr4).merchant([21], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr4).merchant([22], {value: ethers.utils.parseEther("0.01")})
+      increaseWorldTimeinSeconds(10000000,true);
+      await elves.connect(addr5).merchant([23], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr5).merchant([24], {value: ethers.utils.parseEther("0.01")})
+      //increaseWorldTimeinSeconds(10000000,true);
       
-        
-      console.log(await elves.elves(1))
-      console.log(await elves.elves(2))
-      console.log(await elves.elves(3))
-      console.log(await elves.elves(4))
-      console.log(await elves.elves(5))
-      console.log(await elves.elves(6))
+      
+      
 
 
 

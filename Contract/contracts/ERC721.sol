@@ -144,7 +144,8 @@ contract ERC721 {
         delete getApproved[tokenId];
 
         ownerOf[tokenId] = to;
-        emit Transfer(msg.sender, to, tokenId);
+
+        emit Transfer(from, to, tokenId);
     }
 
     function _mint(address to, uint256 tokenId) internal {
