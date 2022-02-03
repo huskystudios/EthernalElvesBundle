@@ -24,12 +24,12 @@ const Overview = ({nft, onChangeIndex, onRunWeb3}) => {
                     <h3>{modal.heading}</h3>
                     {modal.action === "forging" && 
                         <>
-                        <p>there is 15% chance you will get a higher tier weapon or a different weapon within the same tier.</p>
+                        <p>there is 20% chance you will get a higher tier weapon, 10% chance you will get downgraded and 70% chance you get a different weapon within the same tier.</p>
                         </>
                     }
                     {modal.action === "merchant" && 
                         <>
-                        <p>there is 8% chance you will get a new item..</p>
+                        <p>there is 20% chance you will get a new item..</p>
                         </>
                     }
                     <div className="d-flex flex-row justify-around align-center">
@@ -105,7 +105,7 @@ const Overview = ({nft, onChangeIndex, onRunWeb3}) => {
                 <div className="active-actions">
                     <div className="lounge">elven lounge</div>
                     <div className="btn-lounge" onClick={() => {setModal({show: true, action:"forging", heading:"DO YOU WANT TO FORGE A NEW WEAPON?", content:"forge"})}}><img src={forgeIcon} alt="forge icon" />forge</div>
-                    <div className="btn-lounge" onClick={() => {setModal({show: true, action:"merchant", heading:"DO YOU WANT TO BUY A NEW ITEM?", content:"buy"})}}><img src={merchantIcon} alt="merchant icon" />merchant</div>
+                    <div className="btn-lounge" onClick={() => {setModal({show: true, action:"merchant", heading:"DO YOU WANT TO TRY FOR A NEW ITEM?", content:"buy"})}}><img src={merchantIcon} alt="merchant icon" />merchant</div>
                    
                 </div>
                 

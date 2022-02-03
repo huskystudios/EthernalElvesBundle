@@ -11,6 +11,7 @@ import Admin from './views/admin';
 import Profile from './views/profile';
 import Faq from './views/faq';
 import ImageApp from './views/lookup';
+import WhaleMode from './views/whaleMode';
 import { getCurrentWalletConnected } from './utils/interact'
 import { useState, useEffect } from 'react';
 
@@ -60,6 +61,10 @@ function App() {
               </Route>
               <Route exact path="/lookup">
                <ImageApp />
+               
+              </Route>
+              <Route exact path="/whalemode">
+               <WhaleMode />
                
               </Route>
             </Switch>

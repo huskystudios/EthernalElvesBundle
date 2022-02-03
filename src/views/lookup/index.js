@@ -129,8 +129,14 @@ return (
 
         <div className="flex justify-between mt-1">
         <div className="font-semibold text-sm">Status</div>
-        <div className="font-semibold text-sm">{elfObject.elfStatus}</div>
+        <div className="font-semibold text-sm">{elfObject.elfStatus}</div>        
         </div>
+
+        <div className="flex justify-between mt-1">
+        <div className="font-semibold text-sm">Item</div>
+        <div className="font-semibold text-sm">{elfObject.inventoryString}</div>        
+        </div>
+
 
 
       </div>

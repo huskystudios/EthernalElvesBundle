@@ -9,8 +9,8 @@ import "./Interfaces.sol";
 
 // We are the Ethernal. The Ethernal Elves         
 // Written by 0xHusky & Beff Jezos. Everything is on-chain for all time to come.
-// Version 1.0.2 
-//patch notes: HealerFix 
+// Version 1.0.3
+//patch notes: ICY Patch and Items PAtch
 
 contract EthernalElvesV2 is ERC721 {
 

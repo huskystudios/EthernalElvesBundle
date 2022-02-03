@@ -3,6 +3,7 @@ pragma solidity 0.8.7;
 
 import "./DataStructures.sol";
 //import "hardhat/console.sol";
+//patch notes: fixed inventory bugging out
 
 contract ElfCampaignsV2 {
 
@@ -65,6 +66,8 @@ returns(uint256 level, uint256 rewards, uint256 timestamp, uint256 inventory){
   rewards = rewards * (1 ether);
 
   level = (uint256(camp.expPoints)/3); //convetrt xp to levels
+
+  inventory = _inventory;
  
   if(_useItem){
          _attackPoints = _inventory == 1 ? _attackPoints * 2   : _attackPoints;

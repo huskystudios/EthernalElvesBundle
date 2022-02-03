@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
-import "hardhat/console.sol"; ///REMOVE BEFORE DEPLOYMENT
+//import "hardhat/console.sol"; ///REMOVE BEFORE DEPLOYMENT
 
 library DataStructures {
 
@@ -161,7 +161,7 @@ function calcCreatureHealth(uint256 sector, uint256 baseCreatureHealth) internal
 }
 
 function roll(uint256 id_, uint256 level_, uint256 rand, uint256 rollOption_, uint256 weaponTier_, uint256 primaryWeapon_, uint256 inventory_) 
-internal view 
+internal pure 
 returns (uint256 newWeaponTier, uint256 newWeapon, uint256 newInventory) {
 
    uint256 levelTier = level_ == 100 ? 5 : uint256((level_/20) + 1);
@@ -207,8 +207,8 @@ returns (uint256 newWeaponTier, uint256 newWeapon, uint256 newInventory) {
         if(diceRoll <= 20){
 
             newInventory = levelTier > 3 ? morerand % 3 + 3: morerand % 6 + 1;
-            console.log("Token#: ", id_);
-            console.log("newITEM: ", newInventory);
+            //console.log("Token#: ", id_);
+            //console.log("newITEM: ", newInventory);
         } 
 
    }
