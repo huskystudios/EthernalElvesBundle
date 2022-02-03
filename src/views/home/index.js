@@ -129,7 +129,7 @@ const Home = () => {
                   tx.on("transactionHash", (hash) => { 
                     resetVariables()
                     setAlert({show: true, value: {
-                        title: "Tx Successfull", 
+                        title: "Tx Successful", 
                         content: (<>✅ Check out your transaction on <a target="_blank" rel="noreferrer" href={`https://${etherscan}.io/tx/${hash}`}>Etherscan</a> </>)            
                   }})
                     
@@ -148,7 +148,7 @@ const Home = () => {
 
 
                     setAlert({show: true, value: {
-                          title: "Tx Successfull", 
+                          title: "Tx Successful", 
                           content: response            
                     }})
                 

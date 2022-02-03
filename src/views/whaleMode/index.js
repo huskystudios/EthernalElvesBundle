@@ -70,7 +70,7 @@ const WhaleMode = () => {
               tx.on("transactionHash", (hash) => { 
                 resetVariables()
                 setAlert({show: true, value: {
-                    title: "Tx Successfull", 
+                    title: "Tx Successful", 
                     content: (<>✅ Check out your transaction on <a target="_blank" rel="noreferrer" href={`https://${etherscan}.io/tx/${hash}`}>Etherscan</a> </>)            
               }})
                 
@@ -85,7 +85,7 @@ const WhaleMode = () => {
                 : response = `Elf#${receipt.events.Action.returnValues.tokenId} has started doing action ${actionString[receipt.events.Action.returnValues.action].text}`
        
                 setAlert({show: true, value: {
-                      title: "Tx Successfull", 
+                      title: "Tx Successful", 
                       content: response            
                 }})
             
@@ -111,7 +111,7 @@ const WhaleMode = () => {
                   tx.on("transactionHash", (hash) => { 
                     resetVariables()
                     setAlert({show: true, value: {
-                        title: "Tx Successfull", 
+                        title: "Tx Successful", 
                         content: (<>✅ Check out your transaction on <a target="_blank" rel="noreferrer" href={`https://${etherscan}.io/tx/${hash}`}>Etherscan</a> </>)            
                   }})
                     
@@ -126,7 +126,7 @@ const WhaleMode = () => {
                     : response = `Elf#${receipt.events.Action.returnValues.tokenId} has started doing action ${actionString[receipt.events.Action.returnValues.action].text}`
            
                     setAlert({show: true, value: {
-                          title: "Tx Successfull", 
+                          title: "Tx Successful", 
                           content: response            
                     }})
                 
@@ -153,7 +153,7 @@ const WhaleMode = () => {
               tx.on("transactionHash", (hash) => { 
                 resetVariables()
                 setAlert({show: true, value: {
-                    title: "Tx Successfull", 
+                    title: "Tx Successful", 
                     content: (<>✅ Check out your transaction on <a target="_blank" rel="noreferrer" href={`https://${etherscan}.io/tx/${hash}`}>Etherscan</a> </>)            
               }})
                 
@@ -168,7 +168,7 @@ const WhaleMode = () => {
                 : response = `Elf#${receipt.events.Action.returnValues.tokenId} has started doing action ${actionString[receipt.events.Action.returnValues.action].text}`
        
                 setAlert({show: true, value: {
-                      title: "Tx Successfull", 
+                      title: "Tx Successful", 
                       content: response            
                 }})
             
@@ -195,7 +195,7 @@ const WhaleMode = () => {
               tx.on("transactionHash", (hash) => { 
                 resetVariables()
                 setAlert({show: true, value: {
-                    title: "Tx Successfull", 
+                    title: "Tx Successful", 
                     content: (<>✅ Check out your transaction on <a target="_blank" rel="noreferrer" href={`https://${etherscan}.io/tx/${hash}`}>Etherscan</a> </>)            
               }})
                 
@@ -210,7 +210,7 @@ const WhaleMode = () => {
                 : response = `Elf#${receipt.events.Action.returnValues.tokenId} has started doing action ${actionString[receipt.events.Action.returnValues.action].text}`
                
                 setAlert({show: true, value: {
-                      title: "Tx Successfull", 
+                      title: "Tx Successful", 
                       content: response            
                 }})
             
