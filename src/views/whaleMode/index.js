@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useMemo } from "react"
 import Loader from "../../components/Loader"
 import { useMoralis } from "react-moralis"
 import "./style.css"
@@ -18,12 +18,21 @@ const WhaleMode = () => {
     const [tryCampaign, setTryCampaign] = useState(1)
     const [trySection, setTrySection] = useState(1)
     
+    const [isButtonEnabled, setIsButtonEnabled] = useState({
+        unstake: false,
+        rerollWeapon: false,
+        rerollItem: false,
+        sendPassive: false,
+        returnPassive: false,
+        heal: false,
+        sendCampaign: false,
+    });
  
     
 
     const [clicked, setClicked] = useState([]);
 
-    const [data, setData] = useState()
+    const [data, setData] = useState([])
     const [activeNfts, setActiveNfts] = useState()
     const [txreceipt, setTxReceipt] = useState()
     const [alert, setAlert] = useState({show: false, value: null})
@@ -50,7 +59,40 @@ const WhaleMode = () => {
     
 
 
-    
+    useMemo(() => {
+        const selectedElves = data?.filter((elf) => clicked.includes(elf.id));
+
+        const isInactive = (elf) => new Date() > new Date(elf.time * 1000);
+        const isPassive = (elf) => elf.action === 3;
+        const reducer = (accumulator, key) => {
+            if (selectedElves.length === 0) return {...accumulator, [key]: false};
+
+            let value = false;
+            switch (key) {
+                case "heal":
+                    value = selectedElves.every((elf) => isInactive(elf) && elf.sentinelClass === 0);
+                    break;
+                case "sendPassive":
+                case "sendCampaign":
+                case "unstake":
+                    value = selectedElves.every((elf) => isInactive(elf) && !isPassive(elf));
+                    break;
+                case "returnPassive":
+                    value = selectedElves.every((elf) => isInactive(elf) && isPassive(elf));
+                    break;
+                case "rerollWeapon":
+                case "rerollItem":
+                default:
+                    value = selectedElves.every((elf) => !isPassive(elf));
+                    break;
+            }
+            return {...accumulator, [key]: value};
+        }
+
+        const buttonEnabledState = Object.keys(isButtonEnabled).reduce(reducer, {});
+
+        setIsButtonEnabled(buttonEnabledState);
+    }, [clicked, data]);
 
 
     const passiveMode = async (option) => {
@@ -334,16 +376,55 @@ const WhaleMode = () => {
                         </div>
                     
                     <div className="flex p-10">
-                    <button className="btn-whale" onClick={unStake}>Unstake</button>
-                    <button className="btn-whale" onClick={() => reRoll("forging")}>Re-Roll Weapon</button>
-                    <button className="btn-whale" onClick={() => reRoll("merchant")}>Re-Roll Item</button>
-                    <button className="btn-whale" onClick={() => passiveMode("passive")}>Send to Passive</button>
-                    <button className="btn-whale" onClick={() => passiveMode("returnPassive")}>Return from Passive</button>
-                    
-                    <button className="btn-whale" onClick={heal}>Heal</button>
-                   
-                 <button className="btn-whale" onClick={()=> setHealModal(true)}>Send to Campaign</button>
-                
+                        <button
+                            disabled={!isButtonEnabled.unstake}
+                            className="btn-whale"
+                            onClick={unStake}
+                        >
+                            Unstake
+                        </button>
+                        <button
+                            disabled={!isButtonEnabled.rerollWeapon}
+                            className="btn-whale"
+                            onClick={() => reRoll("forging")}
+                        >
+                            Re-Roll Weapon
+                        </button>
+                        <button
+                            disabled={!isButtonEnabled.rerollItem}
+                            className="btn-whale"
+                            onClick={() => reRoll("merchant")}
+                        >
+                            Re-Roll Item
+                        </button>
+                        <button
+                            disabled={!isButtonEnabled.sendPassive}
+                            className="btn-whale"
+                            onClick={() => passiveMode("passive")}
+                        >
+                            Send to Passive
+                        </button>
+                        <button
+                            disabled={!isButtonEnabled.returnPassive}
+                            className="btn-whale"
+                            onClick={() => passiveMode("returnPassive")}
+                        >
+                            Return from Passive
+                        </button>
+                        <button
+                            disabled={!isButtonEnabled.heal}
+                            className="btn-whale"
+                            onClick={heal}
+                        >
+                            Heal
+                        </button>
+                        <button
+                            disabled={!isButtonEnabled.sendCampaign}
+                            className="btn-whale"
+                            onClick={()=> setHealModal(true)}
+                        >
+                            Send to Campaign
+                        </button>
                     </div>     
                 
                   

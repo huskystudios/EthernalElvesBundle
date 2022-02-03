@@ -147,11 +147,15 @@ td, th {
     text-align: center;
     background-image: url(../../assets/images/stats_back.png);
   }
-  .btn-whale:hover {
-    -webkit-text-shadow: 1px 1px 3px cyan;
-    -moz-text-shadow: 1px 1px 3px cyan;
-    text-shadow: 1px 1px 3px cyan;
-    /* color: cyan; */
-    background-image: url(../../assets/images/btn_blue.png);
-  }
+.btn-whale:not(:disabled):hover {
+-webkit-text-shadow: 1px 1px 3px cyan;
+-moz-text-shadow: 1px 1px 3px cyan;
+text-shadow: 1px 1px 3px cyan;
+/* color: cyan; */
+background-image: url(../../assets/images/btn_blue.png);
+}
   
+.btn-whale:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
