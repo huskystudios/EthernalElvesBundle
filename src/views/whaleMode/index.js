@@ -389,7 +389,6 @@ const WhaleMode = () => {
                         }
                     }
                 
-                    let rowStyle = index % 2 === 0 ? "rowa" : "rowb"
                     let rowSelected = clicked.includes(parseInt(line.id)) ? "rowSelected" : ""
 
                     let healer = line.class === "Druid" ? "healer" : ""
@@ -398,7 +397,7 @@ const WhaleMode = () => {
                     
 
 
-                return( <tr key={index} className={`${rowStyle} ${" "} ${rowSelected} row`} onClick={()=> handleClick(parseInt(line.id))}  > 
+                return( <tr key={index} className={`${rowSelected} row`} onClick={()=> handleClick(parseInt(line.id))}  > 
                     <td>{line.name}</td>
                     <td>{line.elfStatus}</td>
                     <td>{line.inventoryString}</td>
@@ -427,7 +426,7 @@ const WhaleMode = () => {
                 </tbody>
                 </table>
 
-                <div class="flex flex-wrap">
+                <div className="flex flex-wrap">
                 {clicked.map((id, index) => {
                     const elf = data.find(line => line.id === id)
                   

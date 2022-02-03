@@ -74,29 +74,27 @@ td, th {
  
 }
 
-.rowa {
+.row {
     height: 40px;
     gap: 12px;
-    background-color: #000000;
 }
 
-.rowb {
-    height: 40px;
-    gap: 12px;
-    background-color: #454545;
-
+.row:nth-child(even) {
+    background-color: #222;
 }
 
+.rowSelected:nth-child(even),
 .rowSelected {
-    height: 40px;
-    gap: 12px;
-    background-color: #552f2f;
+    background-color: #522;
 }
 
-.row :hover
-{
-    background-color: #333;
-    pointer-events: all;
+.row:hover {
+    background-color: #733;
+    cursor: pointer;
+}
+
+.row:nth-child(even):hover {
+    background-color: #844;
 }
 
 .whale-thumb {
