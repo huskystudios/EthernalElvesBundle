@@ -234,7 +234,7 @@ return (
              {actionDistribution && actionDistribution.map((level, index) => {
                 return (
                   <div key={index} className="flex">
-                    <div>Action {level.objectId}: {level.tokens.length}</div>
+                    <div>{level.objectId}: {level.tokens.length}</div>
                    </div> )})}
 
              
