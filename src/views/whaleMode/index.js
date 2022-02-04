@@ -456,7 +456,7 @@ const WhaleMode = () => {
         {/*<th>Weapon Index</th>*/}
         <th>Weapon Name</th>
          {/*<th>Weapon Tier</th>*/}
-         <th>hp+  <FontAwesomeIcon icon={["fas", "coffee"]} /></th>
+         <th>hp+</th>
          <th>ap+</th>
         <th>level</th>
         <th>class</th>
