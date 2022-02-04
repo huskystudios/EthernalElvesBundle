@@ -155,3 +155,21 @@ background-image: url(../../assets/images/stats_back_hover.png);
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+.modal-whale-campaign-grid {
+    display: grid;
+    gap: 0.5em;
+    grid-template-columns: repeat(2, 1fr);
+    text-align: left;
+    margin-bottom: 1em;
+}
+
+.modal-whale-campaign  .modal-content {
+    box-shadow: 0 0 4em black;
+}
+
+.modal-whale-campaign input[type="number"] {
+    width: 2.5em;
+    margin: 0 auto;
+    text-align: center;
+}

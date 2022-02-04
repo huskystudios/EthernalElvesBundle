@@ -36,7 +36,7 @@ const WhaleMode = () => {
     const [activeNfts, setActiveNfts] = useState()
     const [txreceipt, setTxReceipt] = useState()
     const [alert, setAlert] = useState({show: false, value: null})
-    const [healModal, setHealModal] = useState(false)
+    const [campaignModal, setCampaignModal] = useState(false)
     const [modal, setModal] = useState({show: false, content: ""})
     const resetVariables = async () => {
         setClicked([])
@@ -64,17 +64,21 @@ const WhaleMode = () => {
 
         const isInactive = (elf) => new Date() > new Date(elf.time * 1000);
         const isPassive = (elf) => elf.action === 3;
+        const isStaked = (elf) => elf.elfStatus === "staked";
         const reducer = (accumulator, key) => {
             if (selectedElves.length === 0) return {...accumulator, [key]: false};
 
             let value = false;
             switch (key) {
+                case "unstake":
+                    value = selectedElves.every((elf) => isInactive(elf) && isStaked(elf));
+                    break;
                 case "heal":
-                    value = selectedElves.every((elf) => isInactive(elf) && elf.sentinelClass === 0);
+                    const [druid, target] = selectedElves;
+                    value = druid && isInactive(druid) && druid.sentinelClass === 0 && target && !isInactive(target) && target.sentinelClass !== 0;
                     break;
                 case "sendPassive":
                 case "sendCampaign":
-                case "unstake":
                     value = selectedElves.every((elf) => isInactive(elf) && !isPassive(elf));
                     break;
                 case "returnPassive":
@@ -291,9 +295,16 @@ const WhaleMode = () => {
 
 
 
-          const sendCampaignFunction = async (params) => {
+          const sendCampaignFunction = async () => {
 
-           /// value > 0 && onSendCampaign({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem})
+            const params = {
+                tryTokenids: clicked,
+                tryCampaign,
+                trySection,
+                tryWeapon,
+                tryItem,
+                useItem,
+            };
 
         
             console.log("sendCampaignFunction", params)
@@ -328,30 +339,31 @@ const WhaleMode = () => {
 
 
         const renderModal = () => {
-            if(!healModal) return <></>
+            if(!campaignModal) return <></>
             return(
-                <div className="modal">
+                <div className="modal modal-whale-campaign">
                     <div className="modal-content items-center">
-                        <span className="close-modal" onClick={() => setHealModal(false)}>X</span>
+                        <span className="close-modal" onClick={() => setCampaignModal(false)}>X</span>
                         <h3>All selected Elves will go to the same campaign</h3>
-                        <div className="flex">
-                            <div className="flex-1">
-                                <label>Campaign</label>
-                                <input type="text" value={tryCampaign} onChange={(e) => setTryCampaign(e.target.value)}/>
-                            </div>
-                            <div className="flex-1">
-                                <label>Section</label>
-                                <input type="text" value={trySection} onChange={(e) => setTrySection(e.target.value)}/>
-                            </div>
-                            <div className="flex-1">
-                                <label>Weapon</label>
-                                <input type="text" value={tryWeapon} onChange={(e) => setTryWeapon(e.target.value)}/>
-                            </div>
-                         </div>          
+                        <div className="modal-whale-campaign-grid">
+                            <label>Campaign</label>
+                            <input type="number" min="1" max="3" value={tryCampaign} onChange={(e) => setTryCampaign(e.target.value)}/>
+                            <label>Section</label>
+                            <input type="number" min="1" max="5" value={trySection} onChange={(e) => setTrySection(e.target.value)}/>
+                            <label>Re-roll Weapon</label>
+                            <input type="checkbox" checked={tryWeapon} onChange={(e) => setTryWeapon(!tryWeapon)}/>
+                            <label>Re-roll Item</label>
+                            <input type="checkbox" checked={tryItem} onChange={(e) => setTryItem(!tryItem)}/>
+                            <label>Use Item</label>
+                            <input type="checkbox" checked={useItem} onChange={(e) => setUseItem(!useItem)}/>
+                        </div>
 
-                       
-                        
-                      
+                        <button
+                            className="btn-whale"
+                            onClick={sendCampaignFunction}
+                        >
+                            Confirm
+                        </button>
                     </div>
                 </div>
             )
@@ -421,7 +433,7 @@ const WhaleMode = () => {
                         <button
                             disabled={!isButtonEnabled.sendCampaign}
                             className="btn-whale"
-                            onClick={()=> setHealModal(true)}
+                            onClick={()=> setCampaignModal(true)}
                         >
                             Send to Campaign
                         </button>
