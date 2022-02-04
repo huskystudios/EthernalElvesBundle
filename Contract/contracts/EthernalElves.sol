@@ -9,8 +9,8 @@ import "./Interfaces.sol";
 
 // We are the Ethernal. The Ethernal Elves         
 // Written by 0xHusky & Beff Jezos. Everything is on-chain for all time to come.
-// Version 1.0.3
-//patch notes: ICY Patch and Items PAtch
+// Version 1.0.4
+//patch notes: ICY Patch and Items Patch
 
 contract EthernalElvesV2 is ERC721 {
 
@@ -418,8 +418,6 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                     actions.timeDiff = (block.timestamp - elf.timestamp) / 1 days; //amount of time spent in camp CHANGE TO 1 DAYS!
 
                     
-                    //NOTE THIS IS OVERPOWERED AND NEEDS TO BE LESS POWERFUL
-        
                     if(actions.timeDiff >= 7){
                         actions.reward = 140 ether;
                     }
@@ -430,7 +428,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                         actions.reward = 1200 ether;
                     }
                     
-                    elf.level = elf.level + (actions.timeDiff * 2); //two levels per day
+                    elf.level = elf.level + (actions.timeDiff * 1); //one level per day
                     elf.level = elf.level > 100 ? 100 : elf.level;
 
  
