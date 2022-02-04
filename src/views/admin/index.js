@@ -187,7 +187,7 @@ return (
             </div>
             <div className="d-flex flex-row justify-center">
             {!loading ? ( 
-            <button className="btn btn-blue" onClick={()=>refreshMetaData}>Update Elf Metadata</button>) : ( 
+            <button className="btn btn-blue" onClick={refreshMetaData}>Update Elf Metadata</button>) : ( 
             <button disabled><div className="animate-bounce">Loading... {progress.toFixed(0)} %</div></button>)}
             </div>
     

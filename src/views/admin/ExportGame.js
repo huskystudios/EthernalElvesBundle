@@ -220,8 +220,8 @@ const getElfMetaData = async () => {
 	
 
 
-{!loading ? <CSVLink {...csvReport}>Export to CSV</CSVLink> : <button className="btn btn-blue" onClick={()=>getElfMetaData}>UpdateDB</button>}
-{<button className="btn btn-blue" onClick={()=>exportData}>Export Game</button>}
+{!loading ? <CSVLink {...csvReport}>Export to CSV</CSVLink> : <button className="btn btn-blue" onClick={getElfMetaData}>UpdateDB</button>}
+{<button className="btn btn-blue" onClick={exportData}>Export Game</button>}
 
 {progress.toFixed(0)}%
 
