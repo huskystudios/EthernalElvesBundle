@@ -20,8 +20,9 @@ const MainLayout = (props) => {
             <div className="app-header">
                 <img className="app-logo" src={logoImg} alt="logo" />
                 <div className="header-body"> 
-                    {/*<NavLink className="nav-item" to="/">play</NavLink>*/}
+                    
                     <div onClick={onClickHome} className="nav-item" to="/">play</div>
+                    <NavLink className="nav-item" to="/whalemode">whale Mode</NavLink>
                     <NavLink className="nav-item" to="/profile">profile</NavLink>
                     <ConnectWallet setStatus={setStatus} onSetWallet={setWallet} />
                     <NavLink className="nav-item" to="/mint">mint</NavLink>

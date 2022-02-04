@@ -6,6 +6,8 @@ import { actionString } from "../home/config"
 import Countdown from 'react-countdown';
 import {elvesAbi, getCampaign, elvesContract, etherscan ,sendCampaign, lookupMultipleElves, getCurrentWalletConnected} from "../../utils/interact"
 //import {campaigns} from "../../components/Campaigns"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 
 
 const WhaleMode = () => {
@@ -33,7 +35,7 @@ const WhaleMode = () => {
     const [clicked, setClicked] = useState([]);
 
     const [data, setData] = useState([])
-    const [activeNfts, setActiveNfts] = useState()
+    const [activeNfts, setActiveNfts] = useState(true)
     const [txreceipt, setTxReceipt] = useState()
     const [alert, setAlert] = useState({show: false, value: null})
     const [campaignModal, setCampaignModal] = useState(false)
@@ -42,13 +44,15 @@ const WhaleMode = () => {
         setClicked([])
         setData([])
         setTxReceipt([])
-        setActiveNfts([])
+        setCampaignModal(false)
+        setActiveNfts(!activeNfts)
+
     }
     
 
-   
-///create a function to add the clicked elf to the array and then remove it from the array when the button is clicked again
+
     const handleClick = async (id) => {
+
         if (clicked.includes(id)) {
             setClicked(clicked.filter(item => item !== id))
         } else {
@@ -108,7 +112,7 @@ const WhaleMode = () => {
                 functionName: option,
                 abi: elvesAbi.abi,
                 params: {ids: clicked},
-                awaitReceipt: false // should be switched to false
+                awaitReceipt: false 
               };
 
               const tx = await Moralis.executeFunction(options);
@@ -283,15 +287,15 @@ const WhaleMode = () => {
                 elves.sort((a, b) => a.time - b.time) 
                 console.log(elves)
                 setData(elves)        
-
+                setStatus(elves.length + " elves")
                 setStatus("done")
-                elves && setLoading(false)
+                elves.length >= 8 ? setLoading(false) :  setStatus("need 8 or more elves to use whale mode. Whale count: " + elves.length + " elves")
             
     
             }
             
             getData()
-          },[])
+          },[activeNfts])
 
 
 
@@ -307,10 +311,11 @@ const WhaleMode = () => {
             };
 
         
-            console.log("sendCampaignFunction", params)
+       
             let {success, status, txHash} = await sendCampaign(params)
     
             success && resetVariables()
+            
     
             setAlert({show: true, value: {
                 title: "Tx Sent", 
@@ -377,10 +382,10 @@ const WhaleMode = () => {
 
         {alert.show && showAlert(alert.value)}
             <div className="dark-1000 h-full d-flex flex-column profile">           
-
+            <FontAwesomeIcon icon={["far", "coffee"]} />
                 <div className="d-flex">      
                     <div className="column">
-                    <p>Disclaimer: Function overflows are unchecked - make sure you double check before you send.</p>
+                  
                         <div className="flex">
                         
                         <h2>Whale Mode</h2>
@@ -439,7 +444,7 @@ const WhaleMode = () => {
                         </button>
                     </div>     
                 
-                  
+                 
                     
     <div className="table-whale">          
       <table style={{width: '100%'}}>
@@ -451,7 +456,7 @@ const WhaleMode = () => {
         {/*<th>Weapon Index</th>*/}
         <th>Weapon Name</th>
          {/*<th>Weapon Tier</th>*/}
-         <th>hp+</th>
+         <th>hp+  <FontAwesomeIcon icon={["fas", "coffee"]} /></th>
          <th>ap+</th>
         <th>level</th>
         <th>class</th>
@@ -460,7 +465,7 @@ const WhaleMode = () => {
         </tr>
       </thead>
       <tbody>
-          
+     
 
             {data.map((line, index) => {
 
@@ -518,6 +523,18 @@ const WhaleMode = () => {
             
                 </tbody>
                 </table>
+
+                <div>
+                    <ul>
+                    <li>
+                        Healing: click a Druid then click the Ranger or Assassin you want to heal next. Then click heal. You should have selected only two elves.
+                        </li>
+                        <li>
+                        Disclaimer: Function overflows are unchecked - make sure you double check before you send.
+                        </li>
+                    </ul>
+               
+                </div>
 
                 <div className="flex flex-wrap">
                 {clicked.map((id, index) => {

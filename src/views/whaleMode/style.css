@@ -69,6 +69,13 @@ td, th {
     gap: 12px;
 }
 
+.table-whale th{   
+    font-size: 16px;
+    background-color: #808080;
+    padding-left: 6px;
+
+}
+
 .table-whale td{
     padding-left: 8px;
  
@@ -98,7 +105,7 @@ td, th {
 }
 
 .whale-thumb {
-    width: 50px;
+    width: 90px;
    
     background-color: #000000;
     border-radius: 10px;
