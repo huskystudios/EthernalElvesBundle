@@ -9,10 +9,12 @@ import AddToWhitelist from "./AddToWhitelist";
 import CheckWhitelist from "./CheckWhitelist";
 import ExportGame from "./ExportGame";
 import CampaignAdmin from "./Campaign";
+import Loader from "../../components/Loader";
 
 const Admin = () => {
 
 const [loading, setLoading] = useState(true);
+const [loading1, setLoading1] = useState(true);
 // const [showData, setShowData] = useState(false);
 const [progress, setProgress] = useState(0);
 
@@ -24,7 +26,10 @@ const [tokenSupply, setTokenSupply] = useState(0);
 const [init, setInit] = useState(0);
 const [currentPrice, setCurrentPrice] = useState(0);
 const [renSupply, setRenSupply] = useState(0);
-
+const [ownerCount, setOwnerCount] = useState(0);
+const [ownerTable, setOwnerTable] = useState([]);
+const [levelDistribution, setLevelDistribution] = useState([]);
+const [actionDistribution, setActionDistribution] = useState([]);
 
 
 const Elves = Moralis.Object.extend("Elves");
@@ -32,7 +37,7 @@ const Elves = Moralis.Object.extend("Elves");
 
 function readOptions(contractMethod) {
 
-  const options = {
+const options = {
 contractAddress: elvesContract,
 functionName: contractMethod,
 abi: elvesAbi.abi
@@ -57,11 +62,9 @@ useEffect(() => {
 
     const initsupply = await Moralis.executeFunction(readOptions("INIT_SUPPLY"));
     const maxSupply = await Moralis.executeFunction(readOptions("maxSupply"));
-
     const price = await Moralis.executeFunction(readOptions("getMintPriceLevel"));
-
     const totalSupply = await Moralis.executeFunction(readOptions("totalSupply"));
-
+    const ownerCount = await Moralis.Cloud.run("getAllOwners")
     const totalRenSupply = 0 //await Moralis.executeFunction(readOptions("totalRenSupply"));
     
     setInit(initsupply);
@@ -69,24 +72,33 @@ useEffect(() => {
     setTokenSupply(totalSupply);
     setCurrentPrice(price);
     setRenSupply(totalRenSupply);
+    setOwnerCount(ownerCount.length)
+    setGameStatus(await Moralis.Cloud.run("getGameStatus"))
+    setActionDistribution(await Moralis.Cloud.run("getActions"))
 
-      
-     // setCloudSupply(await Moralis.Cloud.run("getTokenSupply"));
-      setGameStatus(await Moralis.Cloud.run("getGameStatus"))
-      //getWL(await Moralis.Cloud.run("getWhitelistRemains"))
+    let levels = await Moralis.Cloud.run("levelDistribution")
 
-      setLoading(false);
+      //sort levels by objectId
+      levels.sort(function(a, b) {
+        return a.objectId - b.objectId;
+      });
+
+setLevelDistribution(levels)
+    
+    console.log(ownerCount.sort((a, b) => b.tokens.length - a.tokens.length))
+
+    setLoading(false);
 
 
     }
     init();
-}, [0])
+}, [])
 
 
 const refreshMetaData = async () => {
   // set school contract
   setProgress(1)
-  setLoading(true)
+
  
 
   let results = []
@@ -130,8 +142,6 @@ const refreshMetaData = async () => {
         console.log("object saved")
       }
 
-    // const elves = new Elves();
-    // updateMoralisDb({elf, elves}) 
     })
    
     setProgress(counter/supply*100)
@@ -151,23 +161,20 @@ const flipGameState = async (_index) => {
       
   const options = {
       contractAddress: elvesContract,
-      functionName: index === 1 ? "flipActiveStatus" : index === 2 ? "flipMint" : index === 3 ? "flipWhitelist" ? index === 4 ? "withdrawAll" : "withdrawAll" : "withdrawAll" : "withdrawAll",
+      functionName: index === 1 ? "flipActiveStatus" : "flipMint",
       abi: elvesAbi.abi,
      
     };
     
-    const tx = await Moralis.executeFunction(options);           
+    await Moralis.executeFunction(options);           
     
 
 }
 
 
 
-
-
-
 return (
-    <>
+<>
        <div className="dark-1000 h-full d-flex home justify-center items-center black">
       
             <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
@@ -180,7 +187,7 @@ return (
             </div>
             <div className="d-flex flex-row justify-center">
             {!loading ? ( 
-            <button className="btn btn-blue" onClick={refreshMetaData}>Update Elf Metadata</button>) : ( 
+            <button className="btn btn-blue" onClick={()=>refreshMetaData}>Update Elf Metadata</button>) : ( 
             <button disabled><div className="animate-bounce">Loading... {progress.toFixed(0)} %</div></button>)}
             </div>
     
@@ -213,34 +220,68 @@ return (
         </div>  
 
              
+        <div>
+        <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
+              <CampaignAdmin />
+
+              <p>HODLERS</p>
+              {ownerCount && ownerCount}
+             
+          </div>
+
+          <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
+        <p>Action distro</p>
+             {actionDistribution && actionDistribution.map((level, index) => {
+                return (
+                  <div key={index} className="flex">
+                    <div>Action {level.objectId}: {level.tokens.length}</div>
+                   </div> )})}
+
+             
+          </div>
+
+
+
+
+          </div>
+
 
 
         <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
-              <CampaignAdmin />
-              
-          </div>
-       
-
-
-
-    
-
-        
-
-
-       
-
+        <p>Level distro</p>
+             {levelDistribution && levelDistribution.map((level, index) => {
+                return (
+                  <div key={index} className="flex">
+                    <div>Level {level.objectId}: {level.tokens.length}</div>
+                   </div> )})}
 
              
+          </div>
+
+          
 
 
+        
+          {/*ownerTable && ownerTable.map((owner, index) => (
+                <div key={index} className="flex">
+                  <div>{owner.objectId}</div>
+                  Tokens
+                  <div>{owner.tokens.length}</div>
                 </div>
+          ))*/}
+  <div>
+
+
+          </div>
+       
+</div>
  </>
 
 
 
-  );
+  ) 
 };
 
 export default Admin;
+
 

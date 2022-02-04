@@ -33,7 +33,7 @@ const CampaignAdmin = () => {
          
         }
         getCampaignData()
-    }, [campaign])
+    }, [])
 
 
      return campaignArray ? (
@@ -44,9 +44,9 @@ const CampaignAdmin = () => {
                         
             return(
                 <>
-                <div className="flex text-sm">
+                <div key={index} className="flex text-sm">
                 {campaign.id}. {campaign.name}: {campaign.creatureCount} left
-                     </div>
+                 </div>
                 
                 </>
             )
