@@ -14,25 +14,25 @@ import ImageApp from './views/lookup';
 import WhaleMode from './views/whaleMode';
 import { getCurrentWalletConnected } from './utils/interact'
 import { useState, useEffect } from 'react';
+import HuskyMode from './views/huskyMode';
 
 
 require('dotenv').config();
 
   
 function App() {
-  const [wallet, setWallet] = useState("")
-  const [flip, setFlip] = useState(false)
-  
+
+const [flip, setFlip] = useState(false)  
 
   let dev1 = process.env.REACT_APP_DEV1
   let dev2 = process.env.REACT_APP_DEV2
   let dev3 = process.env.REACT_APP_DEV3
+  //let dev4 = process.env.REACT_APP_DEV4
 
   let adminWallet = [dev1.toLowerCase(), dev2.toLowerCase(), dev3.toLowerCase()]
 
   useEffect(async() => {
     const {address} = await getCurrentWalletConnected()
-    setWallet(address)
     if(adminWallet.includes(address.toLowerCase())){
       setFlip(true)
     }
@@ -56,17 +56,15 @@ function App() {
                 <Profile />
               </Route>
               <Route exact path="/faq">
-                <Faq />
-               
+                <Faq />               
               </Route>
               <Route exact path="/lookup">
-               <ImageApp />
-               
+               <ImageApp />               
               </Route>
               <Route exact path="/whalemode">
-               <WhaleMode />
-               
-              </Route>
+                <WhaleMode />
+               </Route>
+              <Route exact path="/huskymode"><HuskyMode /></Route>
             </Switch>
           </MainLayout>
         </Router>

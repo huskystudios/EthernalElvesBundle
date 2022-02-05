@@ -5,9 +5,6 @@ import "./style.css"
 import { actionString } from "../home/config"
 import Countdown from 'react-countdown';
 import {elvesAbi, getCampaign, elvesContract, etherscan ,sendCampaign, lookupMultipleElves, getCurrentWalletConnected} from "../../utils/interact"
-//import {campaigns} from "../../components/Campaigns"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 
 
 const WhaleMode = () => {
@@ -382,7 +379,7 @@ const WhaleMode = () => {
 
         {alert.show && showAlert(alert.value)}
             <div className="dark-1000 h-full d-flex flex-column profile">           
-            <FontAwesomeIcon icon={["far", "coffee"]} />
+           
                 <div className="d-flex">      
                     <div className="column">
                   

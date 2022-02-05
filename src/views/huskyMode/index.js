@@ -5,12 +5,10 @@ import "./style.css"
 import { actionString } from "../home/config"
 import Countdown from 'react-countdown';
 import {elvesAbi, getCampaign, elvesContract, etherscan ,sendCampaign, lookupMultipleElves, getCurrentWalletConnected} from "../../utils/interact"
-//import {campaigns} from "../../components/Campaigns"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 
+//Note: please dont change this I like my table view
 
-const WhaleMode = () => {
+const HuskyMode = () => {
     const [loading, setLoading] = useState(true)
     const { Moralis, authenticate } = useMoralis();
     const [status, setStatus] = useState("")
@@ -382,8 +380,7 @@ const WhaleMode = () => {
 
         {alert.show && showAlert(alert.value)}
             <div className="dark-1000 h-full d-flex flex-column profile">           
-            <FontAwesomeIcon icon={["far", "coffee"]} />
-                <div className="d-flex">      
+               <div className="d-flex">      
                     <div className="column">
                   
                         <div className="flex">
@@ -569,4 +566,4 @@ const WhaleMode = () => {
     ) : <Loader text={status} />
 }
 
-export default WhaleMode
+export default HuskyMode
