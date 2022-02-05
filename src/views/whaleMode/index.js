@@ -469,8 +469,6 @@ const WhaleMode = () => {
      
 
             {data.map((line, index) => {
-
-
                 const date = new Date(line.time * 1000)
                 const isActive = new Date() > date
                 let passiveString = ""
@@ -500,7 +498,7 @@ const WhaleMode = () => {
                     <td><img src={line.image} alt="Elf" /></td>
                     <td>{line.name}</td>
                     <td>{line.elfStatus}</td>
-                    <td>{line.inventoryString}</td>
+                    <td>{line.attributes[5].value}</td>
                     {/*<td>{line.primaryWeapon}</td>        */} 
                     <td>{line.attributes[3].value} +{line.weaponTier}</td>        
                     <td>{line.health}</td>        
