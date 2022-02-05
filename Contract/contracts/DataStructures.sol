@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
 //import "hardhat/console.sol"; ///REMOVE BEFORE DEPLOYMENT
+//v 1.0.3
 
 library DataStructures {
 
@@ -173,7 +174,7 @@ returns (uint256 newWeaponTier, uint256 newWeapon, uint256 newInventory) {
 
    if(rollOption_ == 1 || rollOption_ == 3){
        //Weapons
-       // uint256 weaponTier = levelTier; stack to deep, use levelTier instead
+      
         uint16  chance = uint16(_randomize(rand, "Weapon", id_)) % 100;
        // console.log("chance: ", chance);
                 if(chance > 10 && chance < 80){
@@ -195,9 +196,10 @@ returns (uint256 newWeaponTier, uint256 newWeapon, uint256 newInventory) {
         newWeapon = newWeaponTier == 0 ? 0 : ((newWeaponTier - 1) * 3) + (rand % 3);  
         
 
-   }else if(rollOption_ == 2 || rollOption_ == 3){
-       //Inventory
-       //console.log("Inventory ENTERED");
+   }
+   
+   if(rollOption_ == 2 || rollOption_ == 3){//Items Loop
+      
        
         uint16 morerand = uint16(_randomize(rand, "Inventory", id_));
         uint16 diceRoll = uint16(_randomize(rand, "Dice", id_));

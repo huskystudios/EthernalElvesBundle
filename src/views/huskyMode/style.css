@@ -1,0 +1,182 @@
+.profile {
+    padding: 0px 40px;
+
+    background-color: #000000;
+}
+
+.statistic {
+    margin-top: 20px;
+    font-size: 12px;
+    gap: 16px;
+}
+.statistic>div {
+    width: 140px;
+    gap: 16px;
+}
+.elf-card {
+    border: 1px solid #454545;
+    min-width: 160px;
+    font-size: 10px;
+    padding: 18px 8px;
+    gap: 10px;
+}
+.elf-card img {
+    width: 120px;
+    align-self: center;
+    border-radius: 80px;
+}
+.elves {
+    gap: 12px;
+    overflow-x: auto;
+    width: 939px
+}
+
+.elves::-webkit-scrollbar-track, .table::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: rgba(255,255,255,0.2);
+}
+
+.elves::-webkit-scrollbar, .table::-webkit-scrollbar
+{
+	width: 12px;
+    height: 12px;
+	background-color: rgba(255,255,255,0.2);
+}
+
+.elves::-webkit-scrollbar-thumb, .table::-webkit-scrollbar-thumb
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #333;
+}
+.table-whale {
+  
+  border: 1px solid #454545;
+  overflow-y: auto;
+  height: 100%;
+  
+  padding: 12px;
+  font-size: 14px;
+}
+
+td, th {
+    position: relative;
+  }
+
+
+.table-whale tr{   
+    height: 40px;
+    gap: 12px;
+}
+
+.table-whale th{   
+    font-size: 16px;
+    background-color: #808080;
+    padding-left: 6px;
+
+}
+
+.table-whale td{
+    padding-left: 8px;
+ 
+}
+
+.row {
+    height: 40px;
+    gap: 12px;
+}
+
+.row:nth-child(even) {
+    background-color: #222;
+}
+
+.rowSelected:nth-child(even),
+.rowSelected {
+    background-color: #522;
+}
+
+.row:hover {
+    background-color: #733;
+    cursor: pointer;
+}
+
+.row:nth-child(even):hover {
+    background-color: #844;
+}
+
+.whale-thumb {
+    width: 90px;
+   
+    background-color: #000000;
+    border-radius: 10px;
+    padding: 10px;
+    gap: 10px;
+}
+
+
+
+
+
+.stats {
+    position: absolute;
+    bottom: 20px;
+    right: 40px;
+    width: 272px;
+    height: 236px;
+    border: 1px solid #454545;
+    padding: 20px 24px 24px 24px;
+    font-size: 12px;
+    gap: 12px;
+}
+.stats-label {
+    text-align: center;
+    font-size: 16px;
+    margin-top: -46px;
+    height: 30px;
+    padding-top: 14px;
+    margin-bottom: 40px;
+    background-image: url(../../assets/images/stats_back.png);
+    /* background-size: 100% 100%; */
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+
+.btn-whale {
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    background-size: 100% 100%;
+    padding: 12px 36px;
+    font-size: 12px;
+    min-width: 184px;
+    margin: 0px 12px;
+    text-align: center;
+    background-image: url(../../assets/images/stats_back.png);
+  }
+.btn-whale:not(:disabled):hover {
+background-image: url(../../assets/images/stats_back_hover.png);
+}
+  
+.btn-whale:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.modal-whale-campaign-grid {
+    display: grid;
+    gap: 0.5em;
+    grid-template-columns: repeat(2, 1fr);
+    text-align: left;
+    margin-bottom: 1em;
+}
+
+.modal-whale-campaign  .modal-content {
+    box-shadow: 0 0 4em black;
+}
+
+.modal-whale-campaign input[type="number"] {
+    width: 2.5em;
+    margin: 0 auto;
+    text-align: center;
+}
