@@ -450,6 +450,7 @@ const WhaleMode = () => {
       <table style={{width: '100%'}}>
       <thead style={{textAlign: "left"}}>
         <tr>
+        <th></th>
         <th>NAME</th>
         <th>Location</th>
         <th>Inventory</th>
@@ -496,6 +497,7 @@ const WhaleMode = () => {
 
 
                 return( <tr key={index} className={`${rowSelected} row`} onClick={()=> handleClick(parseInt(line.id))}  > 
+                    <td><img src={line.image} alt="Elf" /></td>
                     <td>{line.name}</td>
                     <td>{line.elfStatus}</td>
                     <td>{line.inventoryString}</td>

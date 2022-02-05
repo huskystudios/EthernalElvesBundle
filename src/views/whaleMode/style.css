@@ -180,3 +180,7 @@ background-image: url(../../assets/images/stats_back_hover.png);
     margin: 0 auto;
     text-align: center;
 }
+
+.table-whale img {
+    width: 84px;
+}
