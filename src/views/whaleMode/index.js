@@ -14,6 +14,7 @@ const WhaleMode = () => {
     const [tryWeapon, setTryWeapon] = useState(false)
     const [tryItem, setTryItem] = useState(false)
     const [useItem, setUseItem] = useState(false)
+    const [sortBy, setSortBy] = useState({ value: "cooldown", order: "desc" });
     const [tryCampaign, setTryCampaign] = useState(1)
     const [trySection, setTrySection] = useState(1)
     
@@ -32,6 +33,7 @@ const WhaleMode = () => {
     const [clicked, setClicked] = useState([]);
 
     const [data, setData] = useState([])
+    const [sortedElves, setSortedElves] = useState([])
     const [activeNfts, setActiveNfts] = useState(true)
     const [txreceipt, setTxReceipt] = useState()
     const [alert, setAlert] = useState({show: false, value: null})
@@ -320,9 +322,72 @@ const WhaleMode = () => {
             }
             
             getData()
-          },[activeNfts])
+          },[activeNfts]);
 
 
+        useEffect(() => {
+            const attributeMap = {
+                name: "id",
+                location: "elfStatus",
+                weapon: "weaponTier",
+                hp: "health",
+                ap: "attack",
+                level: "level",
+                cooldown: "time",
+                class: "classString",
+                action: "actionString",
+            };
+            const isDesc = sortBy.order === "desc";
+            const attribute = attributeMap[sortBy.value];
+            const sortByFunction = (a, b) => {
+                switch (sortBy.value) {
+                    case "inventory":
+                        return isDesc
+                            ? a.inventory[0] - b.inventory[0]
+                            : b.inventory[0] - a.inventory[0];
+                    case "class":
+                    case "action":
+                    case "elfStatus":
+                        return isDesc
+                            ? a[attribute].localeCompare(b[attribute])
+                            : b[attribute].localeCompare(a[attribute]);
+                    default:
+                        return isDesc
+                            ? a[attribute] - b[attribute]
+                            : b[attribute] - a[attribute];
+                }
+            };
+            setSortedElves([...data?.sort(sortByFunction)]);
+        }, [data, sortBy]);
+
+        const SortColumnButtons = (props) => {
+          const ascActiveClass = (sortBy?.value === props?.value
+              && sortBy?.order === "asc") ? "active" : "";
+          const descActiveClass = (sortBy?.value === props?.value
+              && sortBy?.order === "desc") ? "active" : "";
+          return (
+              <div className="sort-buttons">
+                  <button
+                      className={`sort-button ${ascActiveClass}`}
+                      onClick={() => setSortBy({
+                          value: props?.value,
+                          order: "asc",
+                      })}
+                  >
+                      &#x25B2;
+                  </button>
+                  <button
+                      className={`sort-button ${descActiveClass}`}
+                      onClick={() => setSortBy({
+                          value: props?.value,
+                          order: "desc",
+                      })}
+                  >
+                      &#x25BC;
+                  </button>
+              </div>
+          );
+        };
 
           const sendCampaignFunction = async () => {
 
@@ -476,24 +541,72 @@ const WhaleMode = () => {
       <thead style={{textAlign: "left"}}>
         <tr>
         <th></th>
-        <th>NAME</th>
-        <th>Location</th>
-        <th>Inventory</th>
-        {/*<th>Weapon Index</th>*/}
-        <th>Weapon Name</th>
-         {/*<th>Weapon Tier</th>*/}
-         <th>hp+</th>
-         <th>ap+</th>
-        <th>level</th>
-        <th>class</th>
-        <th>Action Taken</th>
-        <th>Cooldown (-) / Passive (+)</th>
+        <th>
+            <div className="flex">
+                <span>Name</span>
+                <SortColumnButtons value="name" />
+            </div>
+        </th>
+        <th>
+            <div className="flex">
+                <span>Location</span>
+                <SortColumnButtons value="location" />
+            </div>
+        </th>
+        <th>
+            <div className="flex">
+                <span>Inventory</span>
+                <SortColumnButtons value="inventory" />
+            </div>
+        </th>
+        <th>
+            <div className="flex">
+                <span>Weapon Name</span>
+                <SortColumnButtons value="weapon" />
+            </div>
+        </th>
+        <th>
+            <div className="flex">
+                <span>HP+</span>
+                <SortColumnButtons value="hp" />
+            </div>
+        </th>
+        <th>
+            <div className="flex">
+                <span>AP+</span>
+                <SortColumnButtons value="ap" />
+            </div>
+        </th>
+        <th>
+            <div className="flex">
+                <span>Level</span>
+                <SortColumnButtons value="level" />
+            </div>
+        </th>
+        <th>
+            <div className="flex">
+                <span>Class</span>
+                <SortColumnButtons value="class" />
+            </div>
+        </th>
+        <th>
+            <div className="flex">
+                <span>Action Taken</span>
+                <SortColumnButtons value="action" />
+            </div>
+        </th>
+        <th>
+            <div className="flex">
+                <span>Cooldown (-) / Passive (+)</span>
+                <SortColumnButtons value="cooldown" />
+            </div>
+        </th>
         </tr>
       </thead>
       <tbody>
      
 
-            {data.map((line, index) => {
+            {sortedElves.map((line, index) => {
 
 
                 const date = new Date(line.time * 1000)

@@ -69,11 +69,27 @@ td, th {
     gap: 12px;
 }
 
-.table-whale th{   
+.table-whale th{
     font-size: 16px;
     background-color: #808080;
-    padding-left: 6px;
+}
 
+.table-whale th .flex {
+    width: 100%;
+    align-items: center;
+}
+
+.table-whale th .flex span {
+    flex: 1;
+}
+
+.sort-buttons {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.sort-button.active {
+    color: #733;
 }
 
 .table-whale td{
