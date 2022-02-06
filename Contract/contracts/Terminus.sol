@@ -90,35 +90,8 @@ function validSignature(uint256 id, address to, uint256 sentinel, bytes memory s
 }
 
 
-function checkIn(uint256 id_) public {
-
-    isPlayer();
-    _checkIn(id_);
-
-}
 
 //////////////////////////////////////
-
-function _checkIn(uint256 calldata [id_]) private returns (bool) {
-    require(isTerminalOpen, "Terminal is closed");
-    //require(reservations[id_] == msg.sender, "You are not the owner of this exit");
-   
-    address from = msg.sender;
-    uint256 sentinel = IElves(elves).getSentinel(id_);
-    uint256 timestamp = block.timestamp;
-
-    IElves(elves).pull(from, id_);
-
-    console.log("Checked in: ", id_);
-    console.log("Checked in Data: ", sentinel);
-    
-    reservations[id_] = from;//record the owner of thus exit
-
-   
- 
-   emit CheckIn(from, timestamp, id_, sentinel);
-
- }
 
 
 

@@ -129,30 +129,7 @@ describe("Ethernal Elves Contracts", function () {
 
   });
 
-  describe("Test Checkin to Terminal", function () {
-    it("Testing Terminal", async function () {
-
-      
-
-        console.log("testing")
-        await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)}); //1
-        console.log(addr3.address)
-        console.log(await elves.ownerOf(1))
-        
-
-        await terminus.connect(addr3).checkIn(1)
-
-        console.log(await elves.ownerOf(1))
-        
-      
-
-  expect(await elves.ownerOf(1)).to.equal(addr5.address);
-
-    })});
-
-
-/*
-    describe("Test Re-roll", function () {
+   describe("Test Re-roll", function () {
       it("Reroll probabailities", async function () {
 
       await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
@@ -296,7 +273,7 @@ describe("Ethernal Elves Contracts", function () {
     });  
 
 */
-/*
+
 
   describe("Deployment and ERC20 and ERC721 Minting", function () {
     it("Check contract deployer is owner", async function () {
@@ -354,7 +331,7 @@ describe("Ethernal Elves Contracts", function () {
 
         
   })
-*/
+
 /*
 describe("Game Play", function () {
     it("Tests staking and actions", async function () {
