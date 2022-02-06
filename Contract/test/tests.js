@@ -214,7 +214,7 @@ describe("Ethernal Elves Contracts", function () {
       //increaseWorldTimeinSeconds(10000000,true);
       
       
-      
+      console.log(await elves.tokenURI(1))
 
 
 

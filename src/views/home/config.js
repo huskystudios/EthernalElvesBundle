@@ -29,12 +29,12 @@ export const actionString =
 
 export const items =
 [
-    {item: 0, text: 'Empty', description: "Nothing to see here"},
+    {item: 0, text: 'Empty', description: ""},
     {item: 1, text: 'Talisman of Enragement', description: "Increase total attack points 2x"},
     {item: 2, text: 'Moon Elixir', description: "Increase health points by 2x"},
     {item: 3, text: 'Midas Ring', description: "Double Rewards"},
     {item: 4, text: 'Spirit Band', description: "Double xp (level)"},
-    {item: 5, text: 'Aura of Immunity', description: "Eliminates Regeneration"},
+    {item: 5, text: 'Aura of Immunity', description: "Eliminates HP Regeneration"},
     {item: 6, text: 'Demonic Rupture', description: "Increase attack points by 3x"}
 ]
  

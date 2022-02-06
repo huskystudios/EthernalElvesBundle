@@ -58,7 +58,7 @@ useEffect(() => {
 
 
       await Moralis.enableWeb3();     
-
+      //console.log(await Moralis.Cloud.run("ownersAndBalances"))
 
     const initsupply = await Moralis.executeFunction(readOptions("INIT_SUPPLY"));
     const maxSupply = await Moralis.executeFunction(readOptions("maxSupply"));
@@ -76,6 +76,9 @@ useEffect(() => {
     setGameStatus(await Moralis.Cloud.run("getGameStatus"))
     setActionDistribution(await Moralis.Cloud.run("getActions"))
 
+    //console.log(await Moralis.Cloud.run("getOwnerBalances"))
+    
+   
     let levels = await Moralis.Cloud.run("levelDistribution")
 
       //sort levels by objectId
@@ -83,9 +86,11 @@ useEffect(() => {
         return a.objectId - b.objectId;
       });
 
+      console.log(ownerCount)
+
 setLevelDistribution(levels)
     
-    console.log(ownerCount.sort((a, b) => b.tokens.length - a.tokens.length))
+    console.log(ownerCount.sort((a, b) => b.tokens - a.tokens))
 
     setLoading(false);
 

@@ -497,7 +497,7 @@ const WhaleMode = () => {
                     <td><img src={line.image} alt="Elf" /></td>
                     <td>{line.name}</td>
                     <td>{line.elfStatus}</td>
-                    <td>{line.inventoryString}</td>
+                    <td>{line.inventoryString} {line.inventoryDescription && <><br/><pre> {line.inventoryDescription}</pre></>}</td>
                     {/*<td>{line.primaryWeapon}</td>        */} 
                     <td>{line.attributes[3].value} +{line.weaponTier}</td>        
                     <td>{line.health}</td>        
