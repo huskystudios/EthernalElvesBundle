@@ -286,7 +286,7 @@ const WhaleMode = () => {
                 setData(elves)        
                 setStatus(elves.length + " elves")
                 setStatus("done")
-                elves.length >= 8 ? setLoading(false) :  setStatus("need 8 or more elves to use whale mode. Whale count: " + elves.length + " elves")
+                elves.length >= 3 ? setLoading(false) :  setStatus("need 8 or more elves to use whale mode. Whale count: " + elves.length + " elves")
             
     
             }
