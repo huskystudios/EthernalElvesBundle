@@ -274,13 +274,41 @@ const WhaleMode = () => {
                 setStatus("connected to address: " + address)
      
                await Moralis.enableWeb3();
-     
-    
-    
-                const params =  {address: address}
-                const userTokenArray = await Moralis.Cloud.run("getElvesFromDb", params);
+
+               const Elves = Moralis.Object.extend("Elves");
+                let query = new Moralis.Query(Elves);
+                query.equalTo("owner_of", address);
+                let limit = 50
+
+                //page through the results
+                let results = []
+                let hasMore = true
+                let page = 1
+		while (hasMore) {
+
+			query.limit(limit);
+			query.skip(limit * (page - 1));
+			query.withCount();
+			const response = await query.find();
+			let currentIndex = limit * (page)
+			currentIndex > response.count ? hasMore = false : hasMore = true
+			page++
+			setStatus(currentIndex / response.count * 100)
+			
+			console.log(hasMore, response)
+			results = results.concat(response.results)
+			
+		}      
+        
+        const tokenArr = [];
+                                    
+                    results.map((elf) => {
+                    tokenArr.push(elf.attributes.token_id)
+                    })
+                        
+
                 setStatus("army of elves")
-                const elves = await lookupMultipleElves(userTokenArray)
+                const elves = await lookupMultipleElves(tokenArr)
                 elves.sort((a, b) => a.time - b.time) 
                 console.log(elves)
                 setData(elves)        

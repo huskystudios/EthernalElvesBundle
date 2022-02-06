@@ -24,12 +24,14 @@ interface ITunnel {
 
 interface ITerminus {
     function pullCallback(address owner, uint256[] calldata ids) external;
+    
 }
 
 interface IElves {
     function getSentinel(uint256 _id) external view returns(uint256 sentinel);
     function modifyElfDNA(uint256 id, uint256 sentinel) external;
     function pull(address owner_, uint256[] calldata ids) external;
+    function transfer(address to, uint256 id) external;
 }
 
 interface IERC721Lite {

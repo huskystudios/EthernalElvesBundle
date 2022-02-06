@@ -46,7 +46,7 @@ describe("Ethernal Elves Contracts", function () {
   //const Elves = await ethers.getContractFactory("EthernalElves");
   const Elves = await ethers.getContractFactory("EthernalElvesV2");
   const Campaigns = await ethers.getContractFactory("ElfCampaignsV2");
-  //const Terminus = await ethers.getContractFactory("Terminus");
+  const Terminus = await ethers.getContractFactory("ElvesTerminus");
   //const Bridge = await ethers.getContractFactory("FxBaseRootTunnel");
 
   ///Deploy art contracts
@@ -78,7 +78,7 @@ describe("Ethernal Elves Contracts", function () {
   ren = await Miren.deploy(); 
    //whitelist = await Whitelist.deploy();
   
-  //terminus = await Terminus.deploy();
+
   //fxBaseRootTunnel = await Bridge.deploy();
 
   //fxBaseRootTunnel.initialize(terminus.address,terminus.address)
@@ -119,42 +119,39 @@ describe("Ethernal Elves Contracts", function () {
   await elves.flipWhitelist();
   await elves.flipMint();
   await elves.flipActiveStatus();
+
+  terminus = await Terminus.deploy();
+  terminus.initialize(elves.address)
+
+  elves.setTerminus(terminus.address)
   
   
 
   });
 
- /* describe("Test Transfers", function () {
-    it("Testing all the erc721 transfer functions", async function () {
+  describe("Test Checkin to Terminal", function () {
+    it("Testing Terminal", async function () {
 
       
 
         console.log("testing")
         await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)}); //1
-        await elves.connect(addr4).mint({ value: ethers.utils.parseEther(mintPrice)}); //2
-        await elves.connect(addr5).mint({ value: ethers.utils.parseEther(mintPrice)}); //3
-
+        console.log(addr3.address)
         console.log(await elves.ownerOf(1))
-        console.log(await elves.ownerOf(2))
-        console.log(await elves.ownerOf(3))
-
-
-        await elves.connect(addr3).approve(addr4.address, 1)
-
-        await elves.connect(addr4).transferFrom(addr3.address, addr5.address, 1)
-        //await elves.connect(addr5).safeTransferFrom(addr5.address, addr3.address, 3)
         
+
+        await terminus.connect(addr3).checkIn(1)
+
         console.log(await elves.ownerOf(1))
-        console.log(await elves.ownerOf(2))
-        console.log(await elves.ownerOf(3))
+        
       
 
   expect(await elves.ownerOf(1)).to.equal(addr5.address);
 
     })});
-*/
 
 
+/*
     describe("Test Re-roll", function () {
       it("Reroll probabailities", async function () {
 
@@ -358,7 +355,7 @@ describe("Ethernal Elves Contracts", function () {
         
   })
 */
-
+/*
 describe("Game Play", function () {
     it("Tests staking and actions", async function () {
       await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
@@ -498,6 +495,8 @@ describe("Admin Functions", function () {
       
     });
   });
+
+  */
 
 });
 

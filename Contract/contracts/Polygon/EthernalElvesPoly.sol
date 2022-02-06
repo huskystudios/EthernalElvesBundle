@@ -3,8 +3,8 @@ pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "./ERC721.sol"; 
-import "./DataStructures.sol";
-import "./Interfaces.sol";
+import "./../DataStructures.sol";
+import "./../Interfaces.sol";
 //import "hardhat/console.sol"; 
 
 // We are the Ethernal. The Ethernal Elves         
@@ -12,7 +12,7 @@ import "./Interfaces.sol";
 // Version 1.0.4
 //patch notes: ICY Patch and Items Patch
 
-contract EthernalElvesV2 is ERC721 {
+contract PolyEthernalElves is PolyERC721 {
 
     function name() external pure returns (string memory) { return "Ethernal Elves"; }
     function symbol() external pure returns (string memory) { return "ELV"; }
@@ -75,13 +75,12 @@ contract EthernalElvesV2 is ERC721 {
        validator            = _validator;
     }    
     
-    
+    /*v2
     function setTerminus(address _terminus)  public {
        onlyOwner();
        terminus             = _terminus;
     }
-    
-    
+    */
     function setInitialSupply(uint256 _initialSupply)  public {
        onlyOwner();
        INIT_SUPPLY             = _initialSupply;
@@ -599,7 +598,7 @@ function elves(uint256 _id) external view returns(address owner, uint timestamp,
         sentinels[id] = sentinel;
     }
 
-      function pull(address owner_, uint256[] calldata ids) external {
+    function pull(address owner_, uint256[] calldata ids) external {
         require (msg.sender == terminus, "not terminus"); 
         for (uint256 index = 0; index < ids.length; index++) {
               _transfer(owner_, msg.sender, ids[index]);
