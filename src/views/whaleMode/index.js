@@ -442,7 +442,7 @@ const WhaleMode = () => {
                         <h3>All selected Elves will go to the same campaign</h3>
                         <div className="modal-whale-campaign-grid">
                             <label>Campaign</label>
-                            <input type="number" min="1" max="3" value={tryCampaign} onChange={(e) => setTryCampaign(e.target.value)}/>
+                            <input type="number" min="1" max="6" value={tryCampaign} onChange={(e) => setTryCampaign(e.target.value)}/>
                             <label>Section</label>
                             <input type="number" min="1" max="5" value={trySection} onChange={(e) => setTrySection(e.target.value)}/>
                             <label>Re-roll Weapon</label>
