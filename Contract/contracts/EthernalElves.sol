@@ -442,7 +442,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                     //                    
                    // (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, rand, 1, elf.weaponTier, elf.primaryWeapon, elf.inventory);
                     (elf.primaryWeapon, elf.weaponTier) = _rollWeapon(elf.level, id_, rand);
-  
+                
    
                 
                 }else if(action == 6){//item or merchant loop
@@ -531,8 +531,8 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                         }
                          
 
-                newWeaponTier = ((newWeaponTier - 1) * 3) + (rand % 3);  
-    
+                newWeapon = ((newWeaponTier - 1) * 3) + (rand % 3);  
+            
         
     }
     
