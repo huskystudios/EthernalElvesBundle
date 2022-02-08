@@ -54,9 +54,9 @@ function initialize(address _elfcontract) public {
 
 
 function newCamps() public {
-    
-    require(!newCampsInit, "Already deployed");
     require(admin == msg.sender);
+    require(!newCampsInit, "Already deployed");
+   
      
         camps[4] = Camps({baseRewards: 24, creatureCount: 15000, creatureHealth: 192,  expPoints:9,   minLevel:7});
         camps[5] = Camps({baseRewards: 36, creatureCount: 15000, creatureHealth: 264,  expPoints:9,   minLevel:14});

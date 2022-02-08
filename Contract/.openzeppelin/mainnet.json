@@ -2167,6 +2167,122 @@
           }
         }
       }
+    },
+    "0933981ec54fb323e2b60e1ac2fd2c60c7af8d32fe67079a27bc005e233b4d30": {
+      "address": "0xCaD981ea69c29debcbf1d67354614D671dC1a743",
+      "txHash": "0xa0721155a0e82c217b520d7d6638da15bbead50bd8c03a7783ede481512853e7",
+      "layout": {
+        "storage": [
+          {
+            "contract": "ElfCampaignsV3",
+            "label": "initialized",
+            "type": "t_bool",
+            "src": "contracts\\ElfCampaigns.sol:18"
+          },
+          {
+            "contract": "ElfCampaignsV3",
+            "label": "elfcontract",
+            "type": "t_address",
+            "src": "contracts\\ElfCampaigns.sol:19"
+          },
+          {
+            "contract": "ElfCampaignsV3",
+            "label": "MAX_LEVEL",
+            "type": "t_uint256",
+            "src": "contracts\\ElfCampaigns.sol:21"
+          },
+          {
+            "contract": "ElfCampaignsV3",
+            "label": "TIME_CONSTANT",
+            "type": "t_uint256",
+            "src": "contracts\\ElfCampaigns.sol:22"
+          },
+          {
+            "contract": "ElfCampaignsV3",
+            "label": "REGEN_TIME",
+            "type": "t_uint256",
+            "src": "contracts\\ElfCampaigns.sol:23"
+          },
+          {
+            "contract": "ElfCampaignsV3",
+            "label": "admin",
+            "type": "t_address",
+            "src": "contracts\\ElfCampaigns.sol:24"
+          },
+          {
+            "contract": "ElfCampaignsV3",
+            "label": "camps",
+            "type": "t_mapping(t_uint256,t_struct(Camps)2150_storage)",
+            "src": "contracts\\ElfCampaigns.sol:26"
+          },
+          {
+            "contract": "ElfCampaignsV3",
+            "label": "ketchup",
+            "type": "t_bytes32",
+            "src": "contracts\\ElfCampaigns.sol:28"
+          },
+          {
+            "contract": "ElfCampaignsV3",
+            "label": "campMaxLevel",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "src": "contracts\\ElfCampaigns.sol:35"
+          },
+          {
+            "contract": "ElfCampaignsV3",
+            "label": "newCampsInit",
+            "type": "t_bool",
+            "src": "contracts\\ElfCampaigns.sol:36"
+          }
+        ],
+        "types": {
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_mapping(t_uint256,t_struct(Camps)2150_storage)": {
+            "label": "mapping(uint256 => struct ElfCampaignsV3.Camps)"
+          },
+          "t_struct(Camps)2150_storage": {
+            "label": "struct ElfCampaignsV3.Camps",
+            "members": [
+              {
+                "label": "baseRewards",
+                "type": "t_uint32"
+              },
+              {
+                "label": "creatureCount",
+                "type": "t_uint32"
+              },
+              {
+                "label": "creatureHealth",
+                "type": "t_uint32"
+              },
+              {
+                "label": "expPoints",
+                "type": "t_uint32"
+              },
+              {
+                "label": "minLevel",
+                "type": "t_uint32"
+              }
+            ]
+          },
+          "t_uint32": {
+            "label": "uint32"
+          },
+          "t_bytes32": {
+            "label": "bytes32"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)"
+          }
+        }
+      }
     }
   }
 }
