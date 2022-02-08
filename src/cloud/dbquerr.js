@@ -23,3 +23,18 @@ const pipeline = [
 const ownerCount = await query.aggregate(pipeline, { useMasterKey: true })
 
 console.log(ownerCount)
+
+const query = new Parse.Query("ElfCampaignsActivity");
+const pipeline = [
+ {project: {campaign:1, sector:1, tokenId:1, block_number:1, createdAt:1}},
+ {match: {tokenId: "8"}},
+ { sort : { block_number : -1 } },
+ { limit: 1 }
+ 
+ 
+  
+];
+  
+const lastCampaign = await query.aggregate(pipeline, { useMasterKey: true })
+
+console.log(lastCampaign)

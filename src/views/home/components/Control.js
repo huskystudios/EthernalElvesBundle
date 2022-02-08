@@ -23,18 +23,25 @@ const Control = ({data, activities, onSelect}) => {
     const { Moralis } = useMoralis();
 
     const getLastCampaign = async (tokenId) => {
-    console.log(tokenId, "tokenId")
-    const ElfCampaigns = Moralis.Object.extend("ElfCampaignsActivity");
-    let query = new Moralis.Query(ElfCampaigns);  
-    query.equalTo("tokenId", tokenId.toString());
-    const res = await query.first();
+
+
+    const params =  {tokenId: tokenId}
+    const lastCamp = await Moralis.Cloud.run("getLastCampaignByUser", params);
+
+      const res = lastCamp[0]
+
+ //   console.log(tokenId, "tokenId", lastCamp)
+ //   const ElfCampaigns = Moralis.Object.extend("ElfCampaignsActivity");
+ //   let query = new Moralis.Query(ElfCampaigns);  
+ //   query.equalTo("tokenId", tokenId.toString());
+ //   const res = await query.first();
    // console.log("huh?", tokenId, res.attributes.sector, res.attributes.campaign, Moralis.Units.FromWei(res.attributes.amount))
     if(res){
         return{
-            sector: res.get("sector"), //res.attributes.sector,
-            campaign: res.get("campaign"), //res.attributes.campaign,
-            amount: Moralis.Units.FromWei(res.get("amount")),
-            string: "Last Campaign was in camp " + res.get("campaign") + " and in sector " + res.get("sector") + ". You earned " + Moralis.Units.FromWei(res.get("amount")) + " $REN"
+            sector: res.sector, //res.attributes.sector,
+            campaign: res.campaign, //res.attributes.campaign,
+            amount: Moralis.Units.FromWei(res.amount),
+            string: "Last Campaign was in camp " + res.campaign + " and in sector " + res.sector + ". You earned " + Moralis.Units.FromWei(res.amount) + " $REN"
         }
     }
     
