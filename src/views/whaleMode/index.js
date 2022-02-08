@@ -74,7 +74,7 @@ const WhaleMode = () => {
             let value = false;
             switch (key) {
                 case "unstake":
-                    value = selectedElves.every((elf) => isInactive(elf) && isStaked(elf));
+                    value = selectedElves.every((elf) => isInactive(elf) && !isPassive(elf) && isStaked(elf));
                     break;
                 case "heal":
                     const [druid, target] = selectedElves;
