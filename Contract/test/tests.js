@@ -90,6 +90,7 @@ describe("Ethernal Elves Contracts", function () {
   await elves.deployed();
   campaigns = await upgrades.deployProxy(Campaigns, [elves.address]);
   await campaigns.deployed();
+  await campaigns.newCamps();
 
   await elves.setAddresses(ren.address, inventory.address, campaigns.address, "0x80861814a8775de20F9506CF41932E95f80f7035");
   //await elves.setTerminus(terminus.address);
@@ -218,7 +219,7 @@ describe("Ethernal Elves Contracts", function () {
 
 
       console.log("After Campai4gn:");
-      await elves.connect(addr3).heal(3,4)
+      //await elves.connect(addr3).heal(3,4)
      
 
       //await elves.connect(addr3).bloodThirst([5],1,1)
@@ -332,7 +333,7 @@ describe("Ethernal Elves Contracts", function () {
         
   })
 
-/*
+
 describe("Game Play", function () {
     it("Tests staking and actions", async function () {
       await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
@@ -462,7 +463,7 @@ describe("Admin Functions", function () {
     expect(await owner.getBalance().value).to.equal(await beff.getBalance().value);
     });
   it("Add new camp for quests and see if correct rewards are loaded", async function () {
-      await campaigns.addCamp(6, 99, 500, 9, 10, 1);
+      await campaigns.addCamp(6, 99, 500, 9, 10, 1, 50);
      
       
     });
@@ -473,7 +474,7 @@ describe("Admin Functions", function () {
     });
   });
 
-  */
+  
 
 });
 
