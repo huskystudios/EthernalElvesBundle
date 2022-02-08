@@ -60,11 +60,14 @@ function newCamps() public {
         camps[4] = Camps({baseRewards: 25, creatureCount: 15000, creatureHealth: 192,  expPoints:9,   minLevel:7});
         camps[5] = Camps({baseRewards: 35, creatureCount: 15000, creatureHealth: 264,  expPoints:9,   minLevel:14});
         camps[6] = Camps({baseRewards: 45, creatureCount: 10000, creatureHealth: 360,  expPoints:9,   minLevel:30});
+        campMaxLevel[1] = 100;
+        campMaxLevel[2] = 100;
+        campMaxLevel[3] = 100;
         campMaxLevel[4] = 30;
         campMaxLevel[5] = 50;
         campMaxLevel[6] = 100;
         newCampsInit = true;
-        
+
     }
 
 

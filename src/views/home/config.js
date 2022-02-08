@@ -6,6 +6,9 @@ import meadows from "../../assets/images/meadows.png"
 import campaignImg from "../../assets/images/campaign.png"
 import stakeImg from "../../assets/images/stake.png"
 import bloodImg from "../../assets/images/bloodthirst.png"
+import cove from "../../assets/images/cove.png"
+import mammon from "../../assets/images/mammon.png"
+import fallout from "../../assets/images/fallout.png"
 
 export const sentinelClass = ["Druid", "Assassin", "Ranger"] 
 
@@ -57,6 +60,24 @@ export const campaigns =
         "id": 3,
         "name": "Mount Eluna",
         "image": mount,
+        "time": 0.6
+    },
+    {
+        "id": 4,
+        "name": "Northern Fallout",
+        "image": fallout,
+        "time": 0.6
+    },
+    {
+        "id": 5,
+        "name": "Cove of Samim",
+        "image": cove,
+        "time": 0.6
+    },
+    {
+        "id": 6,
+        "name": "MAMMON'S LAIR",
+        "image": mammon,
         "time": 0.6
     }
 ]

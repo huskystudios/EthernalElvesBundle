@@ -45,7 +45,7 @@ describe("Ethernal Elves Contracts", function () {
   const Miren = await ethers.getContractFactory("Miren");
   //const Elves = await ethers.getContractFactory("EthernalElves");
   const Elves = await ethers.getContractFactory("EthernalElvesV2");
-  const Campaigns = await ethers.getContractFactory("ElfCampaignsV2");
+  const Campaigns = await ethers.getContractFactory("ElfCampaignsV3");
   const Terminus = await ethers.getContractFactory("ElvesTerminus");
   //const Bridge = await ethers.getContractFactory("FxBaseRootTunnel");
 
@@ -293,7 +293,7 @@ describe("Ethernal Elves Contracts", function () {
       await elves.setAccountBalance(addr5.address, ethers.BigNumber.from("100000000000000000000"));
       
       let totalsupply = 1
-      let maxSupply = 6//parseInt(await elves.maxSupply())
+      let maxSupply = 12//parseInt(await elves.maxSupply())
       await elves.setInitialSupply(2)
       let initialSupply = parseInt(await elves.INIT_SUPPLY())
       let i = 1
@@ -353,7 +353,7 @@ describe("Game Play", function () {
 //      await elves.connect(addr3).sendCampaign([1],1,4,0,1,0);
       increaseWorldTimeinSeconds(100000,true);
       console.log (await elves.attributes(1))
-      await elves.connect(addr3).sendCampaign([1],1,5,1,1,2);
+      await elves.connect(addr3).sendCampaign([4],4,5,1,1,2);
 
       increaseWorldTimeinSeconds(100000,true);
       
@@ -374,7 +374,7 @@ describe("Game Play", function () {
       await elves.connect(addr3).merchant([6], {value: ethers.utils.parseEther("0.01")})
 
       console.log("After Campai4gn:");
-      await elves.connect(addr3).heal(3,4)
+     // await elves.connect(addr3).heal(3,4)
       //await elves.connect(addr3).bloodThirst([5],1,1)
       increaseWorldTimeinSeconds(100000,true);
       console.log("After Campa5ign:");
