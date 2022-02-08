@@ -442,7 +442,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                     //                    
                    // (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, rand, 1, elf.weaponTier, elf.primaryWeapon, elf.inventory);
                     (elf.primaryWeapon, elf.weaponTier) = _rollWeapon(elf.level, id_, rand);
-                
+
    
                 
                 }else if(action == 6){//item or merchant loop
@@ -684,7 +684,7 @@ function elves(uint256 _id) external view returns(address owner, uint timestamp,
     }
 
 
-    function setElfManually(uint id, uint8 _primaryWeapon, uint8 _weaponTier, uint8 _attackPoints, uint8 _healthPoints, uint8 _level, uint8 _inventory) external {
+    function setElfManually(uint id, uint8 _primaryWeapon, uint8 _weaponTier, uint8 _attackPoints, uint8 _healthPoints, uint8 _level, uint8 _inventory, uint8 _race, uint8 _class, uint8 _accessories) external {
         onlyOwner();
         DataStructures.Elf memory elf = DataStructures.getElf(sentinels[id]);
         DataStructures.ActionVariables memory actions;
@@ -698,6 +698,9 @@ function elves(uint256 _id) external view returns(address owner, uint timestamp,
         elf.level           = _level;
         elf.weaponTier      = _weaponTier;
         elf.inventory       = _inventory;
+        elf.race            = _race;
+        elf.sentinelClass   = _class;
+        elf.accessories     = _accessories;
 
         actions.traits = DataStructures.packAttributes(elf.hair, elf.race, elf.accessories);
         actions.class =  DataStructures.packAttributes(elf.sentinelClass, elf.weaponTier, elf.inventory);

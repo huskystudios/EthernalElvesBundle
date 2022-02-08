@@ -206,7 +206,7 @@ describe("Ethernal Elves Contracts", function () {
       await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
       await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
 
-      await elves.setElfManually(1,1,1,6,12,10,4)
+      await elves.setElfManually(1,1,1,6,12,10,4,2,2,2)
 
       await elves.connect(addr3).sendCampaign([1],1,5,1,1,1);
 
