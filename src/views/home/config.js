@@ -48,37 +48,43 @@ export const campaigns =
         "id": 1,
         "name": "Whispering Woods",
         "image": woods,
-        "time": 1.2
+        "time": 1.2,
+        "maxLevel": 100
     },
     {
         "id": 2,
         "name": "enchanted meadows",
         "image": meadows,
-        "time": 1.5
+        "time": 1.5,
+        "maxLevel": 100
     },
     {
         "id": 3,
         "name": "Mount Eluna",
         "image": mount,
-        "time": 0.6
+        "time": 0.6,
+        "maxLevel": 100
     },
     {
         "id": 4,
         "name": "Northern Fallout",
         "image": fallout,
-        "time": 0.6
+        "time": 0.6,
+        "maxLevel": 30
     },
     {
         "id": 5,
         "name": "Cove of Samim",
         "image": cove,
-        "time": 0.6
+        "time": 0.6,
+        "maxLevel": 50
     },
     {
         "id": 6,
         "name": "MAMMON'S LAIR",
         "image": mammon,
-        "time": 0.6
+        "time": 0.6,
+        "maxLevel": 100
     }
 ]
 

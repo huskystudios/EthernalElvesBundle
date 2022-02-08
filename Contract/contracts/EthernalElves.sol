@@ -438,9 +438,12 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                 }else if(action == 5){//forge loop for weapons
                    
                     require(msg.value >= .01 ether);  
-                    require(elf.action != 3); //Cant roll in passve mode                      
-                    (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, rand, 1, elf.weaponTier, elf.primaryWeapon, elf.inventory);
-                    
+                    require(elf.action != 3); //Cant roll in passve mode  
+                    //                    
+                   // (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, rand, 1, elf.weaponTier, elf.primaryWeapon, elf.inventory);
+                    (elf.primaryWeapon, elf.weaponTier) = _rollWeapon(elf.level, id_, rand);
+  
+   
                 
                 }else if(action == 6){//item or merchant loop
                    
@@ -507,6 +510,31 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
             emit Action(msg.sender, action, id_); 
     }
 
+
+    function _rollWeapon(uint256 level, uint256 id, uint256 rand) internal pure returns (uint256 newWeapon, uint256 newWeaponTier) {
+    
+        uint256 levelTier = level == 100 ? 5 : uint256((level/20) + 1);
+                
+                uint256  chance = _randomize(rand, "Weapon", id) % 100;
+      
+                if(chance > 10 && chance < 80){
+        
+                             newWeaponTier = levelTier;
+        
+                        }else if (chance > 80 ){
+        
+                             newWeaponTier = levelTier + 1 > 4 ? 4 : levelTier + 1;
+        
+                        }else{
+
+                                newWeaponTier = levelTier - 1 < 1 ? 1 : levelTier - 1;          
+                        }
+                         
+
+                newWeaponTier = ((newWeaponTier - 1) * 3) + (rand % 3);  
+    
+        
+    }
     
 
     function _setAccountBalance(address _owner, uint256 _amount, bool _subtract) private {

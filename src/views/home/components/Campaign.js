@@ -26,6 +26,7 @@ const Campaign = ({onChangeIndex, onSetCampaign}) => {
                         creatureCount: res.creatureCount,
                         creatureHealth: res.creatureHealth,
                         minLevel: res.minLevel,
+                        maxLevel: campaigns[i].maxLevel,
                  
                     }
 
@@ -56,6 +57,9 @@ const Campaign = ({onChangeIndex, onSetCampaign}) => {
                         <div> Minimum Reward:  {campaignArray[campaign].baseRewads}</div>
                         <div> Min Creature Health: {campaignArray[campaign].creatureHealth}</div>
                         <div> Min Level Required: {campaignArray[campaign].minLevel}</div>
+                        {campaignArray[campaign].maxLevel && <div> Max Level Allowed: {campaignArray[campaign].maxLevel}</div>}
+
+                        
                        </div>
                         
                        
