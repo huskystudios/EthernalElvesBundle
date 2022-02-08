@@ -344,7 +344,14 @@
     height: 30px;
     margin-right: 12px;
 }
-.btn-lounge:hover {
+.btn-lounge:disabled {
+    opacity: .5;
+}
+.btn-lounge:disabled:hover {
+    opacity: .5;
+    cursor: not-allowed;
+}
+.btn-lounge:not(:disabled):hover {
     background-image: url(../../assets/images/btn_stake_focus.png);
 }
 .btn-option.active {
