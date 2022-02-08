@@ -35,6 +35,7 @@ struct Camps {
     mapping(uint256 => uint256) public campMaxLevel;
     bool private newCampsInit;
 
+
 function initialize(address _elfcontract) public {
     
     require(!initialized, "Already initialized");
@@ -57,12 +58,10 @@ function newCamps() public {
     require(!newCampsInit, "Already deployed");
     require(admin == msg.sender);
      
-        camps[4] = Camps({baseRewards: 25, creatureCount: 15000, creatureHealth: 192,  expPoints:9,   minLevel:7});
-        camps[5] = Camps({baseRewards: 35, creatureCount: 15000, creatureHealth: 264,  expPoints:9,   minLevel:14});
-        camps[6] = Camps({baseRewards: 45, creatureCount: 10000, creatureHealth: 360,  expPoints:9,   minLevel:30});
-        campMaxLevel[1] = 100;
-        campMaxLevel[2] = 100;
-        campMaxLevel[3] = 100;
+        camps[4] = Camps({baseRewards: 24, creatureCount: 15000, creatureHealth: 192,  expPoints:9,   minLevel:7});
+        camps[5] = Camps({baseRewards: 36, creatureCount: 15000, creatureHealth: 264,  expPoints:9,   minLevel:14});
+        camps[6] = Camps({baseRewards: 48, creatureCount: 10000, creatureHealth: 396,  expPoints:9,   minLevel:30});
+        
         campMaxLevel[4] = 30;
         campMaxLevel[5] = 50;
         campMaxLevel[6] = 100;
@@ -78,7 +77,7 @@ returns(uint256 level, uint256 rewards, uint256 timestamp, uint256 inventory){
   
   require(elfcontract == msg.sender, "not elf contract"); 
   require(camp.minLevel <= _level, "level too low");
-  require(campMaxLevel[_campId] >= _level, "level too high");
+  if(_campId > 3) require(campMaxLevel[_campId] >= _level, "level too high"); //no level requirement for camp 1 -3
   require(camp.creatureCount > 0, "no creatures left");
   
   camps[_campId].creatureCount = camp.creatureCount - 1;
