@@ -378,6 +378,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                      if(elf.action == 3){
                      actions.timeDiff = (block.timestamp - elf.timestamp) / 1 days; //amount of time spent in camp CHANGE TO 1 DAYS!
                      elf.level = _exitPassive(actions.timeDiff, elf.level);
+                    
                      }
 
                     _transfer(address(this), elfOwner, id_);      
@@ -439,6 +440,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                     actions.timeDiff = (block.timestamp - elf.timestamp) / 1 days; //amount of time spent in camp CHANGE TO 1 DAYS!
 
                     elf.level = _exitPassive(actions.timeDiff, elf.level);
+                   
                     
                   /*  if(actions.timeDiff >= 7){
                         actions.reward = 140 ether;
@@ -531,7 +533,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
 
 
 
-    function _exitPassive(uint256 timeDiff, uint256 _level) internal returns (uint256 level) {
+    function _exitPassive(uint256 timeDiff, uint256 _level) private returns (uint256 level) {
             
             uint256 rewards;
 
@@ -546,9 +548,13 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                     }
                     
                     level = _level + (timeDiff * 1); //one level per day
-                    level = _level > 100 ? 100 : _level;
+                    
+                    if(level >= 100){
+                        level = 100;
+                    }
+                    
+                   
 
- 
                     _setAccountBalance(msg.sender, rewards, false);
 
     }

@@ -130,7 +130,7 @@ describe("Ethernal Elves Contracts", function () {
 
   });
 
-   describe("Test Re-roll", function () {
+ /*  describe("Test Re-roll", function () {
       it("Reroll probabailities", async function () {
 
       await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
@@ -196,8 +196,9 @@ describe("Ethernal Elves Contracts", function () {
     });});
 
 
-
-    
+*/
+ 
+/*
     describe("Test Levels", function () {
       it("Testing correct item leveling", async function () {
 
@@ -232,7 +233,7 @@ describe("Ethernal Elves Contracts", function () {
 
 
     });});
-
+*/
 
 
  
@@ -280,7 +281,7 @@ describe("Ethernal Elves Contracts", function () {
     it("Check contract deployer is owner", async function () {
       expect(await elves.admin()).to.equal(owner.address); 
     })
-    it("Mint entire NFT collection", async function () {
+ /*   it("Mint entire NFT collection", async function () {
 
       await ren.mint(beff.address,  ethers.BigNumber.from("6000000000000000000000")); 
       await ren.mint(addr3.address, ethers.BigNumber.from("6000000000000000000000")); 
@@ -328,20 +329,40 @@ describe("Ethernal Elves Contracts", function () {
       }
      
       expect(parseInt(await elves.totalSupply())).to.equal(maxSupply);
-    })   
+    })*/   
 
         
   })
 
 
 describe("Game Play", function () {
+
+  it("Test passive mode unstake function and withdraw of some ren", async function () {
+         
+    await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+   
+    await elves.connect(addr3).passive([1])
+    increaseWorldTimeinSeconds(1304801,true);
+    await elves.connect(addr3).unStake([1])
+    console.log("Bank Bal afeter 7 day passive", await elves.bankBalances(addr3.address))
+    await elves.connect(addr3).withdrawSomeTokenBalance("130000000000000000000")
+    console.log("Bank Bal partial withdraw", await elves.bankBalances(addr3.address))
+    await elves.connect(addr3).passive([1])
+    increaseWorldTimeinSeconds(604801,true);
+    await elves.connect(addr3).returnPassive([1]);
+    console.log("Bank Bal afeter 7 day passive - withdraw", await elves.bankBalances(addr3.address))
+    console.log("Levels:", await elves.elves(1))
+     // expect(await elves.bankBalances(addr3.address).value).to.equal(ethers.BigNumber.from("150000000000000000000").value);
+      });
+
+
     it("Tests staking and actions", async function () {
       await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
       await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
       await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
       await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
       await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
-      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+     
 
       increaseWorldTimeinSeconds(10,true);
 
@@ -356,13 +377,17 @@ describe("Game Play", function () {
       await elves.connect(addr3).sendCampaign([4],1,5,1,1,2);
 
       increaseWorldTimeinSeconds(100000,true);
-      
+     
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
       console.log("After Campaig1n:");
       await elves.connect(addr3).passive([3])
       increaseWorldTimeinSeconds(100000,true);
-      await elves.connect(addr3).unStake([1])
+      await elves.connect(addr3).unStake([3])
+
+
+
       console.log("After Campaig2n:");
-      await elves.connect(addr3).returnPassive([3]);
+      //await elves.connect(addr3).returnPassive([3]);
       await elves.connect(addr3).forging([4], {value: ethers.utils.parseEther("0.01")})
       console.log("After Campaig3n:");
       await elves.connect(addr3).merchant([4], {value: ethers.utils.parseEther("0.01")})
@@ -434,6 +459,11 @@ describe("Game Play", function () {
         
         
         });
+
+       
+
+        
+  
   
 
 

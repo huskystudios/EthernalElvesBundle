@@ -379,6 +379,35 @@
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "sentinel",
+          "type": "uint256"
+        }
+      ],
+      "name": "encodeForSignature",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "flipActiveStatus",
       "outputs": [],
@@ -782,16 +811,21 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "receiveEth",
-      "outputs": [
+      "inputs": [
         {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
+          "internalType": "address",
+          "name": "owner_",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "ids",
+          "type": "uint256[]"
         }
       ],
-      "stateMutability": "payable",
+      "name": "pull",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -842,7 +876,7 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "",
+          "name": "from",
           "type": "address"
         },
         {
@@ -865,7 +899,7 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "",
+          "name": "from",
           "type": "address"
         },
         {
@@ -1064,6 +1098,21 @@
           "internalType": "uint8",
           "name": "_inventory",
           "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "_race",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "_class",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "_accessories",
+          "type": "uint8"
         }
       ],
       "name": "setElfManually",
@@ -1080,6 +1129,19 @@
         }
       ],
       "name": "setInitialSupply",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_terminus",
+          "type": "address"
+        }
+      ],
+      "name": "setTerminus",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -1170,7 +1232,7 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "",
+          "name": "from",
           "type": "address"
         },
         {
@@ -1205,18 +1267,23 @@
     {
       "inputs": [
         {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
           "internalType": "address",
-          "name": "to",
+          "name": "owner",
           "type": "address"
         },
         {
           "internalType": "uint256",
-          "name": "roleIndex",
+          "name": "sentinel",
           "type": "uint256"
         },
         {
           "internalType": "bytes",
-          "name": "_signature",
+          "name": "signature",
           "type": "bytes"
         }
       ],
@@ -1264,36 +1331,21 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "qty",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "roleIndex",
-          "type": "uint256"
-        },
-        {
-          "internalType": "bytes",
-          "name": "signature",
-          "type": "bytes"
-        }
-      ],
-      "name": "whitelistMint",
+      "inputs": [],
+      "name": "withdrawAll",
       "outputs": [],
-      "stateMutability": "payable",
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "withdrawAll",
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "withdrawSomeTokenBalance",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

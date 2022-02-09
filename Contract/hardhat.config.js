@@ -40,9 +40,9 @@ module.exports = {
     },
    networks: {
       hardhat: { 
-         forking: {
+        /* forking: {
          url: MAINNET_API_URL,
-          }
+          }*/
       },
       mainnet: {
          url: MAINNET_API_URL,
