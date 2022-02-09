@@ -200,14 +200,13 @@ const Profile = () => {
         <tr>
         <th>Date/Time</th>
         <th>Last Action</th>
-        <th>Elf#</th>
-        <th>Ren Transaction</th>    
+        <th>Elf #</th>
+        <th>$REN</th>    
         <th>Etherscan</th>       
         </tr>
       </thead>
       <tbody>
           
-
             {actionData.map((line, index) => {
                 
                 let createDate = new Date( Date.parse(line.createdAt))
