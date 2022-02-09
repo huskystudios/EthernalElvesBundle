@@ -205,6 +205,7 @@ elfObj = {
     race: elfRace,
     hair: elfHair,
     inventory: [elfInventory],
+    inventoryImage: items[elfInventory].image,
     inventoryString: items[elfInventory].text,
     inventoryDescription: items[elfInventory].description,
     primaryWeapon: elfPrimaryWeapon,

@@ -604,7 +604,7 @@ const WhaleMode = () => {
         </th>
         <th>
             <div className="flex">
-                <span>Cooldown (-) / Passive (+)</span>
+                <span>Cooldown (-) /<br />Passive (+)</span>
                 <SortColumnButtons value="cooldown" />
             </div>
         </th>
@@ -645,7 +645,17 @@ const WhaleMode = () => {
                     <td><img src={line.image} alt="Elf" /></td>
                     <td>{line.name}</td>
                     <td>{line.elfStatus}</td>
-                    <td>{line.inventoryString} {line.inventoryDescription && <><br/><pre> {line.inventoryDescription}</pre></>}</td>
+                    <td>
+                        { line.inventoryString !== "Empty" ? (
+                        <div className="item-info">
+                            {line.inventoryImage && <img src={line.inventoryImage} alt="Item" />}
+                            <strong>{line.inventoryString}</strong>
+                            {line.inventoryDescription && <span>{line.inventoryDescription}</span>}
+                        </div>
+                        ) : (
+                            <strong>-</strong>
+                        )}
+                    </td>
                     {/*<td>{line.primaryWeapon}</td>        */} 
                     <td>{line.attributes && line.attributes[3].value} +{line.weaponTier}</td>        
                     <td>{line.health}</td>        
