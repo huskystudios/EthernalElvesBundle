@@ -200,3 +200,20 @@ background-image: url(../../assets/images/stats_back_hover.png);
 .table-whale img {
     width: 84px;
 }
+
+.table-whale .item-info {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 8px;
+}
+
+.table-whale .item-info img {
+    width: 40px;
+    border: 1px solid #666;
+    grid-row: 1 / 3;
+}
+
+.table-whale .item-info span {
+    font-size: 0.8em;
+    opacity: 0.8;
+}

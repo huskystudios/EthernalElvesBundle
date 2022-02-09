@@ -186,19 +186,13 @@ const Control = ({data, activities, onSelect}) => {
             <button className="btn-prev" onClick={() => onPageChange(-1)} />
             <button className="btn-next" onClick={() => onPageChange(1)} />
             {tooltip.show && showTooltip(tooltip.value)}
-            <pre className="activities">  
-                {activeNft ? 
-                <>
-                {/*<img src={activeNft.image} alt="item" />*/}
-                <span>{activeNft.inventoryString}</span>
-                <br/>
-                <br/>
-                <span>{activeNft.inventoryDescription}  </span>
-              
-                </>
-                 :  //should to be changed to the item image
-                " "}
-            </pre>
+            {activeNft && activeNft.inventoryImage && (
+                <div className="activities">  
+                    <img src={activeNft.inventoryImage} alt="Item" title={`${activeNft.inventoryString}: ${activeNft.inventoryDescription}`} />
+                    <strong>{activeNft.inventoryString}</strong>
+                    <span>{activeNft.inventoryDescription}</span>
+                </div>
+            )}
         </div>
     )
 }

@@ -609,14 +609,27 @@
 
 .activities {
     font-family: "Montserrat";
-    width: 123px;
-    height: 145px;
-    white-space: pre-wrap;
-    padding: 20px;
+    width: 160px;
+    white-space: nowrap;
+    padding: 0px;
     position: absolute;
-    bottom: -10px;
+    bottom: 25px;
     right: 100px;
-    font-size: 12px;
+    font-size: 10px;
+    text-align: center;
+}
+
+.activities img {
+    width: 120px;
+}
+
+.activities strong {
+    display: block;
+}
+
+.activities span {
+    font-size: 0.8em;
+    opacity: 0.8;
 }
 
 .inventory-heading {

@@ -10,6 +10,13 @@ import cove from "../../assets/images/cove.png"
 import mammon from "../../assets/images/mammon.png"
 import fallout from "../../assets/images/fallout.png"
 
+import AuraOfImmunity from "../../assets/images/items/Aura_of_Immunity.png"
+import DemonicRupture from "../../assets/images/items/Demonic_Rupture.png"
+import MidasRing from "../../assets/images/items/Midas_Ring.png"
+import MoonElixir from "../../assets/images/items/Moon_Elixir.png"
+import SpiritBand from "../../assets/images/items/Spirit_Band.png"
+import TalismanOfEnragement from "../../assets/images/items/Talisman_of_Enragement.png"
+
 export const sentinelClass = ["Druid", "Assassin", "Ranger"] 
 
 export const actions = 
@@ -30,16 +37,49 @@ export const actionString =
   {action: 7, text: 'healing'}
 ]
 
-export const items =
-[
-    {item: 0, text: 'Empty', description: ""},
-    {item: 1, text: 'Talisman of Enragement', description: "Increase total attack points 2x"},
-    {item: 2, text: 'Moon Elixir', description: "Increase health points by 2x"},
-    {item: 3, text: 'Midas Ring', description: "Double Rewards"},
-    {item: 4, text: 'Spirit Band', description: "Double xp (level)"},
-    {item: 5, text: 'Aura of Immunity', description: "Eliminates HP Regeneration"},
-    {item: 6, text: 'Demonic Rupture', description: "Increase attack points by 3x"}
-]
+export const items = [
+    {
+        item: 0,
+        text: 'Empty',
+        description: "",
+    },
+    {
+        item: 1,
+        text: 'Talisman of Enragement',
+        description: "Increase total attack points 2x",
+        image: TalismanOfEnragement,
+    },
+    {
+        item: 2,
+        text: 'Moon Elixir',
+        description: "Increase health points by 2x",
+        image: MoonElixir,
+    },
+    {
+        item: 3,
+        text: 'Midas Ring',
+        description: "Double Rewards",
+        image: MidasRing,
+    },
+    {
+        item: 4,
+        text: 'Spirit Band',
+        description: "Double XP (level)",
+        image: SpiritBand,
+    },
+    {
+        item: 5,
+        text: 'Aura of Immunity',
+        description: "Eliminates HP Regeneration",
+        image: AuraOfImmunity,
+    },
+    {
+        item: 6,
+        text: 'Demonic Rupture',
+        description: "Increase attack points by 3x",
+        image: DemonicRupture,
+    },
+];
  
 export const campaigns =
 
