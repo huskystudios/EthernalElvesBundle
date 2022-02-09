@@ -53,7 +53,7 @@ export const campaigns =
     },
     {
         "id": 2,
-        "name": "enchanted meadows",
+        "name": "Enchanted Meadows",
         "image": meadows,
         "time": 1.5,
         "maxLevel": 100
@@ -81,7 +81,7 @@ export const campaigns =
     },
     {
         "id": 6,
-        "name": "MAMMON'S LAIR",
+        "name": "Mammon's Lair",
         "image": mammon,
         "time": 0.6,
         "maxLevel": 100

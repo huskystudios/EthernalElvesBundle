@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from "react"
 import Loader from "../../components/Loader"
 import { useMoralis } from "react-moralis"
 import "./style.css"
-import { actionString } from "../home/config"
+import { actionString, campaigns } from "../home/config"
 import Countdown from 'react-countdown';
 import {elvesAbi, getCampaign, elvesContract, etherscan ,sendCampaign, lookupMultipleElves, getCurrentWalletConnected} from "../../utils/interact"
 
@@ -442,7 +442,14 @@ const WhaleMode = () => {
                         <h3>All selected Elves will go to the same campaign</h3>
                         <div className="modal-whale-campaign-grid">
                             <label>Campaign</label>
-                            <input type="number" min="1" max="6" value={tryCampaign} onChange={(e) => setTryCampaign(e.target.value)}/>
+                            <select value={tryCampaign} onChange={(e) => setTryCampaign(e.target.value)}>
+                                {campaigns.map((campaign) => {
+                                    let label = `${campaign.id}. ${campaign.name}`;
+                                    return (
+                                        <option value={campaign.id}>{label}</option>
+                                    );
+                                })}
+                            </select>
                             <label>Section</label>
                             <input type="number" min="1" max="5" value={trySection} onChange={(e) => setTrySection(e.target.value)}/>
                             <label>Re-roll Weapon</label>

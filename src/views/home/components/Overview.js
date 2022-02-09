@@ -69,6 +69,10 @@ const Overview = ({nft, onChangeIndex, onRunWeb3}) => {
             </div>
         )
     }
+    const isInPassive = nft[0].actionString === "Sent to Passive Campaign";
+    const isInCooldown = Math.floor(new Date().getTime() / 1000) < nft[0].time;
+    const unstakeBtnDisabled = isInCooldown || isInPassive;
+
     const unStake = () => {
         onRunWeb3({action:"unStake"})
        // console.log("clicked unstake button")
@@ -77,10 +81,10 @@ const Overview = ({nft, onChangeIndex, onRunWeb3}) => {
         <div className="overview-content d-flex flex-column">
             <div className="d-flex flex-column items-center mb-2">
             {nft[0].elfStatus === "staked" && nft[0].actionString !== "On Campaign" &&
-                <div className="btn-lounge justify-center" onClick={() => {unStake()}}>unstake</div>
+                <button className="btn-lounge justify-center" disabled={unstakeBtnDisabled} onClick={() => {unStake()}}>UNSTAKE</button>
             }
                 {nft[0].sentinelClass === 0 &&
-                <div className="btn-lounge justify-center" onClick={() => {setHealModal(true)}}>heal</div> 
+                <button className="btn-lounge justify-center" onClick={() => {setHealModal(true)}}>HEAL</button> 
         }
             </div>
             <div className="overview-panel">
