@@ -201,7 +201,8 @@ const Profile = () => {
         <th>Date/Time</th>
         <th>Last Action</th>
         <th>Elf#</th>
-        <th>Ren Transaction</th>       
+        <th>Ren Transaction</th>    
+        <th>Etherscan</th>       
         </tr>
       </thead>
       <tbody>
@@ -217,7 +218,7 @@ const Profile = () => {
                     <td>{action.text}</td>
                     <td>{line.attributes.tokenId ? `Elf #${line.attributes.tokenId}` : null}</td>
                     <td>{line.attributes.subtract ? "-" : null}{line.attributes.amount ? `${Moralis.Units.FromWei(line.attributes.amount)} $REN` : ""}</td>                  
-                    
+                    <td><a target="_blank" href={`https://etherscan.io/tx/${line.attributes.transaction_hash}`}>View Tx</a></td>
                    
                    
            
