@@ -102,13 +102,14 @@ contract EthernalElvesV2 is ERC721 {
     event Campaigns(address indexed owner, uint256 amount, uint256 indexed campaign, uint256 sector, uint256 indexed tokenId);
         
 //MINT
-//Whitelist permissions 
 
-function encodeForSignature(address to, uint256 roleIndex) private pure returns (bytes32) {
+//CheckOut Permissions 
+//NOTE:change this to private later
+function encodeForSignature(uint256 id, address owner, uint256 sentinel) public pure returns (bytes32) {
      return keccak256(
             abi.encodePacked("\x19Ethereum Signed Message:\n32", 
                 keccak256(
-                        abi.encodePacked(to, roleIndex))
+                        abi.encodePacked(id, sentinel))
                         )
                     );
 }       
@@ -131,17 +132,20 @@ function _isSignedByValidator(bytes32 _hash, bytes memory _signature) private vi
 
 
 
-function validSignature(address to, uint256 roleIndex, bytes memory _signature) public view returns (bool) {
+function validSignature(uint256 id, address owner, uint256 sentinel, bytes memory signature) public view returns (bool) {
     
-    return _isSignedByValidator(encodeForSignature(to, roleIndex), _signature);
+    return _isSignedByValidator(encodeForSignature(id, owner, sentinel), signature);
 
 }
 
+
+/*
 function receiveEth() public payable returns (string memory)  {
 
     return ("Received ETH");
 }   
-
+*/
+/*
 function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory signature) public payable  {
     
     isPlayer();
@@ -151,15 +155,15 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
     require(_remaining[roleIndex] > 0, "noneLeft");
     require(qty > 0 && qty <= 2, "max 2"); //max 2
     
-    /*Role:0 SOG 2 free Role:1 OG 1 free 1 paid Role:2 2 WL paid
+    //Role:0 SOG 2 free Role:1 OG 1 free 1 paid Role:2 2 WL paid
 
-      bytes32 messageHash = encodeForSignature(to, roleIndex);
-      bool isValid = _isSignedByValidator(messageHash, signature);
+    //  bytes32 messageHash = encodeForSignature(to, roleIndex);
+    //  bool isValid = _isSignedByValidator(messageHash, signature);
     
-        if(isValid){
-            console.log("valid");
-        }
-    */
+    //     if(isValid){
+    //        console.log("valid");
+    //   }
+    
 
     uint256 amount = msg.value;
     
@@ -189,7 +193,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
         }
 
     }
-
+*/
 /////////////////////////////////////////////////////////////////
 
     function mint() external payable  returns (uint256 id) {
@@ -297,8 +301,9 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
       
         require(bankBalances[msg.sender] > 0, "NoBalance");
         require(bankBalances[msg.sender] - amount >= 0,"Overdraft Not permitted");
+        bankBalances[msg.sender] =  bankBalances[msg.sender] - amount; //update ledger first
         ren.mint(msg.sender, amount); 
-        bankBalances[msg.sender] =  bankBalances[msg.sender] - amount;
+      
 
     }
 
@@ -456,10 +461,9 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                    
                     require(msg.value >= .01 ether);  
                     require(elf.action != 3); //Cant roll in passve mode  
-                    //                    
+                   //                    
                    // (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, rand, 1, elf.weaponTier, elf.primaryWeapon, elf.inventory);
-                    (elf.primaryWeapon, elf.weaponTier) = _rollWeapon(elf.level, id_, rand);
-
+                   (elf.primaryWeapon, elf.weaponTier) = _rollWeapon(elf.level, id_, rand);
    
                 
                 }else if(action == 6){//item or merchant loop
@@ -479,8 +483,6 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                         _transfer(elfOwner, address(this), id_);
                         elf.owner = elfOwner;
                         }
-
-
                     
                     
                     elf.timestamp = block.timestamp + (12 hours);
