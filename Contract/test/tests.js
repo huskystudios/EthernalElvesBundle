@@ -353,7 +353,7 @@ describe("Game Play", function () {
 //      await elves.connect(addr3).sendCampaign([1],1,4,0,1,0);
       increaseWorldTimeinSeconds(100000,true);
       console.log (await elves.attributes(1))
-      await elves.connect(addr3).sendCampaign([4],4,5,1,1,2);
+      await elves.connect(addr3).sendCampaign([4],1,5,1,1,2);
 
       increaseWorldTimeinSeconds(100000,true);
       
@@ -413,7 +413,8 @@ describe("Game Play", function () {
         await elves.connect(addr3).passive([4])
 
         increaseWorldTimeinSeconds(604700,true);
-        await elves.connect(addr3).returnPassive([1]);
+        await elves.connect(addr3).unStake([1]);
+        console.log(await elves.elves(1));
         increaseWorldTimeinSeconds(800,true);
         await elves.connect(addr3).returnPassive([2]);
 
@@ -446,7 +447,8 @@ describe("Bank Functions", function () {
       expect(await elves.bankBalances(addr3.address).value).to.equal(ethers.BigNumber.from("1000000000000000000000").value);
       });
     it("Withdraw funds from player credit account to player wallet", async function () {
-      await elves.setAccountBalance(addr3.address, ethers.BigNumber.from("1000000000000000000000"));
+      await elves.setAccountBalance(addr3.address, ethers.BigNumber.from("2000000000000000000000"));
+      await elves.connect(addr3).withdrawSomeTokenBalance("1000000000000000000000")
       await elves.connect(addr3).withdrawTokenBalance();
   
     expect(await elves.bankBalances(addr3.address).value).to.equal(ethers.BigNumber.from("1000000000000000000000").value);

@@ -292,6 +292,16 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
 
     }
 
+
+    function withdrawSomeTokenBalance(uint256 amount) external {
+      
+        require(bankBalances[msg.sender] > 0, "NoBalance");
+        require(bankBalances[msg.sender] - amount >= 0,"Overdraft Not permitted");
+        ren.mint(msg.sender, amount); 
+        bankBalances[msg.sender] =  bankBalances[msg.sender] - amount;
+
+    }
+
 //INTERNALS
     
         function _mintElf(address _to) private returns (uint16 id) {
@@ -359,6 +369,11 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
 
                     require(ownerOf[id_] == address(this));
                     require(elf.timestamp < block.timestamp, "elf busy");
+                     
+                     if(elf.action == 3){
+                     actions.timeDiff = (block.timestamp - elf.timestamp) / 1 days; //amount of time spent in camp CHANGE TO 1 DAYS!
+                     elf.level = _exitPassive(actions.timeDiff, elf.level);
+                     }
 
                     _transfer(address(this), elfOwner, id_);      
 
@@ -418,8 +433,9 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
 
                     actions.timeDiff = (block.timestamp - elf.timestamp) / 1 days; //amount of time spent in camp CHANGE TO 1 DAYS!
 
+                    elf.level = _exitPassive(actions.timeDiff, elf.level);
                     
-                    if(actions.timeDiff >= 7){
+                  /*  if(actions.timeDiff >= 7){
                         actions.reward = 140 ether;
                     }
                     if(actions.timeDiff >= 14 && actions.timeDiff < 30){
@@ -434,7 +450,8 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
 
  
                     _setAccountBalance(msg.sender, actions.reward, false);
-                
+                */
+
                 }else if(action == 5){//forge loop for weapons
                    
                     require(msg.value >= .01 ether);  
@@ -508,6 +525,30 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
 
             sentinels[id_] = DataStructures._setElf(elf.owner, elf.timestamp, elf.action, elf.healthPoints, elf.attackPoints, elf.primaryWeapon, elf.level, actions.traits, actions.class);
             emit Action(msg.sender, action, id_); 
+    }
+
+
+
+    function _exitPassive(uint256 timeDiff, uint256 _level) internal returns (uint256 level) {
+            
+            uint256 rewards;
+
+                    if(timeDiff >= 7){
+                        rewards = 140 ether;
+                    }
+                    if(timeDiff >= 14 && timeDiff < 30){
+                        rewards = 420 ether;
+                    }
+                    if(timeDiff >= 30){
+                        rewards = 1200 ether;
+                    }
+                    
+                    level = _level + (timeDiff * 1); //one level per day
+                    level = _level > 100 ? 100 : _level;
+
+ 
+                    _setAccountBalance(msg.sender, rewards, false);
+
     }
 
 
