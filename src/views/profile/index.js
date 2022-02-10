@@ -22,7 +22,19 @@ const Profile = () => {
     const [actionData, setActionData] = useState({})
     const { Moralis, authenticate } = useMoralis();
     const [status, setStatus] = useState("")
-
+    const [balance, setBalance] = useState(0);
+    const [balanceToClaim, setBalanceToClaim] = useState(0);
+    const [miren, setMiren] = useState(0);
+  
+  const getRenBalance = async (address) => {
+    await Moralis.enableWeb3();
+    const renBalanceContract = await Moralis.Cloud.run("getBalance", {address});//in contract
+    const renBalanceWallet = await Moralis.Cloud.run("getMiren", {address});//in wallet
+  
+    
+    setBalance(renBalanceContract/1000000000000000000);
+    setMiren(renBalanceWallet/1000000000000000000);
+  }
    
 /*
       
@@ -54,7 +66,7 @@ const Profile = () => {
                 contractAddress: elvesContract,
                 functionName: "withdrawSomeTokenBalance",
                 abi: elvesAbi.abi,
-                params: {amount: Moralis.Units.ETH("140")},
+                params: {amount: Moralis.Units.ETH(balanceToClaim)},
                 awaitReceipt: false 
               };
 
@@ -125,6 +137,7 @@ const Profile = () => {
             const getData = async () => {
                 const {address} = await getCurrentWalletConnected();
                 setStatus("connected to address: " + address)
+                address && await getRenBalance(address)
                 address && await getUserData(address)
             }
             
@@ -299,7 +312,25 @@ const Profile = () => {
                 <div className="column">
                 <h2>My Elves</h2>
                 <ShowElfTable  />
-                {/*<button onClick={claimCustomAmount}>Claim 140 REN</button>*/}
+                <p>REN credits: {balance} {balanceToClaim > 0 && `- ${balanceToClaim}`}</p>
+                <p>REN in wallet: {miren} {balanceToClaim > 0 && `+ ${balanceToClaim}`}</p>
+
+                <input
+                    type="range"
+                    min="0"
+                    max={balance}
+                    value={balanceToClaim}
+                    onChange={(e) => setBalanceToClaim(e.target.value)}
+                    step="1"
+                />
+                <br />
+                <button
+                    className="btn-claim"
+                    onClick={claimCustomAmount}
+                    disabled={balanceToClaim <= 0}
+                >
+                    Claim {balanceToClaim} REN
+                </button>
                 </div>
            
                 <div className="column">

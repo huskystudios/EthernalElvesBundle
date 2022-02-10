@@ -297,6 +297,8 @@ const WhaleMode = () => {
 			page++
 			setStatus(currentIndex / response.count * 100)
 			
+
+            console.log('!!!');
 			console.log(hasMore, response)
 			results = results.concat(response.results)
 			
