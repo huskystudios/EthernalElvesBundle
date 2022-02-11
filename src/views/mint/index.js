@@ -1,5 +1,5 @@
 import React from "react"
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import './style.css'
 import {
     // getTokenSupply, 
@@ -8,21 +8,8 @@ import {
     etherscan
 
 } from "../../utils/interact"
-import { useMoralis } from "react-moralis"
-import WhitelistMint from "./whitelist"
+import { useMoralis, useWeb3ExecuteFunction } from "react-moralis"
 import Loader from "../../components/Loader"
-import {
-    BrowserRouter as Router,
-    Link,
-    useLocation
-  } from "react-router-dom";
-
-
-  function useQuery() {
-    const { search } = useLocation();
-    
-    return useMemo(() => new URLSearchParams(search), [search]);
-    }
 
 const Mint = () => {
 
@@ -36,9 +23,10 @@ const Mint = () => {
     // const signature = query.get("signature");
 
     const [max, setMax] = useState(6666);
-    const [supply, setSupply] = useState(0);
     const [init, setInit] = useState(3300);
-    const [currentPrice, setCurrentPrice] = useState(0);
+    const [supply, setSupply] = useState(5000);
+   
+    const [currentPrice, setCurrentPrice] = useState(600);
 
     const [status, setStatus] = useState("");
 
@@ -51,23 +39,29 @@ const Mint = () => {
         value: {title: "...", content: "..."}
     })
 
-   
 
-   
-   
+    const { data, error, fetch, isFetching, isLoading } = useWeb3ExecuteFunction();
+  
+    const options = {
+        contractAddress: elvesContract,
+        functionName: "mint",
+        abi: elvesAbi.abi   ,
+        msgValue: parseInt(supply) <= parseInt(init) ?  Moralis.Units.ETH(Moralis.Units.FromWei(currentPrice)) : null,
+        awaitReceipt: false // should be switched to false
+    };
+     
+
+    console.log(data, error, fetch, isFetching, isLoading)
+
+
+
+
 
     const moralisMint = async () => {
 
-        await Moralis.enableWeb3();
+       // await Moralis.enableWeb3();
             
-        const options = {
-            contractAddress: elvesContract,
-            functionName: "mint",
-            abi: elvesAbi.abi   ,
-            msgValue: parseInt(supply) <= parseInt(init) ?  Moralis.Units.ETH(Moralis.Units.FromWei(currentPrice)) : null,
-            awaitReceipt: false // should be switched to false
-          };
-          
+        
           const tx = await Moralis.executeFunction(options);
           
           tx.on("transactionHash", (hash) => { 
@@ -111,26 +105,26 @@ const Mint = () => {
     useEffect(() => {   
 
             if(!isWeb3Enabled){
-                
+                setStatus("enable web3")
                 enableWeb3() 
-                getMoralisTokenSupply()
+               
             
             }else{
                 getMoralisTokenSupply()
+                
             }
-      console.log(isWeb3Enabled)
+     
        
-    }, [isWeb3Enabled])
+    }, [isWeb3Enabled, txReceipt])
     
 
     const getMoralisTokenSupply = async ()=>{
-         
+        
         setStatus("getting current price")
         const price = await Moralis.executeFunction(readOptions("getMintPriceLevel"));
         setStatus("getting total supply")
         const totalSupply = await Moralis.executeFunction(readOptions("totalSupply"));
-        setStatus("done")
-       
+        setStatus("done")       
         setSupply(totalSupply);
         setCurrentPrice(price);
         setLoading(false)
@@ -165,11 +159,11 @@ const Mint = () => {
             <div className="d-flex flex-row justify-center">
              <button onClick={moralisMint} className="btn btn-green">
            
-             Mint with {Moralis.Units.FromWei(currentPrice.mintCost)} $REN
+            {currentPrice.mintCost && <>Mint with {Moralis.Units.FromWei(currentPrice.mintCost)} $REN</>} 
             </button>
             </div>
         <div className="mint-instructions">
-            <p>Elves Minted: {parseInt(supply)}/{max}</p>
+           {supply && <p>Elves Minted: {parseInt(supply)}/{max}</p>}
                
             <p> $REN will be required to spawn the next set of elves.</p>
                
@@ -231,10 +225,12 @@ const Mint = () => {
 
 
         </div>
+
+        <button onClick={() => fetch({ params: options })} disabled={isFetching}>Fetch data</button>
+
         </div>
 
-
-
+       
        
       
         </>

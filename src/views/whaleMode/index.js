@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react"
 import Loader from "../../components/Loader"
-import { useMoralis } from "react-moralis"
+import { useMoralis, useWeb3ExecuteFunction } from "react-moralis"
 import "./style.css"
 import { actionString, campaigns } from "../home/config"
 import Countdown from 'react-countdown';
@@ -9,7 +9,7 @@ import {elvesAbi, getCampaign, elvesContract, etherscan ,sendCampaign, lookupMul
 
 const WhaleMode = () => {
     const [loading, setLoading] = useState(true)
-    const { Moralis, authenticate } = useMoralis();
+    const { Moralis } = useMoralis();
     const [status, setStatus] = useState("")
     const [tryWeapon, setTryWeapon] = useState(false)
     const [tryItem, setTryItem] = useState(false)
@@ -32,7 +32,7 @@ const WhaleMode = () => {
 
     const [clicked, setClicked] = useState([]);
 
-    const [data, setData] = useState([])
+    const [nftData, setNftData] = useState([])
     const [sortedElves, setSortedElves] = useState([])
     const [activeNfts, setActiveNfts] = useState(true)
     const [txreceipt, setTxReceipt] = useState()
@@ -41,13 +41,14 @@ const WhaleMode = () => {
     const [modal, setModal] = useState({show: false, content: ""})
     const resetVariables = async () => {
         setClicked([])
-        setData([])
+        setNftData([])
         setTxReceipt([])
         setCampaignModal(false)
         setActiveNfts(!activeNfts)
 
     }
     
+    const { data, error, fetch, isFetching, isLoading } = useWeb3ExecuteFunction();
 
 
     const handleClick = async (id) => {
@@ -63,7 +64,7 @@ const WhaleMode = () => {
 
 
     useMemo(() => {
-        const selectedElves = data?.filter((elf) => clicked.includes(elf.id));
+        const selectedElves = nftData?.filter((elf) => clicked.includes(elf.id));
 
         const isInactive = (elf) => new Date() > new Date(elf.time * 1000);
         const isPassive = (elf) => elf.action === 3;
@@ -99,7 +100,7 @@ const WhaleMode = () => {
         const buttonEnabledState = Object.keys(isButtonEnabled).reduce(reducer, {});
 
         setIsButtonEnabled(buttonEnabledState);
-    }, [clicked, data]);
+    }, [clicked, nftData]);
 
 
     const passiveMode = async (option) => {
@@ -183,7 +184,7 @@ const WhaleMode = () => {
                           
             }
 
-
+            
     const reRoll = async (option) => {
       
       //  await Moralis.enableWeb3();
@@ -297,9 +298,6 @@ const WhaleMode = () => {
 			page++
 			setStatus(currentIndex / response.count * 100)
 			
-
-            console.log('!!!');
-			console.log(hasMore, response)
 			results = results.concat(response.results)
 			
 		}      
@@ -315,11 +313,10 @@ const WhaleMode = () => {
                 const elves = await lookupMultipleElves(tokenArr)
                 elves.sort((a, b) => a.time - b.time) 
                 console.log(elves)
-                setData(elves)        
+                setNftData(elves)        
                 setStatus(elves.length + " elves")
                 setStatus("done")
-               // elves.length >= 3 ? setLoading(false) :  setStatus("need 8 or more elves to use whale mode. Whale count: " + elves.length + " elves")
-            
+                          
                setLoading(false)
             }
             
@@ -359,8 +356,8 @@ const WhaleMode = () => {
                             : b[attribute] - a[attribute];
                 }
             };
-            setSortedElves([...data?.sort(sortByFunction)]);
-        }, [data, sortBy]);
+            setSortedElves([...nftData?.sort(sortByFunction)]);
+        }, [nftData, sortBy]);
 
         const SortColumnButtons = (props) => {
           const ascActiveClass = (sortBy?.value === props?.value
@@ -414,10 +411,7 @@ const WhaleMode = () => {
                 content: (status)            
           }})
             
-        
-    
-            console.log("sendCampaign", params)
-            
+                    
        
             }
     
@@ -486,7 +480,7 @@ const WhaleMode = () => {
                     <div className="column">
                   
                         <div className="flex">
-                        
+                                               
                         <h2>Whale Mode</h2>
                        
                         </div>
@@ -637,10 +631,7 @@ const WhaleMode = () => {
                 
                     let rowSelected = clicked.includes(parseInt(line.id)) ? "rowSelected" : ""
 
-                    let healer = line.class === "Druid" ? "healer" : ""
-
-                    //change background color if the elf is active or not
-                    
+                                       
 
 
                 return( <tr key={index} className={`${rowSelected} row`} onClick={()=> handleClick(parseInt(line.id))}  > 
@@ -697,7 +688,7 @@ const WhaleMode = () => {
 
                 <div className="flex flex-wrap">
                 {clicked.map((id, index) => {
-                    const elf = data.find(line => line.id === id)
+                    const elf = nftData.find(line => line.id === id)
                   
                     return(
                         <div className="whale-thumb" key={index}>
