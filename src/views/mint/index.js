@@ -157,8 +157,8 @@ const Mint = () => {
            
            
             <div className="d-flex flex-row justify-center">
-             <button onClick={moralisMint} className="btn btn-green">
            
+             <button className="btn btn-green" onClick={() => fetch({ params: options })} disabled={isFetching}>
             {currentPrice.mintCost && <>Mint with {Moralis.Units.FromWei(currentPrice.mintCost)} $REN</>} 
             </button>
             </div>
@@ -226,8 +226,7 @@ const Mint = () => {
 
         </div>
 
-        <button onClick={() => fetch({ params: options })} disabled={isFetching}>Fetch data</button>
-
+       
         </div>
 
        
