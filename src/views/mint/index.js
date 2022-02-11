@@ -125,9 +125,7 @@ const Mint = () => {
       setSupply(totalSupply);
       setCurrentPrice(price);
 
-      console.log(totalSupply, price)
-
-      
+         
 
             setLoading(false)
             } 
@@ -169,7 +167,7 @@ const Mint = () => {
             </button>
             </div>
         <div className="mint-instructions">
-            <p>Elves Minted: {Moralis.Units.ETH(supply)/1000000000000000000}/{max}</p>
+            <p>Elves Minted: {parseInt(supply)}/{max}</p>
                
             <p> $REN will be required to spawn the next set of elves.</p>
                
