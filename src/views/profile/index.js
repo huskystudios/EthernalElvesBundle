@@ -27,7 +27,7 @@ const Profile = () => {
     const [miren, setMiren] = useState(0);
   
   const getRenBalance = async (address) => {
-    await Moralis.enableWeb3();
+    //await Moralis.enableWeb3();
     const renBalanceContract = await Moralis.Cloud.run("getBalance", {address});//in contract
     const renBalanceWallet = await Moralis.Cloud.run("getMiren", {address});//in wallet
   
@@ -60,7 +60,7 @@ const Profile = () => {
 
     const claimCustomAmount = async (option) => {
       
-        await Moralis.enableWeb3();
+      //  await Moralis.enableWeb3();
 
         const options = {
                 contractAddress: elvesContract,
@@ -77,7 +77,7 @@ const Profile = () => {
 
     const getUserData = async (address) => {
 
-        await Moralis.enableWeb3();
+     //   await Moralis.enableWeb3();
 
 
         const ElfActions = Moralis.Object.extend("ElfActions");

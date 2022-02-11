@@ -26,25 +26,25 @@ import {
 
 const Mint = () => {
 
-    const { Moralis } = useMoralis();
+    const { enableWeb3, isWeb3Enabled, Moralis} = useMoralis()
+
     const [txReceipt, setTxReceipt] = useState();
     const [loading, setLoading] = useState(true);
-    const query = useQuery();
-    const wlflag = query.get("wl");
-    const address = query.get("address");
-    const signature = query.get("signature");
+    // const query = useQuery();
+    // const wlflag = query.get("wl");
+    // const address = query.get("address");
+    // const signature = query.get("signature");
 
-    const [max, setMax] = useState(0);
+    const [max, setMax] = useState(6666);
     const [supply, setSupply] = useState(0);
-    const [init, setInit] = useState(0);
+    const [init, setInit] = useState(3300);
     const [currentPrice, setCurrentPrice] = useState(0);
 
     const [status, setStatus] = useState("");
 
 
-    let mintcredentials = {role: wlflag, address:address, signature: signature}
-
-    let wl = wlflag ? true : false;
+   // let mintcredentials = {role: wlflag, address:address, signature: signature}
+   // let wl = wlflag ? true : false;
 
     const [tooltip, setTooltip] = useState({
         show: false,
@@ -58,7 +58,7 @@ const Mint = () => {
 
     const moralisMint = async () => {
 
-        await Moralis.enableWeb3();
+      //  await Moralis.enableWeb3();
             
         const options = {
             contractAddress: elvesContract,
@@ -97,7 +97,7 @@ const Mint = () => {
 
     function readOptions(contractMethod) {
 
-              const options = {
+            const options = {
             contractAddress: elvesContract,
             functionName: contractMethod,
             abi: elvesAbi.abi
@@ -108,26 +108,24 @@ const Mint = () => {
     }
 
 
-   
-
     useEffect(() => {   
+
+       
          
     const getMoralisTokenSupply = async ()=>{
 
-      await Moralis.enableWeb3();     
-           
-      setStatus("getting current supply")
-      const initsupply = await Moralis.executeFunction(readOptions("INIT_SUPPLY"));
-      const maxSupply = await Moralis.executeFunction(readOptions("maxSupply"));
+      if(!isWeb3Enabled){await enableWeb3()}
+         
       setStatus("getting current price")
       const price = await Moralis.executeFunction(readOptions("getMintPriceLevel"));
       setStatus("getting total supply")
       const totalSupply = await Moralis.executeFunction(readOptions("totalSupply"));
       setStatus("done")
-      setInit(initsupply);
-      setMax(maxSupply);
+     
       setSupply(totalSupply);
       setCurrentPrice(price);
+
+      console.log(totalSupply, price)
 
       
 
@@ -171,7 +169,7 @@ const Mint = () => {
             </button>
             </div>
         <div className="mint-instructions">
-            <p>Elves Minted: {supply}/{max}</p>
+            <p>Elves Minted: {Moralis.Units.ETH(supply)/1000000000000000000}/{max}</p>
                
             <p> $REN will be required to spawn the next set of elves.</p>
                

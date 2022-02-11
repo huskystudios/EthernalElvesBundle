@@ -46,7 +46,7 @@ const Profile = () => {
 
     const getUserData = async (address) => {
 
-        await Moralis.enableWeb3();
+    //    await Moralis.enableWeb3();
 
 
         const ElfActions = Moralis.Object.extend("ElfActions");

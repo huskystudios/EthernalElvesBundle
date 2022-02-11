@@ -3,6 +3,7 @@ import logoImg from "../assets/images/logo.png"
 import { NavLink } from "react-router-dom"
 import ConnectWallet from "../wallet/ConnectWallet"
 import Withdraw from "../wallet/Withdraw"
+import ToggleChain from "../wallet/ChangeChain"
 
 
 const MainLayout = (props) => {
@@ -24,17 +25,19 @@ const MainLayout = (props) => {
                     <div onClick={onClickHome} className="nav-item" to="/">play</div>
                     <NavLink className="nav-item" to="/whalemode">whale Mode</NavLink>
                     <NavLink className="nav-item" to="/profile">profile</NavLink>
-                    <ConnectWallet setStatus={setStatus} onSetWallet={setWallet} />
+                    <ConnectWallet />
                     <NavLink className="nav-item" to="/mint">mint</NavLink>
                     <NavLink className="nav-item" to="/faq">faq</NavLink>
                     <NavLink className="nav-item" to="/lookup">lookup</NavLink>
                 </div>
-               <div className="search">
-                       <Withdraw address={wallet} />
-                </div>
+              
+                <ToggleChain />
+                <Withdraw />
+               
             </div>
             <div className="mobile-header">
-                        <ConnectWallet setStatus={setStatus} onSetWallet={setWallet} />
+                        <ConnectWallet />
+                       
              </div>    
             
             <div className="app-body">

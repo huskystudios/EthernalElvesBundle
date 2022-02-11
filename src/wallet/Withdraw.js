@@ -1,26 +1,24 @@
 import React from "react"
 import { useState, useEffect } from "react"
 import {elvesAbi, elvesContract} from "../utils/interact"
-import {useMoralis} from "react-moralis"
-import {
-  getCurrentWalletConnected, //import here
-
-} from "../utils/interact.js";
+import {useMoralis, useChain} from "react-moralis"
 
 
 const Withdraw = () => {
 
   const { Moralis } = useMoralis();
+  const { account } = useChain();
   const [tooltip, setTooltip] = useState("");
   const [balance, setBalance] = useState(0);
   const [miren, setMiren] = useState(0);
   const [txReceipt, setTxReceipt] = useState();
 
+  
+
 const getRenBalance = async (address) => {
-  await Moralis.enableWeb3();
+ 
   const renBalanceContract = await Moralis.Cloud.run("getBalance", {address});//in contract
   const renBalanceWallet = await Moralis.Cloud.run("getMiren", {address});//in wallet
-
   
   setBalance(renBalanceContract/1000000000000000000);
   setMiren(renBalanceWallet/1000000000000000000);
@@ -30,13 +28,13 @@ const getRenBalance = async (address) => {
 
 useEffect( () => {
   const init = async () => {
-  const {address} = await getCurrentWalletConnected();
-  getRenBalance(address)
+  
+    account &&  await getRenBalance(account)
   }
 
   init();
   
-},[txReceipt])
+},[account])
 
 
    
@@ -57,7 +55,7 @@ useEffect( () => {
 
     const withdrawTokenBalance = async () => {
 
-      await Moralis.enableWeb3();
+    //await Moralis.enableWeb3();
       
       const options = {
         contractAddress: elvesContract,
@@ -84,13 +82,13 @@ useEffect( () => {
 
   
     return (
-    <>
+    <div className="search">
     <button 
     onMouseEnter={() => setTooltip(`Claim ${balance} $REN?`)}
     onMouseLeave={() => setTooltip("")} 
     onClick={withdrawTokenBalance}> {miren + balance} $REN</button>
      {showTooltip(tooltip)}
-    </>
+    </div>
     )
 }
 

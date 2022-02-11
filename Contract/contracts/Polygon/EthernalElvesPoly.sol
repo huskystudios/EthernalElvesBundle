@@ -58,7 +58,6 @@ contract PolyEthernalElves is PolyERC721 {
        admin                = msg.sender;   
        dev1Address          = _dev1Address;
        dev2Address          = _dev2Address;
-       maxSupply            = 6666; 
        INIT_SUPPLY          = 3300; 
        initialized          = true;
        price                = .088 ether;  

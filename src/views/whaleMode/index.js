@@ -104,7 +104,7 @@ const WhaleMode = () => {
 
     const passiveMode = async (option) => {
       
-        await Moralis.enableWeb3();
+       // await Moralis.enableWeb3();
 
         const options = {
                 contractAddress: elvesContract,
@@ -145,7 +145,7 @@ const WhaleMode = () => {
 
         const heal = async () => {
       
-            await Moralis.enableWeb3();
+      //      await Moralis.enableWeb3();
     
             const options = {
                     contractAddress: elvesContract,
@@ -186,7 +186,7 @@ const WhaleMode = () => {
 
     const reRoll = async (option) => {
       
-        await Moralis.enableWeb3();
+      //  await Moralis.enableWeb3();
 
         const options = {
                 contractAddress: elvesContract,
@@ -229,7 +229,7 @@ const WhaleMode = () => {
 
     const unStake = async (option) => {
       
-        await Moralis.enableWeb3();
+     //   await Moralis.enableWeb3();
 
         const options = {
                 contractAddress: elvesContract,
@@ -275,7 +275,7 @@ const WhaleMode = () => {
                 const {address} = await getCurrentWalletConnected();
                 setStatus("connected to address: " + address)
      
-               await Moralis.enableWeb3();
+           //    await Moralis.enableWeb3();
 
                const Elves = Moralis.Object.extend("Elves");
                 let query = new Moralis.Query(Elves);

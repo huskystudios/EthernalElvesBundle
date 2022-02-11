@@ -16,10 +16,9 @@ import { getCurrentWalletConnected } from './utils/interact'
 import { useState, useEffect } from 'react';
 import HuskyMode from './views/huskyMode';
 
-
 require('dotenv').config();
 
-  
+
 function App() {
 
 const [flip, setFlip] = useState(false)  
@@ -27,11 +26,13 @@ const [flip, setFlip] = useState(false)
   let dev1 = process.env.REACT_APP_DEV1
   let dev2 = process.env.REACT_APP_DEV2
   let dev3 = process.env.REACT_APP_DEV3
-  //let dev4 = process.env.REACT_APP_DEV4
+
 
   let adminWallet = [dev1.toLowerCase(), dev2.toLowerCase(), dev3.toLowerCase()]
 
   useEffect(async() => {
+
+
     const {address} = await getCurrentWalletConnected()
     if(adminWallet.includes(address.toLowerCase())){
       setFlip(true)

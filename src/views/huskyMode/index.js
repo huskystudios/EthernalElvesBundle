@@ -103,7 +103,7 @@ const HuskyMode = () => {
 
     const passiveMode = async (option) => {
       
-        await Moralis.enableWeb3();
+       // await Moralis.enableWeb3();
 
         const options = {
                 contractAddress: elvesContract,
@@ -144,7 +144,7 @@ const HuskyMode = () => {
 
         const heal = async () => {
       
-            await Moralis.enableWeb3();
+           // await Moralis.enableWeb3();
     
             const options = {
                     contractAddress: elvesContract,
@@ -185,7 +185,7 @@ const HuskyMode = () => {
 
     const reRoll = async (option) => {
       
-        await Moralis.enableWeb3();
+       // await Moralis.enableWeb3();
 
         const options = {
                 contractAddress: elvesContract,
@@ -228,7 +228,7 @@ const HuskyMode = () => {
 
     const unStake = async (option) => {
       
-        await Moralis.enableWeb3();
+        //await Moralis.enableWeb3();
 
         const options = {
                 contractAddress: elvesContract,
@@ -274,7 +274,7 @@ const HuskyMode = () => {
                 const {address} = await getCurrentWalletConnected();
                 setStatus("connected to address: " + address)
      
-               await Moralis.enableWeb3();
+              // await Moralis.enableWeb3();
      
     
     

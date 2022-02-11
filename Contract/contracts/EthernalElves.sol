@@ -50,7 +50,7 @@ contract EthernalElvesV2 is ERC721 {
     mapping(address => uint16)  public whitelist; 
 
 /////NEW STORAGE FROM THIS LINE///////////////////////////////////////////////////////
-
+    bool public isTerminalOpen;
    
        function initialize(address _dev1Address, address _dev2Address) public {
     
@@ -100,8 +100,56 @@ contract EthernalElvesV2 is ERC721 {
     event Action(address indexed from, uint256 indexed action, uint256 indexed tokenId);         
     event BalanceChanged(address indexed owner, uint256 indexed amount, bool indexed subtract);
     event Campaigns(address indexed owner, uint256 amount, uint256 indexed campaign, uint256 sector, uint256 indexed tokenId);
+    event CheckIn(address indexed from, uint256 timestamp, uint256 indexed tokenId, uint256 indexed sentinel);         
+    event CheckOut(address indexed to, uint256 timestamp, uint256 indexed tokenId);      
         
-//MINT
+//////////////EXPORT TO OTHER CHAINS/////////////////
+
+function checkIn(uint256[] calldata ids) public returns (bool) {
+   
+  
+        isPlayer();
+        require(isTerminalOpen, "Terminal is closed");         
+        
+          for (uint256 index = 0; index < ids.length; index++) {  
+            _actions(ids[index], 8, msg.sender, 0, 0, false, false, false, 0);
+          }
+    
+
+}
+
+ function checkOut(uint256 id_, uint256 _sentinel /*, bytes memory _signature*/) public returns (bool) {
+   
+    isPlayer();
+    require(isTerminalOpen, "Terminal is closed");
+    //require(_isSignedByValidator(encodeForSignature(id_, msg.sender, _sentinel),_signature), "incorrect signature"); 
+    
+    //Add this to 
+    ///All checks to happen in polygon
+     sentinels[id_] = _sentinel;
+   
+   /*
+    DataStructures.Elf memory elf = DataStructures.getElf(_sentinel);
+    DataStructures.ActionVariables memory actions;
+   
+    require(ownerOf[id_] == msg.sender || elf.owner == msg.sender, "NotYourElf");
+    require(elf.action == 8, "not checked out");   
+    
+    _transfer(address(this), msg.sender, id_);      
+    
+    elf.owner = address(0);  
+    elf.action = 0;
+
+    actions.traits   = DataStructures.packAttributes(elf.hair, elf.race, elf.accessories);
+    actions.class    = DataStructures.packAttributes(elf.sentinelClass, elf.weaponTier, elf.inventory);
+    elf.healthPoints = DataStructures.calcHealthPoints(elf.sentinelClass, elf.level); 
+    elf.attackPoints = DataStructures.calcAttackPoints(elf.sentinelClass, elf.weaponTier);              
+
+    sentinels[id_] = DataStructures._setElf(elf.owner, elf.timestamp, elf.action, elf.healthPoints, elf.attackPoints, elf.primaryWeapon, elf.level, actions.traits, actions.class);
+     */  
+   emit CheckOut(msg.sender, block.timestamp, id_);
+
+ }
 
 //CheckOut Permissions 
 //NOTE:change this to private later
@@ -518,6 +566,16 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                         sentinels[campaign_] = DataStructures._setElf(hElf.owner, hElf.timestamp, hElf.action, hElf.healthPoints, hElf.attackPoints, hElf.primaryWeapon, hElf.level, actions.traits, actions.class);
 
                 }
+                }else if (action == 8){//checkIn loop Do not remove
+                    
+                
+                        if(ownerOf[id_] != address(this)){
+                             _transfer(elfOwner, address(this), id_);
+                             elf.owner = elfOwner;                                
+                        }
+                    
+
+                 emit CheckIn(elfOwner, block.timestamp, id_, sentinels[id_]);
                 }           
              
             actions.traits   = DataStructures.packAttributes(elf.hair, elf.race, elf.accessories);
