@@ -100,12 +100,13 @@ contract EthernalElvesV2 is ERC721 {
     event Action(address indexed from, uint256 indexed action, uint256 indexed tokenId);         
     event BalanceChanged(address indexed owner, uint256 indexed amount, bool indexed subtract);
     event Campaigns(address indexed owner, uint256 amount, uint256 indexed campaign, uint256 sector, uint256 indexed tokenId);
-    event CheckIn(address indexed from, uint256 timestamp, uint256 indexed tokenId, uint256 indexed sentinel);         
+    event CheckIn(address indexed from, uint256 timestamp, uint256 indexed tokenId, uint256 indexed sentinel);      
+    event RenTransferOut(address indexed from, uint256 timestamp, uint256 indexed renAmount);   
     event CheckOut(address indexed to, uint256 timestamp, uint256 indexed tokenId);      
         
 //////////////EXPORT TO OTHER CHAINS/////////////////
 
-function checkIn(uint256[] calldata ids) public returns (bool) {
+function checkIn(uint256[] calldata ids, uint256 renAmount) public returns (bool) {
    
   
         isPlayer();
@@ -114,6 +115,11 @@ function checkIn(uint256[] calldata ids) public returns (bool) {
           for (uint256 index = 0; index < ids.length; index++) {  
             _actions(ids[index], 8, msg.sender, 0, 0, false, false, false, 0);
           }
+
+          if (renAmount > 0) {
+            ren.burn(msg.sender, renAmount);
+            emit RenTransferOut(msg.sender)
+        }
     
 
 }
@@ -191,6 +197,17 @@ function validSignature(uint256 id, address owner, uint256 sentinel, bytes memor
     return _isSignedByValidator(encodeForSignature(id, owner, sentinel), signature);
 
 }
+
+
+/* For Polygon
+ function initMint(address to, uint256 start, uint256 end) external {
+        require(msg.sender == admin);
+        for (uint256 i = start; i < end; i++) {
+            _mint( to, i);
+        }
+    }
+    
+*/
 
 
 /*

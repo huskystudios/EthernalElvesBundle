@@ -58,7 +58,7 @@ const Mint = () => {
 
     const moralisMint = async () => {
 
-      //  await Moralis.enableWeb3();
+        await Moralis.enableWeb3();
             
         const options = {
             contractAddress: elvesContract,
