@@ -118,15 +118,21 @@ function checkIn(uint256[] calldata ids) public returns (bool) {
 
 }
 
- function checkOut(uint256 id_, uint256 _sentinel /*, bytes memory _signature*/) public returns (bool) {
+ function checkOut(uint256[] calldata ids, uint256[] calldata sentinel, bytes[] memory signatures) public returns (bool) {
    
     isPlayer();
     require(isTerminalOpen, "Terminal is closed");
-    //require(_isSignedByValidator(encodeForSignature(id_, msg.sender, _sentinel),_signature), "incorrect signature"); 
+     
     
     //Add this to 
     ///All checks to happen in polygon
-     sentinels[id_] = _sentinel;
+
+      for (uint256 index = 0; index < ids.length; index++) {  
+      require(_isSignedByValidator(encodeForSignature(ids[index], msg.sender, sentinel[index]),signatures[index]), "incorrect signature");
+       sentinels[ids[index]] = sentinel[index];
+       emit CheckOut(msg.sender, block.timestamp, ids[index]);
+      }
+    
    
    /*
     DataStructures.Elf memory elf = DataStructures.getElf(_sentinel);
@@ -147,7 +153,7 @@ function checkIn(uint256[] calldata ids) public returns (bool) {
 
     sentinels[id_] = DataStructures._setElf(elf.owner, elf.timestamp, elf.action, elf.healthPoints, elf.attackPoints, elf.primaryWeapon, elf.level, actions.traits, actions.class);
      */  
-   emit CheckOut(msg.sender, block.timestamp, id_);
+  
 
  }
 
