@@ -26,10 +26,8 @@ const ConnectWallet = ({onSetWallet, setStatus}) => {
      if(!isWeb3Enabled){await enableWeb3()}
      const currentUser = Moralis.User.current();
 
-     console.log("HU", currentUser)
-
-     
-   // await Moralis.User.enableUnsafeCurrentUser()
+       
+   //  Moralis.User.enableUnsafeCurrentUser()
 
     
       if (currentUser) {

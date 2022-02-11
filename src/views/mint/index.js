@@ -110,29 +110,31 @@ const Mint = () => {
 
     useEffect(() => {   
 
+            if(!isWeb3Enabled){
+                
+                enableWeb3() 
+                getMoralisTokenSupply()
+            
+            }else{
+                getMoralisTokenSupply()
+            }
+      console.log(isWeb3Enabled)
        
-         
-    const getMoralisTokenSupply = async ()=>{
-
-      if(!isWeb3Enabled){await enableWeb3()}
-         
-      setStatus("getting current price")
-      const price = await Moralis.executeFunction(readOptions("getMintPriceLevel"));
-      setStatus("getting total supply")
-      const totalSupply = await Moralis.executeFunction(readOptions("totalSupply"));
-      setStatus("done")
-     
-      setSupply(totalSupply);
-      setCurrentPrice(price);
-
-         
-
-            setLoading(false)
-            } 
-      
-        getMoralisTokenSupply()
-    }, [txReceipt])
+    }, [isWeb3Enabled])
     
+
+    const getMoralisTokenSupply = async ()=>{
+         
+        setStatus("getting current price")
+        const price = await Moralis.executeFunction(readOptions("getMintPriceLevel"));
+        setStatus("getting total supply")
+        const totalSupply = await Moralis.executeFunction(readOptions("totalSupply"));
+        setStatus("done")
+       
+        setSupply(totalSupply);
+        setCurrentPrice(price);
+        setLoading(false)
+              } 
  
 
  
