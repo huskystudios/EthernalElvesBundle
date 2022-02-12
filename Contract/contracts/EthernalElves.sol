@@ -9,8 +9,8 @@ import "./Interfaces.sol";
 
 // We are the Ethernal. The Ethernal Elves         
 // Written by 0xHusky & Beff Jezos. Everything is on-chain for all time to come.
-// Version 1.0.4
-//patch notes: ICY Patch and Items Patch
+// Version 2.0.0
+// Release notes: Export Sentinel
 
 contract EthernalElvesV2 is ERC721 {
 
@@ -34,8 +34,8 @@ contract EthernalElvesV2 is ERC721 {
     bool public isWlOpen;
     bool private initialized;
 
-    address dev1Address;//Husky
-    address dev2Address;//Beff
+    address dev1Address;
+    address dev2Address;
     address terminus;
     address public validator;
    
@@ -43,7 +43,7 @@ contract EthernalElvesV2 is ERC721 {
     uint256 public price;
     bytes32 internal ketchup;
     
-    uint256[] public _remaining; ////MAKE THIS PUBLIC
+    uint256[] public _remaining; 
     mapping(uint256 => uint256) public sentinels; //memory slot for Elfs
     mapping(address => uint256) public bankBalances; //memory slot for bank balances
     mapping(address => bool)    public auth;
@@ -107,19 +107,23 @@ contract EthernalElvesV2 is ERC721 {
 //////////////EXPORT TO OTHER CHAINS/////////////////
 
 function checkIn(uint256[] calldata ids, uint256 renAmount) public returns (bool) {
-   
-  
+     
         isPlayer();
         require(isTerminalOpen, "Terminal is closed");         
-        
-          for (uint256 index = 0; index < ids.length; index++) {  
-            _actions(ids[index], 8, msg.sender, 0, 0, false, false, false, 0);
+         uint256 travelers = ids.length;
+         if (travelers > 0) {
+
+                    for (uint256 index = 0; index < ids.length; index++) {  
+                        _actions(ids[index], 8, msg.sender, 0, 0, false, false, false, 0);
+                    }
+
+                  
           }
 
-          if (renAmount > 0) {
-            ren.burn(msg.sender, renAmount);
-            emit RenTransferOut(msg.sender)
-        }
+            if (renAmount > 0) {
+                        ren.burn(msg.sender, renAmount);
+                        emit RenTransferOut(msg.sender,block.timestamp,renAmount);
+             }
     
 
 }
@@ -132,47 +136,51 @@ function checkIn(uint256[] calldata ids, uint256 renAmount) public returns (bool
     
     //Add this to 
     ///All checks to happen in polygon
+     uint256 travelers = ids.length;
+         if (travelers > 0) {
 
-      for (uint256 index = 0; index < ids.length; index++) {  
-      require(_isSignedByValidator(encodeForSignature(ids[index], msg.sender, sentinel[index]),signatures[index]), "incorrect signature");
-       sentinels[ids[index]] = sentinel[index];
-       emit CheckOut(msg.sender, block.timestamp, ids[index]);
-      }
-    
+                for (uint256 index = 0; index < ids.length; index++) {  
+                    require(_isSignedByValidator(encodeSentinelForSignature(ids[index], msg.sender, sentinel[index]),signatures[index]), "incorrect signature");
+                    sentinels[ids[index]] = sentinel[index];
+                    _actions(ids[index], 0, msg.sender, 0, 0, false, false, false, 0);
+                    emit CheckOut(msg.sender, block.timestamp, ids[index]);
+                }
+         }
+
+ }
+
+ function checkOutRen(uint256 renAmount, bytes memory renSignatures) public returns (bool) {
    
-   /*
-    DataStructures.Elf memory elf = DataStructures.getElf(_sentinel);
-    DataStructures.ActionVariables memory actions;
-   
-    require(ownerOf[id_] == msg.sender || elf.owner == msg.sender, "NotYourElf");
-    require(elf.action == 8, "not checked out");   
-    
-    _transfer(address(this), msg.sender, id_);      
-    
-    elf.owner = address(0);  
-    elf.action = 0;
+    isPlayer();
+    require(isTerminalOpen, "Terminal is closed");     
 
-    actions.traits   = DataStructures.packAttributes(elf.hair, elf.race, elf.accessories);
-    actions.class    = DataStructures.packAttributes(elf.sentinelClass, elf.weaponTier, elf.inventory);
-    elf.healthPoints = DataStructures.calcHealthPoints(elf.sentinelClass, elf.level); 
-    elf.attackPoints = DataStructures.calcAttackPoints(elf.sentinelClass, elf.weaponTier);              
-
-    sentinels[id_] = DataStructures._setElf(elf.owner, elf.timestamp, elf.action, elf.healthPoints, elf.attackPoints, elf.primaryWeapon, elf.level, actions.traits, actions.class);
-     */  
-  
+        if(renAmount > 0){
+             require(_isSignedByValidator(encodeRenForSignature(renAmount, msg.sender),renSignatures), "incorrect signature");
+            ren.mint(msg.sender, renAmount);
+        }
+    
 
  }
 
 //CheckOut Permissions 
 //NOTE:change this to private later
-function encodeForSignature(uint256 id, address owner, uint256 sentinel) public pure returns (bytes32) {
+function encodeSentinelForSignature(uint256 id, address owner, uint256 sentinel) public pure returns (bytes32) {
      return keccak256(
             abi.encodePacked("\x19Ethereum Signed Message:\n32", 
                 keccak256(
-                        abi.encodePacked(id, sentinel))
+                        abi.encodePacked(id, owner, sentinel))
                         )
                     );
-}       
+} 
+
+function encodeRenForSignature(uint256 renAmount, address owner) public pure returns (bytes32) {
+     return keccak256(
+            abi.encodePacked("\x19Ethereum Signed Message:\n32", 
+                keccak256(
+                        abi.encodePacked(renAmount, owner))
+                        )
+                    );
+}  
   
 function _isSignedByValidator(bytes32 _hash, bytes memory _signature) private view returns (bool) {
     
@@ -190,13 +198,6 @@ function _isSignedByValidator(bytes32 _hash, bytes memory _signature) private vi
   
 }
 
-
-
-function validSignature(uint256 id, address owner, uint256 sentinel, bytes memory signature) public view returns (bool) {
-    
-    return _isSignedByValidator(encodeForSignature(id, owner, sentinel), signature);
-
-}
 
 
 /* For Polygon
@@ -757,14 +758,14 @@ function elves(uint256 _id) external view returns(address owner, uint timestamp,
         sentinels[id] = sentinel;
     }
 
-      function pull(address owner_, uint256[] calldata ids) external {
+   /*   function pull(address owner_, uint256[] calldata ids) external {
         require (msg.sender == terminus, "not terminus"); 
         for (uint256 index = 0; index < ids.length; index++) {
               _transfer(owner_, msg.sender, ids[index]);
         }
         ITerminus(msg.sender).pullCallback(owner_, ids);
     }
-  
+  */
 
 //ADMIN Only
     function withdrawAll() public {
@@ -799,6 +800,13 @@ function elves(uint256 _id) external view returns(address owner, uint timestamp,
         onlyOwner();
         isWlOpen = !isWlOpen;
     }
+
+     function flipTerminal() external {
+        onlyOwner();
+        isTerminalOpen = !isTerminalOpen;
+    }
+
+    
     
    function setAccountBalance(address _owner, uint256 _amount) public {                
         onlyOwner();

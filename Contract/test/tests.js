@@ -120,13 +120,34 @@ describe("Ethernal Elves Contracts", function () {
   await elves.flipWhitelist();
   await elves.flipMint();
   await elves.flipActiveStatus();
+  await elves.flipTerminal();
 
-  terminus = await Terminus.deploy();
-  terminus.initialize(elves.address)
 
-  elves.setTerminus(terminus.address)
+
+  //terminus = await Terminus.deploy();
+  //terminus.initialize(elves.address)
+
+  //elves.setTerminus(terminus.address)
   
   
+
+  });
+
+  describe("Check In, Check Out", function () {
+    it("Stake Sentinels with Contract", async function () {
+
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+
+      await ren.mint(addr3.address, ethers.BigNumber.from("90000000000000000000000")); 
+
+      await elves.connect(addr3).checkIn([1,2,3], "90000000000000000000000");
+
+      console.log(await elves.elves(1))
+
+
+    })
 
   });
 
