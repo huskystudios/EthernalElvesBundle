@@ -142,9 +142,19 @@ describe("Ethernal Elves Contracts", function () {
 
       await ren.mint(addr3.address, ethers.BigNumber.from("90000000000000000000000")); 
 
+      console.log(await elves.ownerOf(1))
+    
+
       await elves.connect(addr3).checkIn([1,2,3], "90000000000000000000000");
 
-      console.log(await elves.elves(1))
+       console.log(await elves.ownerOf(1))
+
+
+      //check out
+
+   //   let sentinelDNA = "45427413644928360261459227712385514627098612091526571146141633128741054971904"
+// console.log(await elves.getSentinel(2))
+   //   await elves.connect(addr3).checkOut(1, sentinelDNA)
 
 
     })
