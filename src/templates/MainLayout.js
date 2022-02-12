@@ -31,7 +31,7 @@ const MainLayout = (props) => {
                     <NavLink className="nav-item" to="/lookup">lookup</NavLink>
                 </div>
               
-                <ToggleChain />
+               {/**<ToggleChain /> */} 
                 <Withdraw />
                
             </div>
