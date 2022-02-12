@@ -14,7 +14,6 @@ import ImageApp from './views/lookup';
 import WhaleMode from './views/whaleMode';
 import { getCurrentWalletConnected } from './utils/interact'
 import { useState, useEffect } from 'react';
-import HuskyMode from './views/huskyMode';
 
 require('dotenv').config();
 
@@ -65,8 +64,7 @@ const [flip, setFlip] = useState(false)
               <Route exact path="/whalemode">
                 <WhaleMode />
                </Route>
-              <Route exact path="/huskymode"><HuskyMode /></Route>
-            </Switch>
+             </Switch>
           </MainLayout>
         </Router>
       </div>

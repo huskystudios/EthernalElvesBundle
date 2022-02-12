@@ -242,6 +242,31 @@ const txPayload = async(txData) => {
 
 /////////////////////////////
 
+export const doActions = async(options) => {
+
+  ///NOTE This function is work in progress.
+  
+  let tx = await txPayload(nftContract.methods[options.functionName](options.params).encodeABI())
+
+  try {
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
+        
+  return {
+        success: true,
+        status: (<>Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash,
+    }
+  } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+    }
+  
+  } 
+ 
+
+}
+
 
 export const sendCampaign = async({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem}) => {
   
