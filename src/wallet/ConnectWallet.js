@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-//import {  getCurrentWalletConnected, connectWallet} from "../utils/interact.js";
+import {  getCurrentWalletConnected, connectWallet} from "../utils/interact.js";
 import { useMoralis, useChain } from "react-moralis";
 
 
-const ConnectWallet = ({onSetWallet, setStatus}) => {
+const ConnectWallet = () => {
  
   //State variables
   const [walletAddress, setWallet] = useState("");
+  const [status, setStatus] = useState("");
   const {authenticate, isAuthenticated, user, isWeb3Enabled, enableWeb3, Moralis  } = useMoralis()
   const [isMetamask, setIsMetamask] = useState(false);
 
@@ -14,16 +15,25 @@ const ConnectWallet = ({onSetWallet, setStatus}) => {
 
 
 
+ /* const unsubscribe = Moralis.onAccountChanged((chain) => {
+    setWallet(chain)  
+    // returns the new account --> ex. "0x1a2b3c4d..."
+  });
+  
+  // Unsubscribe to onAccountChanged events
+  
+*/
   
 
   useEffect(() => {
     const init = async () => {
-    //  const {address, status} = await getCurrentWalletConnected();
-   //   onSetWallet(address);
-   //   setWallet(address)
+      const {address, status} = await getCurrentWalletConnected();
+     setWallet(address)
     //  setStatus(status);
-     // addWalletListener(); 
-     if(!isWeb3Enabled){await enableWeb3()}
+    addWalletListener(); 
+    
+ /*   
+    if(!isWeb3Enabled){await enableWeb3()}
      const currentUser = Moralis.User.current();
 
        
@@ -42,20 +52,49 @@ const ConnectWallet = ({onSetWallet, setStatus}) => {
           })
       }
 
-
-  
     
-     
-  }
+
+*/
+    }
+    
     isMetaMaskInstalled();
+   // unsubscribe()
     init()
 }, []);
 
+function addWalletListener() {
+  if (window.ethereum) {
+    window.ethereum.on("accountsChanged", (accounts) => {
+      if (accounts.length > 0) {
+        setWallet(accounts[0]);
+        window.location.reload(false);
+        setStatus("");
+      } else {
+        setWallet("");
+        setStatus("🦊 Connect to Metamask using the top right button.");
+      }
+    });
+  } else {
+    setStatus(
+      <p>
+        {" "}
+        🦊{" "}
+        <a target="_blank" href={`https://metamask.io/download.html`}>
+          You must install Metamask, a virtual Ethereum wallet, in your
+          browser.
+        </a>
+      </p>
+    );
+  }
+}
+
+
   
 const connectWalletPressed = async () => {
- // const walletResponse = await connectWallet();
- 
-  if(isAuthenticated){
+  const walletResponse = await connectWallet();
+  setWallet(walletResponse.address);
+  window.location.reload(false);
+/*  if(isAuthenticated){
 
     window.location.reload(false);
   // setStatus(user.attributes.ethAddress);
@@ -74,7 +113,7 @@ const connectWalletPressed = async () => {
   })
 
   }
-
+*/
 
   
 };

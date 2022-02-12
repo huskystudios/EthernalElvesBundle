@@ -28,6 +28,7 @@ const Home = () => {
     const [txreceipt, setTxReceipt] = useState()
     const [alert, setAlert] = useState({show: false, value: null})
     const [wallet, setWallet] = useState()
+    const [status, setStatus] = useState()
     const [loadingText, setLoadingText] = useState()
 
 
@@ -205,8 +206,10 @@ const getElvesfromMoralis = async (address) => {
 
 
     useEffect(() => {
-        setLoadingText(`0% Getting wallet connected. Wallet connected?`)
+       
         const getData = async () => {
+            setLoading(true)
+            setLoadingText(`Connect Wallet`)
             const {address} = await getCurrentWalletConnected();
             setWallet(address)
             address && setLoadingText(`10% Wallet connected`)   
@@ -214,7 +217,7 @@ const getElvesfromMoralis = async (address) => {
         }
         
         getData()
-      },[txreceipt])
+      },[txreceipt, wallet])
 
       const resetVariables = async () => {
           setIndex(0)
@@ -236,6 +239,8 @@ const getElvesfromMoralis = async (address) => {
         )
     }
 
+
+   
    
 
      return (

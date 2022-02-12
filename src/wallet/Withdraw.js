@@ -1,6 +1,6 @@
 import React from "react"
 import { useState, useEffect } from "react"
-import {elvesAbi, elvesContract, withdrawTokenBalance} from "../utils/interact"
+import {withdrawTokenBalance, getCurrentWalletConnected} from "../utils/interact"
 import {useMoralis, useChain} from "react-moralis"
 
 
@@ -11,6 +11,7 @@ const Withdraw = () => {
   const [tooltip, setTooltip] = useState("");
   const [balance, setBalance] = useState(0);
   const [miren, setMiren] = useState(0);
+  
 
 
 const getRenBalance = async (address) => {
@@ -26,13 +27,13 @@ const getRenBalance = async (address) => {
 
 useEffect( () => {
   const init = async () => {
-  
-    account &&  await getRenBalance(account)
+    const {address, status} = await getCurrentWalletConnected();
+    address &&  await getRenBalance(address)
   }
 
   init();
   
-},[account])
+},[])
 
 
 
