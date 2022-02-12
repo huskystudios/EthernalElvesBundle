@@ -67,9 +67,9 @@ useEffect(() => {
     const ownerCount = await Moralis.Cloud.run("getAllOwners")
     const totalRenSupply = 0 //await Moralis.executeFunction(readOptions("totalRenSupply"));
     
-    setInit(initsupply);
-    setMax(maxSupply);
-    setTokenSupply(totalSupply);
+    setInit(parseInt(initsupply));
+    setMax(parseInt(maxSupply));
+    setTokenSupply(parseInt((totalSupply)))
     setCurrentPrice(price);
     setRenSupply(totalRenSupply);
     setOwnerCount(ownerCount.length)
