@@ -51,7 +51,7 @@ const WhaleMode = () => {
 
     }
     
-   // const { data, error, fetch, isFetching, isLoading } = useWeb3ExecuteFunction();
+    const { data, error, fetch, isFetching, isLoading } = useWeb3ExecuteFunction();
 
 
     const handleClick = async (id) => {
@@ -108,53 +108,176 @@ const WhaleMode = () => {
 
     const passiveMode = async (option) => {
       
-        console.log(option)
-       
-       const params = {ids: clicked}
-            
-       let {success, status, txHash} = option === "passive" ? await sendPassive(params) : await returnPassive(params)
-    
-       success && resetVariables()            
+       // await Moralis.enableWeb3();
 
-       setAlert({show: true, value: {title: "Tx Sent", content: (status)}})        
+        const options = {
+                contractAddress: elvesContract,
+                functionName: option,
+                abi: elvesAbi.abi,
+                params: {ids: clicked},
+                awaitReceipt: false 
+              };
+
+              const tx = await Moralis.executeFunction(options);
+              
+              tx.on("transactionHash", (hash) => { 
+                resetVariables()
+                setAlert({show: true, value: {
+                    title: "Tx Successful", 
+                    content: (<>✅ Check out your transaction on <a target="_blank" rel="noreferrer" href={`https://${etherscan}.io/tx/${hash}`}>Etherscan</a> </>)            
+              }})
+                
+            })
+              
+              tx.on("receipt", (receipt) => { 
+
+                setTxReceipt(receipt)
+                let response
+
+                receipt.events.Action.isArray ? response = `Elf#${ receipt.events.Action.map(nft => {return(nft.returnValues.tokenId)})} have started doing ${actionString[receipt.events.Action[0].returnValues.action].text}`
+                : response = `Elf#${receipt.events.Action.returnValues.tokenId} has started doing action ${actionString[receipt.events.Action.returnValues.action].text}`
+       
+                setAlert({show: true, value: {
+                      title: "Tx Successful", 
+                      content: response            
+                }})
+            
+            })
                       
         }
 
 
-        const healing = async () => {
+        const heal = async () => {
       
-         const params =  {healer: clicked[0], target: clicked[1]}
-         let {success, status, txHash} = await heal(params)
+      //      await Moralis.enableWeb3();
     
-         success && resetVariables()            
-  
-         setAlert({show: true, value: {title: "Tx Sent", content: (status)}})       
+            const options = {
+                    contractAddress: elvesContract,
+                    functionName: "heal",
+                    abi: elvesAbi.abi,
+                    params: {healer: clicked[0], target: clicked[1]},
+                    awaitReceipt: false // should be switched to false
+                  };
+    
+                  const tx = await Moralis.executeFunction(options);
+                  
+                  tx.on("transactionHash", (hash) => { 
+                    resetVariables()
+                    setAlert({show: true, value: {
+                        title: "Tx Successful", 
+                        content: (<>✅ Check out your transaction on <a target="_blank" rel="noreferrer" href={`https://${etherscan}.io/tx/${hash}`}>Etherscan</a> </>)            
+                  }})
+                    
+                })
+                  
+                  tx.on("receipt", (receipt) => { 
+    
+                    setTxReceipt(receipt)
+                    let response
+    
+                    receipt.events.Action.isArray ? response = `Elf#${ receipt.events.Action.map(nft => {return(nft.returnValues.tokenId)})} have started doing ${actionString[receipt.events.Action[0].returnValues.action].text}`
+                    : response = `Elf#${receipt.events.Action.returnValues.tokenId} has started doing action ${actionString[receipt.events.Action.returnValues.action].text}`
+           
+                    setAlert({show: true, value: {
+                          title: "Tx Successful", 
+                          content: response            
+                    }})
+                
+                })
                           
-         }
+            }
 
             
     const reRoll = async (option) => {
       
-      
-        const params =  {ids: clicked}
-        let {success, status, txHash} = option === "forging" ? await forging(params) : await merchant(params)
-   
-        success && resetVariables()            
- 
-        setAlert({show: true, value: {title: "Tx Sent", content: (status)}})             
+      //  await Moralis.enableWeb3();
+
+        const options = {
+                contractAddress: elvesContract,
+                functionName: option,
+                abi: elvesAbi.abi,
+                params: {ids: clicked},
+                msgValue: Moralis.Units.ETH("0.01"),
+               // awaitReceipt: false // should be switched to false
+              };
+
+                
+
+              const tx = await Moralis.executeFunction(options);
+
+              const receipt = await tx.wait()
+              console.log(receipt)
+              console.log(parseInt(receipt.logs[1].topics[2]))
+              setTxReceipt(receipt)
+              
+                let response
+
+                receipt.events.Action.isArray ? response = `Elf#${ receipt.events.Action.map(nft => {return(nft.returnValues.tokenId)})} have started doing ${actionString[receipt.events.Action[0].returnValues.action].text}`
+                : response = `Elf#${receipt.events.Action.returnValues.tokenId} has started doing action ${actionString[receipt.events.Action.returnValues.action].text}`
+       
+                setAlert({show: true, value: {
+                      title: "Tx Successful", 
+                      content: response            
+                }})
+
+              
+
+              
+         /*     tx.on("transactionHash", (hash) => { 
+                resetVariables()
+                setAlert({show: true, value: {
+                    title: "Tx Successful", 
+                    content: (<>✅ Check out your transaction on <a target="_blank" rel="noreferrer" href={`https://${etherscan}.io/tx/${hash}`}>Etherscan</a> </>)            
+              }})
+                
+            })
+              
+              tx.on("receipt", (receipt) => { 
+
+                setTxReceipt(receipt)
+                let response
+
+                receipt.events.Action.isArray ? response = `Elf#${ receipt.events.Action.map(nft => {return(nft.returnValues.tokenId)})} have started doing ${actionString[receipt.events.Action[0].returnValues.action].text}`
+                : response = `Elf#${receipt.events.Action.returnValues.tokenId} has started doing action ${actionString[receipt.events.Action.returnValues.action].text}`
+       
+                setAlert({show: true, value: {
+                      title: "Tx Successful", 
+                      content: response            
+                }})
+            
+            })*/
                       
         }
 
 
 
-    const unStakeElf = async () => {
+    const unStake = async (option) => {
       
-        const params =  {ids: clicked}
-        let {success, status, txHash} = await unStake(params)
-   
-        success && resetVariables()            
- 
-        setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
+     //   await Moralis.enableWeb3();
+
+        const options = {
+                contractAddress: elvesContract,
+                functionName: "unStake",
+                abi: elvesAbi.abi,
+                params: {ids: clicked},
+                awaitReceipt: false 
+              };
+
+              const tx = await Moralis.executeFunction(options);
+              
+             
+              
+              tx.on("receipt", (receipt) => { 
+
+                setTxReceipt(receipt)
+                let response
+
+                receipt.events.Action.isArray ? response = `Elf#${ receipt.events.Action.map(nft => {return(nft.returnValues.tokenId)})} have started doing ${actionString[receipt.events.Action[0].returnValues.action].text}`
+                : response = `Elf#${receipt.events.Action.returnValues.tokenId} has started doing action ${actionString[receipt.events.Action.returnValues.action].text}`
+               
+         
+            
+            })
                       
         }
         
@@ -374,7 +497,7 @@ const WhaleMode = () => {
                         <button
                             disabled={!isButtonEnabled.unstake}
                             className="btn-whale"
-                            onClick={unStakeElf}
+                            onClick={unStake}
                         >
                             Unstake
                         </button>
@@ -409,7 +532,7 @@ const WhaleMode = () => {
                         <button
                             disabled={!isButtonEnabled.heal}
                             className="btn-whale"
-                            onClick={healing}
+                            onClick={heal}
                         >
                             Heal
                         </button>

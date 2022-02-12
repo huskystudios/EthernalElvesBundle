@@ -10,6 +10,15 @@
    
 }
 
+.mint-error {
+
+  padding-top:10px;
+    font-size: 10px;
+   color: blueviolet;
+    text-align: center;
+   
+}
+
 .mint-table th{
 padding:8px;
 }

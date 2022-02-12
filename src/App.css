@@ -162,7 +162,7 @@
     @media (min-width: 1168px) {
       .header-body {
         display: flex;
-        width: 800px;
+        width: 100%;
       }
       .search {
         display: flex;

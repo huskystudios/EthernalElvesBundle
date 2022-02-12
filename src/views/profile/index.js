@@ -3,7 +3,7 @@ import Loader from "../../components/Loader"
 import { useMoralis } from "react-moralis"
 import "./style.css"
 import { actionString } from "../home/config"
-import {lookupMultipleElves, getCurrentWalletConnected} from "../../utils/interact"
+import {lookupMultipleElves, getCurrentWalletConnected, withdrawSomeTokenBalance} from "../../utils/interact"
 import Countdown from 'react-countdown';
 import {elvesAbi, elvesContract, etherscan} from "../../utils/interact"
 
@@ -58,22 +58,12 @@ const Profile = () => {
 
     
 
-    const claimCustomAmount = async (option) => {
+    const claimCustomAmount = async () => {
       
-      //  await Moralis.enableWeb3();
-
-        const options = {
-                contractAddress: elvesContract,
-                functionName: "withdrawSomeTokenBalance",
-                abi: elvesAbi.abi,
-                params: {amount: Moralis.Units.ETH(balanceToClaim)},
-                awaitReceipt: false 
-              };
-
-              const tx = await Moralis.executeFunction(options);             
-              
+      const params = {amount: Moralis.Units.ETH(balanceToClaim)}
+      await withdrawSomeTokenBalance(params)
                       
-        }
+    }
 
     const getUserData = async (address) => {
 

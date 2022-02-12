@@ -223,98 +223,238 @@ return elfArry
 
 }
 
+////////////TX BUILDER///////////////////
+
+const txPayload = async(txData) => {
+  const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
+    //the transaction
+    const tx = {
+      'from': window.ethereum.selectedAddress,
+      'to': elvesContract,
+      'nonce': nonce.toString(),
+      'data': txData
+    };
+  
+  return(tx)
+  
+  }
+
+
+/////////////////////////////
+
 
 export const sendCampaign = async({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem}) => {
   
-  let txData 
-  console.log("params:", tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem)
-    txData = nftContract.methods.sendCampaign(tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem).encodeABI()
-  
-  
-   
-  
+  let tx = await txPayload(nftContract.methods.sendCampaign(tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem).encodeABI())
 
-  let tx = await txPayload(txData)
- 
-  //sign the transaction via Metamask
-try {
-  const txHash = await window.ethereum
-      .request({
-          method: 'eth_sendTransaction',
-          params: [tx],
-      })
-      
-return {
-      success: true,
-      status: (<>✅ Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
-      txHash: txHash,
-
-  }
-} catch (error) {
+  try {
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
+        
   return {
-      success: false,
-      status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
-  }
-
-}
-
-}
-
-
-export async function getContractEvents(){
-
-  const init = {method: 'GET', headers: { }}
-
-  let osRequest 
-  let osResponse = null
-
-
-  try{
-  osRequest = await fetch(`https://api.opensea.io/api/v1/events?asset_contract_address=0x3abedba3052845ce3f57818032bfa747cded3fca&only_opensea=false&offset=0&limit=20
-  `, init);
-  osResponse = await osRequest.json()
+        success: true,
+        status: (<>Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash,
+    }
+  } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+    }
+  
+  } 
  
-  }catch(e){console.log(e)}
-
-  return(osResponse)
 
 }
 
 
-const txPayload = async(txData) => {
-const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
-  //the transaction
-  const tx = {
-    'from': window.ethereum.selectedAddress,
-    'to': elvesContract,
-    'nonce': nonce.toString(),
-    'data': txData
-  };
-
-return(tx)
+export const heal = async({healer, target}) => {
+  
+  let tx = await txPayload(nftContract.methods.heal(healer, target).encodeABI())
+ 
+  try {
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
+        
+  return {
+        success: true,
+        status: (<>Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash,
+    }
+  } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+    }
+  
+  } 
 
 }
 
-export const doAction = async(ids, action) => {
 
-   const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
+export const mint = async() => {
+  
+  let tx = await txPayload(nftContract.methods.mint().encodeABI())
+ 
+  try {
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
+        
+  return {
+        success: true,
+        status: (<>Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash,
+    }
+  } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+    }
+  
+  } 
 
-  let reRollPrice = .001 * 10**18
+}
+
+
+export const sendPassive = async({ids}) => {
+  
+  let tx = await txPayload(nftContract.methods.passive(ids).encodeABI())
+ 
+  try {
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
+        
+  return {
+        success: true,
+        status: (<>Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash,
+    }
+  } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+    }
+  
+  } 
+
+}
+
+
+export const returnPassive = async({ids}) => {
+  
+  let tx = await txPayload(nftContract.methods.returnPassive(ids).encodeABI())
+ 
+  try {
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
+        
+  return {
+        success: true,
+        status: (<>Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash,
+    }
+  } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+    }
+  
+  } 
+
+}
+
+export const unStake = async({ids}) => {
+  
+  let tx = await txPayload(nftContract.methods.unStake(ids).encodeABI())
+ 
+  try {
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
+        
+  return {
+        success: true,
+        status: (<>Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash,
+    }
+  } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+    }
+  
+  } 
+
+}
+
+export const forging = async({ids}) => {
+
+  let reRollPrice = .01 * 10**18
   let hexString = reRollPrice.toString(16);
+  const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
     
-  if(action !== 5 && action !== 6){
-    hexString = "0x0"
-  }
   //the transaction
   const tx = {
     'from': window.ethereum.selectedAddress,
     'to': elvesContract,
     'nonce': nonce.toString(),
-    'data': nftContract.methods.doAction(ids, action).encodeABI(),
+    'data': nftContract.methods.forging(ids).encodeABI(),
     'value': hexString
   };
 
+  try {
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
+        
+  return {
+        success: true,
+        status: (<>Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash,
+    }
+  } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+    }
+  
+  } 
 
+}
+
+
+export const merchant = async({ids}) => {
+
+  let reRollPrice = .01 * 10**18
+  let hexString = reRollPrice.toString(16);
+  const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
+    
+  //the transaction
+  const tx = {
+    'from': window.ethereum.selectedAddress,
+    'to': elvesContract,
+    'nonce': nonce.toString(),
+    'data': nftContract.methods.merchant(ids).encodeABI(),
+    'value': hexString
+  };
+
+  try {
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
+        
+  return {
+        success: true,
+        status: (<>Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash,
+    }
+  } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+    }
+  
+  } 
+
+}
+
+
+ 
+export const withdrawTokenBalance = async() => {
+  
+let txData = nftContract.methods.withdrawTokenBalance().encodeABI()
+let tx = await txPayload(txData)
+ 
+ 
   //sign the transaction via Metamask
 try {
   const txHash = await window.ethereum
@@ -322,12 +462,11 @@ try {
           method: 'eth_sendTransaction',
           params: [tx],
       })
-      
-  
+        
       
   return {
       success: true,
-      status: (<>✅ Check out your transaction on <a target="_blank" rel='noreferrer' href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+      status: (<>✅ Check out your transaction on <a target="_blank" rel="noreferrer" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
       txHash: txHash
       
 
@@ -343,49 +482,31 @@ try {
 }
 
 
-export const mint = async() => {
+
+export const withdrawSomeTokenBalance = async({amount}) => {
   
-  const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
-  let mintPrice = .069 * 10**18
-  let hexString = mintPrice.toString(16);
-    
-  if(getTokenSupply() > 3000){
-    hexString = "0x0"
-  }
-  //the transaction
-  const tx = {
-    'from': window.ethereum.selectedAddress,
-    'to': elvesContract,
-    'nonce': nonce.toString(),
-    'data': nftContract.methods.mint().encodeABI(),
-    'value': hexString
-  };
-
+  let tx = await txPayload(nftContract.methods.withdrawSomeTokenBalance(amount).encodeABI())
  
-  //sign the transaction via Metamask
-try {
-  const txHash = await window.ethereum
-      .request({
-          method: 'eth_sendTransaction',
-          params: [tx],
-      })
-       
-      
+  try {
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
+        
   return {
-      success: true,
-      status: (<>✅ Check out your transaction on <a target="_blank" rel="noreferrer" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
-      txHash: txHash      
-
-  }
-} catch (error) {
-  return {
-      success: false,
-      status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
-  }
+        success: true,
+        status: (<>Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash,
+    }
+  } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+    }
+  
+  } 
 
 }
 
-}
+
+
 
 
 export const getCampaigns = async(ids) => {
@@ -436,41 +557,29 @@ export const getCampaign = async(id) => {
 }
 
 
-  
-export const withdrawTokenBalance = async() => {
-  
-let txData = nftContract.methods.withdrawTokenBalance().encodeABI()
-let tx = await txPayload(txData)
- 
- 
-  //sign the transaction via Metamask
-try {
-  const txHash = await window.ethereum
-      .request({
-          method: 'eth_sendTransaction',
-          params: [tx],
-      })
-        
-      
-  return {
-      success: true,
-      status: (<>✅ Check out your transaction on <a target="_blank" rel="noreferrer" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
-      txHash: txHash
-      
 
-  }
-} catch (error) {
-  return {
-      success: false,
-      status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
-  }
+///////////Helpers/////////////////////////
+
+
+export async function getContractEvents(){
+
+  const init = {method: 'GET', headers: { }}
+
+  let osRequest 
+  let osResponse = null
+
+
+  try{
+  osRequest = await fetch(`https://api.opensea.io/api/v1/events?asset_contract_address=0x3abedba3052845ce3f57818032bfa747cded3fca&only_opensea=false&offset=0&limit=20
+  `, init);
+  osResponse = await osRequest.json()
+ 
+  }catch(e){console.log(e)}
+
+  return(osResponse)
 
 }
 
-}
-
-
-///////////OLD
 
 export function getContract(){
     
@@ -503,6 +612,14 @@ export const getTokenSupply = async () => {
   var supply = nftContract.methods.totalSupply().call();
   return(supply)
   }
+
+  export const getMintPriceLevel = async () => {
+    var supply = nftContract.methods.getMintPriceLevel().call();
+    return(supply)
+   }
+
+
+  
 
   export const balanceOf = async (address) => {
     var miren = await ercContract.methods.balanceOf(address).call();

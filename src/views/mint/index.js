@@ -2,10 +2,12 @@ import React from "react"
 import { useEffect, useState } from "react";
 import './style.css'
 import {
-    // getTokenSupply, 
+    getTokenSupply, 
+    getMintPriceLevel,
     elvesAbi, 
     elvesContract,
-    etherscan
+    etherscan,
+    mint
 
 } from "../../utils/interact"
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis"
@@ -22,13 +24,15 @@ const Mint = () => {
     // const address = query.get("address");
     // const signature = query.get("signature");
 
-    const [max, setMax] = useState(6666);
-    const [init, setInit] = useState(3300);
+    const max = 6666;
+    //const [init, setInit] = useState(3300);
     const [supply, setSupply] = useState(5000);
    
     const [currentPrice, setCurrentPrice] = useState(600);
 
     const [status, setStatus] = useState("");
+
+    const [alert, setAlert] = useState({show: false, value: null})
 
 
    // let mintcredentials = {role: wlflag, address:address, signature: signature}
@@ -40,93 +44,52 @@ const Mint = () => {
     })
 
 
-    const { data, error, fetch, isFetching, isLoading } = useWeb3ExecuteFunction();
-  
-    const options = {
-        contractAddress: elvesContract,
-        functionName: "mint",
-        abi: elvesAbi.abi   ,
-        msgValue: parseInt(supply) <= parseInt(init) ?  Moralis.Units.ETH(Moralis.Units.FromWei(currentPrice)) : null,
-        awaitReceipt: false // should be switched to false
-    };
-     
+ 
 
-    console.log(data, error, fetch, isFetching, isLoading)
+ const mintElf = async () => {
 
+      
+    let {success, status, txHash} = await mint()
 
-
-
-
-    const moralisMint = async () => {
-
-       // await Moralis.enableWeb3();
-            
-        
-          const tx = await Moralis.executeFunction(options);
-          
-          tx.on("transactionHash", (hash) => { 
-
-            setTooltip({show: true, value: {
-                title: "Tx Sent", 
-                content: (<>✅ Check out your transaction on <a target="_blank" rel="noreferrer" href={`https://${etherscan}.io/tx/${hash}`}>Etherscan</a> </>)            
-          }})
-            
-        })
-          
-          tx.on("receipt", (receipt) => { 
-              setTxReceipt(receipt) 
-             
-              setTooltip({show: true, value: {
-                  title: "Mint Successful", 
-                  content: `Elf#${receipt.events.Transfer.returnValues.tokenId} has been minted`            
-            }})
-        
-        })
-                  
-          
+    status && setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
+    success && setTxReceipt(txHash)
 
     }
 
 
-
-    function readOptions(contractMethod) {
-
-            const options = {
-            contractAddress: elvesContract,
-            functionName: contractMethod,
-            abi: elvesAbi.abi
-    
-         };
-
-            return options
-    }
 
 
     useEffect(() => {   
 
-            if(!isWeb3Enabled){
+        getTokenSupplyFromChain()
+
+         /*   if(!isWeb3Enabled){
                 setStatus("enable web3")
                 enableWeb3() 
                
             
             }else{
-                getMoralisTokenSupply()
+                getTokenSupplyFromChain()
                 
             }
-     
+     */
        
-    }, [isWeb3Enabled, txReceipt])
+    }, [txReceipt])
     
 
-    const getMoralisTokenSupply = async ()=>{
+    const getTokenSupplyFromChain = async ()=>{
         
         setStatus("getting current price")
-        const price = await Moralis.executeFunction(readOptions("getMintPriceLevel"));
+        //const price = await Moralis.executeFunction(readOptions("getMintPriceLevel"));
+        setSupply(await getTokenSupply());    
         setStatus("getting total supply")
-        const totalSupply = await Moralis.executeFunction(readOptions("totalSupply"));
-        setStatus("done")       
-        setSupply(totalSupply);
-        setCurrentPrice(price);
+        //const totalSupply = await Moralis.executeFunction(readOptions("totalSupply"));
+        //setSupply(totalSupply);
+        setCurrentPrice(await getMintPriceLevel())
+        setStatus("done")   
+      
+        
+       
         setLoading(false)
               } 
  
@@ -158,10 +121,14 @@ const Mint = () => {
            
             <div className="d-flex flex-row justify-center">
            
-             <button className="btn btn-green" onClick={() => fetch({ params: options })} disabled={isFetching}>
+             <button className="btn btn-green" onClick={mintElf}>
             {currentPrice.mintCost && <>Mint with {Moralis.Units.FromWei(currentPrice.mintCost)} $REN</>} 
             </button>
+            
             </div>
+          
+            {/*error && <div className="mint-error"> Cannot estimate gas. You probably don't have enough $REN or Max Supply has been reached</div>*/}
+            
         <div className="mint-instructions">
            {supply && <p>Elves Minted: {parseInt(supply)}/{max}</p>}
                

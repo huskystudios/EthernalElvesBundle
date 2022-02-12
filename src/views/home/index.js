@@ -104,16 +104,12 @@ const Home = () => {
 
         const doAction = async (option) => {
       
-            //await Moralis.enableWeb3();
-
             const first = activeNfts.map(nft => {return(nft.id)})
             
             const rerollParams = {ids: activeNfts.map(nft => {return(nft.id)}), action_: option.toString()}
             const healParams =   {healer: first[0], target: option.healIds}
             let value = option.action === "forging" || option.action === "merchant" ? Moralis.Units.ETH("0.01") : Moralis.Units.ETH("0")
             let params = option.action === "heal" ? healParams : rerollParams   
-
-            console.log(healParams)
 
             const options = {
                     contractAddress: elvesContract,

@@ -1,6 +1,6 @@
 import React from "react"
 import { useState, useEffect } from "react"
-import {elvesAbi, elvesContract} from "../utils/interact"
+import {elvesAbi, elvesContract, withdrawTokenBalance} from "../utils/interact"
 import {useMoralis, useChain} from "react-moralis"
 
 
@@ -11,9 +11,7 @@ const Withdraw = () => {
   const [tooltip, setTooltip] = useState("");
   const [balance, setBalance] = useState(0);
   const [miren, setMiren] = useState(0);
-  const [txReceipt, setTxReceipt] = useState();
 
-  
 
 const getRenBalance = async (address) => {
  
@@ -37,7 +35,6 @@ useEffect( () => {
 },[account])
 
 
-   
 
     const showTooltip = (content) => {
       if(content === "") return <></>
@@ -48,37 +45,6 @@ useEffect( () => {
           </div>
       )
   }
-
-
-    
-
-
-    const withdrawTokenBalance = async () => {
-
-    //await Moralis.enableWeb3();
-      
-      const options = {
-        contractAddress: elvesContract,
-        functionName: "withdrawTokenBalance",
-        abi: elvesAbi.abi   ,
-        awaitReceipt: false // should be switched to false
-      };
-      
-      
-      const tx = await Moralis.executeFunction(options);       
-      
-      tx.on("transactionHash", (hash) => { 
-            console.log(hash)  
-      })
-     
-
-      tx.on("receipt", (receipt) => { 
-        setTxReceipt(receipt)
-        getRenBalance()
-        console.log(receipt)
-      })
-                  
-    }  
 
   
     return (
