@@ -104,7 +104,9 @@ const Home = () => {
 
 
         const doAction = async (option) => {
-      
+            
+            await Moralis.enableWeb3()
+            
             const first = activeNfts.map(nft => {return(nft.id)})
             
             const rerollParams = {ids: activeNfts.map(nft => {return(nft.id)}), action_: option.toString()}
