@@ -76,11 +76,11 @@ contract EthernalElvesV2 is ERC721 {
     }    
     
     
-    function setTerminus(address _terminus)  public {
+  /*  function setTerminus(address _terminus)  public {
        onlyOwner();
        terminus             = _terminus;
     }
-    
+  */
     
     function setInitialSupply(uint256 _initialSupply)  public {
        onlyOwner();

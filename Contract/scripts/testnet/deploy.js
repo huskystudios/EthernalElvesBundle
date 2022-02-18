@@ -5,8 +5,10 @@ let beffAddress =  "0x3296D61C5E737F9847bA52267b1DeBB8Dbff139F"
 let ethvalidator = "0x80861814a8775de20F9506CF41932E95f80f7035"
 let polyValidator = "0xa2B877EC3234F50C33Ff7d0605F7591053d06E31"
 
+///npx hardhat verify --network mainnet 0x858c52bbc608435f035b1913ec0228322ac54c2e 
 
-const isEthereum = true
+//npx hardhat run scripts/testnet/deploy.js --network hardhat
+
 
 async function deployArt() {
   const Hair = await ethers.getContractFactory("Hair");
@@ -18,7 +20,7 @@ async function deployArt() {
   const Weapons4 = await ethers.getContractFactory("Weapons4");
   const Weapons5 = await ethers.getContractFactory("Weapons5");
   const Weapons6 = await ethers.getContractFactory("Weapons6");
-  const Accessories = await ethers.getContractFactory("Accessories");
+  const Accessories = await ethers.getContractFactory("Accessories1");
 
     ///Deploy art contracts
     console.log("deploying art contracts")
@@ -43,32 +45,32 @@ async function deployArt() {
 
     await inventory.setRace([1,10,11,12,2,3], race1.address)
     await inventory.setRace([4,5,6,7,8,9], race2.address)    
-    await inventory.setHair([1,2,3,4,5,6,7,8,9], hair.address)  
+    await inventory.setHair([1,3,2,4,5,6,7,8,9], hair.address)  
     await inventory.setWeapons([1,10,11,12,13,14,15], weapons1.address)
     await inventory.setWeapons([23,24,25,26,27,28,29], weapons2.address)
-    await inventory.setWeapons([16,17,18,19,2,20,21,22], weapons3.address)
-    await inventory.setWeapons([38,39,4,40,41,42], weapons4.address)
+    await inventory.setWeapons([38,39,4,40,41,42], weapons3.address)
+    await inventory.setWeapons([16,17,18,19,2,20,21,22], weapons4.address)
     await inventory.setWeapons([3,30,31,32,33,34,35,36,37], weapons5.address)
-    await inventory.setWeapons([43,44,45,5,6,7,8,9], weapons6.address)
-    await inventory.setAccessories([1,15,16,2,3,4,8,9], accessories.address)
+    await inventory.setWeapons([43,44,45,5,6,7,8,9,69], weapons6.address)
+    await inventory.setAccessories([15,16,4,5,8,9], accessories.address)
 
     return inventory
 }
 
 async function deployCampaigns(elves) {
   
-  const Campaigns = await ethers.getContractFactory("ElfCampaigns");
+  const Campaigns = await ethers.getContractFactory("ElfCampaignsV3");
   console.log("deploying campaigns")
   const campaigns = await upgrades.deployProxy(Campaigns, [elves]);
   await campaigns.deployed();
+
   return campaigns
 }
 
 async function deployMiren() {
   const Miren = await ethers.getContractFactory("Miren");
-  const MirenX = await ethers.getContractFactory("MirenX");
   console.log("deploying ren")
-  let ren = isEthereum ? await Miren.deploy() : await MirenX.deploy();
+  let ren = await Miren.deploy() 
   await ren.deployed();
 
   return ren
@@ -76,7 +78,7 @@ async function deployMiren() {
 }
 
 async function deployElves() {
-  const Elves = await ethers.getContractFactory("EthernalElves");
+  const Elves = await ethers.getContractFactory("EthernalElvesV2");
   
   console.log("deploying elves")
 
@@ -88,20 +90,19 @@ async function deployElves() {
 
 
 async function main() {
-  //Miren on Mainnet: 0xE6b055ABb1c40B6C0Bf3a4ae126b6B8dBE6C5F3f
-  
+    
   
   const elves = await deployElves()
   console.log("Elves", elves.address)
   
-  //const campaigns = await deployCampaigns(elves.address)
-  //console.log("Campaigns", campaigns.address)
+  const campaigns = await deployCampaigns(elves.address)
+  console.log("Campaigns", campaigns.address)
 
-  //const inventory = await deployArt()
-  //console.log("Inventory", inventory.address)
+  const inventory = await deployArt()
+  console.log("Inventory", inventory.address)
   
-  //const ren = await deployMiren()
-  //console.log("Miren", ren.address)
+  const ren = await deployMiren()
+  console.log("Miren", ren.address)
  
   console.log("done")
 
