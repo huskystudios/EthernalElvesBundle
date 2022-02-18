@@ -89,20 +89,44 @@ async function deployElves() {
 }
 
 
+async function PolyEthernalElves() {
+  const Elves = await ethers.getContractFactory("PolyEthernalElves");
+  
+  console.log("deploying elves")
+
+  const elves = await upgrades.deployProxy(Elves, [huskyAddress, beffAddress]);
+  await elves.deployed();
+  
+  return elves
+}
+
+
+
+
 async function main() {
     
   
+  const pelves = await PolyEthernalElves()
+  console.log("Elves", pelves.address)
+  
+  
+  /*
+
   const elves = await deployElves()
   console.log("Elves", elves.address)
   
   const campaigns = await deployCampaigns(elves.address)
   console.log("Campaigns", campaigns.address)
 
-  const inventory = await deployArt()
-  console.log("Inventory", inventory.address)
-  
   const ren = await deployMiren()
   console.log("Miren", ren.address)
+
+  const inventory = await deployArt()
+  console.log("Inventory", inventory.address)
+
+*/
+  
+
  
   console.log("done")
 

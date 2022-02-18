@@ -115,6 +115,7 @@ function checkIn(uint256[] calldata ids, uint256 renAmount) public returns (bool
 
                     for (uint256 index = 0; index < ids.length; index++) {  
                         _actions(ids[index], 8, msg.sender, 0, 0, false, false, false, 0);
+                        emit CheckIn(msg.sender, block.timestamp, ids[index], sentinels[ids[index]]);
                     }
 
                   
@@ -592,14 +593,13 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                 }
                 }else if (action == 8){//checkIn loop Do not remove
                     
-                
                         if(ownerOf[id_] != address(this)){
                              _transfer(elfOwner, address(this), id_);
                              elf.owner = elfOwner;                                
                         }
                     
 
-                 emit CheckIn(elfOwner, block.timestamp, id_, sentinels[id_]);
+                 
                 }           
              
             actions.traits   = DataStructures.packAttributes(elf.hair, elf.race, elf.accessories);
@@ -796,10 +796,10 @@ function elves(uint256 _id) external view returns(address owner, uint timestamp,
         isMintOpen = !isMintOpen;
     }
 
-    function flipWhitelist() external {
+    /*function flipWhitelist() external {
         onlyOwner();
         isWlOpen = !isWlOpen;
-    }
+    }*/
 
      function flipTerminal() external {
         onlyOwner();
