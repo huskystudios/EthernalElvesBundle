@@ -14,17 +14,15 @@ import "./../Interfaces.sol";
 
 contract PolyEthernalElves is PolyERC721 {
 
-    function name() external pure returns (string memory) { return "Ethernal Elves"; }
-    function symbol() external pure returns (string memory) { return "ELV"; }
+    function name() external pure returns (string memory) { return "Polygon Ethernal Elves"; }
+    function symbol() external pure returns (string memory) { return "pELV"; }
        
     using DataStructures for DataStructures.ActionVariables;
     using DataStructures for DataStructures.Elf;
     using DataStructures for DataStructures.Token; 
 
     IElfMetaDataHandler elfmetaDataHandler;
-    ICampaigns campaigns;
-
-    
+        
     using ECDSA for bytes32;
     
 //STATE   
@@ -33,8 +31,6 @@ contract PolyEthernalElves is PolyERC721 {
     bool public isTerminalOpen;
     bool private initialized;
 
-    address dev1Address;
-    address dev2Address;
     address operator;
     address public validator;
    
@@ -46,10 +42,8 @@ contract PolyEthernalElves is PolyERC721 {
  
     bytes32 internal ketchup;
     
-    uint256[] public _remaining; 
     mapping(uint256 => uint256) public sentinels; //memory slot for Elfs
     mapping(address => uint256) public bankBalances; //memory slot for bank balances
-    mapping(address => bool)    public auth;
     mapping(uint256 => Camps) public camps; //memory slot for campaigns
 
     struct Camps {
@@ -60,17 +54,12 @@ contract PolyEthernalElves is PolyERC721 {
                 uint32 minLevel;
                 uint32 campMaxLevel;
         }
-
-    
-/////NEW STORAGE FROM THIS LINE///////////////////////////////////////////////////////
     
    
-       function initialize(address _dev1Address, address _dev2Address) public {
+    function initialize() public {
     
        require(!initialized, "Already initialized");
        admin                = msg.sender;   
-       dev1Address          = _dev1Address;
-       dev2Address          = _dev2Address;
        initialized          = true;
        validator            = 0xa2B877EC3234F50C33Ff7d0605F7591053d06E31;
        operator             = 0x2730F644E9C5838D1C8292dB391C0ADE1f65c42d; //Temporary
@@ -94,13 +83,6 @@ contract PolyEthernalElves is PolyERC721 {
     }    
     
     
-    function setAuth(address[] calldata adds_, bool status) public {
-       onlyOwner();
-       
-        for (uint256 index = 0; index < adds_.length; index++) {
-            auth[adds_[index]] = status;
-        }
-    }
 
 //EVENTS
 
@@ -116,73 +98,37 @@ contract PolyEthernalElves is PolyERC721 {
        
 //////////////EXPORT TO OTHER CHAINS/////////////////
 
-function checkIn(uint256[] calldata ids, uint256 renAmount) public returns (bool) {
+function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) public returns (bool) {
      
-        isPlayer();
+        onlyOperator();
         require(isTerminalOpen, "Terminal is closed");         
          uint256 travelers = ids.length;
          if (travelers > 0) {
 
                     for (uint256 index = 0; index < ids.length; index++) {  
-                        _actions(ids[index], 0, msg.sender, 0, 0, false, false, false, 0);
-                        emit CheckIn(msg.sender, block.timestamp, ids[index], sentinels[ids[index]]);
+                        _actions(ids[index], 0, owner, 0, 0, false, false, false, 0);
+                        emit CheckIn(owner, block.timestamp, ids[index], sentinels[ids[index]]);
                     }
-
                   
           }
 
             if (renAmount > 0) {
                         
-                        //bankBalances[_owner]
-                        //ren.burn(msg.sender, renAmount);
-                        emit RenTransferOut(msg.sender,block.timestamp,renAmount);
+                    if(bankBalances[owner] - renAmount >= 0) {                      
+                        _setAccountBalance(owner, renAmount, true);
+                        emit RenTransferOut(owner,block.timestamp,renAmount);
+                    }
              }
     
 
 }
 
 
-//CheckOut Permissions 
-//NOTE:change this to private later
-function encodeSentinelForSignature(uint256 id, address owner, uint256 sentinel) public pure returns (bytes32) {
-     return keccak256(
-            abi.encodePacked("\x19Ethereum Signed Message:\n32", 
-                keccak256(
-                        abi.encodePacked(id, owner, sentinel))
-                        )
-                    );
-} 
-
-function encodeRenForSignature(uint256 renAmount, address owner) public pure returns (bytes32) {
-     return keccak256(
-            abi.encodePacked("\x19Ethereum Signed Message:\n32", 
-                keccak256(
-                        abi.encodePacked(renAmount, owner))
-                        )
-                    );
-}  
-  
-function _isSignedByValidator(bytes32 _hash, bytes memory _signature) private view returns (bool) {
-    
-    bytes32 r;
-    bytes32 s;
-    uint8 v;
-           assembly {
-                r := mload(add(_signature, 0x20))
-                s := mload(add(_signature, 0x40))
-                v := byte(0, mload(add(_signature, 0x60)))
-            }
-        
-            address signer = ecrecover(_hash, v, r, s);
-            return signer == validator;
-  
-}
-
-
-
 
  function initMint(address to, uint256 start, uint256 end) external {
-        require(msg.sender == admin);
+        
+        onlyOwner();
+
         for (uint256 i = start; i < end; i++) {
             _mint( to, i);
         }
@@ -190,8 +136,256 @@ function _isSignedByValidator(bytes32 _hash, bytes memory _signature) private vi
     
 ////////Campaigns////////////////////////////////////////////////
 
-function gameEngine(uint256 _campId, uint256 _sector, uint256 _level, uint256 _attackPoints, uint256 _healthPoints, uint256 _inventory, bool _useItem) internal 
-returns(uint256 level, uint256 rewards, uint256 timestamp, uint256 inventory){
+
+
+
+function addCamp(uint256 id, uint16 baseRewards_, uint16 creatureCount_, uint16 expPoints_, uint16 creatureHealth_, uint16 minLevel_, uint16 maxLevel_) external      
+    {
+        onlyOwner();
+        
+        Camps memory newCamp = Camps({
+            baseRewards:    baseRewards_, 
+            creatureCount:  creatureCount_, 
+            expPoints:      expPoints_,
+            creatureHealth: creatureHealth_, 
+            minLevel:       minLevel_,
+            campMaxLevel:   maxLevel_
+            });
+        
+        camps[id] = newCamp;
+        
+        emit AddCamp(id, baseRewards_, creatureCount_, expPoints_, creatureHealth_, minLevel_);
+    }
+
+  
+
+/////////////////////////////////////////////////////////////////
+
+//GAMEPLAY//
+
+
+    function sendCampaign(uint256[] calldata ids, uint256 campaign_, uint256 sector_, bool rollWeapons_, bool rollItems_, bool useitem_, address owner) external {
+                  
+         onlyOperator();
+          for (uint256 index = 0; index < ids.length; index++) {  
+            _actions(ids[index], 2, msg.sender, campaign_, sector_, rollWeapons_, rollItems_, useitem_, 1);
+          }
+    }
+
+/*NOTE Add in V2
+
+    function bloodThirst(uint256[] calldata ids, uint256 campaign_, uint256 sector_) external {
+          isPlayer();          
+
+          for (uint256 index = 0; index < ids.length; index++) {  
+            _actions(ids[index], 2, msg.sender, campaign_, sector_, false, false, false, 2);
+          }
+    }
+
+    function rampage(uint256[] calldata ids, uint256 campaign_, uint256 sector_) external {
+          isPlayer();          
+
+          for (uint256 index = 0; index < ids.length; index++) {  
+            _actions(ids[index], 2, msg.sender, campaign_, sector_, true, true, false, 3);
+          }
+    }
+
+*/
+    function passive(uint256[] calldata ids, address owner) external {
+                  
+        onlyOperator();
+          for (uint256 index = 0; index < ids.length; index++) {  
+            _actions(ids[index], 3, owner, 0, 0, false, false, false, 0);
+          }
+    }
+
+    function returnPassive(uint256[] calldata ids, address owner) external  {
+               
+         onlyOperator();
+          for (uint256 index = 0; index < ids.length; index++) {  
+            _actions(ids[index], 4, owner, 0, 0, false, false, false, 0);
+          }
+    }
+
+    function forging(uint256[] calldata ids, address owner) external payable {
+              
+         onlyOperator();
+          for (uint256 index = 0; index < ids.length; index++) {  
+            _actions(ids[index], 5, owner, 0, 0, false, false, false, 0);
+          }
+    }
+
+    function merchant(uint256[] calldata ids, address owner) external payable {
+          
+        onlyOperator();
+          for (uint256 index = 0; index < ids.length; index++) {  
+            _actions(ids[index], 6, owner, 0, 0, false, false, false, 0);
+          }
+
+    }
+
+    function heal(uint256 healer, uint256 target, address owner) external {
+        onlyOperator();
+        _actions(healer, 7, owner, target, 0, false, false, false, 0);
+    }    
+
+
+
+//INTERNALS
+    
+        function _mintElf(address _to) private returns (uint16 id) {
+                  
+            sentinels[id] = 0;
+                
+            _mint(_to, id);           
+
+        }
+
+
+        function _actions(
+            uint256 id_, 
+            uint action, 
+            address elfOwner, 
+            uint256 campaign_, 
+            uint256 sector_, 
+            bool rollWeapons, 
+            bool rollItems, 
+            bool useItem, 
+            uint256 gameMode_) 
+        
+        private {
+
+            DataStructures.Elf memory elf = DataStructures.getElf(sentinels[id_]);
+            DataStructures.ActionVariables memory actions;
+            require(isGameActive);
+            require(elf.owner == elfOwner, "NotYourElf");
+
+            uint256 rand = _rand();
+                
+                if(action == 0){//Unstake in Eth, Return to Eth in Polygon
+
+                     if(elf.action == 3){
+                     actions.timeDiff = (block.timestamp - elf.timestamp) / 1 days; //amount of time spent in camp CHANGE TO 1 DAYS!
+                     elf.level = _exitPassive(actions.timeDiff, elf.level, elfOwner);
+                    
+                     }
+                         
+
+                }else if(action == 2){//campaign loop - bloodthirst and rampage mode loop.
+
+                    require(elf.timestamp < block.timestamp, "elf busy");
+                    require(elf.action != 3, "exit passive mode first");                 
+
+                    (elf.level, actions.reward, elf.timestamp, elf.inventory) = _gameEngine(campaign_, sector_, elf.level, elf.attackPoints, elf.healthPoints, elf.inventory, useItem);
+                    
+                    uint256 options;
+                    if(rollWeapons && rollItems){
+                        options = 3;
+                        }else if(rollWeapons){
+                        options = 1;
+                        }else if(rollItems){
+                        options = 2;
+                        }else{
+                        options = 0;
+                    }
+                  
+                    if(options > 0){
+                       (elf.weaponTier, elf.primaryWeapon, elf.inventory) 
+
+                                    = DataStructures.roll(id_, elf.level, _rand(), options, elf.weaponTier, elf.primaryWeapon, elf.inventory);                                    
+                                    
+                    }
+                    
+                    if(gameMode_ == 1 || gameMode_ == 2) _setAccountBalance(elfOwner, actions.reward, false);
+                    if(gameMode_ == 3) elf.level = elf.level + 1;
+                    
+                    emit Campaigns(elfOwner, actions.reward, campaign_, sector_, id_);
+
+                
+                }else if(action == 3){//passive campaign
+
+                    require(elf.timestamp < block.timestamp, "elf busy");
+                    elf.timestamp = block.timestamp; //set timestamp to current block time
+
+                }else if(action == 4){///return from passive mode
+                    
+                    require(elf.action == 3);                    
+
+                    actions.timeDiff = (block.timestamp - elf.timestamp) / 1 days; //amount of time spent in camp CHANGE TO 1 DAYS!
+
+                    elf.level = _exitPassive(actions.timeDiff, elf.level, elfOwner);
+                   
+
+                }else if(action == 5){//forge loop for weapons
+                   
+                    require(msg.value >= .01 ether);  
+                    require(elf.action != 3); //Cant roll in passve mode  
+
+                    (elf.primaryWeapon, elf.weaponTier) = _rollWeapon(elf.level, id_, rand);
+   
+                
+                }else if(action == 6){//item or merchant loop
+                   
+                   // require(msg.value >= .01 ether); 
+                    require(elf.action != 3); //Cant roll in passve mode
+                    (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, rand, 2, elf.weaponTier, elf.primaryWeapon, elf.inventory);                      
+
+                }else if(action == 7){//healing loop
+
+
+                    require(elf.sentinelClass == 0, "not a healer"); 
+                    require(elf.action != 3, "cant heal while passive"); //Cant heal in passve mode
+                    require(elf.timestamp < block.timestamp, "elf busy");
+                    
+                    elf.timestamp = block.timestamp + (12 hours);
+
+                    elf.level = elf.level + 1;
+                    
+                    {   
+
+                        DataStructures.Elf memory hElf = DataStructures.getElf(sentinels[campaign_]);//using the campaign varialbe for elfId here.
+                        require(hElf.owner == elfOwner, "NotYourElf");
+                               
+                                if(block.timestamp < hElf.timestamp){
+
+                                        actions.timeDiff = hElf.timestamp - block.timestamp;
+                
+                                        actions.timeDiff = actions.timeDiff > 0 ? 
+                                            
+                                            hElf.sentinelClass == 0 ? 0 : 
+                                            hElf.sentinelClass == 1 ? actions.timeDiff * 1/4 : 
+                                            actions.timeDiff * 1/2
+                                        
+                                        : actions.timeDiff;
+                                        
+                                        hElf.timestamp = hElf.timestamp - actions.timeDiff;                        
+                                        
+                                }
+                            
+                        actions.traits = DataStructures.packAttributes(hElf.hair, hElf.race, hElf.accessories);
+                        actions.class =  DataStructures.packAttributes(hElf.sentinelClass, hElf.weaponTier, hElf.inventory);
+                                
+                        sentinels[campaign_] = DataStructures._setElf(hElf.owner, hElf.timestamp, hElf.action, hElf.healthPoints, hElf.attackPoints, hElf.primaryWeapon, hElf.level, actions.traits, actions.class);
+
+                }
+                }
+          
+             
+            actions.traits   = DataStructures.packAttributes(elf.hair, elf.race, elf.accessories);
+            actions.class    = DataStructures.packAttributes(elf.sentinelClass, elf.weaponTier, elf.inventory);
+            elf.healthPoints = DataStructures.calcHealthPoints(elf.sentinelClass, elf.level); 
+            elf.attackPoints = DataStructures.calcAttackPoints(elf.sentinelClass, elf.weaponTier);  
+            elf.level        = elf.level > 100 ? 100 : elf.level; 
+            elf.action       = action;
+
+            sentinels[id_] = DataStructures._setElf(elf.owner, elf.timestamp, elf.action, elf.healthPoints, elf.attackPoints, elf.primaryWeapon, elf.level, actions.traits, actions.class);
+            emit Action(msg.sender, action, id_); 
+    }
+
+
+function _gameEngine(uint256 _campId, uint256 _sector, uint256 _level, uint256 _attackPoints, uint256 _healthPoints, uint256 _inventory, bool _useItem) internal 
+ 
+ returns(uint256 level, uint256 rewards, uint256 timestamp, uint256 inventory){
   
   Camps memory camp = camps[_campId];  
   
@@ -234,273 +428,8 @@ returns(uint256 level, uint256 rewards, uint256 timestamp, uint256 inventory){
 }
 
 
-function addCamp(uint256 id, uint16 baseRewards_, uint16 creatureCount_, uint16 expPoints_, uint16 creatureHealth_, uint16 minLevel_, uint16 maxLevel_) external      
-    {
-        require(admin == msg.sender);
-        Camps memory newCamp = Camps({
-            baseRewards:    baseRewards_, 
-            creatureCount:  creatureCount_, 
-            expPoints:      expPoints_,
-            creatureHealth: creatureHealth_, 
-            minLevel:       minLevel_,
-            campMaxLevel:   maxLevel_
-            });
-        
-        camps[id] = newCamp;
-        
-        emit AddCamp(id, baseRewards_, creatureCount_, expPoints_, creatureHealth_, minLevel_);
-    }
 
-  
-
-/////////////////////////////////////////////////////////////////
-
-//GAMEPLAY//
-
-
-    function sendCampaign(uint256[] calldata ids, uint256 campaign_, uint256 sector_, bool rollWeapons_, bool rollItems_, bool useitem_) external {
-          isPlayer();          
-
-          for (uint256 index = 0; index < ids.length; index++) {  
-            _actions(ids[index], 2, msg.sender, campaign_, sector_, rollWeapons_, rollItems_, useitem_, 1);
-          }
-    }
-
-/*NOTE Add in V2
-
-    function bloodThirst(uint256[] calldata ids, uint256 campaign_, uint256 sector_) external {
-          isPlayer();          
-
-          for (uint256 index = 0; index < ids.length; index++) {  
-            _actions(ids[index], 2, msg.sender, campaign_, sector_, false, false, false, 2);
-          }
-    }
-
-    function rampage(uint256[] calldata ids, uint256 campaign_, uint256 sector_) external {
-          isPlayer();          
-
-          for (uint256 index = 0; index < ids.length; index++) {  
-            _actions(ids[index], 2, msg.sender, campaign_, sector_, true, true, false, 3);
-          }
-    }
-
-*/
-    function passive(uint256[] calldata ids) external {
-          isPlayer();         
-
-          for (uint256 index = 0; index < ids.length; index++) {  
-            _actions(ids[index], 3, msg.sender, 0, 0, false, false, false, 0);
-          }
-    }
-
-    function returnPassive(uint256[] calldata ids) external  {
-          isPlayer();        
-
-          for (uint256 index = 0; index < ids.length; index++) {  
-            _actions(ids[index], 4, msg.sender, 0, 0, false, false, false, 0);
-          }
-    }
-
-    function forging(uint256[] calldata ids) external payable {
-          isPlayer();         
-        
-          for (uint256 index = 0; index < ids.length; index++) {  
-            _actions(ids[index], 5, msg.sender, 0, 0, false, false, false, 0);
-          }
-    }
-
-    function merchant(uint256[] calldata ids) external payable {
-          isPlayer();   
-
-          for (uint256 index = 0; index < ids.length; index++) {  
-            _actions(ids[index], 6, msg.sender, 0, 0, false, false, false, 0);
-          }
-
-    }
-
-    function heal(uint256 healer, uint256 target) external {
-        isPlayer();
-        _actions(healer, 7, msg.sender, target, 0, false, false, false, 0);
-    }    
-
-
-
-//INTERNALS
-    
-        function _mintElf(address _to) private returns (uint16 id) {
-                  
-            sentinels[id] = 0;
-                
-            _mint(_to, id);           
-
-        }
-
-
-        function _actions(
-            uint256 id_, 
-            uint action, 
-            address elfOwner, 
-            uint256 campaign_, 
-            uint256 sector_, 
-            bool rollWeapons, 
-            bool rollItems, 
-            bool useItem, 
-            uint256 gameMode_) 
-        
-        private {
-
-            DataStructures.Elf memory elf = DataStructures.getElf(sentinels[id_]);
-            DataStructures.ActionVariables memory actions;
-            require(isGameActive);
-            require(ownerOf[id_] == msg.sender || elf.owner == msg.sender, "NotYourElf");
-
-            uint256 rand = _rand();
-                
-                if(action == 0){//Unstake if currently staked
-
-                    require(ownerOf[id_] == address(this));
-                    require(elf.timestamp < block.timestamp, "elf busy");
-                     
-                     if(elf.action == 3){
-                     actions.timeDiff = (block.timestamp - elf.timestamp) / 1 days; //amount of time spent in camp CHANGE TO 1 DAYS!
-                     elf.level = _exitPassive(actions.timeDiff, elf.level);
-                    
-                     }
-                         
-
-                }else if(action == 2){//campaign loop - bloodthirst and rampage mode loop.
-
-                    require(elf.timestamp < block.timestamp, "elf busy");
-                    require(elf.action != 3, "exit passive mode first");                 
-            
-                        if(ownerOf[id_] != address(this)){
-                        _transfer(elfOwner, address(this), id_);
-                        elf.owner = elfOwner;
-                        }
- 
-                    (elf.level, actions.reward, elf.timestamp, elf.inventory) = gameEngine(campaign_, sector_, elf.level, elf.attackPoints, elf.healthPoints, elf.inventory, useItem);
-                    
-                    uint256 options;
-                    if(rollWeapons && rollItems){
-                        options = 3;
-                        }else if(rollWeapons){
-                        options = 1;
-                        }else if(rollItems){
-                        options = 2;
-                        }else{
-                        options = 0;
-                    }
-                  
-                    if(options > 0){
-                       (elf.weaponTier, elf.primaryWeapon, elf.inventory) 
-
-                                    = DataStructures.roll(id_, elf.level, _rand(), options, elf.weaponTier, elf.primaryWeapon, elf.inventory);                                    
-                                    
-                    }
-                    
-                    if(gameMode_ == 1 || gameMode_ == 2) _setAccountBalance(msg.sender, actions.reward, false);
-                    if(gameMode_ == 3) elf.level = elf.level + 1;
-                    
-                    emit Campaigns(msg.sender, actions.reward, campaign_, sector_, id_);
-
-                
-                }else if(action == 3){//passive campaign
-
-                    require(elf.timestamp < block.timestamp, "elf busy");
-                    
-                        if(ownerOf[id_] != address(this)){
-                            _transfer(elfOwner, address(this), id_);
-                            elf.owner = elfOwner;
-                         
-                        }
-
-                    elf.timestamp = block.timestamp; //set timestamp to current block time
-
-                }else if(action == 4){///return from passive mode
-                    
-                    require(elf.action == 3);                    
-
-                    actions.timeDiff = (block.timestamp - elf.timestamp) / 1 days; //amount of time spent in camp CHANGE TO 1 DAYS!
-
-                    elf.level = _exitPassive(actions.timeDiff, elf.level);
-                   
-
-                }else if(action == 5){//forge loop for weapons
-                   
-                    require(msg.value >= .01 ether);  
-                    require(elf.action != 3); //Cant roll in passve mode  
-                   //                    
-                   // (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, rand, 1, elf.weaponTier, elf.primaryWeapon, elf.inventory);
-                   (elf.primaryWeapon, elf.weaponTier) = _rollWeapon(elf.level, id_, rand);
-   
-                
-                }else if(action == 6){//item or merchant loop
-                   
-                    require(msg.value >= .01 ether); 
-                    require(elf.action != 3); //Cant roll in passve mode
-                    (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, rand, 2, elf.weaponTier, elf.primaryWeapon, elf.inventory);                      
-
-                }else if(action == 7){//healing loop
-
-
-                    require(elf.sentinelClass == 0, "not a healer"); 
-                    require(elf.action != 3, "cant heal while passive"); //Cant heal in passve mode
-                    require(elf.timestamp < block.timestamp, "elf busy");
-
-                        if(ownerOf[id_] != address(this)){
-                        _transfer(elfOwner, address(this), id_);
-                        elf.owner = elfOwner;
-                        }
-                    
-                    
-                    elf.timestamp = block.timestamp + (12 hours);
-
-                    elf.level = elf.level + 1;
-                    
-                    {   
-
-                        DataStructures.Elf memory hElf = DataStructures.getElf(sentinels[campaign_]);//using the campaign varialbe for elfId here.
-                        require(ownerOf[campaign_] == msg.sender || hElf.owner == msg.sender, "NotYourElf");
-                               
-                                if(block.timestamp < hElf.timestamp){
-
-                                        actions.timeDiff = hElf.timestamp - block.timestamp;
-                
-                                        actions.timeDiff = actions.timeDiff > 0 ? 
-                                            
-                                            hElf.sentinelClass == 0 ? 0 : 
-                                            hElf.sentinelClass == 1 ? actions.timeDiff * 1/4 : 
-                                            actions.timeDiff * 1/2
-                                        
-                                        : actions.timeDiff;
-                                        
-                                        hElf.timestamp = hElf.timestamp - actions.timeDiff;                        
-                                        
-                                }
-                            
-                        actions.traits = DataStructures.packAttributes(hElf.hair, hElf.race, hElf.accessories);
-                        actions.class =  DataStructures.packAttributes(hElf.sentinelClass, hElf.weaponTier, hElf.inventory);
-                                
-                        sentinels[campaign_] = DataStructures._setElf(hElf.owner, hElf.timestamp, hElf.action, hElf.healthPoints, hElf.attackPoints, hElf.primaryWeapon, hElf.level, actions.traits, actions.class);
-
-                }
-                }
-          
-             
-            actions.traits   = DataStructures.packAttributes(elf.hair, elf.race, elf.accessories);
-            actions.class    = DataStructures.packAttributes(elf.sentinelClass, elf.weaponTier, elf.inventory);
-            elf.healthPoints = DataStructures.calcHealthPoints(elf.sentinelClass, elf.level); 
-            elf.attackPoints = DataStructures.calcAttackPoints(elf.sentinelClass, elf.weaponTier);  
-            elf.level        = elf.level > 100 ? 100 : elf.level; 
-            elf.action       = action;
-
-            sentinels[id_] = DataStructures._setElf(elf.owner, elf.timestamp, elf.action, elf.healthPoints, elf.attackPoints, elf.primaryWeapon, elf.level, actions.traits, actions.class);
-            emit Action(msg.sender, action, id_); 
-    }
-
-
-
-    function _exitPassive(uint256 timeDiff, uint256 _level) private returns (uint256 level) {
+    function _exitPassive(uint256 timeDiff, uint256 _level, address _owner) private returns (uint256 level) {
             
             uint256 rewards;
 
@@ -522,7 +451,7 @@ function addCamp(uint256 id, uint16 baseRewards_, uint16 creatureCount_, uint16 
                     
                    
 
-                    _setAccountBalance(msg.sender, rewards, false);
+                    _setAccountBalance(_owner, rewards, false);
 
     }
 
@@ -619,13 +548,16 @@ function elves(uint256 _id) external view returns(address owner, uint timestamp,
         ketchup = keccak256(abi.encodePacked(acc, block.coinbase));
     }
 
+    function onlyOperator() internal view {    
+       require(msg.sender == operator);
+    }
 
     function onlyOwner() internal view {    
-        require(admin == msg.sender || auth[msg.sender] == true || dev1Address == msg.sender || dev2Address == msg.sender || msg.sender == operator);
+        require(admin == msg.sender);
     }
 
     function modifyElfDNA(uint256[] calldata ids, uint256[] calldata sentinel) external {
-        require (msg.sender == operator || admin == msg.sender, "not terminus");
+        require (msg.sender == operator || admin == msg.sender, "not allowed");      
         
         for(uint i = 0; i < ids.length; i++){
             
@@ -650,7 +582,6 @@ function elves(uint256 _id) external view returns(address owner, uint timestamp,
         onlyOwner();
         isTerminalOpen = !isTerminalOpen;
     }
-
     
     
    function setAccountBalance(address _owner, uint256 _amount) public {                
