@@ -64,6 +64,12 @@ INVENTORY LOCATION:
 
 let validator = "0x80861814a8775de20F9506CF41932E95f80f7035"
 
+///////////////////POLYGON///////////////////////////////////
+
+Inventory: 0x3cF1630393BFd1D9fF52bD822fE88714FC81467E
+Elves: 0x4deab743f79b582c9b1d46b4af61a69477185dd5
+
+operator
 
 
 //////////RINKEBY//////////////////////////////////////////////
@@ -75,4 +81,4 @@ REN: 0xF114Dbd66f7e69b2635bE7d85418E707AB029a67
 
 ////////MUMBAI/////////////////////////////////////
 metadata: 0x644bcc992Afc46505B25623A551489fda7dd4572    
-elves: 0x5221d8Bc5c831a771B653E20698321DE30199557
+elves: 0xBa8EFCA65A99b97741fF3B382Cf198CEB3c9c90F

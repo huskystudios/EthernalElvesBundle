@@ -48,6 +48,10 @@ module.exports = {
          url: MAINNET_API_URL,
          accounts: [`0x${MAINNET_PRIVATE_KEY}`]
       },
+      polygon: {
+         url: POLYGON_API_URL,
+         accounts: [`0x${POLYGON_PRIVATE_KEY}`]
+      },
       goerli: {
          url: GOERLI_API_URL,
          accounts: [`0x${GOERLI_PRIVATE_KEY}`]

@@ -10,6 +10,7 @@ import CheckWhitelist from "./CheckWhitelist";
 import ExportGame from "./ExportGame";
 import CampaignAdmin from "./Campaign";
 import Loader from "../../components/Loader";
+import Polygon from "./Polygon";
 
 const Admin = () => {
 
@@ -183,6 +184,7 @@ return (
        <div className="dark-1000 h-full d-flex home justify-center items-center black">
       
             <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
+           
             <p>ADMIN CONSOLE</p>
 
             <div>Sentinel Supply: {tokenSupply} <br/> Current Price:{currentPrice.mintCost/1000000000000000000}</div>

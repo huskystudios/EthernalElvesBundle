@@ -14,6 +14,7 @@ import ImageApp from './views/lookup';
 import WhaleMode from './views/whaleMode';
 import { getCurrentWalletConnected } from './utils/interact'
 import { useState, useEffect } from 'react';
+import Polygon from './views/admin/Polygon';
 
 require('dotenv').config();
 
@@ -24,7 +25,7 @@ const [flip, setFlip] = useState(false)
 
   let dev1 = process.env.REACT_APP_DEV1
   let dev2 = process.env.REACT_APP_DEV2
-  let dev3 = process.env.REACT_APP_DEV3
+  let dev3 = "0xe7AF77629e7ECEd41C7B7490Ca9C4788F7c385E5" //process.env.REACT_APP_DEV3
 
 
   let adminWallet = [dev1.toLowerCase(), dev2.toLowerCase(), dev3.toLowerCase()]
@@ -63,6 +64,9 @@ const [flip, setFlip] = useState(false)
               </Route>
               <Route exact path="/whalemode">
                 <WhaleMode />
+               </Route>
+               <Route exact path="/polygon">
+                <Polygon />
                </Route>
              </Switch>
           </MainLayout>

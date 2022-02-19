@@ -34,7 +34,8 @@ export const actionString =
   {action: 4, text: 'return'},
   {action: 5, text: 're-roll weapon'},
   {action: 6, text: 're-roll item'},
-  {action: 7, text: 'healing'}
+  {action: 7, text: 'healing'},
+  {action: 8, text: 'sent to polygon'}
 ]
 
 export const items = [

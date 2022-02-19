@@ -5,15 +5,15 @@ const { ethers, upgrades } = require("hardhat");
 async function main() {
   
   
-  const Elves = await ethers.getContractFactory("PolyEthernalElves");
-  const elves = await upgrades.upgradeProxy("0x5221d8Bc5c831a771B653E20698321DE30199557", Elves);
+ // const Elves = await ethers.getContractFactory("PolyEthernalElves");
+ // const elves = await upgrades.upgradeProxy("0xBa8EFCA65A99b97741fF3B382Cf198CEB3c9c90F", Elves);
 
-/*
+
   const Elves = await ethers.getContractFactory("EthernalElvesV2");
   const elves = await upgrades.upgradeProxy("0x4430B68a122966f61aEe861A2D9ec789b03b8631", Elves);
   console.log("upgraded");
 
-  */
+  
 }
 
 main();

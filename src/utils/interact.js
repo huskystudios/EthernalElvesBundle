@@ -184,6 +184,9 @@ switch(parseInt(elfAction)){
   case 7:
     elfActionString = elfTime ? "Healing" : "Done Healing"
     break;
+  case 8:
+    elfActionString = "Sent to Polygon"
+    break;
   default:
     elfActionString = "Unknown"
 

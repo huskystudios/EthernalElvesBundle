@@ -32,7 +32,7 @@ contract PolyEthernalElves is PolyERC721 {
     bool private initialized;
 
     address operator;
-    address public validator;
+
    
     uint256 public INIT_SUPPLY; 
     uint256 public price;
@@ -61,13 +61,11 @@ contract PolyEthernalElves is PolyERC721 {
        require(!initialized, "Already initialized");
        admin                = msg.sender;   
        initialized          = true;
-       validator            = 0xa2B877EC3234F50C33Ff7d0605F7591053d06E31;
-       operator             = 0x2730F644E9C5838D1C8292dB391C0ADE1f65c42d; //Temporary
-       elfmetaDataHandler   = IElfMetaDataHandler(0x644bcc992Afc46505B25623A551489fda7dd4572);
+       operator             = 0xa2B877EC3234F50C33Ff7d0605F7591053d06E31; 
+       elfmetaDataHandler   = IElfMetaDataHandler(0x3cF1630393BFd1D9fF52bD822fE88714FC81467E);
 
-       camps[1] = Camps({baseRewards: 10, creatureCount: 6000, creatureHealth: 12,  expPoints:9,   minLevel:1, campMaxLevel:10});
-       camps[2] = Camps({baseRewards: 20, creatureCount: 3000, creatureHealth: 72,  expPoints:9,   minLevel:15, campMaxLevel:30});
-       camps[3] = Camps({baseRewards: 30, creatureCount: 3000, creatureHealth: 132, expPoints:9,   minLevel:30, campMaxLevel:40});
+       camps[1] = Camps({baseRewards: 10, creatureCount: 1000, creatureHealth: 120,  expPoints:6,   minLevel:1, campMaxLevel:100});
+
 
        MAX_LEVEL = 100;
        TIME_CONSTANT = 1 hours; 
@@ -75,10 +73,9 @@ contract PolyEthernalElves is PolyERC721 {
 
     }
 
-    function setAddresses(address _inventory, address _validator, address _operator)  public {
+    function setAddresses(address _inventory, address _operator)  public {
        onlyOwner();
        elfmetaDataHandler   = IElfMetaDataHandler(_inventory);
-       validator            = _validator;
        operator             = _operator;
     }    
     
@@ -91,7 +88,6 @@ contract PolyEthernalElves is PolyERC721 {
     event Campaigns(address indexed owner, uint256 amount, uint256 indexed campaign, uint256 sector, uint256 indexed tokenId);
     event CheckIn(address indexed from, uint256 timestamp, uint256 indexed tokenId, uint256 indexed sentinel);      
     event RenTransferOut(address indexed from, uint256 timestamp, uint256 indexed renAmount);   
-    event CheckOut(address indexed to, uint256 timestamp, uint256 indexed tokenId);      
     event LastKill(address indexed from); 
     event AddCamp(uint256 indexed id, uint256 baseRewards, uint256 creatureCount, uint256 creatureHealth, uint256 expPoints, uint256 minLevel);
 
@@ -108,6 +104,7 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
                     for (uint256 index = 0; index < ids.length; index++) {  
                         _actions(ids[index], 0, owner, 0, 0, false, false, false, 0);
                         emit CheckIn(owner, block.timestamp, ids[index], sentinels[ids[index]]);
+                        sentinels[ids[index]] = 0; //scramble their bwainz
                     }
                   
           }
@@ -123,41 +120,6 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
 
 }
 
-
-
- function initMint(address to, uint256 start, uint256 end) external {
-        
-        onlyOwner();
-
-        for (uint256 i = start; i < end; i++) {
-            _mint( to, i);
-        }
-    }
-    
-////////Campaigns////////////////////////////////////////////////
-
-
-
-
-function addCamp(uint256 id, uint16 baseRewards_, uint16 creatureCount_, uint16 expPoints_, uint16 creatureHealth_, uint16 minLevel_, uint16 maxLevel_) external      
-    {
-        onlyOwner();
-        
-        Camps memory newCamp = Camps({
-            baseRewards:    baseRewards_, 
-            creatureCount:  creatureCount_, 
-            expPoints:      expPoints_,
-            creatureHealth: creatureHealth_, 
-            minLevel:       minLevel_,
-            campMaxLevel:   maxLevel_
-            });
-        
-        camps[id] = newCamp;
-        
-        emit AddCamp(id, baseRewards_, creatureCount_, expPoints_, creatureHealth_, minLevel_);
-    }
-
-  
 
 /////////////////////////////////////////////////////////////////
 
@@ -572,6 +534,37 @@ function elves(uint256 _id) external view returns(address owner, uint timestamp,
 
 //ADMIN Only
 
+function initMint(address to, uint256 start, uint256 end) external {
+        
+        onlyOwner();
+
+        for (uint256 i = start; i < end; i++) {
+            _mint( to, i);
+        }
+    }
+    
+
+
+function addCamp(uint256 id, uint16 baseRewards_, uint16 creatureCount_, uint16 expPoints_, uint16 creatureHealth_, uint16 minLevel_, uint16 maxLevel_) external      
+    {
+        onlyOwner();
+        
+        Camps memory newCamp = Camps({
+            baseRewards:    baseRewards_, 
+            creatureCount:  creatureCount_, 
+            expPoints:      expPoints_,
+            creatureHealth: creatureHealth_, 
+            minLevel:       minLevel_,
+            campMaxLevel:   maxLevel_
+            });
+        
+        camps[id] = newCamp;
+        
+        emit AddCamp(id, baseRewards_, creatureCount_, expPoints_, creatureHealth_, minLevel_);
+    }
+
+
+
     function flipActiveStatus() external {
         onlyOwner();
         isGameActive = !isGameActive;
@@ -585,7 +578,7 @@ function elves(uint256 _id) external view returns(address owner, uint timestamp,
     
     
    function setAccountBalance(address _owner, uint256 _amount) public {                
-        onlyOwner();
+        onlyOperator();
         bankBalances[_owner] += _amount;
     }
 
