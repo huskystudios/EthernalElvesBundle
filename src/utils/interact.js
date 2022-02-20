@@ -2,8 +2,9 @@ import { items, sentinelClass } from '../views/home/config';
 
 require('dotenv').config();
 const Web3 = require("web3")
-const alchemy = process.env.REACT_APP_ALCHEMY_KEY;
+const alchemyethkey = process.env.REACT_APP_ALCHEMY_KEY;
 const etherscanKey = process.env.REACT_APP_ETHERSCAN_KEY;
+const polygonKey = process.env.REACT_APP_POLYGON_KEY;
 const {
   Multicall,
   ContractCallResults,
@@ -21,7 +22,8 @@ const mirenAbi = require('./ABI/miren.json')
 const campaignAbi = require('./ABI/campaigns.json')
 var api = require('etherscan-api').init(etherscanKey);
 
-const web3 = new Web3(new Web3.providers.HttpProvider(alchemy))
+export const web3 = new Web3(new Web3.providers.HttpProvider(alchemyethkey))
+export const polyweb3 = new Web3(new Web3.providers.HttpProvider(polygonKey))
 
 const nftContract = new web3.eth.Contract(elvesAbi.abi, elvesContract);
 const ercContract = new web3.eth.Contract(mirenAbi.abi, mirenContract);
