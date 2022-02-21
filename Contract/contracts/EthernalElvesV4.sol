@@ -49,9 +49,9 @@ contract EthernalElvesV4 is ERC721 {
     mapping(address => bool)    public auth;
     mapping(address => uint16)  public whitelist; 
 
-/////NEW STORAGE FROM THIS LINE///////////////////////////////////////////////////////
+/////NEW STORAGE FROM THIS LINE V3///////////////////////////////////////////////////////
     bool public isTerminalOpen;
-/////NEW STORAGE FROM THIS LINE///////////////////////////////////////////////////////
+/////NEW STORAGE FROM THIS LINE V4///////////////////////////////////////////////////////
     mapping(bytes => uint16)  public usedRenSignatures; 
 
        function initialize(address _dev1Address, address _dev2Address) public {
