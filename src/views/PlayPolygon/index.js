@@ -158,11 +158,10 @@ const PlayPolygon = () => {
     }
 
     const reRoll = async (option) => {
-        let reRollPrice = .01 * 10**18
+       // let reRollPrice = .01 * 10**18
        // let hexString = reRollPrice.toString(16);
         
         const params =  {
-            value: reRollPrice,
             functionCall: option === "forging" ? polygonContract.methods.forging(clicked, owner).encodeABI() : polygonContract.methods.merchant(clicked, owner).encodeABI() }
         await sendGaslessFunction(params)          
                       
@@ -170,8 +169,6 @@ const PlayPolygon = () => {
 
 
     const passiveMode = async (option) => {
-      
-        console.log(option)
 
         const params =  {functionCall: option === "passive" ? polygonContract.methods.passive(clicked, owner).encodeABI() : polygonContract.methods.returnPassive(clicked, owner).encodeABI() }
         await sendGaslessFunction(params)       
@@ -179,14 +176,10 @@ const PlayPolygon = () => {
         }
 
 
-        const healing = async () => {
-      
-         const params =  {healer: clicked[0], target: clicked[1]}
-         let {success, status, txHash} = await heal(params)
-    
-         success && resetVariables()            
-  
-         setAlert({show: true, value: {title: "Tx Sent", content: (status)}})       
+    const healing = async () => {
+
+        const params =  {functionCall: polygonContract.methods.heal(clicked[0], clicked[1], owner).encodeABI()}
+        await sendGaslessFunction(params)
                           
          }
 
@@ -358,17 +351,27 @@ const PlayPolygon = () => {
                             <label>Use Item</label>
                             <input type="checkbox" checked={useItem} onChange={(e) => setUseItem(!useItem)}/>
                         </div>
-
+                    
+                        <div className="flex">
                         <button
                             className="btn-whale"
                             onClick={sendCampaignFunction}
                         >
-                            Confirm
+                            campaign
                         </button>
+                        <button
+                            className="btn-whale"
+                            onClick={sendCampaignFunction}
+                        >
+                            bloodthirst
+                        </button>
+                        </div>
+                        
                     </div>
                 </div>
             )
         }
+
 
 
 
