@@ -62,7 +62,7 @@ const Transfers = () => {
 
             console.log(item.attributes.tokenId)
 
-            if (clicked.includes(parseInt(item.id))) {
+            if (clicked.includes((item.id))) {
                 tokenIdsArry.push(item.attributes.tokenId)
                 sentinelArry.push(item.attributes.sentinel)
                 signatureArry.push(item.attributes.signedTransaction.signature)
@@ -82,7 +82,7 @@ const Transfers = () => {
         }
 
         const checkOutRenFunction = async () => {
-
+            console.log(clicked)
               
             let renAmount 
             let renSignature 
@@ -90,7 +90,7 @@ const Transfers = () => {
     
             nftData.map((item, index) => {
     
-                if (clicked.includes(parseInt(item.id))) {
+                if (clicked.includes((item.id))) {
                     console.log(item)
                     renAmount = item.attributes.renAmount
                     timestamp = item.attributes.timestamp
