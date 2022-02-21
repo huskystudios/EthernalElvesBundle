@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "EthernalElvesV2",
-  "sourceName": "contracts/EthernalElves.sol",
+  "contractName": "EthernalElvesV4",
+  "sourceName": "contracts/EthernalElvesV4.sol",
   "abi": [
     {
       "anonymous": false,
@@ -138,6 +138,87 @@
         }
       ],
       "name": "Campaigns",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "sentinel",
+          "type": "uint256"
+        }
+      ],
+      "name": "CheckIn",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "CheckOut",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "renAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "RenTransferOut",
       "type": "event"
     },
     {
@@ -332,6 +413,88 @@
     {
       "inputs": [
         {
+          "internalType": "uint256[]",
+          "name": "ids",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256",
+          "name": "renAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "checkIn",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "ids",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "sentinel",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "bytes[]",
+          "name": "signatures",
+          "type": "bytes[]"
+        }
+      ],
+      "name": "checkOut",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "renAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "renSignatures",
+          "type": "bytes"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "checkOutRen",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "uint256",
           "name": "_id",
           "type": "uint256"
@@ -382,6 +545,35 @@
       "inputs": [
         {
           "internalType": "uint256",
+          "name": "renAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "encodeRenForSignature",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
           "name": "id",
           "type": "uint256"
         },
@@ -396,7 +588,7 @@
           "type": "uint256"
         }
       ],
-      "name": "encodeForSignature",
+      "name": "encodeSentinelForSignature",
       "outputs": [
         {
           "internalType": "bytes32",
@@ -423,7 +615,7 @@
     },
     {
       "inputs": [],
-      "name": "flipWhitelist",
+      "name": "flipTerminal",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -671,6 +863,19 @@
     },
     {
       "inputs": [],
+      "name": "isTerminalOpen",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "isWlOpen",
       "outputs": [
         {
@@ -808,24 +1013,6 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "owner_",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "ids",
-          "type": "uint256[]"
-        }
-      ],
-      "name": "pull",
-      "outputs": [],
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -1123,32 +1310,6 @@
     {
       "inputs": [
         {
-          "internalType": "uint256",
-          "name": "_initialSupply",
-          "type": "uint256"
-        }
-      ],
-      "name": "setInitialSupply",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_terminus",
-          "type": "address"
-        }
-      ],
-      "name": "setTerminus",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "bytes4",
           "name": "interfaceId",
           "type": "bytes4"
@@ -1267,32 +1428,17 @@
     {
       "inputs": [
         {
-          "internalType": "uint256",
-          "name": "id",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "owner",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "sentinel",
-          "type": "uint256"
-        },
-        {
           "internalType": "bytes",
-          "name": "signature",
+          "name": "",
           "type": "bytes"
         }
       ],
-      "name": "validSignature",
+      "name": "usedRenSignatures",
       "outputs": [
         {
-          "internalType": "bool",
+          "internalType": "uint16",
           "name": "",
-          "type": "bool"
+          "type": "uint16"
         }
       ],
       "stateMutability": "view",
