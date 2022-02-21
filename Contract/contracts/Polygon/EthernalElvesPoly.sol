@@ -90,7 +90,7 @@ contract PolyEthernalElves is PolyERC721 {
     event RenTransferOut(address indexed from, uint256 timestamp, uint256 indexed renAmount);   
     event LastKill(address indexed from); 
     event AddCamp(uint256 indexed id, uint256 baseRewards, uint256 creatureCount, uint256 creatureHealth, uint256 expPoints, uint256 minLevel);
-
+    event BloodThirst(address indexed owner, uint256 indexed tokenId); 
        
 //////////////EXPORT TO OTHER CHAINS/////////////////
 
@@ -134,19 +134,6 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
           }
     }
 
-/*NOTE Add in V2
-
-   
-
-    function rampage(uint256[] calldata ids, uint256 campaign_, uint256 sector_) external {
-          isPlayer();          
-
-          for (uint256 index = 0; index < ids.length; index++) {  
-            _actions(ids[index], 2, msg.sender, campaign_, sector_, true, true, false, 3);
-          }
-    }
-
-*/
 
  function bloodThirst(uint256[] calldata ids, uint256 campaign_, uint256 sector_,  address owner) external {
           onlyOperator();       
@@ -243,7 +230,7 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
                     require(elf.timestamp < block.timestamp, "elf busy");
                     require(elf.action != 3, "exit passive mode first");  
 
-                    Camps memory camp = camps[campaign_];  
+                    Camps memory camp = camps[campaign_];                    
   
                     require(camp.minLevel <= elf.level, "level too low");
                     require(camp.campMaxLevel >= elf.level, "level too high"); 
@@ -257,31 +244,27 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
                     (elf.level, actions.reward, elf.timestamp, elf.inventory) = _gameEngine(campaign_, sector_, elf.level, elf.attackPoints, elf.healthPoints, elf.inventory, useItem);
 
                     if(gameMode_ == 1){
-                        
-                        _setAccountBalance(elfOwner, actions.reward, false);
-                    }
 
-                  
-                    
-                    
-                    uint256 options;
-
-                    if(rollWeapons && rollItems){
-                        options = 3;
+                        if(rollWeapons && rollItems){
+                        (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, _rand(), 3, elf.weaponTier, elf.primaryWeapon, elf.inventory);  
                         }else if(rollWeapons){
-                        options = 1;
+                        (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, _rand(), 1, elf.weaponTier, elf.primaryWeapon, elf.inventory);  
                         }else if(rollItems){
-                        options = 2;
-                        }else{
-                        options = 0;
+                        (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, _rand(), 2, elf.weaponTier, elf.primaryWeapon, elf.inventory);  
+                        }                    
+                       
                     }
-                  
-                    if(options > 0){
-                       (elf.weaponTier, elf.primaryWeapon, elf.inventory) 
 
-                                    = DataStructures.roll(id_, elf.level, _rand(), options, elf.weaponTier, elf.primaryWeapon, elf.inventory);                                    
-                                    
-                    }                   
+                     if(gameMode_ == 2){
+                          if(elf.sentinelClass == 1){
+                              if(elf.weaponTier > 2){
+                                  elf.timestamp = _bloodthirst(elf.weaponTier, id_, elf.timestamp, elfOwner);
+                              }
+                          }
+                     }
+
+
+                     _setAccountBalance(elfOwner, actions.reward, false);
                  
                     
                     emit Campaigns(elfOwner, actions.reward, campaign_, sector_, id_);
@@ -402,6 +385,23 @@ function _gameEngine(uint256 _campId, uint256 _sector, uint256 _level, uint256 _
   timestamp = REGEN_TIME/(_healthPoints) + (block.timestamp + attackTime);
 
 }
+
+function _bloodthirst(uint256 weaponTier, uint256 id, uint256 timestamp, address owner) internal 
+ 
+ returns(uint256 timestamp_){
+
+     uint256  chance = (_randomize(_rand(), "InstantKill", id)) % 100;
+     uint256 killChance = weaponTier == 3 ? 10 : weaponTier == 4 ? 15 : weaponTier == 5 ? 20 : 0;
+
+    if(chance <= killChance){
+        timestamp_ = block.timestamp + (15 minutes);
+        emit BloodThirst(owner, id);
+    }else{
+        timestamp_ = timestamp;
+    }     
+
+
+ }
 
 
     function _exitPassive(uint256 timeDiff, uint256 _level, address _owner) private returns (uint256 level) {
