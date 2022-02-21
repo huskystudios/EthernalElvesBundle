@@ -5,10 +5,9 @@ import "./style.css"
 import { actionString, campaigns } from "../home/config"
 import Countdown from 'react-countdown';
 import {elvesAbi, getCampaign, elvesContract, etherscan,
-    checkIn, checkOut,
+    checkIn, checkOut, checkOutRen, usedRenSignatures,
     sendCampaign, sendPassive, returnPassive, unStake, merchant, forging,
     heal, lookupMultipleElves, getCurrentWalletConnected, polygonContract} from "../../utils/interact"
-import Mint from "../mint"
 
 
 const Transfers = () => {
@@ -23,6 +22,7 @@ const Transfers = () => {
     const [clicked, setClicked] = useState([]);
 
     const [nftData, setNftData] = useState([])
+    const [renTransfers, setRenTransfers] = useState([])
     const [activeNfts, setActiveNfts] = useState(true)
     const [txreceipt, setTxReceipt] = useState()
     const [alert, setAlert] = useState({show: false, value: null})
@@ -37,9 +37,7 @@ const Transfers = () => {
 
     }
     
-   // const { data, error, fetch, isFetching, isLoading } = useWeb3ExecuteFunction();
-
-
+   
     const handleClick = async (id) => {
 
         if (clicked.includes(id)) {
@@ -64,7 +62,7 @@ const Transfers = () => {
 
             console.log(item.attributes.tokenId)
 
-            if (clicked.includes(parseInt(item.attributes.tokenId))) {
+            if (clicked.includes(parseInt(item.id))) {
                 tokenIdsArry.push(item.attributes.tokenId)
                 sentinelArry.push(item.attributes.sentinel)
                 signatureArry.push(item.attributes.signedTransaction.signature)
@@ -83,6 +81,46 @@ const Transfers = () => {
                       
         }
 
+        const checkOutRenFunction = async () => {
+
+              
+            let renAmount 
+            let renSignature 
+            let timestamp 
+    
+            nftData.map((item, index) => {
+    
+                if (clicked.includes(parseInt(item.id))) {
+                    console.log(item)
+                    renAmount = item.attributes.renAmount
+                    timestamp = item.attributes.timestamp
+                    renSignature = item.attributes.signedTransaction.signature
+                }   
+    
+            })
+
+           
+           
+            let sigUsed = await usedRenSignatures(renSignature)
+            
+            if(parseInt(sigUsed) === 1){
+                console.log("is true. very naice.")
+                setAlert({show: true, value: {title: "Signature used", content: ("This transaction signature has already been used")}})
+                return
+            }
+
+          
+            const params =  {renAmount:renAmount , signature:renSignature, timestamp:timestamp}
+
+            console.log(params)
+            let {success, status, txHash} = await checkOutRen(params)
+       
+            success && resetVariables()            
+     
+            setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
+                          
+            }
+
     
      
         useEffect(() => {
@@ -93,6 +131,9 @@ const Transfers = () => {
            //    await Moralis.enableWeb3();
 
                const Elves = Moralis.Object.extend("ElvesPolyCheckIn");
+               const ElvesRenTransferIn = Moralis.Object.extend("ElvesRenTransferIn");
+               let results = []
+
                 let query = new Moralis.Query(Elves);
                 query.equalTo("from", address);
                 query.notEqualTo("status", "confirmed");
@@ -100,9 +141,10 @@ const Transfers = () => {
                 let limit = 50
 
                 //page through the results
-                let results = []
+                
                 let hasMore = true
                 let page = 1
+
 		while (hasMore) {
 
 			query.limit(limit);
@@ -117,21 +159,46 @@ const Transfers = () => {
 			results = results.concat(response.results)
 			
 		}      
+
         
+        query = new Moralis.Query(ElvesRenTransferIn);
+        query.equalTo("from", address);
+       
+        let renResults = []
+        hasMore = true
+        page = 1
+    
+    while (hasMore) {
+
+        query.limit(limit);
+        query.skip(limit * (page - 1));
+        query.withCount();
+        const renResponse = await query.find();
+        let currentIndex = limit * (page)
+        currentIndex > renResponse.count ? hasMore = false : hasMore = true
+        page++
+        setStatus(currentIndex / renResponse.count * 100)
+
+        renResults = renResults.concat(renResponse.results)
+    
+    }
+
+      // const usedSig = await usedRenSignatures(item.attributes.signedTransaction.signature)
         
-               
-                setNftData(results)        
-                setStatus(results.length + " elves")
-                setStatus("done")
-                          
-               setLoading(false)
-            }
-            
-            getData()
-          },[activeNfts, txreceipt]);
+      results = results.concat(renResults)
+             
+       // setRenTransfers(renResults)    
+        setNftData(results)        
+        
+        setStatus("done")                  
+        setLoading(false)
+        }
+        
+        getData()
+          },[]);
 
 
-  
+
 
 
           const showAlert = ({title, content}) => {
@@ -181,6 +248,15 @@ const Transfers = () => {
                         >
                             Confirm Transfer
                         </button>
+
+                        <button
+                            /*disabled={!isButtonEnabled.unstake}*/
+                            className="btn-whale"
+                            onClick={checkOutRenFunction}
+                        >
+                            Claim Polygon Ren
+                        </button>
+
                     </div>      
                 
             </div>
@@ -191,67 +267,18 @@ const Transfers = () => {
       <table style={{width: '100%'}}>
       <thead style={{textAlign: "left"}}>
         <tr>
-        <th></th>
+        <th>Id</th>
+        <th>Transfer Initiated On</th>
         <th>
             <div className="flex">
-                <span>Name</span>
+                <span>Sentinel State</span>
                 
             </div>
         </th>
-        <th>
-            <div className="flex">
-                <span>Location</span>
-                
-            </div>
-        </th>
-        <th>
-            <div className="flex">
-                <span>Inventory</span>
-               
-            </div>
-        </th>
-        <th>
-            <div className="flex">
-                <span>Weapon Name</span>
-                
-            </div>
-        </th>
-        <th>
-            <div className="flex">
-                <span>HP+</span>
-                
-            </div>
-        </th>
-        <th>
-            <div className="flex">
-                <span>AP+</span>
-               
-            </div>
-        </th>
-        <th>
-            <div className="flex">
-                <span>Level</span>
-                
-            </div>
-        </th>
-        <th>
-            <div className="flex">
-                <span>Class</span>
-               
-            </div>
-        </th>
-        <th>
-            <div className="flex">
-                <span>Action Taken</span>
-               
-            </div>
-        </th>
-        <th>
-            <div className="flex">
-                <span>Cooldown (-) /<br />Passive (+)</span>
-                
-            </div>
-        </th>
+        <th>Signature</th>
+        <th>Token Id</th>
+        <th>$REN</th>
+       
         </tr>
       </thead>
       <tbody>
@@ -260,27 +287,30 @@ const Transfers = () => {
             {nftData.map((line, index) => {
 
 
-                const date = new Date(line.time * 1000)
-               
-                let passiveString = ""
-                
-               
-                
-                    let rowSelected = clicked.includes(parseInt(line.attributes.tokenId)) ? "rowSelected" : ""
+                const date = new Date(line.attributes.timestamp * 1000)
+                const dateString = date.toString()
 
-                                       
+                let rowSelected = clicked.includes(parseInt(line.id)) ? "rowSelected" : ""
 
-
-                return( <tr key={index} className={`${rowSelected} row`} onClick={()=> handleClick(parseInt(line.attributes.tokenId))}  > 
+                return( <tr key={index} className={`${rowSelected} row`} onClick={()=> handleClick(parseInt(line.id))}  > 
                    <td>
-                     {line.attributes.tokenId}
+                     {line.id}
                     </td>
                     <td>
-                     {line.attributes.sentinel}
+                        {dateString}
                     </td>
                     <td>
-                     {line.attributes.signedTransaction.signature}
+                     {line.attributes.sentinel && String(line.attributes.sentinel).substring(0, 10) +
+                    "..." +
+                    String(line.attributes.sentinel).substring(68)}
                     </td>
+                    <td>
+                    { String(line.attributes.signedTransaction.signature).substring(0, 15) +
+                    "..." +
+                    String(line.attributes.signedTransaction.signature).substring(108)}
+                    </td>
+                    <td>{line.attributes.tokenId}</td>
+                    <td>{line.attributes.renAmount && line.attributes.renAmount/1000000000000000000}</td>
                 </tr>)
             }
              
@@ -293,22 +323,21 @@ const Transfers = () => {
                 </tbody>
                 </table>
 
-           
-
-               
-
+             
 
             </div>
 
      
       </div>
             
-                
+      
 </div>
 
 </div>
 
 {alert.show && showAlert(alert.value)}
+
+
 
         </>
         

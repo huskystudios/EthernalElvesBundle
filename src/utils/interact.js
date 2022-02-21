@@ -580,6 +580,30 @@ export const checkOut = async(props) => {
 
 }
 
+export const checkOutRen = async(props) => {
+
+  console.log(props)
+  
+  let tx = await txPayload(nftContract.methods.checkOutRen(props.renAmount, props.signature, props.timestamp).encodeABI())
+ 
+  try {
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
+        
+  return {
+        success: true,
+        status: (<>Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash,
+    }
+  } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+    }
+  
+  } 
+
+}
+
 
 
 
@@ -691,9 +715,7 @@ export const getTokenSupply = async () => {
     var supply = nftContract.methods.getMintPriceLevel().call();
     return(supply)
    }
-
-
-  
+ 
 
   export const balanceOf = async (address) => {
     var miren = await ercContract.methods.balanceOf(address).call();
@@ -701,7 +723,12 @@ export const getTokenSupply = async () => {
     let balances = {miren: miren}
     return(balances)
     }
-  
+    export const usedRenSignatures = async (signature) => {
+
+      const usedIndex = await nftContract.methods.usedRenSignatures(signature).call();
+      
+      return(usedIndex)
+      }
 
 
 
