@@ -290,9 +290,9 @@ const Transfers = () => {
                 const date = new Date(line.attributes.timestamp * 1000)
                 const dateString = date.toString()
 
-                let rowSelected = clicked.includes(parseInt(line.id)) ? "rowSelected" : ""
+                let rowSelected = clicked.includes((line.id)) ? "rowSelected" : ""
 
-                return( <tr key={index} className={`${rowSelected} row`} onClick={()=> handleClick(parseInt(line.id))}  > 
+                return( <tr key={index} className={`${rowSelected} row`} onClick={()=> handleClick((line.id))}  > 
                    <td>
                      {line.id}
                     </td>
