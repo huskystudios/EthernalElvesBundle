@@ -5,12 +5,13 @@ import "./style.css"
 import { actionString, campaigns } from "../home/config"
 import Countdown from 'react-countdown';
 import {elvesAbi, getCampaign, elvesContract, etherscan,
-    
+    checkIn,
     sendCampaign, sendPassive, returnPassive, unStake, merchant, forging,
-    heal, lookupMultipleElves, getCurrentWalletConnected} from "../../utils/interact"
+    heal, lookupMultipleElves, getCurrentWalletConnected, polygonContract} from "../../utils/interact"
+import Mint from "../mint"
 
 
-const WhaleMode = () => {
+const PlayPolygon = () => {
     const [loading, setLoading] = useState(true)
     const { Moralis } = useMoralis();
     const [status, setStatus] = useState("")
@@ -20,6 +21,10 @@ const WhaleMode = () => {
     const [sortBy, setSortBy] = useState({ value: "cooldown", order: "desc" });
     const [tryCampaign, setTryCampaign] = useState(1)
     const [trySection, setTrySection] = useState(1)
+
+    const owner = window.ethereum.selectedAddress
+
+    const [renTransfer, setRenTransfer] = useState("")
     
     const [isButtonEnabled, setIsButtonEnabled] = useState({
         unstake: false,
@@ -41,6 +46,7 @@ const WhaleMode = () => {
     const [txreceipt, setTxReceipt] = useState()
     const [alert, setAlert] = useState({show: false, value: null})
     const [campaignModal, setCampaignModal] = useState(false)
+    const [mintModal, setMintModal] = useState(false)
    
     const resetVariables = async () => {
         setClicked([])
@@ -106,17 +112,69 @@ const WhaleMode = () => {
     }, [clicked, nftData]);
 
 
+    
+    const sendGaslessFunction = async (params) => {
+
+        setLoading(true)
+        setCampaignModal(false)
+  
+        setStatus("Sending gasless transaction... waiting for response. Please do not close the window.")
+
+        let response = await Moralis.Cloud.run("operatorTransactor", params)
+
+        if(response.status){
+
+            let txHashLink = `https://polygonscan.com/tx/${response.transaction.transactionHash}`
+            let successMessage = <>Check out your transaction on <a target="_blank" href={txHashLink}>Polyscan</a> </>
+            resetVariables()     
+            setAlert({show: true, value: {title: "Tx Sent", content: (successMessage)}})
+
+        }else{
+            setAlert({show: true, value: {title: "Error", content: ("Something went wrong")}})
+        }
+        
+
+        console.log(response)
+
+        setLoading(false)
+
+    }
+
+    const sendCampaignFunction = async () => {
+           
+        const params =  {functionCall: polygonContract.methods.sendCampaign(clicked, tryCampaign, trySection, tryWeapon, tryItem, useItem, owner).encodeABI()}
+        await sendGaslessFunction(params)
+        
+    }
+
+
+    const checkinElf = async () => {
+
+        let renToSend = renTransfer === "" ? 0 : renTransfer
+        
+        const params =  {functionCall: polygonContract.methods.checkIn(clicked, (renToSend*1000000000000000000).toString(), owner).encodeABI()}
+        await sendGaslessFunction(params)
+                      
+    }
+
+    const reRoll = async (option) => {
+        let reRollPrice = .01 * 10**18
+       // let hexString = reRollPrice.toString(16);
+        
+        const params =  {
+            value: reRollPrice,
+            functionCall: option === "forging" ? polygonContract.methods.forging(clicked, owner).encodeABI() : polygonContract.methods.merchant(clicked, owner).encodeABI() }
+        await sendGaslessFunction(params)          
+                      
+        }
+
+
     const passiveMode = async (option) => {
       
         console.log(option)
-       
-       const params = {ids: clicked}
-            
-       let {success, status, txHash} = option === "passive" ? await sendPassive(params) : await returnPassive(params)
-    
-       success && resetVariables()            
 
-       setAlert({show: true, value: {title: "Tx Sent", content: (status)}})        
+        const params =  {functionCall: option === "passive" ? polygonContract.methods.passive(clicked, owner).encodeABI() : polygonContract.methods.returnPassive(clicked, owner).encodeABI() }
+        await sendGaslessFunction(params)       
                       
         }
 
@@ -132,32 +190,7 @@ const WhaleMode = () => {
                           
          }
 
-            
-    const reRoll = async (option) => {
-      
-      
-        const params =  {ids: clicked}
-        let {success, status, txHash} = option === "forging" ? await forging(params) : await merchant(params)
-   
-        success && resetVariables()            
- 
-        setAlert({show: true, value: {title: "Tx Sent", content: (status)}})             
-                      
-        }
 
-
-
-    const unStakeElf = async () => {
-      
-        const params =  {ids: clicked}
-        let {success, status, txHash} = await unStake(params)
-   
-        success && resetVariables()            
- 
-        setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
-                      
-        }
-        
     
 
     
@@ -171,6 +204,7 @@ const WhaleMode = () => {
                const Elves = Moralis.Object.extend("Elves");
                 let query = new Moralis.Query(Elves);
                 query.equalTo("owner_of", address);
+                query.equalTo("chain", "polygon");
                 let limit = 50
 
                 //page through the results
@@ -200,7 +234,9 @@ const WhaleMode = () => {
                         
 
                 setStatus("army of elves")
-                const elves = await lookupMultipleElves(tokenArr)
+                const lookupParams = {array: tokenArr, chain: "polygon"}
+
+                const elves = await lookupMultipleElves(lookupParams)
                 elves.sort((a, b) => a.time - b.time) 
                
                 setNftData(elves)        
@@ -278,27 +314,9 @@ const WhaleMode = () => {
           );
         };
 
-          const sendCampaignFunction = async () => {
 
-            const params = {
-                tryTokenids: clicked,
-                tryCampaign,
-                trySection,
-                tryWeapon,
-                tryItem,
-                useItem,
-            };
-        
-       
-            let {success, status, txHash} = await sendCampaign(params)
-    
-            success && resetVariables()            
-    
-            setAlert({show: true, value: {
-                title: "Tx Sent", 
-                content: (status)            
-            }})
-        }
+
+
     
 
 
@@ -354,11 +372,14 @@ const WhaleMode = () => {
 
 
 
+
+
+
     return !loading ? (
         
         <>
 
-        {alert.show && showAlert(alert.value)}
+        
             <div className="dark-1000 h-full d-flex flex-column profile">           
            
                 <div className="d-flex">      
@@ -366,18 +387,11 @@ const WhaleMode = () => {
                   
                         <div className="flex">
                                                
-                        <h2>Whale Mode</h2>
+                        <h2>GamePlay</h2>
                        
                         </div>
                     
                     <div className="flex p-10">
-                        <button
-                            disabled={!isButtonEnabled.unstake}
-                            className="btn-whale"
-                            onClick={unStakeElf}
-                        >
-                            Unstake
-                        </button>
                         <button
                             disabled={!isButtonEnabled.rerollWeapon}
                             className="btn-whale"
@@ -414,13 +428,44 @@ const WhaleMode = () => {
                             Heal
                         </button>
                         <button
-                            disabled={!isButtonEnabled.sendCampaign}
+                            /*disabled={!isButtonEnabled.sendCampaign}*/
                             className="btn-whale"
                             onClick={()=> setCampaignModal(true)}
                         >
                             Send to Campaign
                         </button>
-                    </div>     
+                    </div>   
+            <div>
+                <div>Elf Terminus</div>
+
+            <div className="flex p-10">
+                       
+                       <div>
+                    
+                       <input type={"text"} placeholder={"Ren To Transfer"} value={renTransfer} onChange={(e) => setRenTransfer(e.target.value)}/>
+          
+                      
+                       </div>
+                     
+                       
+                        <button
+                            /*disabled={!isButtonEnabled.unstake}*/
+                            className="btn-whale"
+                            onClick={checkinElf}
+                        >
+                            Send to Ethereum
+                        </button>
+
+                        <button
+                            /*disabled={!isButtonEnabled.unstake}*/
+                            className="btn-whale"
+                            onClick={checkinElf}
+                        >
+                            Confirm Transfer
+                        </button>
+                    </div>      
+                
+            </div>
                 
                  
                     
@@ -520,7 +565,9 @@ const WhaleMode = () => {
 
 
                 return( <tr key={index} className={`${rowSelected} row`} onClick={()=> handleClick(parseInt(line.id))}  > 
-                    <td><img src={line.image} alt="Elf" /></td>
+                    <td>
+                    {line.image && <img src={line.image} alt="elf" />}
+                    </td>
                     <td>{line.name}</td>
                     <td>{line.elfStatus}</td>
                     <td>
@@ -576,10 +623,10 @@ const WhaleMode = () => {
                     const elf = nftData.find(line => line.id === id)
                   
                     return(
-                        <div className="whale-thumb" key={index}>
-                            <img src={elf.image} alt="elf" />
-                          
-                         </div>   
+                        
+                            <div className="whale-thumb" key={index}>
+                            {elf.image && <img src={elf.image} alt="elf" />}
+                            </div>
                     )})}
 
               </div>
@@ -595,10 +642,12 @@ const WhaleMode = () => {
 
 </div>
 {renderModal()}
+{alert.show && showAlert(alert.value)}
+
         </>
         
      
     ) : <Loader text={status} />
 }
 
-export default WhaleMode
+export default PlayPolygon

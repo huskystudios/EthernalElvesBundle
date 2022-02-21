@@ -69,11 +69,27 @@ td, th {
     gap: 12px;
 }
 
-.table-whale th{   
+.table-whale th{
     font-size: 16px;
     background-color: #808080;
-    padding-left: 6px;
+}
 
+.table-whale th .flex {
+    width: 100%;
+    align-items: center;
+}
+
+.table-whale th .flex span {
+    flex: 1;
+}
+
+.sort-buttons {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.sort-button.active {
+    color: #733;
 }
 
 .table-whale td{
@@ -179,4 +195,25 @@ background-image: url(../../assets/images/stats_back_hover.png);
     width: 2.5em;
     margin: 0 auto;
     text-align: center;
+}
+
+.table-whale img {
+    width: 84px;
+}
+
+.table-whale .item-info {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 8px;
+}
+
+.table-whale .item-info img {
+    width: 40px;
+    border: 1px solid #666;
+    grid-row: 1 / 3;
+}
+
+.table-whale .item-info span {
+    font-size: 0.8em;
+    opacity: 0.8;
 }

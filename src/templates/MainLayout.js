@@ -22,16 +22,21 @@ const MainLayout = (props) => {
                 <img className="app-logo" src={logoImg} alt="logo" />
                 <div className="header-body"> 
                     
-                    <div onClick={onClickHome} className="nav-item" to="/">play</div>
-                    <NavLink className="nav-item" to="/whalemode">whale Mode</NavLink>
+                   
+                    <NavLink className="nav-item" to="/playeth">play on ethereum</NavLink>
+                    <NavLink className="nav-item" to="/playpoly">play on polygon</NavLink>
                     <NavLink className="nav-item" to="/profile">profile</NavLink>
                     <ConnectWallet />
-                    <NavLink className="nav-item" to="/mint">mint</NavLink>
+                   
                     <NavLink className="nav-item" to="/faq">faq</NavLink>
                     <NavLink className="nav-item" to="/lookup">lookup</NavLink>
                 </div>
               
-               {/**<ToggleChain /> */} 
+               {/**<ToggleChain /> 
+                *  <div onClick={onClickHome} className="nav-item" to="/">play</div>
+                *  <NavLink className="nav-item" to="/mint">mint</NavLink>
+                * 
+               */} 
                 <Withdraw />
                
             </div>

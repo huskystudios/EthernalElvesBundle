@@ -5,12 +5,13 @@ import "./style.css"
 import { actionString, campaigns } from "../home/config"
 import Countdown from 'react-countdown';
 import {elvesAbi, getCampaign, elvesContract, etherscan,
-    
+    checkIn,
     sendCampaign, sendPassive, returnPassive, unStake, merchant, forging,
     heal, lookupMultipleElves, getCurrentWalletConnected} from "../../utils/interact"
+import Mint from "../mint"
 
 
-const WhaleMode = () => {
+const PlayEth = () => {
     const [loading, setLoading] = useState(true)
     const { Moralis } = useMoralis();
     const [status, setStatus] = useState("")
@@ -20,6 +21,8 @@ const WhaleMode = () => {
     const [sortBy, setSortBy] = useState({ value: "cooldown", order: "desc" });
     const [tryCampaign, setTryCampaign] = useState(1)
     const [trySection, setTrySection] = useState(1)
+
+    const [renTransfer, setRenTransfer] = useState("")
     
     const [isButtonEnabled, setIsButtonEnabled] = useState({
         unstake: false,
@@ -41,6 +44,7 @@ const WhaleMode = () => {
     const [txreceipt, setTxReceipt] = useState()
     const [alert, setAlert] = useState({show: false, value: null})
     const [campaignModal, setCampaignModal] = useState(false)
+    const [mintModal, setMintModal] = useState(false)
    
     const resetVariables = async () => {
         setClicked([])
@@ -51,7 +55,7 @@ const WhaleMode = () => {
 
     }
     
-    const { data, error, fetch, isFetching, isLoading } = useWeb3ExecuteFunction();
+   // const { data, error, fetch, isFetching, isLoading } = useWeb3ExecuteFunction();
 
 
     const handleClick = async (id) => {
@@ -108,176 +112,70 @@ const WhaleMode = () => {
 
     const passiveMode = async (option) => {
       
-       // await Moralis.enableWeb3();
-
-        const options = {
-                contractAddress: elvesContract,
-                functionName: option,
-                abi: elvesAbi.abi,
-                params: {ids: clicked},
-                awaitReceipt: false 
-              };
-
-              const tx = await Moralis.executeFunction(options);
-              
-              tx.on("transactionHash", (hash) => { 
-                resetVariables()
-                setAlert({show: true, value: {
-                    title: "Tx Successful", 
-                    content: (<>✅ Check out your transaction on <a target="_blank" rel="noreferrer" href={`https://${etherscan}.io/tx/${hash}`}>Etherscan</a> </>)            
-              }})
-                
-            })
-              
-              tx.on("receipt", (receipt) => { 
-
-                setTxReceipt(receipt)
-                let response
-
-                receipt.events.Action.isArray ? response = `Elf#${ receipt.events.Action.map(nft => {return(nft.returnValues.tokenId)})} have started doing ${actionString[receipt.events.Action[0].returnValues.action].text}`
-                : response = `Elf#${receipt.events.Action.returnValues.tokenId} has started doing action ${actionString[receipt.events.Action.returnValues.action].text}`
+        console.log(option)
        
-                setAlert({show: true, value: {
-                      title: "Tx Successful", 
-                      content: response            
-                }})
+       const params = {ids: clicked}
             
-            })
+       let {success, status, txHash} = option === "passive" ? await sendPassive(params) : await returnPassive(params)
+    
+       success && resetVariables()            
+
+       setAlert({show: true, value: {title: "Tx Sent", content: (status)}})        
                       
         }
 
 
-        const heal = async () => {
+        const healing = async () => {
       
-      //      await Moralis.enableWeb3();
+         const params =  {healer: clicked[0], target: clicked[1]}
+         let {success, status, txHash} = await heal(params)
     
-            const options = {
-                    contractAddress: elvesContract,
-                    functionName: "heal",
-                    abi: elvesAbi.abi,
-                    params: {healer: clicked[0], target: clicked[1]},
-                    awaitReceipt: false // should be switched to false
-                  };
-    
-                  const tx = await Moralis.executeFunction(options);
-                  
-                  tx.on("transactionHash", (hash) => { 
-                    resetVariables()
-                    setAlert({show: true, value: {
-                        title: "Tx Successful", 
-                        content: (<>✅ Check out your transaction on <a target="_blank" rel="noreferrer" href={`https://${etherscan}.io/tx/${hash}`}>Etherscan</a> </>)            
-                  }})
-                    
-                })
-                  
-                  tx.on("receipt", (receipt) => { 
-    
-                    setTxReceipt(receipt)
-                    let response
-    
-                    receipt.events.Action.isArray ? response = `Elf#${ receipt.events.Action.map(nft => {return(nft.returnValues.tokenId)})} have started doing ${actionString[receipt.events.Action[0].returnValues.action].text}`
-                    : response = `Elf#${receipt.events.Action.returnValues.tokenId} has started doing action ${actionString[receipt.events.Action.returnValues.action].text}`
-           
-                    setAlert({show: true, value: {
-                          title: "Tx Successful", 
-                          content: response            
-                    }})
-                
-                })
+         success && resetVariables()            
+  
+         setAlert({show: true, value: {title: "Tx Sent", content: (status)}})       
                           
-            }
+         }
+
 
             
     const reRoll = async (option) => {
       
-      //  await Moralis.enableWeb3();
-
-        const options = {
-                contractAddress: elvesContract,
-                functionName: option,
-                abi: elvesAbi.abi,
-                params: {ids: clicked},
-                msgValue: Moralis.Units.ETH("0.01"),
-               // awaitReceipt: false // should be switched to false
-              };
-
-                
-
-              const tx = await Moralis.executeFunction(options);
-
-              const receipt = await tx.wait()
-              console.log(receipt)
-              console.log(parseInt(receipt.logs[1].topics[2]))
-              setTxReceipt(receipt)
-              
-                let response
-
-                receipt.events.Action.isArray ? response = `Elf#${ receipt.events.Action.map(nft => {return(nft.returnValues.tokenId)})} have started doing ${actionString[receipt.events.Action[0].returnValues.action].text}`
-                : response = `Elf#${receipt.events.Action.returnValues.tokenId} has started doing action ${actionString[receipt.events.Action.returnValues.action].text}`
-       
-                setAlert({show: true, value: {
-                      title: "Tx Successful", 
-                      content: response            
-                }})
-
-              
-
-              
-         /*     tx.on("transactionHash", (hash) => { 
-                resetVariables()
-                setAlert({show: true, value: {
-                    title: "Tx Successful", 
-                    content: (<>✅ Check out your transaction on <a target="_blank" rel="noreferrer" href={`https://${etherscan}.io/tx/${hash}`}>Etherscan</a> </>)            
-              }})
-                
-            })
-              
-              tx.on("receipt", (receipt) => { 
-
-                setTxReceipt(receipt)
-                let response
-
-                receipt.events.Action.isArray ? response = `Elf#${ receipt.events.Action.map(nft => {return(nft.returnValues.tokenId)})} have started doing ${actionString[receipt.events.Action[0].returnValues.action].text}`
-                : response = `Elf#${receipt.events.Action.returnValues.tokenId} has started doing action ${actionString[receipt.events.Action.returnValues.action].text}`
-       
-                setAlert({show: true, value: {
-                      title: "Tx Successful", 
-                      content: response            
-                }})
-            
-            })*/
+      
+        const params =  {ids: clicked}
+        let {success, status, txHash} = option === "forging" ? await forging(params) : await merchant(params)
+   
+        success && resetVariables()            
+ 
+        setAlert({show: true, value: {title: "Tx Sent", content: (status)}})             
                       
         }
 
 
 
-    const unStake = async (option) => {
+    const unStakeElf = async () => {
       
-     //   await Moralis.enableWeb3();
+        const params =  {ids: clicked}
+        let {success, status, txHash} = await unStake(params)
+   
+        success && resetVariables()            
+ 
+        setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
+                      
+        }
 
-        const options = {
-                contractAddress: elvesContract,
-                functionName: "unStake",
-                abi: elvesAbi.abi,
-                params: {ids: clicked},
-                awaitReceipt: false 
-              };
 
-              const tx = await Moralis.executeFunction(options);
-              
-             
-              
-              tx.on("receipt", (receipt) => { 
 
-                setTxReceipt(receipt)
-                let response
+        
+    const checkinElf = async () => {
 
-                receipt.events.Action.isArray ? response = `Elf#${ receipt.events.Action.map(nft => {return(nft.returnValues.tokenId)})} have started doing ${actionString[receipt.events.Action[0].returnValues.action].text}`
-                : response = `Elf#${receipt.events.Action.returnValues.tokenId} has started doing action ${actionString[receipt.events.Action.returnValues.action].text}`
-               
-         
-            
-            })
+        let renToSend = renTransfer === "" ? 0 : renTransfer
+      
+        const params =  {ids: clicked, renAmount: (renToSend*1000000000000000000).toString()}
+        let {success, status, txHash} = await checkIn(params)
+   
+        success && resetVariables()            
+ 
+        setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
                       
         }
         
@@ -323,7 +221,9 @@ const WhaleMode = () => {
                         
 
                 setStatus("army of elves")
-                const elves = await lookupMultipleElves(tokenArr)
+                const lookupParams = {array: tokenArr, chain: "eth"}
+
+                const elves = await lookupMultipleElves(lookupParams)
                 elves.sort((a, b) => a.time - b.time) 
                
                 setNftData(elves)        
@@ -476,6 +376,20 @@ const WhaleMode = () => {
         }
 
 
+        const renderMintModal = () => {
+            if(!mintModal) return <></>
+            return(
+                <div className="modal modal-whale-campaign">
+                <div className="modal-content items-center">
+                    <span className="close-modal" onClick={() => setMintModal(false)}>X</span>
+                <Mint />
+                </div>
+            </div>
+            )
+
+        }
+
+
 
     return !loading ? (
         
@@ -489,7 +403,7 @@ const WhaleMode = () => {
                   
                         <div className="flex">
                                                
-                        <h2>Whale Mode</h2>
+                        <h2>GamePlay</h2>
                        
                         </div>
                     
@@ -497,7 +411,7 @@ const WhaleMode = () => {
                         <button
                             disabled={!isButtonEnabled.unstake}
                             className="btn-whale"
-                            onClick={unStake}
+                            onClick={unStakeElf}
                         >
                             Unstake
                         </button>
@@ -532,7 +446,7 @@ const WhaleMode = () => {
                         <button
                             disabled={!isButtonEnabled.heal}
                             className="btn-whale"
-                            onClick={heal}
+                            onClick={healing}
                         >
                             Heal
                         </button>
@@ -543,7 +457,37 @@ const WhaleMode = () => {
                         >
                             Send to Campaign
                         </button>
-                    </div>     
+                        <button
+                            
+                            className="btn-whale"
+                            onClick={()=> setMintModal(true)}
+                        >
+                            Mint
+                        </button>
+                    </div>   
+            <div>
+                <div>Elf Terminus</div>
+
+            <div className="flex p-10">
+                       
+                       <div>
+                    
+                       <input type={"text"} placeholder={"Ren To Transfer"} value={renTransfer} onChange={(e) => setRenTransfer(e.target.value)}/>
+          
+                      
+                       </div>
+                     
+                       
+                        <button
+                            /*disabled={!isButtonEnabled.unstake}*/
+                            className="btn-whale"
+                            onClick={checkinElf}
+                        >
+                            Send to Polygon
+                        </button>
+                    </div>      
+                
+            </div>
                 
                  
                     
@@ -718,10 +662,12 @@ const WhaleMode = () => {
 
 </div>
 {renderModal()}
+{renderMintModal()}
+
         </>
         
      
     ) : <Loader text={status} />
 }
 
-export default WhaleMode
+export default PlayEth

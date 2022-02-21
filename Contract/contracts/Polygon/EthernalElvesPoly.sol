@@ -220,7 +220,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
           isPlayer();          
 
           for (uint256 index = 0; index < ids.length; index++) {  
-            _actions(ids[index], 2, msg.sender, campaign_, sector_, rollWeapons_, rollItems_, useitem_, 1);
+            _actions(ids[index], 2, owner, campaign_, sector_, rollWeapons_, rollItems_, useitem_, 1);
           }
     }
 
@@ -259,17 +259,17 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
           }
     }
 
-    function forging(uint256[] calldata ids) external payable {
-          isPlayer();         
-        
+    function forging(uint256[] calldata ids, address owner) external {
+              
+         onlyOperator();
           for (uint256 index = 0; index < ids.length; index++) {  
             _actions(ids[index], 5, msg.sender, 0, 0, false, false, false, 0);
           }
     }
 
-    function merchant(uint256[] calldata ids) external payable {
-          isPlayer();   
-
+    function merchant(uint256[] calldata ids, address owner) external {
+          
+        onlyOperator();
           for (uint256 index = 0; index < ids.length; index++) {  
             _actions(ids[index], 6, msg.sender, 0, 0, false, false, false, 0);
           }
@@ -353,14 +353,16 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
 
             uint256 rand = _rand();
                 
-                if(action == 0){//Unstake if currently staked
-
-                    require(ownerOf[id_] == address(this));
-                    require(elf.timestamp < block.timestamp, "elf busy");
-
-                    _transfer(address(this), elfOwner, id_);      
-
-                    elf.owner = address(0);                            
+                if(action == 0){//Unstake in Eth, Return to Eth in Polygon
+                     
+                     require(elf.timestamp < block.timestamp, "elf busy");
+                     
+                     if(elf.action == 3){
+                     actions.timeDiff = (block.timestamp - elf.timestamp) / 1 days; //amount of time spent in camp CHANGE TO 1 DAYS!
+                     elf.level = _exitPassive(actions.timeDiff, elf.level, elfOwner);
+                    
+                     }
+                         
 
                 }else if(action == 2){//campaign loop - bloodthirst and rampage mode loop.
 
@@ -435,15 +437,19 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                 
                 }else if(action == 5){//forge loop for weapons
                    
-                    require(msg.value >= .01 ether);  
-                    require(elf.action != 3); //Cant roll in passve mode                      
-                    (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, rand, 1, elf.weaponTier, elf.primaryWeapon, elf.inventory);
-                    
+                    require(bankBalances[elfOwner] >= 200 ether, "Not Enough Ren");
+                    require(elf.action != 3); //Cant roll in passve mode  
+
+                    _setAccountBalance(elfOwner, 200 ether, true);
+                    (elf.primaryWeapon, elf.weaponTier) = _rollWeapon(elf.level, id_, rand);
+   
                 
                 }else if(action == 6){//item or merchant loop
                    
-                    require(msg.value >= .01 ether); 
+                    require(bankBalances[elfOwner] >= 50 ether, "Not Enough Ren");
                     require(elf.action != 3); //Cant roll in passve mode
+                    
+                    _setAccountBalance(elfOwner, 50 ether, true);
                     (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, rand, 2, elf.weaponTier, elf.primaryWeapon, elf.inventory);                      
 
                 }else if(action == 7){//healing loop
@@ -597,14 +603,22 @@ function elves(uint256 _id) external view returns(address owner, uint timestamp,
         sentinels[id] = sentinel;
     }
 
-    function pull(address owner_, uint256[] calldata ids) external {
-        require (msg.sender == terminus, "not terminus"); 
-        for (uint256 index = 0; index < ids.length; index++) {
-              _transfer(owner_, msg.sender, ids[index]);
+
+
+//ADMIN Only
+
+/*
+function initMint(address to, uint256 start, uint256 end) external {
+        
+        onlyOwner();
+
+        for (uint256 i = start; i < end; i++) {
+            _mint( to, i);
         }
         ITerminus(msg.sender).pullCallback(owner_, ids);
     }
-  
+    
+*/
 
 //ADMIN Only
     function withdrawAll() public {

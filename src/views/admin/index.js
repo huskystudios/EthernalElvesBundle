@@ -127,8 +127,9 @@ const refreshMetaData = async () => {
         tokenArray.push(j);
         counter++
       }
-    
-   results = await lookupMultipleElves(tokenArray)
+   const params = {array: tokenArray, chain: "eth"}
+  
+   results = await lookupMultipleElves(params)
    console.log(results)
    results.map(async (elf)=>{
     

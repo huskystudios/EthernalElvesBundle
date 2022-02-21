@@ -11,9 +11,11 @@ import Admin from './views/admin';
 import Profile from './views/profile';
 import Faq from './views/faq';
 import ImageApp from './views/lookup';
-import WhaleMode from './views/whaleMode';
 import { getCurrentWalletConnected } from './utils/interact'
 import { useState, useEffect } from 'react';
+import Polygon from './views/admin/Polygon';
+import PlayEth from './views/PlayEth';
+import PlayPolygon from './views/PlayPolygon';
 
 require('dotenv').config();
 
@@ -61,8 +63,11 @@ const [flip, setFlip] = useState(false)
               <Route exact path="/lookup">
                <ImageApp />               
               </Route>
-              <Route exact path="/whalemode">
-                <WhaleMode />
+              <Route exact path="/playeth">
+                <PlayEth />
+               </Route>
+               <Route exact path="/playpoly">
+                <PlayPolygon />
                </Route>
              </Switch>
           </MainLayout>

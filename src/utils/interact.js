@@ -2,8 +2,11 @@ import { items, sentinelClass } from '../views/home/config';
 
 require('dotenv').config();
 const Web3 = require("web3")
-const alchemy = process.env.REACT_APP_ALCHEMY_KEY;
+
+const alchemyethkey = process.env.REACT_APP_ALCHEMY_KEY;
 const etherscanKey = process.env.REACT_APP_ETHERSCAN_KEY;
+const polygonKey = process.env.REACT_APP_POLYGON_KEY;
+var api = require('etherscan-api').init(etherscanKey);
 const {
   Multicall,
   ContractCallResults,
@@ -15,19 +18,26 @@ export const etherscan = "etherscan" //"goerli.etherscan"
 export const elvesContract = "0xA351B769A01B445C04AA1b8E6275e03ec05C1E75"
 const mirenContract = "0xe6b055abb1c40b6c0bf3a4ae126b6b8dbe6c5f3f"
 const campaignsContract = "0x367Dd3A23451B8Cc94F7EC1ecc5b3db3745D254e"
+const polyElvesContract = "0x4DeAb743F79b582c9b1d46b4aF61A69477185dd5"
 
 export const elvesAbi = require('./ABI/elves.json')
 const mirenAbi = require('./ABI/miren.json') 
 const campaignAbi = require('./ABI/campaigns.json')
-var api = require('etherscan-api').init(etherscanKey);
+const polyElvesAbi = require('./ABI/polyElves.json')
 
-const web3 = new Web3(new Web3.providers.HttpProvider(alchemy))
+
+
+const web3 = new Web3(new Web3.providers.HttpProvider(alchemyethkey))
+const polyweb3 = new Web3(new Web3.providers.HttpProvider(polygonKey))
 
 const nftContract = new web3.eth.Contract(elvesAbi.abi, elvesContract);
 const ercContract = new web3.eth.Contract(mirenAbi.abi, mirenContract);
 const gameContract = new web3.eth.Contract(campaignAbi.abi, campaignsContract);
+export const polygonContract = new polyweb3.eth.Contract(polyElvesAbi.abi, polyElvesContract);
 
 
+
+////////ETH FUNCTIONS////////////////////////////
 export const txReceipt = async ({ txHash, interval }) => {
   module.exports = function getTransactionReceiptMined(txHash, interval) {
     const self = this;
@@ -62,36 +72,23 @@ export const txReceipt = async ({ txHash, interval }) => {
 
 
 
-export const updateMoralisDb = async ({elf, elves}) => {
-
-  elves.set("owner_of", elf.owner.toLowerCase())
-  elves.set("action", elf.action)
-  elves.set("level", parseInt(elf.level))
-  elves.set("time", elf.time)
-  
-  elves.save()
-  .then((elf) => {
-    // Execute any logic that should take place after the object is saved.
-    console.log('Object updated with objectId: ' + elf.id );
-  }, (error) => {
-    // Execute any logic that should take place if the save fails.
-    // error is a Moralis.Error with an error code and message.
-    console.log('Failed to create new object, with error code: ' + error.message);
-  });
-  
-}
-
-
-export const lookupMultipleElves = async (array)=>{
+export const lookupMultipleElves = async ({array, chain})=>{
 
   let txArr = []
+
+  let params = {
+  abi: chain === "eth" ? elvesAbi.abi : polyElvesAbi.abi,
+  address: chain === "eth" ? elvesContract : polyElvesContract,
+  web3Instance: chain === "eth" ? web3 : polyweb3
+  }
+
 
   if(array){
   array.map((i, index)=>{
     var tx = {
       reference: 'Elves'+i.toString(),
-      contractAddress: elvesContract,
-      abi: elvesAbi.abi,
+      contractAddress: params.address,
+      abi: params.abi,
       calls: [
       { reference: 'elves'+i.toString(), methodName: 'elves', methodParameters: [i]},
       { reference: 'attributes'+i.toString(), methodName: 'attributes', methodParameters: [i]},
@@ -105,7 +102,7 @@ export const lookupMultipleElves = async (array)=>{
   })
 }
 
-  const multicall = new Multicall({ web3Instance: web3, tryAggregate: true });
+  const multicall = new Multicall({ web3Instance: params.web3Instance, tryAggregate: true });
   const contractCallContext: ContractCallContext[] = txArr
   const results: ContractCallResults = await multicall.call(contractCallContext);
 
@@ -161,7 +158,7 @@ let elfActionString
 //swtiches for the elf action
 switch(parseInt(elfAction)){
   case 0:
-    elfActionString = "Idle"
+    elfActionString = chain === "eth" ? "Idle" : "Ready to Return"
     break;
   case 1:
     elfActionString = "Staked, but Idle"
@@ -183,6 +180,9 @@ switch(parseInt(elfAction)){
     break;
   case 7:
     elfActionString = elfTime ? "Healing" : "Done Healing"
+    break;
+  case 8:
+    elfActionString = chain === "eth" ? "Sent to Polygon" : "Idle"
     break;
   default:
     elfActionString = "Unknown"
@@ -213,7 +213,8 @@ elfObj = {
     attack: elfAttackPoints, 
     accessories: elfAccessories,
     health: elfHealthPoints,
-    attributes: elfTokenObj.attributes
+    attributes: elfTokenObj.attributes,
+    chain: elfAction === 8 ? "polygon" : "eth"
   }
 
 elfArry.push(elfObj)
@@ -223,7 +224,7 @@ return elfArry
 
 }
 
-////////////TX BUILDER///////////////////
+////////////TX BUILDERs///////////////////
 
 const txPayload = async(txData) => {
   const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
@@ -239,12 +240,11 @@ const txPayload = async(txData) => {
   
   }
 
-
 /////////////////////////////
 
 export const doActions = async(options) => {
 
-  ///NOTE This function is work in progress.
+  ///NOTE This function is work in progress. THIS DOES NOT WORK. 
   
   let tx = await txPayload(nftContract.methods[options.functionName](options.params).encodeABI())
 
@@ -531,6 +531,31 @@ export const withdrawSomeTokenBalance = async({amount}) => {
 }
 
 
+export const checkIn = async(props) => {
+
+  console.log(props)
+  
+  let tx = await txPayload(nftContract.methods.checkIn(props.ids, props.renAmount).encodeABI())
+ 
+  try {
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
+        
+  return {
+        success: true,
+        status: (<>Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash,
+    }
+  } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+    }
+  
+  } 
+
+}
+
+
 
 
 
@@ -756,6 +781,24 @@ export const connectWallet = async () => {
   
   
 
-/////Admin Functions////
+/*
+export const updateMoralisDb = async ({elf, elves}) => {
 
+  elves.set("owner_of", elf.owner.toLowerCase())
+  elves.set("action", elf.action)
+  elves.set("level", parseInt(elf.level))
+  elves.set("time", elf.time)
+  
+  elves.save()
+  .then((elf) => {
+    // Execute any logic that should take place after the object is saved.
+    console.log('Object updated with objectId: ' + elf.id );
+  }, (error) => {
+    // Execute any logic that should take place if the save fails.
+    // error is a Moralis.Error with an error code and message.
+    console.log('Failed to create new object, with error code: ' + error.message);
+  });
+  
+}
+*/
 

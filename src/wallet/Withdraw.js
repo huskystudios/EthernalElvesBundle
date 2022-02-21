@@ -10,6 +10,7 @@ const Withdraw = () => {
   const { account } = useChain();
   const [tooltip, setTooltip] = useState("");
   const [balance, setBalance] = useState(0);
+  const [polyBalance, setPolyBalance] = useState(0);
   const [miren, setMiren] = useState(0);
   
 
@@ -18,9 +19,13 @@ const getRenBalance = async (address) => {
  
   const renBalanceContract = await Moralis.Cloud.run("getBalance", {address});//in contract
   const renBalanceWallet = await Moralis.Cloud.run("getMiren", {address});//in wallet
+  const getPolyBalance = await Moralis.Cloud.run("getPolyBalance", {address});//in wallet
+
+  
   
   setBalance(renBalanceContract/1000000000000000000);
   setMiren(renBalanceWallet/1000000000000000000);
+  setPolyBalance(getPolyBalance/1000000000000000000);
 
 }
 
@@ -51,9 +56,9 @@ useEffect( () => {
     return (
     <div className="search">
     <button 
-    onMouseEnter={() => setTooltip(`Claim ${balance} $REN?`)}
+    onMouseEnter={() => setTooltip(<>Claim {balance} $REN? <br/> Polygon:{polyBalance} <br/> Wallet: ${miren}   </>)}
     onMouseLeave={() => setTooltip("")} 
-    onClick={withdrawTokenBalance}> {miren + balance} $REN</button>
+    onClick={withdrawTokenBalance}> {miren + balance + polyBalance} $REN</button>
      {showTooltip(tooltip)}
     </div>
     )

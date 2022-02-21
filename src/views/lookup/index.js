@@ -25,10 +25,10 @@ const [elfObject, setElfObject] = useState(null)
 
 
 
-const getMeta = async () => {
+const getMeta = async (chain) => {
 
-
-  const data = await lookupMultipleElves([parseInt(textAreaSample)])
+  const lookupParams = {array: [parseInt(textAreaSample)], chain: chain}
+  const data = await lookupMultipleElves(lookupParams)
   console.log(data[0])
   setElfObject(data[0])  
   setShowMetaImage(true)
@@ -91,7 +91,8 @@ return (
         onChange={(e) => setTextArea(e.target.value)}
         id="text"
       />
-      <button className="btn btn-green" onClick={getMeta}>Fetch Elf</button>{"  "}
+      <button className="btn btn-green" onClick={() => getMeta("eth")}>Fetch Elf</button>{"  "}
+      <button className="btn btn-green" onClick={() => getMeta("polygon")}>Fetch pElf</button>{"  "}
       <button className="btn btn-blue" onClick={() => {
       toPng(document.getElementById('elf')).then(dataUrl => {
         const link = document.createElement('a');
@@ -135,6 +136,11 @@ return (
         <div className="flex justify-between mt-1">
         <div className="font-semibold text-sm">Item</div>
         <div className="font-semibold text-sm">{elfObject.inventoryString}</div>        
+        </div>
+
+        <div className="flex justify-between mt-1">
+        <div className="font-semibold text-sm">Chain</div>
+        <div className="font-semibold text-sm">{elfObject.chain}</div>        
         </div>
 
 

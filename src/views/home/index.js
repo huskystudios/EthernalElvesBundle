@@ -165,7 +165,9 @@ const getElvesfromMoralis = async (address) => {
     const userTokenArray = await Moralis.Cloud.run("getElvesFromDb", params);
     
     setLoadingText(`50% Getting metadata from the blockchain`)
-    const elves = await lookupMultipleElves(userTokenArray)
+    const lookupParams = {array: userTokenArray, chain: "eth"}
+
+    const elves = await lookupMultipleElves(lookupParams)
     elves.sort((a, b) => a.id - b.id)
     
     setData(elves)
