@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from "react"
 import Loader from "../../components/Loader"
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis"
 import "./style.css"
-import { actionString, campaigns } from "../home/config"
+import { actionString, campaignsPoly } from "../home/config"
 import Countdown from 'react-countdown';
 import {elvesAbi, getCampaign, elvesContract, etherscan,
     checkIn,
@@ -46,7 +46,7 @@ const PlayPolygon = () => {
     const [txreceipt, setTxReceipt] = useState()
     const [alert, setAlert] = useState({show: false, value: null})
     const [campaignModal, setCampaignModal] = useState(false)
-    const [mintModal, setMintModal] = useState(false)
+    const [campaignBTModal, setCampaignBTModal] = useState(false)
    
     const resetVariables = async () => {
         setClicked([])
@@ -340,7 +340,7 @@ const PlayPolygon = () => {
                         <div className="modal-whale-campaign-grid">
                             <label>Campaign</label>
                             <select value={tryCampaign} onChange={(e) => setTryCampaign(e.target.value)}>
-                                {campaigns.map((campaign) => {
+                                {campaignsPoly.map((campaign) => {
                                     let label = `${campaign.id}. ${campaign.name}`;
                                     return (
                                         <option value={campaign.id}>{label}</option>
@@ -364,6 +364,37 @@ const PlayPolygon = () => {
                         >
                             campaign
                         </button>
+                        </div>
+                        
+                    </div>
+                </div>
+            )
+        }
+
+        
+        const renderBTModal = () => {
+            if(!campaignBTModal) return <></>
+            return(
+                <div className="modal modal-whale-campaign">
+                    <div className="modal-content items-center">
+                        <span className="close-modal" onClick={() => setCampaignBTModal(false)}>X</span>
+                        <h3>All selected Elves will go to the same campaign</h3>
+                        <div className="modal-whale-campaign-grid">
+                            <label>Campaign</label>
+                            <select value={tryCampaign} onChange={(e) => setTryCampaign(e.target.value)}>
+                                {campaignsPoly.map((campaign) => {
+                                    let label = `${campaign.id}. ${campaign.name}`;
+                                    return (
+                                        <option value={campaign.id}>{label}</option>
+                                    );
+                                })}
+                            </select>
+                            <label>Section</label>
+                            <input type="number" min="1" max="5" value={trySection} onChange={(e) => setTrySection(e.target.value)}/>
+                        </div>
+                    
+                        <div className="flex">
+
                         <button
                             className="btn-whale"
                             onClick={bloodthirstFunction}
@@ -436,12 +467,21 @@ const PlayPolygon = () => {
                             Heal
                         </button>
                         <button
-                            /*disabled={!isButtonEnabled.sendCampaign}*/
+                            disabled={!isButtonEnabled.sendCampaign}
                             className="btn-whale"
                             onClick={()=> setCampaignModal(true)}
                         >
                             Send to Campaign
                         </button>
+                        <button
+                            disabled={!isButtonEnabled.sendCampaign}
+                            className="btn-whale"
+                            onClick={()=> setCampaignBTModal(true)}
+                        >
+                            Bloodthirst
+                        </button>
+
+                        
                     </div>   
             <div>
                 <div>Elf Terminus</div>
@@ -644,6 +684,7 @@ const PlayPolygon = () => {
 
 </div>
 {renderModal()}
+{renderBTModal()}
 {alert.show && showAlert(alert.value)}
 
         </>

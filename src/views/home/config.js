@@ -128,3 +128,15 @@ export const campaigns =
     }
 ]
 
+export const campaignsPoly =
+
+[
+    {
+        "id": 1,
+        "name": "Polygon Welcome Camp",
+        "image": woods,
+        "time": 1.2,
+        "maxLevel": 100
+    },
+
+]
