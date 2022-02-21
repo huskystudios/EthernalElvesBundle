@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "EthernalElvesV3",
-  "sourceName": "contracts/EthernalElves.sol",
+  "contractName": "EthernalElvesV4",
+  "sourceName": "contracts/EthernalElvesV4.sol",
   "abi": [
     {
       "anonymous": false,
@@ -474,6 +474,11 @@
           "internalType": "bytes",
           "name": "renSignatures",
           "type": "bytes"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
         }
       ],
       "name": "checkOutRen",
@@ -547,6 +552,11 @@
           "internalType": "address",
           "name": "owner",
           "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
         }
       ],
       "name": "encodeRenForSignature",
@@ -1416,6 +1426,25 @@
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "name": "usedRenSignatures",
+      "outputs": [
+        {
+          "internalType": "uint16",
+          "name": "",
+          "type": "uint16"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "validator",
       "outputs": [
@@ -1464,7 +1493,7 @@
       ],
       "name": "withdrawSomeTokenBalance",
       "outputs": [],
-      "stateMutability": "nonpayable",
+      "stateMutability": "nonpayable",  
       "type": "function"
     },
     {
