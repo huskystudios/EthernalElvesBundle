@@ -51,7 +51,9 @@ contract EthernalElvesV3 is ERC721 {
 
 /////NEW STORAGE FROM THIS LINE///////////////////////////////////////////////////////
     bool public isTerminalOpen;
-   
+/////NEW STORAGE FROM THIS LINE///////////////////////////////////////////////////////
+    mapping(bytes => uint16)  public usedRenSignatures; 
+
        function initialize(address _dev1Address, address _dev2Address) public {
     
        require(!initialized, "Already initialized");
@@ -141,14 +143,16 @@ function checkIn(uint256[] calldata ids, uint256 renAmount) public returns (bool
 
  }
 
- function checkOutRen(uint256 renAmount, bytes memory renSignatures) public returns (bool) {
+ function checkOutRen(uint256 renAmount, bytes memory renSignatures, uint256 timestamp) public returns (bool) {
    
     isPlayer();
-    require(isTerminalOpen, "Terminal is closed");     
+    require(isTerminalOpen, "Terminal is closed"); 
+    require(usedRenSignatures[renSignatures] == 0, "Signature already used");   
 
         if(renAmount > 0){
-             require(_isSignedByValidator(encodeRenForSignature(renAmount, msg.sender),renSignatures), "incorrect signature");
-            ren.mint(msg.sender, renAmount);
+             require(_isSignedByValidator(encodeRenForSignature(renAmount, msg.sender, timestamp),renSignatures), "incorrect signature");
+             usedRenSignatures[renSignatures] = 1;
+             ren.mint(msg.sender, renAmount);
         }
     
 
@@ -164,11 +168,11 @@ function encodeSentinelForSignature(uint256 id, address owner, uint256 sentinel)
                     );
 } 
 
-function encodeRenForSignature(uint256 renAmount, address owner) public pure returns (bytes32) {
+function encodeRenForSignature(uint256 renAmount, address owner, uint256 timestamp) public pure returns (bytes32) {
      return keccak256(
             abi.encodePacked("\x19Ethereum Signed Message:\n32", 
                 keccak256(
-                        abi.encodePacked(renAmount, owner))
+                        abi.encodePacked(renAmount, owner, timestamp))
                         )
                     );
 }  

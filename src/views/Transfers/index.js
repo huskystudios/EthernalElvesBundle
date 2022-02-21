@@ -95,7 +95,7 @@ const Transfers = () => {
                const Elves = Moralis.Object.extend("ElvesPolyCheckIn");
                 let query = new Moralis.Query(Elves);
                 query.equalTo("from", address);
-                query.notEqualTo("status", "complete");
+                query.notEqualTo("status", "confirmed");
                 
                 let limit = 50
 
