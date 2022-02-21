@@ -147,6 +147,13 @@ const PlayPolygon = () => {
         
     }
 
+    const bloodthirstFunction = async () => {
+           
+        const params =  {functionCall: polygonContract.methods.bloodThirst(clicked, tryCampaign, trySection, owner).encodeABI()}
+        await sendGaslessFunction(params)
+        
+    }
+
 
     const checkinElf = async () => {
 
@@ -183,8 +190,6 @@ const PlayPolygon = () => {
                           
          }
 
-
-    
 
     
         useEffect(() => {
@@ -361,7 +366,7 @@ const PlayPolygon = () => {
                         </button>
                         <button
                             className="btn-whale"
-                            onClick={sendCampaignFunction}
+                            onClick={bloodthirstFunction}
                         >
                             bloodthirst
                         </button>
@@ -459,13 +464,7 @@ const PlayPolygon = () => {
                             Send to Ethereum
                         </button>
 
-                        <button
-                            /*disabled={!isButtonEnabled.unstake}*/
-                            className="btn-whale"
-                            onClick={checkinElf}
-                        >
-                            Confirm Transfer
-                        </button>
+
                     </div>      
                 
             </div>

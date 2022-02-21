@@ -556,6 +556,30 @@ export const checkIn = async(props) => {
 }
 
 
+export const checkOut = async(props) => {
+
+  console.log(props)
+  
+  let tx = await txPayload(nftContract.methods.checkOut(props.ids, props.sentinel, props.signature).encodeABI())
+ 
+  try {
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
+        
+  return {
+        success: true,
+        status: (<>Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash,
+    }
+  } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+    }
+  
+  } 
+
+}
+
 
 
 

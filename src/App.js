@@ -16,6 +16,7 @@ import { useState, useEffect } from 'react';
 import Polygon from './views/admin/Polygon';
 import PlayEth from './views/PlayEth';
 import PlayPolygon from './views/PlayPolygon';
+import Transfers from './views/Transfers';
 
 require('dotenv').config();
 
@@ -68,6 +69,9 @@ const [flip, setFlip] = useState(false)
                </Route>
                <Route exact path="/playpoly">
                 <PlayPolygon />
+               </Route>
+               <Route exact path="/transfers">
+                <Transfers />
                </Route>
              </Switch>
           </MainLayout>
