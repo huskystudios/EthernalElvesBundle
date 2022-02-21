@@ -8,7 +8,7 @@ require('@openzeppelin/hardhat-upgrades');
 require("hardhat-gas-reporter");
 require("hardhat-contract-sizer")
 
-const isPolygon = false;
+const isPolygon = true;
 
 
 const { 
@@ -47,6 +47,10 @@ module.exports = {
       mainnet: {
          url: MAINNET_API_URL,
          accounts: [`0x${MAINNET_PRIVATE_KEY}`]
+      },
+      polygon: {
+         url: POLYGON_API_URL,
+         accounts: [`0x${POLYGON_PRIVATE_KEY}`]
       },
       goerli: {
          url: GOERLI_API_URL,

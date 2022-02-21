@@ -45,6 +45,7 @@ describe("Ethernal Elves Contracts", function () {
   const Miren = await ethers.getContractFactory("Miren");
   //const Elves = await ethers.getContractFactory("EthernalElves");
   const Elves = await ethers.getContractFactory("EthernalElvesV2");
+  const pElves = await ethers.getContractFactory("PolyEthernalElves");
   const Campaigns = await ethers.getContractFactory("ElfCampaignsV3");
   const Terminus = await ethers.getContractFactory("ElvesTerminus");
   //const Bridge = await ethers.getContractFactory("FxBaseRootTunnel");

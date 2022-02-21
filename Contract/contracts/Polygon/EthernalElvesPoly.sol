@@ -238,9 +238,6 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
   
                     camps[campaign_].creatureCount = camp.creatureCount - 1;         
 
-                    actions.reward = camp.baseRewards + (2 * (sector_ - 1));
-                    actions.reward = actions.reward * (1 ether);      
-
                     (elf.level, actions.reward, elf.timestamp, elf.inventory) = _gameEngine(campaign_, sector_, elf.level, elf.attackPoints, elf.healthPoints, elf.inventory, useItem);
 
                     if(gameMode_ == 1){
@@ -361,6 +358,9 @@ function _gameEngine(uint256 _campId, uint256 _sector, uint256 _level, uint256 _
   Camps memory camp = camps[_campId];  
   level = (uint256(camp.expPoints)/3); //convetrt xp to levels
 
+  rewards = camp.baseRewards + (2 * (_sector - 1));
+  rewards = rewards * (1 ether);      
+
   inventory = _inventory;
  
   if(_useItem){
@@ -390,7 +390,7 @@ function _bloodthirst(uint256 weaponTier, uint256 id, uint256 timestamp, address
  
  returns(uint256 timestamp_){
 
-     uint256  chance = (_randomize(_rand(), "InstantKill", id)) % 100;
+     uint16  chance = uint16(_randomize(_rand(), "InstantKill", id)) % 100;
      uint256 killChance = weaponTier == 3 ? 10 : weaponTier == 4 ? 15 : weaponTier == 5 ? 20 : 0;
 
     if(chance <= killChance){
