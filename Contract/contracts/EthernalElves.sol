@@ -10,9 +10,9 @@ import "./Interfaces.sol";
 // We are the Ethernal. The Ethernal Elves         
 // Written by 0xHusky & Beff Jezos. Everything is on-chain for all time to come.
 // Version 2.0.0
-// Release notes: Export Sentinel
+// Release notes: Export Sentinel / Polygon
 
-contract EthernalElvesV2 is ERC721 {
+contract EthernalElvesV3 is ERC721 {
 
     function name() external pure returns (string memory) { return "Ethernal Elves"; }
     function symbol() external pure returns (string memory) { return "ELV"; }
@@ -75,18 +75,6 @@ contract EthernalElvesV2 is ERC721 {
        validator            = _validator;
     }    
     
-    
-    function setTerminus(address _terminus)  public {
-       onlyOwner();
-       terminus             = _terminus;
-    }
-    
-    
-    function setInitialSupply(uint256 _initialSupply)  public {
-       onlyOwner();
-       INIT_SUPPLY             = _initialSupply;
-    }
-
     function setAuth(address[] calldata adds_, bool status) public {
        onlyOwner();
        
@@ -101,8 +89,9 @@ contract EthernalElvesV2 is ERC721 {
     event BalanceChanged(address indexed owner, uint256 indexed amount, bool indexed subtract);
     event Campaigns(address indexed owner, uint256 amount, uint256 indexed campaign, uint256 sector, uint256 indexed tokenId);
     event CheckIn(address indexed from, uint256 timestamp, uint256 indexed tokenId, uint256 indexed sentinel);      
-    event RenTransferOut(address indexed from, uint256 timestamp, uint256 indexed renAmount);   
     event CheckOut(address indexed to, uint256 timestamp, uint256 indexed tokenId);      
+    event RenTransferOut(address indexed from, uint256 timestamp, uint256 indexed renAmount);   
+   
         
 //////////////EXPORT TO OTHER CHAINS/////////////////
 
@@ -115,13 +104,16 @@ function checkIn(uint256[] calldata ids, uint256 renAmount) public returns (bool
 
                     for (uint256 index = 0; index < ids.length; index++) {  
                         _actions(ids[index], 8, msg.sender, 0, 0, false, false, false, 0);
+                        emit CheckIn(msg.sender, block.timestamp, ids[index], sentinels[ids[index]]);
                     }
 
                   
           }
 
             if (renAmount > 0) {
-                        ren.burn(msg.sender, renAmount);
+                        
+                        bankBalances[msg.sender] >= renAmount ? _setAccountBalance(msg.sender, renAmount, true) :  ren.burn(msg.sender, renAmount);
+
                         emit RenTransferOut(msg.sender,block.timestamp,renAmount);
              }
     
@@ -163,7 +155,6 @@ function checkIn(uint256[] calldata ids, uint256 renAmount) public returns (bool
  }
 
 //CheckOut Permissions 
-//NOTE:change this to private later
 function encodeSentinelForSignature(uint256 id, address owner, uint256 sentinel) public pure returns (bytes32) {
      return keccak256(
             abi.encodePacked("\x19Ethereum Signed Message:\n32", 
@@ -198,74 +189,6 @@ function _isSignedByValidator(bytes32 _hash, bytes memory _signature) private vi
   
 }
 
-
-
-/* For Polygon
- function initMint(address to, uint256 start, uint256 end) external {
-        require(msg.sender == admin);
-        for (uint256 i = start; i < end; i++) {
-            _mint( to, i);
-        }
-    }
-    
-*/
-
-
-/*
-function receiveEth() public payable returns (string memory)  {
-
-    return ("Received ETH");
-}   
-*/
-/*
-function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory signature) public payable  {
-    
-    isPlayer();
-    require(_isSignedByValidator(encodeForSignature(to, roleIndex),signature), "incorrect signature");  /////Francesco Sullo Thanks for showing me how to do this. Follow @sullof
-    require(isWlOpen, "Whitelist is closed");
-    require(whitelist[to] != 1,"Wallet used already"); //not on whitelist
-    require(_remaining[roleIndex] > 0, "noneLeft");
-    require(qty > 0 && qty <= 2, "max 2"); //max 2
-    
-    //Role:0 SOG 2 free Role:1 OG 1 free 1 paid Role:2 2 WL paid
-
-    //  bytes32 messageHash = encodeForSignature(to, roleIndex);
-    //  bool isValid = _isSignedByValidator(messageHash, signature);
-    
-    //     if(isValid){
-    //        console.log("valid");
-    //   }
-    
-
-    uint256 amount = msg.value;
-    
-    _remaining[roleIndex] = _remaining[roleIndex] - qty;
-
-    whitelist[to] = 1; //indicate that address is used
-
-        if(roleIndex == 0){
-            
-           for (uint i = 0; i < qty; i++) {
-                _mintElf(to);
-            }
-
-        }else if(roleIndex == 1){
-           
-            require(amount >= price * qty/2, "NotEnoughEther");
-            for (uint i = 0; i < qty; i++) {
-                _mintElf(to);
-            }
-
-        }else if(roleIndex == 2){
-             require(amount >= price * qty, "NotEnoughEther");
-             for (uint i = 0; i < qty; i++) {
-                _mintElf(to);
-             }
-
-        }
-
-    }
-*/
 /////////////////////////////////////////////////////////////////
 
     function mint() external payable  returns (uint256 id) {
@@ -302,25 +225,6 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
           }
     }
 
-/*NOTE Add in V2
-
-    function bloodThirst(uint256[] calldata ids, uint256 campaign_, uint256 sector_) external {
-          isPlayer();          
-
-          for (uint256 index = 0; index < ids.length; index++) {  
-            _actions(ids[index], 2, msg.sender, campaign_, sector_, false, false, false, 2);
-          }
-    }
-
-    function rampage(uint256[] calldata ids, uint256 campaign_, uint256 sector_) external {
-          isPlayer();          
-
-          for (uint256 index = 0; index < ids.length; index++) {  
-            _actions(ids[index], 2, msg.sender, campaign_, sector_, true, true, false, 3);
-          }
-    }
-
-*/
     function passive(uint256[] calldata ids) external {
           isPlayer();         
 
@@ -439,6 +343,7 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
             DataStructures.ActionVariables memory actions;
             require(isGameActive);
             require(ownerOf[id_] == msg.sender || elf.owner == msg.sender, "NotYourElf");
+            require(elf.action != 8, "elf in Polygon");
 
             uint256 rand = _rand();
                 
@@ -592,14 +497,13 @@ function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory 
                 }
                 }else if (action == 8){//checkIn loop Do not remove
                     
-                
                         if(ownerOf[id_] != address(this)){
                              _transfer(elfOwner, address(this), id_);
                              elf.owner = elfOwner;                                
                         }
                     
 
-                 emit CheckIn(elfOwner, block.timestamp, id_, sentinels[id_]);
+                 
                 }           
              
             actions.traits   = DataStructures.packAttributes(elf.hair, elf.race, elf.accessories);
@@ -796,10 +700,10 @@ function elves(uint256 _id) external view returns(address owner, uint timestamp,
         isMintOpen = !isMintOpen;
     }
 
-    function flipWhitelist() external {
+    /*function flipWhitelist() external {
         onlyOwner();
         isWlOpen = !isWlOpen;
-    }
+    }*/
 
      function flipTerminal() external {
         onlyOwner();
@@ -855,9 +759,70 @@ function elves(uint256 _id) external view returns(address owner, uint timestamp,
             }
     }    
     */
+
+    /*
+function whitelistMint(uint256 qty, address to, uint256 roleIndex, bytes memory signature) public payable  {
+    
+    isPlayer();
+    require(_isSignedByValidator(encodeForSignature(to, roleIndex),signature), "incorrect signature");  /////Francesco Sullo Thanks for showing me how to do this. Follow @sullof
+    require(isWlOpen, "Whitelist is closed");
+    require(whitelist[to] != 1,"Wallet used already"); //not on whitelist
+    require(_remaining[roleIndex] > 0, "noneLeft");
+    require(qty > 0 && qty <= 2, "max 2"); //max 2
+    
+    //Role:0 SOG 2 free Role:1 OG 1 free 1 paid Role:2 2 WL paid
+
+    //  bytes32 messageHash = encodeForSignature(to, roleIndex);
+    //  bool isValid = _isSignedByValidator(messageHash, signature);
+    
+    //     if(isValid){
+    //        console.log("valid");
+    //   }
+    
+
+    uint256 amount = msg.value;
+    
+    _remaining[roleIndex] = _remaining[roleIndex] - qty;
+
+    whitelist[to] = 1; //indicate that address is used
+
+        if(roleIndex == 0){
+            
+           for (uint i = 0; i < qty; i++) {
+                _mintElf(to);
+            }
+
+        }else if(roleIndex == 1){
+           
+            require(amount >= price * qty/2, "NotEnoughEther");
+            for (uint i = 0; i < qty; i++) {
+                _mintElf(to);
+            }
+
+        }else if(roleIndex == 2){
+             require(amount >= price * qty, "NotEnoughEther");
+             for (uint i = 0; i < qty; i++) {
+                _mintElf(to);
+             }
+
+        }
+
+    }
+*/
+
+    
+  /*  function setTerminus(address _terminus)  public {
+       onlyOwner();
+       terminus             = _terminus;
+    }
+  
+    
+    function setInitialSupply(uint256 _initialSupply)  public {
+       onlyOwner();
+       INIT_SUPPLY             = _initialSupply;
+    }
+
+*/
+
+
 }
-
-
-
-
-

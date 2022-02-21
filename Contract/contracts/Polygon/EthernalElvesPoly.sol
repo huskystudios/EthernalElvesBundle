@@ -241,21 +241,31 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
                 }else if(action == 2){//campaign loop - bloodthirst and rampage mode loop.
 
                     require(elf.timestamp < block.timestamp, "elf busy");
-                    require(elf.action != 3, "exit passive mode first");                 
+                    require(elf.action != 3, "exit passive mode first");  
+
+                    Camps memory camp = camps[campaign_];  
+  
+                    require(camp.minLevel <= elf.level, "level too low");
+                    require(camp.campMaxLevel >= elf.level, "level too high"); 
+                    require(camp.creatureCount > 0, "no creatures left");
+  
+                    camps[campaign_].creatureCount = camp.creatureCount - 1;         
+
+                    actions.reward = camp.baseRewards + (2 * (sector_ - 1));
+                    actions.reward = actions.reward * (1 ether);      
+
+                    (elf.level, actions.reward, elf.timestamp, elf.inventory) = _gameEngine(campaign_, sector_, elf.level, elf.attackPoints, elf.healthPoints, elf.inventory, useItem);
 
                     if(gameMode_ == 1){
-                        (elf.level, actions.reward, elf.timestamp, elf.inventory) = _gameEngine(campaign_, sector_, elf.level, elf.attackPoints, elf.healthPoints, elf.inventory, useItem);
+                        
                         _setAccountBalance(elfOwner, actions.reward, false);
                     }
 
-                     if(gameMode_ == 2){
-                        (elf.level, actions.reward, elf.timestamp, elf.inventory) = _bloodthirst(campaign_, sector_, elf.level, elf.attackPoints, elf.healthPoints, elf.inventory, useItem, elf.sentinelClass);
-                        _setAccountBalance(elfOwner, actions.reward, false);
-                    }
+                  
                     
                     
                     uint256 options;
-                    
+
                     if(rollWeapons && rollItems){
                         options = 3;
                         }else if(rollWeapons){
@@ -296,7 +306,7 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
                     require(bankBalances[elfOwner] >= 200 ether, "Not Enough Ren");
                     require(elf.action != 3); //Cant roll in passve mode  
 
-                    _setAccountBalance(elfOwner, 2 ether, true);
+                    _setAccountBalance(elfOwner, 200 ether, true);
                     (elf.primaryWeapon, elf.weaponTier) = _rollWeapon(elf.level, id_, rand);
    
                 
@@ -305,7 +315,7 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
                     require(bankBalances[elfOwner] >= 50 ether, "Not Enough Ren");
                     require(elf.action != 3); //Cant roll in passve mode
                     
-                    _setAccountBalance(elfOwner, 5 ether, true);
+                    _setAccountBalance(elfOwner, 50 ether, true);
                     (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, rand, 2, elf.weaponTier, elf.primaryWeapon, elf.inventory);                      
 
                 }else if(action == 7){//healing loop
@@ -366,17 +376,6 @@ function _gameEngine(uint256 _campId, uint256 _sector, uint256 _level, uint256 _
  returns(uint256 level, uint256 rewards, uint256 timestamp, uint256 inventory){
   
   Camps memory camp = camps[_campId];  
-  
-  require(camp.minLevel <= _level, "level too low");
-  require(camp.campMaxLevel >= _level, "level too high"); //no level requirement for camp 1 -3
-  require(camp.creatureCount > 0, "no creatures left");
-  
-  camps[_campId].creatureCount = camp.creatureCount - 1;
-
-  rewards = camp.baseRewards + (2 * (_sector - 1));
-  
-  rewards = rewards * (1 ether);
-
   level = (uint256(camp.expPoints)/3); //convetrt xp to levels
 
   inventory = _inventory;
@@ -401,54 +400,8 @@ function _gameEngine(uint256 _campId, uint256 _sector, uint256 _level, uint256 _
   attackTime = attackTime > 0 ? attackTime * TIME_CONSTANT : 0;
   
   timestamp = REGEN_TIME/(_healthPoints) + (block.timestamp + attackTime);
-  
 
 }
-
-function _bloodthirst(uint256 _campId, uint256 _sector, uint256 _level, uint256 _attackPoints, uint256 _healthPoints, uint256 _inventory, bool _useItem, uint256 _class) internal 
- 
- returns(uint256 level, uint256 rewards, uint256 timestamp, uint256 inventory){
-  
-  Camps memory camp = camps[_campId];  
-  
-  require(camp.minLevel <= _level, "level too low");
-  require(camp.campMaxLevel >= _level, "level too high"); //no level requirement for camp 1 -3
-  require(camp.creatureCount > 0, "no creatures left");
-  
-  camps[_campId].creatureCount = camp.creatureCount - 1;
-
-  rewards = camp.baseRewards + (2 * (_sector - 1));
-  
-  rewards = rewards * (1 ether);
-
-  level = (uint256(camp.expPoints)/3); //convetrt xp to levels
-
-  inventory = _inventory;
- 
-  if(_useItem){
-         _attackPoints = _inventory == 1 ? _attackPoints * 2   : _attackPoints;
-         _healthPoints = _inventory == 2 ? _healthPoints * 2   : _healthPoints; 
-          rewards      = _inventory == 3 ?  rewards * 2        : rewards;
-          level        = _inventory == 4 ?  level * 2          : level; //if inventory is 4, level reward is doubled
-         _healthPoints = _inventory == 5 ? _healthPoints + 200 : _healthPoints; 
-         _attackPoints = _inventory == 6 ? _attackPoints * 3   : _attackPoints;
-         
-         inventory = 0;
-  }
-
-  level = _level + level;  //add level to current level
-  level = level < MAX_LEVEL ? level : MAX_LEVEL; //if level is greater than max level, set to max level
-                             
-  uint256 creatureHealth =  ((_sector - 1) * 12) + camp.creatureHealth; 
-  uint256 attackTime = creatureHealth/_attackPoints;
-  
-  attackTime = attackTime > 0 ? attackTime * TIME_CONSTANT : 0;
-  
-  timestamp = REGEN_TIME/(_healthPoints) + (block.timestamp + attackTime);
-  
-
-}
-
 
 
     function _exitPassive(uint256 timeDiff, uint256 _level, address _owner) private returns (uint256 level) {
