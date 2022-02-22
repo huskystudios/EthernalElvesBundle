@@ -114,6 +114,28 @@ button {
   margin-bottom: 2rem ;
 }
 
+.p-5 {
+  padding: 5rem;
+}
+
+.p-4 {
+  padding: 4rem;
+}
+
+.p-3 {
+  padding: 3rem;
+}
+
+.p-2 {
+  padding: 2rem;
+}
+
+.p-1 {
+  padding: 1rem;
+}
+
+
+
 .btn-next:disabled,
 .btn-prev:disabled {
   cursor: default;

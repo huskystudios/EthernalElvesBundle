@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react"
 import {campaigns} from "../config" 
 import {getCampaign} from "../../../utils/interact"
 
-const Sector = ({onChangeIndex, onSendCampaign, data, mode}) => {
-    const [confirm, setConfirm] = useState(false);
+const Sector = ({onChangeIndex, onSendCampaign, data, mode, showpagination}) => {
+
     const [rerollWeapon, setRerollWeapon] = useState(false);
     const [rerollItem, setRerollItem] = useState(false);
     const [useItemValue, setUseItemValue] = useState(false);
@@ -25,7 +25,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode}) => {
     
     }
     const handleChangeIndex = async (value) => {
-        console.log(activeCampaign)
+      
         let tryTokenids = data.map(nft => {return(nft.id)})
         let tryCampaign = activeCampaign.id.toString()
         let trySection = sector.toString()
@@ -33,26 +33,17 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode}) => {
         let tryItem = rerollItem
         let useItem = useItemValue
 
-
-        const params = {
-            ids: data.map(nft => {return(nft.id)}),
-            campaign_: activeCampaign.id.toString(),
-            sector_: sector.toString(),
-            rollWeapons_: rerollWeapon ? true : false,
-            rollItems_: rerollItem ? true : false,
-            useitem_: useItemValue ? true : false,
-        }
-
-       value > 0 && onSendCampaign({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem})
-
-        
-        //value > 0 && await sendCampaign({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem})
-
-
-      
+        value > 0 && onSendCampaign({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem})
 
         onChangeIndex(value)
     }
+
+    const handleCampaignChange = async (value) => {
+        setCampaign(value)
+        setActiveCampaign(campaignArray[value])
+
+    }
+
     const showTooltip = (content) => {
         if(content === "") return <></>
         return (
@@ -76,10 +67,6 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode}) => {
     }
 
         useEffect(() => {
-            setSectorChange(1)
-        }, [0])
-
-        useEffect(() => {
             const getCampaignData = async() => {
                 const campaignArry = []
                 for(let i = 0; i < campaigns.length; i++){
@@ -95,8 +82,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode}) => {
                             creatureCount: res.creatureCount,
                             creatureHealth: res.creatureHealth,
                             minLevel: res.minLevel,
-                            maxLevel: campaigns[i].maxLevel,
-                     
+                            maxLevel: campaigns[i].maxLevel,                     
                         }
     
                         campaignArry.push(camoObj)
@@ -104,12 +90,20 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode}) => {
                 }
 
                 console.log(campaignArry)
-
+                //initialize campaign array
                 setCampaignArray(campaignArry)
                 setActiveCampaign(campaignArry[campaign])
+                setSector(1)
+                setMirenRewards(parseInt(campaignArry[campaign].baseRewads) + (2 * (parseInt(1) - 1)))
+                setCreatureHealth(((parseInt(1) - 1) * 12) + parseInt(campaignArry[campaign].creatureHealth))
+                
             }
             getCampaignData()
-        }, [campaign, setCampaign])
+        }, [])
+
+
+    
+        
 
 
 
@@ -117,11 +111,13 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode}) => {
         <div>
 
             <div className="d-flex flex-column overview-content">         
-
-                        <div>{"Where would you like to campaign?"}</div>
+            <div className="sector-panel">
+            <div className="overview-heading">
+                      
+                 </div>
                          
                          <div className="carousel">
-                             <button className="btn_prev" onClick={() => setCampaign(campaign === 0 ? campaignArray.length - 1 : campaign - 1)} />
+                             <button className="btn_prev" onClick={() => handleCampaignChange(campaign === 0 ? campaignArray.length - 1 : campaign - 1)} />
                              <div className="campaign-slide-passive">
                                  <img className="campaign-thumb-passive" src={campaignArray[campaign === 0 ? campaignArray.length - 1 : campaign - 1].image} alt="campaign" />
                              </div>
@@ -133,67 +129,14 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode}) => {
                              <div className="campaign-slide-passive">
                                  <img className="campaign-thumb-passive" src={campaignArray[(campaign + 1) % campaignArray.length].image} alt="campaign" />
                              </div>
-                             <button className="btn_next" onClick={() => setCampaign((campaign + 1) % campaignArray.length)} />
+                             <button className="btn_next" onClick={() => handleCampaignChange((campaign + 1) % campaignArray.length)} />
                          </div>
-
-
-                 <div className="sector-panel">
   
-                   
-                    <div className="game-info">
-                     
-                        <span>{`Game Mode: ${mode}`}</span>
-                        <span>{`sector: ${sector}`}</span>
-                        <span>
-                            reroll weapon:
-                            {" "}
-                            {rerollWeapon ? <b>YES</b> : <strong>NO</strong>}
-                        </span>
-                        <span>
-                            reroll item: 
-                            {" "}
-                            {rerollItem ? <b>YES</b> : <strong>NO</strong>}
-                        </span>
-                        <span>
-                            use item:
-                            {" "}
-                            {useItemValue ? <b>YES</b> : <strong>NO</strong>}
-                        </span>
-                        <br/>
-                      
+                 <div className="sector-options">
 
-                        <span> Creatures remaining: {activeCampaign.creatureCount}</span>
-                        <span>{`miren rewards: ${mirenRewards}`} $REN</span>
-                        <span>{`creature health: ${creatureHealth}`}</span>
-                                 <span> Min Level Required: {activeCampaign.minLevel}</span>
-                                 {activeCampaign.maxLevel && <span> Max Level Allowed: {activeCampaign.maxLevel}</span>}
-                  
-                     
-                    </div>
-             
-                    <div className="elves-panel">
-                        {data.map((character) => {
-                         
-                            let attackTime = creatureHealth/parseInt(character.attack);
-                            attackTime = attackTime > 0 ? attackTime * 1 : 0;
-                            
-                            let time = (300/(parseInt(character.health))) +  attackTime;
-                            time = Math.ceil(time)
-                            
-                            
-                            
-                           return(
-                            
-                            <div key={character.id} className="elf-rect">
-                                <img src={character.image} 
-                                onMouseEnter={() => setTooltip(`Expected regeneration time: ${time} hours`)}
-                                onMouseLeave={() => setTooltip("")} 
-                                alt="elf" onClick={() => setModal({show: true, nft: character})} />
-                            </div>
-                            )}   
-                        )}
-                    </div>
-                    
+                 <div>
+                   <span>Sector Selector</span>
+                   <br/>
                     <div className="d-flex">
                         {[1,2,3,4,5].map((value) => {
                             return (
@@ -210,7 +153,10 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode}) => {
 
                       
                     </div>
+                    
                     {showTooltip(tooltip)}
+                    {showpagination &&
+                    <>
                     <div style={{width: 380}}>
                     <p>weapons &amp; items - look for new stuff when you campaign?</p>
                     </div>
@@ -243,13 +189,76 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode}) => {
                             use item
                         </div>
                     </div>
-                </div>                
+                    </>}
+                </div>
+
+
+                    <div className="game-info">
+                     
+                        <span>{`Game Mode: ${mode}`}</span>
+                        <span>{`sector: ${sector}`}</span>
+                        <span>
+                            reroll weapon:
+                            {" "}
+                            {rerollWeapon ? <b>YES</b> : <strong>NO</strong>}
+                        </span>
+                        <span>
+                            reroll item: 
+                            {" "}
+                            {rerollItem ? <b>YES</b> : <strong>NO</strong>}
+                        </span>
+                        <span>
+                            use item:
+                            {" "}
+                            {useItemValue ? <b>YES</b> : <strong>NO</strong>}
+                        </span>
+                        <br/>
+                      
+
+                        <span> Creatures remaining: {activeCampaign.creatureCount}</span>
+                        <span>{`miren rewards: ${mirenRewards}`} $REN</span>
+                        <span>{`creature health: ${creatureHealth}`}</span>
+                        <span> Min Level Required: {activeCampaign.minLevel}</span>
+                        {activeCampaign.maxLevel && <span> Max Level Allowed: {activeCampaign.maxLevel}</span>}                  
+                     
+                    </div>
+
+                    {showpagination &&
+                    <div className="elves-panel">
+                        {data.map((character) => {
+                         
+                            let attackTime = creatureHealth/parseInt(character.attack);
+                            attackTime = attackTime > 0 ? attackTime * 1 : 0;
+                            
+                            let time = (300/(parseInt(character.health))) +  attackTime;
+                            time = Math.ceil(time)
+                            
+                            
+                            
+                           return(
+                            
+                            <div key={character.id} className="elf-rect">
+                                <img src={character.image} 
+                                onMouseEnter={() => setTooltip(`Expected regeneration time: ${time} hours`)}
+                                onMouseLeave={() => setTooltip("")} 
+                                alt="elf" onClick={() => setModal({show: true, nft: character})} />
+                            </div>
+                            )}   
+                        )}
+                    </div>
+                    }
+
+                     </div>     
+                </div>              
             
             </div>
+
+            {showpagination && 
             <div className="d-flex flex-row justify-around">
-                    <button className="btn btn-red" onClick={() => confirm ? setConfirm(false) : handleChangeIndex(mode === "campaign" ? -1 : -3)} >back</button>
-                    <button className="btn btn-green" onClick={() => handleChangeIndex(1)}>"next"</button>
+                   {/* <button className="btn btn-red" onClick={() => confirm ? setConfirm(false) : handleChangeIndex(mode === "campaign" ? -1 : -3)} >back</button> */} 
+                    <button className="btn btn-green" onClick={() => handleChangeIndex(1)}>Confirm</button>
             </div>
+            }
             {renderModal(modal)}
         </div>
         
