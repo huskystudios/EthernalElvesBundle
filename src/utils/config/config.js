@@ -19,12 +19,7 @@ import TalismanOfEnragement from "../../assets/images/items/Talisman_of_Enrageme
 
 export const sentinelClass = ["Druid", "Assassin", "Ranger"] 
 
-export const actions = 
-[
-    {id: 0, text: 'passive', image: stakeImg},
-    {id: 1, text: 'campaign', image: campaignImg},
-    {id: 2, text: 'bloodThirst', image: bloodImg}
-]
+
 
 export const actionString =
  [{action: 0, text: 'unstake'},
@@ -89,42 +84,36 @@ export const campaigns =
         "id": 1,
         "name": "Whispering Woods",
         "image": woods,
-        "time": 1.2,
         "maxLevel": 100
     },
     {
         "id": 2,
         "name": "Enchanted Meadows",
         "image": meadows,
-        "time": 1.5,
         "maxLevel": 100
     },
     {
         "id": 3,
         "name": "Mount Eluna",
         "image": mount,
-        "time": 0.6,
         "maxLevel": 100
     },
     {
         "id": 4,
         "name": "Northern Fallout",
         "image": fallout,
-        "time": 0.6,
         "maxLevel": 30
     },
     {
         "id": 5,
         "name": "Cove of Samim",
         "image": cove,
-        "time": 0.6,
         "maxLevel": 50
     },
     {
         "id": 6,
         "name": "Mammon's Lair",
         "image": mammon,
-        "time": 0.6,
         "maxLevel": 100
     }
 ]

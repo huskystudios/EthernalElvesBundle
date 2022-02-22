@@ -261,8 +261,8 @@ const getElvesfromMoralis = async (address) => {
                 {index === 1 && activeNfts.length === 1 ? <Overview nft={activeNfts} onRunWeb3={doAction}  onChangeIndex={onChangeIndex} /> : null}                
                 {index === 2 &&  <Actions doAction={doAction} actions={actions} onChangeIndex={onChangeIndex} setGameMode={setGameMode} />}
                 {index === 3 &&  <Staking nft={activeNfts} onRunWeb3={doAction} onChangeIndex={onChangeIndex} />}
-                {index === 4 &&  <Campaign onSetCampaign={setCampaign} onChangeIndex={onChangeIndex} />}
-                {index === 5 &&  <Sector campaign={campaign} data={activeNfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} mode={gameMode} /> }
+                {/*index === 4 &&  <Campaign onSetCampaign={setCampaign} onChangeIndex={onChangeIndex} />*/}
+                {index === 4 &&  <Sector campaign={campaign} data={activeNfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} mode={gameMode} /> }
                 {index === 6 &&  <Success success={success} sector={sector} campaign={campaign} data={activeNfts} onChangeIndex={onChangeIndex}/>}
                 {index === 7 &&  <Receive onChangeIndex={onChangeIndex} />}
                 {index === 0  && data && wallet && <Control data={data} activities={getActivities} onSelect={onSelect} />}               

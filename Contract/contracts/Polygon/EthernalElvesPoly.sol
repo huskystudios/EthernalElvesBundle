@@ -347,7 +347,7 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
             elf.action       = action;
 
             sentinels[id_] = DataStructures._setElf(elf.owner, elf.timestamp, elf.action, elf.healthPoints, elf.attackPoints, elf.primaryWeapon, elf.level, actions.traits, actions.class);
-            emit Action(msg.sender, action, id_); 
+            emit Action(elfOwner, action, id_); 
     }
 
 

@@ -8,8 +8,8 @@ import {elvesAbi, getCampaign, elvesContract, etherscan,
     checkIn,
     sendCampaign, sendPassive, returnPassive, unStake, merchant, forging,
     heal, lookupMultipleElves, getCurrentWalletConnected, polygonContract} from "../../utils/interact"
-import Mint from "../mint"
-
+import Modal from "../../components/Modal"
+import Campaigns from "../../components/Campaigns"
 
 const PlayPolygon = () => {
     const [loading, setLoading] = useState(true)
@@ -331,13 +331,16 @@ const PlayPolygon = () => {
 
 
         const renderModal = () => {
-            if(!campaignModal) return <></>
+           // if(!campaignModal) return <></>
             return(
-                <div className="modal modal-whale-campaign">
-                    <div className="modal-content items-center">
-                        <span className="close-modal" onClick={() => setCampaignModal(false)}>X</span>
-                        <h3>All selected Elves will go to the same campaign</h3>
+
+                <Modal show={campaignModal}>
+                     <h3>All selected Elves will go to the same campaign</h3>
+                        <Campaigns chain="polygon"/>
+                   
                         <div className="modal-whale-campaign-grid">
+
+                           
                             <label>Campaign</label>
                             <select value={tryCampaign} onChange={(e) => setTryCampaign(e.target.value)}>
                                 {campaignsPoly.map((campaign) => {
@@ -365,19 +368,16 @@ const PlayPolygon = () => {
                             campaign
                         </button>
                         </div>
-                        
-                    </div>
-                </div>
+                </Modal>
+      
             )
         }
 
         
         const renderBTModal = () => {
-            if(!campaignBTModal) return <></>
+           // if(!campaignBTModal) return <></>
             return(
-                <div className="modal modal-whale-campaign">
-                    <div className="modal-content items-center">
-                        <span className="close-modal" onClick={() => setCampaignBTModal(false)}>X</span>
+                <Modal show={campaignBTModal}>
                         <h3>All selected Elves will go to the same campaign</h3>
                         <div className="modal-whale-campaign-grid">
                             <label>Campaign</label>
@@ -402,9 +402,7 @@ const PlayPolygon = () => {
                             bloodthirst
                         </button>
                         </div>
-                        
-                    </div>
-                </div>
+                        </Modal>
             )
         }
 

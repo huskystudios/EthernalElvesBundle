@@ -5,9 +5,6 @@ import "./style.css"
 import { actionString } from "../home/config"
 import {lookupMultipleElves, getCurrentWalletConnected, withdrawSomeTokenBalance} from "../../utils/interact"
 import Countdown from 'react-countdown';
-import {elvesAbi, elvesContract, etherscan} from "../../utils/interact"
-
-
 
 
 const Profile = () => {
@@ -35,27 +32,6 @@ const Profile = () => {
     setBalance(renBalanceContract/1000000000000000000);
     setMiren(renBalanceWallet/1000000000000000000);
   }
-   
-/*
-      
-    useEffect(() => {      
-        
-        const getMoralisTokenSupply = async ()=>{
-            
-            await Moralis.enableWeb3();
-
-            const response = await Moralis.Cloud.run("getTokenSupply");
-            console.log(response)
-            setSupply({current: response.supply, total: response.maxSupply, initial: response.initialSupply})
-           
-        } 
-
-        
-        getMoralisTokenSupply()       
-    }, []);
-
-  */
-
     
 
     const claimCustomAmount = async () => {
@@ -67,36 +43,49 @@ const Profile = () => {
 
     const getUserData = async (address) => {
 
-     //   await Moralis.enableWeb3();
-
-
-        const ElfActions = Moralis.Object.extend("ElfActions");
+        const ElfActions = Moralis.Object.extend("ElfActions");        
         const RenTransfers = Moralis.Object.extend("RenTransfers");
+        const ElfActionsPolygon = Moralis.Object.extend("ElfActionsPolygon");
+        const RenTransfersPolygon = Moralis.Object.extend("RenTransfersPolygon");
         
-      
-       // await authenticate();
-      //  let user = Moralis.User.current();
-      //  console.log(user)
-       
+
         let query = new Moralis.Query(ElfActions);  
        
         query.equalTo("from", address.toLowerCase());
         query.limit(25)
         query.descending("createdAt")
+        setStatus("getting eth actions")
         const res = await query.find();
 
-        let queryRen = new Moralis.Query(RenTransfers);  
+        query = new Moralis.Query(RenTransfers);  
        
-        queryRen.equalTo("owner", address.toLowerCase());
-        queryRen.limit(25)
-        queryRen.descending("createdAt")
+        query.equalTo("owner", address.toLowerCase());
+        query.limit(25)
+        query.descending("createdAt")
+        setStatus("getting eth REN transfers")
+        const ren = await query.find();
 
-        const ren = await queryRen.find();
+        query = new Moralis.Query(ElfActionsPolygon);  
+       
+        query.equalTo("owner", address.toLowerCase());
+        query.limit(25)
+        query.descending("createdAt")
+        setStatus("getting polygon actions")
+        const resPoly = await query.find();
+
+        query = new Moralis.Query(RenTransfersPolygon);  
+       
+        query.equalTo("owner", address.toLowerCase());
+        query.limit(25)
+        query.descending("createdAt")
+        setStatus("getting polygon REN transfers")
+        const renPoly = await query.find();
+
 
         //concat ren and res
-        let data = res.concat(ren)
-
-        setStatus("getting actions and transactions")
+        let data = res.concat(ren).concat(resPoly).concat(renPoly)
+        console.log(data)
+        
 
 
 
@@ -109,7 +98,7 @@ const Profile = () => {
     
         const params =  {address: address}
         const userTokenArray = await Moralis.Cloud.run("getElvesFromDb", params);
-        setStatus("army of elves")
+        setStatus("army of " + userTokenArray.length + " elves")
 
         const lookupParams = {array: userTokenArray, chain: "eth"}
         const elves = await lookupMultipleElves(lookupParams)
@@ -123,9 +112,7 @@ const Profile = () => {
     
     }
         
-    
-
-    
+        
         useEffect(() => {
             const getData = async () => {
                 const {address} = await getCurrentWalletConnected();
@@ -227,7 +214,8 @@ const Profile = () => {
         <th>Last Action</th>
         <th>Elf #</th>
         <th>$REN</th>    
-        <th>Etherscan</th>       
+        <th>TX Link</th>       
+        <th>TX Chain</th>       
         </tr>
       </thead>
       <tbody>
@@ -236,13 +224,23 @@ const Profile = () => {
                 
                 let createDate = new Date( Date.parse(line.createdAt))
                 let action = line.attributes.action ? actionString[parseInt(line.attributes.action)] : "$REN Transaction"
+                let chain = "eth"
+                let txLink = `https://etherscan.io/tx/${line.attributes.transaction_hash}`
+
+                if(line.className === "RenTransfersPolygon" || line.className === "ElfActionsPolygon"){
+                    chain = "polygon"
+                    txLink = `https://polygonscan.com/tx/${line.attributes.transaction_hash}`
+                    
+                }
+           
                 return(
                     <tr key={index}> 
                     <td>{createDate.toGMTString()}</td>
                     <td>{action.text}</td>
                     <td>{line.attributes.tokenId ? `Elf #${line.attributes.tokenId}` : null}</td>
                     <td>{line.attributes.subtract ? "-" : null}{line.attributes.amount ? `${Moralis.Units.FromWei(line.attributes.amount)} $REN` : ""}</td>                  
-                    <td><a target="_blank" href={`https://etherscan.io/tx/${line.attributes.transaction_hash}`}>View Tx</a></td>
+                    <td><a target="_blank" href={txLink}>View Tx</a></td>
+                    <td>{chain}</td>
                    
                    
            
@@ -305,25 +303,7 @@ const Profile = () => {
                 <div className="column">
                 <h2>My Elves</h2>
                 <ShowElfTable  />
-                <p>REN credits: {balance} {balanceToClaim > 0 && `- ${balanceToClaim}`}</p>
-                <p>REN in wallet: {miren} {balanceToClaim > 0 && `+ ${balanceToClaim}`}</p>
-
-                <input
-                    type="range"
-                    min="0"
-                    max={balance}
-                    value={balanceToClaim}
-                    onChange={(e) => setBalanceToClaim(e.target.value)}
-                    step="1"
-                />
-                <br />
-                <button
-                    className="btn-claim"
-                    onClick={claimCustomAmount}
-                    disabled={balanceToClaim <= 0}
-                >
-                    Claim {balanceToClaim} REN
-                </button>
+               
                 </div>
            
                 <div className="column">

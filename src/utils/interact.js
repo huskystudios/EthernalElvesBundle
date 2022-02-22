@@ -1,4 +1,5 @@
-import { items, sentinelClass } from '../views/home/config';
+import { items, sentinelClass, campaigns } from "./config/config";
+
 
 require('dotenv').config();
 const Web3 = require("web3")
@@ -6,6 +7,7 @@ const Web3 = require("web3")
 const alchemyethkey = process.env.REACT_APP_ALCHEMY_KEY;
 const etherscanKey = process.env.REACT_APP_ETHERSCAN_KEY;
 const polygonKey = process.env.REACT_APP_POLYGON_KEY;
+
 var api = require('etherscan-api').init(etherscanKey);
 const {
   Multicall,
@@ -605,38 +607,10 @@ export const checkOutRen = async(props) => {
 }
 
 
-
-
-export const getCampaigns = async(ids) => {
-  
-  let campaignArry = []
-
-  for(let i = 0; i < ids.length; i++){
-      
-    let response = await gameContract.methods.camps(ids[i]).call()
-    
-    let campaignObj = {
-        
-        id: ids[i],
-        baseRewads: response[0], 
-        creatureCount: response[1], 
-        creatureHealth: response[2], 
-        expPoints: response[3], 
-        items: response[4],
-        minLevel: response[5],
-        weapons: response[6],
-      }
-      campaignArry.push(campaignObj)
-    }
-  
-  return campaignArry
-
-}
-
 export const getCampaign = async(id) => {
       
     let response = await gameContract.methods.camps(id).call()
-    
+       
     let campaignObj = {
         
         id: id,
@@ -649,7 +623,7 @@ export const getCampaign = async(id) => {
         weapons: response[6],
       }
 
-  
+
   return campaignObj
 
 }

@@ -18,9 +18,12 @@ const MainLayout = (props) => {
 
     return (
         <div className="app">
+              
             <div className="app-header">
+         
                 <img className="app-logo" src={logoImg} alt="logo" />
                 <div className="header-body"> 
+                <Withdraw />
                     
                     <div className="nav-item menu">
                         <span>Play</span>
@@ -49,15 +52,19 @@ const MainLayout = (props) => {
                 *  <NavLink className="nav-item" to="/mint">mint</NavLink>
                 * 
                */} 
-                <Withdraw />
+
+           
+               
                
             </div>
+           
             <div className="mobile-header">
                         <ConnectWallet />
                        
              </div>    
             
             <div className="app-body">
+           
                 {props.children}
             </div>
         </div>
