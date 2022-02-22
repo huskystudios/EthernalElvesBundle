@@ -5,7 +5,7 @@ import "./style.css"
 import { actionString } from "../home/config"
 import {lookupMultipleElves, getCurrentWalletConnected, withdrawSomeTokenBalance} from "../../utils/interact"
 import Countdown from 'react-countdown';
-
+import Lookup from "./Lookup"
 
 const Profile = () => {
     const [loading, setLoading] = useState(true)
@@ -256,6 +256,8 @@ const Profile = () => {
             
       </tbody>
       </table>
+
+     
     </div>
 
         )
@@ -303,13 +305,15 @@ const Profile = () => {
                 <div className="column">
                 <h2>My Elves</h2>
                 <ShowElfTable  />
-               
+                <Lookup />
                 </div>
            
                 <div className="column">
                 <h2>Activity Log</h2>
                 <ShowTransactionTable /> 
                 </div>
+
+
               
                 
                 </div>

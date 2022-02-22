@@ -5,25 +5,15 @@ import {lookupMultipleElves} from '../../utils/interact'
 import Countdown from "react-countdown";
 import "./style.css"
 import { useMoralis } from "react-moralis"
+import Modal from "../../components/Modal"
 
-function ImageApp() {
-
-//const apiURI = "https://api.sheety.co/cdbe00a0eadb9d00b13bfd323a812783/inventory/inventory"
+function Lookup() {
 
 const [textAreaSample, setTextArea] = useState(69)
 const { Moralis } = useMoralis();
-
-
-const [showImage, setShowImage] = useState(false)  
 const [showMetaImage, setShowMetaImage] = useState(false)  
-
 const [elfObject, setElfObject] = useState(null)
-
-
-
-
-
-
+const [showModal, setShowModal] = useState(true)
 
 const getMeta = async () => {
 
@@ -32,24 +22,21 @@ const getMeta = async () => {
   let query = new Moralis.Query(Elves);
   query.equalTo("token_id", parseInt(textAreaSample));
   const response = await query.find();
-  console.log(response)
+
   if(response[0].attributes.chain === "polygon"){   
     chain="polygon"
   }
 
-
   const lookupParams = {array: [parseInt(textAreaSample)], chain: chain}
   const data = await lookupMultipleElves(lookupParams)
-  console.log(data[0])
+
   setElfObject(data[0])  
   setShowMetaImage(true)
+  setShowModal(!showModal)
   
-
-
-
 }
 
-  
+ 
 
 
 function GetAttributes({elfData}) {
@@ -91,10 +78,10 @@ function GetAttributes({elfData}) {
 return (
   <div className="dark-1000 h-full d-flex flex-column profile">           
 
-      <h1 className="text-center">Look up Elf</h1>
+      <h2>Look up Elf</h2>
 
       
-      <div className="flex mh-auto mb-1">
+      <div className="flex mb-1">
        
       <input
         value={textAreaSample}
@@ -104,21 +91,14 @@ return (
       />
       <button className="btn btn-green" onClick={() => getMeta()}>Fetch Elf</button>{"  "}
   
-      <button className="btn btn-blue" onClick={() => {
-      toPng(document.getElementById('elf')).then(dataUrl => {
-        const link = document.createElement('a');
-        link.download = 'image.png';
-        link.href = dataUrl;
-        link.click();
-      });
-    }}>Download</button>
+  
       </div>
 
     <div className="flex flex-wrap">
       
       
       {showMetaImage &&
-      <>
+      <Modal show={showModal}>
       <div id="elf" className={`w-25 mh-auto ${raceClassName}`}>
       <h2 className="text-center">{elfObject.name}</h2>
       <img src={elfObject.image}/>
@@ -153,13 +133,19 @@ return (
         <div className="font-semibold text-sm">Chain</div>
         <div className="font-semibold text-sm">{elfObject.chain}</div>        
         </div>
-
-
-
       </div>
 
+      <button className="btn btn-blue" onClick={() => {
+      toPng(document.getElementById('elf')).then(dataUrl => {
+        const link = document.createElement('a');
+        link.download = 'image.png';
+        link.href = dataUrl;
+        link.click();
+      });
+    }}>Download</button>
 
-      </>}
+
+      </Modal>}
 
       
       
@@ -175,5 +161,5 @@ return (
   )
 }
 
-export default ImageApp;
+export default Lookup;
 

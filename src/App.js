@@ -10,10 +10,8 @@ import Mint from './views/mint';
 import Admin from './views/admin';
 import Profile from './views/profile';
 import Faq from './views/faq';
-import ImageApp from './views/lookup';
 import { getCurrentWalletConnected } from './utils/interact'
 import { useState, useEffect } from 'react';
-import Polygon from './views/admin/Polygon';
 import PlayEth from './views/PlayEth';
 import PlayPolygon from './views/PlayPolygon';
 import Transfers from './views/Transfers';
@@ -60,9 +58,6 @@ const [flip, setFlip] = useState(false)
               </Route>
               <Route exact path="/faq">
                 <Faq />               
-              </Route>
-              <Route exact path="/lookup">
-               <ImageApp />               
               </Route>
               <Route exact path="/playeth">
                 <PlayEth />

@@ -43,7 +43,6 @@ const MainLayout = (props) => {
                     <ConnectWallet />
                    
                     <NavLink className="nav-item" to="/faq">faq</NavLink>
-                    <NavLink className="nav-item" to="/lookup">lookup</NavLink>
                     <NavLink className="nav-item" to="/transfers">transfers</NavLink>
                 </div>
               
