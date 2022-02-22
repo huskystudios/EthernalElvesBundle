@@ -22,9 +22,20 @@ const MainLayout = (props) => {
                 <img className="app-logo" src={logoImg} alt="logo" />
                 <div className="header-body"> 
                     
-                   
-                    <NavLink className="nav-item" to="/playeth">play on ethereum</NavLink>
-                    <NavLink className="nav-item" to="/playpoly">play on polygon</NavLink>
+                    <div className="nav-item menu">
+                        <span>Play</span>
+                        <div className="menu__items">
+                            <NavLink to="/">
+                                Visual Mode (ETH)
+                            </NavLink>
+                            <NavLink to="/playeth">
+                                Table Mode (ETH)
+                            </NavLink>
+                            <NavLink to="/playpoly">
+                                Table Mode (Polygon)
+                            </NavLink>
+                        </div>
+                    </div>
                     <NavLink className="nav-item" to="/profile">profile</NavLink>
                     <ConnectWallet />
                    
