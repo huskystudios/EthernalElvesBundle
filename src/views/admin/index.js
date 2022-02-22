@@ -74,7 +74,6 @@ useEffect(() => {
     setCurrentPrice(price);
     setRenSupply(totalRenSupply);
     setOwnerCount(ownerCount.length)
-    setGameStatus(await Moralis.Cloud.run("getGameStatus"))
     setActionDistribution(await Moralis.Cloud.run("getActions"))
 
     //console.log(await Moralis.Cloud.run("getOwnerBalances"))
