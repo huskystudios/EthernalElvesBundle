@@ -7,7 +7,7 @@ import Countdown from 'react-countdown';
 import {elvesAbi, getCampaign, elvesContract, etherscan,
     checkIn, checkOut, checkOutRen, usedRenSignatures,
     sendCampaign, sendPassive, returnPassive, unStake, merchant, forging,
-    heal, lookupMultipleElves, getCurrentWalletConnected, polygonContract} from "../../utils/interact"
+    heal, lookupMultipleElves, getCurrentWalletConnected, checkRenTransfersIn} from "../../utils/interact"
 
 
 const Transfers = () => {
@@ -45,9 +45,9 @@ const Transfers = () => {
         } else {
             setClicked([...clicked, id])
         }
-    }
 
-    
+       
+    }    
 
 
     const checkOutElf = async () => {
@@ -60,7 +60,7 @@ const Transfers = () => {
 
         nftData.map((item, index) => {
 
-            console.log(item.attributes.tokenId)
+           
 
             if (clicked.includes((item.id))) {
                 tokenIdsArry.push(item.attributes.tokenId)
@@ -82,7 +82,7 @@ const Transfers = () => {
         }
 
         const checkOutRenFunction = async () => {
-            console.log(clicked)
+           
               
             let renAmount 
             let renSignature 
@@ -91,7 +91,7 @@ const Transfers = () => {
             nftData.map((item, index) => {
     
                 if (clicked.includes((item.id))) {
-                    console.log(item)
+                 
                     renAmount = item.attributes.renAmount
                     timestamp = item.attributes.timestamp
                     renSignature = item.attributes.signedTransaction.signature
@@ -127,8 +127,6 @@ const Transfers = () => {
             const getData = async () => {
                 const {address} = await getCurrentWalletConnected();
                 setStatus("connected to address: " + address)
-     
-           //    await Moralis.enableWeb3();
 
                const Elves = Moralis.Object.extend("ElvesPolyCheckIn");
                const ElvesRenTransferIn = Moralis.Object.extend("ElvesRenTransferIn");
@@ -182,12 +180,12 @@ const Transfers = () => {
         renResults = renResults.concat(renResponse.results)
     
     }
+       //check if signature has been used.
+       setStatus("checking pending ren transfers")        
+       let sigcheckresponse = await checkRenTransfersIn(renResults)
+       
+       results = results.concat(sigcheckresponse)
 
-      // const usedSig = await usedRenSignatures(item.attributes.signedTransaction.signature)
-        
-      results = results.concat(renResults)
-             
-       // setRenTransfers(renResults)    
         setNftData(results)        
         
         setStatus("done")                  
@@ -198,10 +196,7 @@ const Transfers = () => {
           },[]);
 
 
-
-
-
-          const showAlert = ({title, content}) => {
+        const showAlert = ({title, content}) => {
 
             return (
                 <div className="alert">
@@ -211,11 +206,6 @@ const Transfers = () => {
                 </div>
             )
         }
-
-
-
-
-
 
 
 

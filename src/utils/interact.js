@@ -73,6 +73,53 @@ export const txReceipt = async ({ txHash, interval }) => {
 };
 
 
+export const checkRenTransfersIn = async (sigObject)=>{
+//This very confusing function checks if the signature is valid and if the signature is valid, it returns the pending ren transfers
+  let array = []
+  sigObject.map((item, index) => {
+    array.push(item.attributes.signedTransaction.signature)
+  })
+
+
+  let txArr = []
+  if(array){
+
+    array.map((i, index)=>{
+
+      var tx = {
+        reference: 'Elves'+index.toString(),
+        contractAddress: elvesContract,
+        abi: elvesAbi.abi,
+        calls: [
+        { reference: 'usedSigs'+i.toString(), methodName: 'usedRenSignatures', methodParameters: [i]},
+       
+       ]
+      };
+      txArr.push(tx);
+    return (index)
+    })
+  }
+
+  const multicall = new Multicall({ web3Instance: web3, tryAggregate: true });
+  const contractCallContext: ContractCallContext[] = txArr
+  const results: ContractCallResults = await multicall.call(contractCallContext);
+ 
+  let returnArray = []
+
+  sigObject.map((item, j) => {
+
+    const sigused =  parseInt(results.results[`Elves${j}`].callsReturnContext[0].returnValues[0]) 
+    //sig used must be zero. If it is not zero, it means that the signature has been used
+    if(parseInt(sigused) === 0){
+      returnArray.push(item)
+    }
+   
+  })
+
+  return returnArray 
+
+}
+
 
 export const lookupMultipleElves = async ({array, chain})=>{
 
