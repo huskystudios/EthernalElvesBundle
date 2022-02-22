@@ -1,17 +1,17 @@
-import { useState, useEffect, useMemo } from "react";
-import React, { useCallback, useRef } from 'react';
+import { useState, useMemo } from "react";
+import React from 'react';
 import { toPng } from 'html-to-image';
 import {lookupMultipleElves} from '../../utils/interact'
 import Countdown from "react-countdown";
 import "./style.css"
-import { actionString } from "../home/config"
-
+import { useMoralis } from "react-moralis"
 
 function ImageApp() {
 
 //const apiURI = "https://api.sheety.co/cdbe00a0eadb9d00b13bfd323a812783/inventory/inventory"
 
 const [textAreaSample, setTextArea] = useState(69)
+const { Moralis } = useMoralis();
 
 
 const [showImage, setShowImage] = useState(false)  
@@ -25,7 +25,18 @@ const [elfObject, setElfObject] = useState(null)
 
 
 
-const getMeta = async (chain) => {
+const getMeta = async () => {
+
+  let chain = "eth"
+  const Elves = Moralis.Object.extend("Elves");
+  let query = new Moralis.Query(Elves);
+  query.equalTo("token_id", parseInt(textAreaSample));
+  const response = await query.find();
+  console.log(response)
+  if(response[0].attributes.chain === "polygon"){   
+    chain="polygon"
+  }
+
 
   const lookupParams = {array: [parseInt(textAreaSample)], chain: chain}
   const data = await lookupMultipleElves(lookupParams)
@@ -91,8 +102,8 @@ return (
         onChange={(e) => setTextArea(e.target.value)}
         id="text"
       />
-      <button className="btn btn-green" onClick={() => getMeta("eth")}>Fetch Elf</button>{"  "}
-      <button className="btn btn-green" onClick={() => getMeta("polygon")}>Fetch pElf</button>{"  "}
+      <button className="btn btn-green" onClick={() => getMeta()}>Fetch Elf</button>{"  "}
+  
       <button className="btn btn-blue" onClick={() => {
       toPng(document.getElementById('elf')).then(dataUrl => {
         const link = document.createElement('a');

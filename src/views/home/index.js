@@ -16,6 +16,7 @@ import {elvesAbi, elvesContract, etherscan ,sendCampaign, lookupMultipleElves, g
 import { useMoralis } from "react-moralis";
 import Staking from "./components/Staking"
 import Help from "./components/Help"
+import Modal from "../../components/Modal"
 
 const Home = () => {
     const [loading, setLoading] = useState(true)
@@ -28,7 +29,6 @@ const Home = () => {
     const [txreceipt, setTxReceipt] = useState()
     const [alert, setAlert] = useState({show: false, value: null})
     const [wallet, setWallet] = useState()
-    const [status, setStatus] = useState()
     const [loadingText, setLoadingText] = useState()
 
 
@@ -235,11 +235,11 @@ const getElvesfromMoralis = async (address) => {
     const showAlert = ({title, content}) => {
 
         return (
-            <div className="alert">
+            <Modal show={alert.show} onHide={() => setAlert({show: false, value: null})}>
                 <h3>{title}</h3>
                 <pre>{content}</pre>
-                <button className="btn btn-red" onClick={()=>setAlert({show: false})}>close</button>
-            </div>
+            </Modal>
+            
         )
     }
 
@@ -249,8 +249,7 @@ const getElvesfromMoralis = async (address) => {
         {loading ? <Loader text={loadingText}/> :
         <>
             <div className="dark-1000 h-full d-flex home justify-center items-center">
-            {alert.show && showAlert(alert.value)}
-                
+            {alert.show && showAlert(alert.value)}                
                
                 {index === 0 &&  <Help />}
 

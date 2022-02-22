@@ -216,7 +216,7 @@ elfObj = {
     accessories: elfAccessories,
     health: elfHealthPoints,
     attributes: elfTokenObj.attributes,
-    chain: elfAction === 8 ? "polygon" : "eth"
+    chain: chain
   }
 
 elfArry.push(elfObj)
