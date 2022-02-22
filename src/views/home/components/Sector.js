@@ -141,7 +141,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode}) => {
   
                    
                     <div className="game-info">
-                        {console.log(campaign)}
+                     
                         <span>{`Game Mode: ${mode}`}</span>
                         <span>{`sector: ${sector}`}</span>
                         <span>
@@ -193,19 +193,17 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode}) => {
                             )}   
                         )}
                     </div>
-                    <p className="choose-sector">choose sector</p>
+                    
                     <div className="d-flex">
                         {[1,2,3,4,5].map((value) => {
                             return (
                                 <span key={value}className={sector === value ? "btn-sector active" : "btn-sector"} onClick={() => setSectorChange(value)}
-                                onMouseEnter={() => setTooltip(`Creature health is ${((parseInt(value) - 1) * 12) + parseInt(campaign.creatureHealth)}hp in section ${value}. Earn ${(parseInt(campaign.baseRewads) + (2 * (parseInt(value) - 1)))} $REN`)}
+                                onMouseEnter={() => setTooltip(`Creature health is ${((parseInt(value) - 1) * 12) + parseInt(activeCampaign.creatureHealth)}hp in section ${value}. Earn ${(parseInt(activeCampaign.baseRewads) + (2 * (parseInt(value) - 1)))} $REN`)}
                                 onMouseLeave={() => setTooltip("")} 
                                 >
                                     {value}
                                 </span>
                             )
-
-
                         }
                         )
                         }
