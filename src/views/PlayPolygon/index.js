@@ -9,7 +9,7 @@ import {elvesAbi, getCampaign, elvesContract, etherscan,
     sendCampaign, sendPassive, returnPassive, unStake, merchant, forging,
     heal, lookupMultipleElves, getCurrentWalletConnected, polygonContract} from "../../utils/interact"
 import Modal from "../../components/Modal"
-import Campaigns from "../../components/Campaigns"
+
 
 const PlayPolygon = () => {
     const [loading, setLoading] = useState(true)
@@ -47,6 +47,7 @@ const PlayPolygon = () => {
     const [alert, setAlert] = useState({show: false, value: null})
     const [campaignModal, setCampaignModal] = useState(false)
     const [campaignBTModal, setCampaignBTModal] = useState(false)
+    const [confirm, setConfirm] = useState(false)
    
     const resetVariables = async () => {
         setClicked([])
@@ -112,7 +113,7 @@ const PlayPolygon = () => {
     }, [clicked, nftData]);
 
 
-    
+     
     const sendGaslessFunction = async (params) => {
 
         setLoading(true)
@@ -133,9 +134,6 @@ const PlayPolygon = () => {
             setAlert({show: true, value: {title: "Error", content: ("Something went wrong")}})
         }
         
-
-        console.log(response)
-
         setLoading(false)
 
     }
@@ -336,7 +334,7 @@ const PlayPolygon = () => {
 
                 <Modal show={campaignModal}>
                      <h3>All selected Elves will go to the same campaign</h3>
-                        <Campaigns chain="polygon"/>
+                       
                    
                         <div className="modal-whale-campaign-grid">
 
@@ -405,8 +403,6 @@ const PlayPolygon = () => {
                         </Modal>
             )
         }
-
-
 
 
 

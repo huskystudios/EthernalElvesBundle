@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import {campaigns} from "../config" 
-import {getCampaign} from "../../../utils/interact"
+import {getCampaign, sendCampaign} from "../../../utils/interact"
 
 const Sector = ({onChangeIndex, onSendCampaign, data, mode, showpagination}) => {
 
@@ -34,9 +34,13 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, showpagination}) => 
         let useItem = useItemValue
 
         value > 0 && onSendCampaign({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem})
-
+        
+        //let {success, status, txHash} = await sendCampaign({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem})
+        
         onChangeIndex(value)
     }
+
+
 
     const handleCampaignChange = async (value) => {
         setCampaign(value)

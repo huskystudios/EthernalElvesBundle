@@ -9,7 +9,8 @@ import {elvesAbi, getCampaign, elvesContract, etherscan,
     sendCampaign, sendPassive, returnPassive, unStake, merchant, forging,
     heal, lookupMultipleElves, getCurrentWalletConnected} from "../../utils/interact"
 import Mint from "../mint"
-
+import Sector from "../../views/home/components/Sector"
+import Modal from "../../components/Modal"
 
 const PlayEth = () => {
     const [loading, setLoading] = useState(true)
@@ -41,6 +42,7 @@ const PlayEth = () => {
     const [nftData, setNftData] = useState([])
     const [sortedElves, setSortedElves] = useState([])
     const [activeNfts, setActiveNfts] = useState(true)
+    const [nfts, setNfts] = useState([])
     const [txreceipt, setTxReceipt] = useState()
     const [alert, setAlert] = useState({show: false, value: null})
     const [campaignModal, setCampaignModal] = useState(false)
@@ -60,10 +62,12 @@ const PlayEth = () => {
 
     const handleClick = async (id) => {
 
-        if (clicked.includes(id)) {
-            setClicked(clicked.filter(item => item !== id))
+        if (clicked.includes(id.id)) {
+            setClicked(clicked.filter(item => item !== id.id))
+            setNfts(nfts.filter(item => item !== id))
         } else {
-            setClicked([...clicked, id])
+            setClicked([...clicked, id.id])
+            setNfts([...nfts, id])
         }
     }
 
@@ -301,9 +305,9 @@ const PlayEth = () => {
           );
         };
 
-          const sendCampaignFunction = async () => {
+          const sendCampaignFunction = async (params) => {
 
-            const params = {
+            /*const params = {
                 tryTokenids: clicked,
                 tryCampaign,
                 trySection,
@@ -311,8 +315,8 @@ const PlayEth = () => {
                 tryItem,
                 useItem,
             };
-        
-       
+        */
+            console.log(params)
             let {success, status, txHash} = await sendCampaign(params)
     
             success && resetVariables()            
@@ -323,6 +327,10 @@ const PlayEth = () => {
             }})
         }
     
+        const onChangeIndex = () => {
+      
+            return null
+        }
 
 
           const showAlert = ({title, content}) => {
@@ -338,12 +346,14 @@ const PlayEth = () => {
 
 
         const renderModal = () => {
-            if(!campaignModal) return <></>
+           // if(!campaignModal) return <></>
+
+           //
             return(
-                <div className="modal modal-whale-campaign">
-                    <div className="modal-content items-center">
-                        <span className="close-modal" onClick={() => setCampaignModal(false)}>X</span>
-                        <h3>All selected Elves will go to the same campaign</h3>
+               <Modal show={campaignModal}>
+                       <Sector showpagination={true} data={nfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} mode={"campaign"} />
+
+                        {/*<h3>All selected Elves will go to the same campaign</h3>
                         <div className="modal-whale-campaign-grid">
                             <label>Campaign</label>
                             <select value={tryCampaign} onChange={(e) => setTryCampaign(e.target.value)}>
@@ -369,22 +379,21 @@ const PlayEth = () => {
                             onClick={sendCampaignFunction}
                         >
                             Confirm
-                        </button>
-                    </div>
-                </div>
+                        </button>*/}
+                </Modal>
             )
         }
 
 
         const renderMintModal = () => {
-            if(!mintModal) return <></>
+           
             return(
-                <div className="modal modal-whale-campaign">
-                <div className="modal-content items-center">
-                    <span className="close-modal" onClick={() => setMintModal(false)}>X</span>
-                <Mint />
-                </div>
-            </div>
+                 <Modal show={mintModal}>
+                     <div style={{"display": "flex", "minHeight": "600px",  "flexDirection": "column"}}>
+                    <Mint />
+                    </div>
+                </Modal>
+            
             )
 
         }
@@ -453,7 +462,7 @@ const PlayEth = () => {
                         <button
                             disabled={!isButtonEnabled.sendCampaign}
                             className="btn-whale"
-                            onClick={()=> setCampaignModal(true)}
+                            onClick={()=> setCampaignModal(!campaignModal)}
                         >
                             Send to Campaign
                         </button>
@@ -586,7 +595,7 @@ const PlayEth = () => {
                                        
 
 
-                return( <tr key={index} className={`${rowSelected} row`} onClick={()=> handleClick(parseInt(line.id))}  > 
+                return( <tr key={index} className={`${rowSelected} row`} onClick={()=> handleClick(line)}  > 
                     <td><img src={line.image} alt="Elf" /></td>
                     <td>{line.name}</td>
                     <td>{line.elfStatus}</td>
