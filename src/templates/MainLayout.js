@@ -32,10 +32,10 @@ const MainLayout = (props) => {
                                 Visual Mode (ETH)
                             </NavLink>
                             <NavLink to="/playeth">
-                                Table Mode (ETH)
+                                Campaign Planner (ETH)
                             </NavLink>
                             <NavLink to="/playpoly">
-                                Table Mode (Polygon)
+                             Campaign Planner (Polygon)
                             </NavLink>
                         </div>
                     </div>
