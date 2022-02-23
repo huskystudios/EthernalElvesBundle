@@ -569,7 +569,7 @@ function _isSignedByValidator(bytes32 _hash, bytes memory _signature) private vi
                                 newWeaponTier = levelTier - 1 < 1 ? 1 : levelTier - 1;          
                         }
                          
-
+                newWeaponTier = newWeaponTier > 3 ? 3 : newWeaponTier;
                 newWeapon = ((newWeaponTier - 1) * 3) + (rand % 3);  
             
         
