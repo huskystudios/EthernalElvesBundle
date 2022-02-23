@@ -238,6 +238,25 @@
       "inputs": [
         {
           "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "sentinel",
+          "type": "uint256"
+        }
+      ],
+      "name": "ElfTransferedIn",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
           "internalType": "address",
           "name": "from",
           "type": "address"
@@ -456,6 +475,25 @@
           "type": "address"
         }
       ],
+      "name": "auth",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
       "name": "balanceOf",
       "outputs": [
         {
@@ -494,14 +532,14 @@
           "type": "uint256[]"
         },
         {
-          "internalType": "uint256",
-          "name": "campaign_",
-          "type": "uint256"
+          "internalType": "bool",
+          "name": "rollItems_",
+          "type": "bool"
         },
         {
-          "internalType": "uint256",
-          "name": "sector_",
-          "type": "uint256"
+          "internalType": "bool",
+          "name": "useitem_",
+          "type": "bool"
         },
         {
           "internalType": "address",
@@ -936,6 +974,13 @@
     },
     {
       "inputs": [],
+      "name": "newCamps",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "oldSupply",
       "outputs": [
         {
@@ -1129,6 +1174,24 @@
     {
       "inputs": [
         {
+          "internalType": "address[]",
+          "name": "adds_",
+          "type": "address[]"
+        },
+        {
+          "internalType": "bool",
+          "name": "status",
+          "type": "bool"
+        }
+      ],
+      "name": "setAuth",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "uint256",
           "name": "id",
           "type": "uint256"
@@ -1214,6 +1277,24 @@
         }
       ],
       "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "ids",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "synergize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
