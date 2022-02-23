@@ -66,7 +66,6 @@ contract PolyEthernalElves is PolyERC721 {
 
        camps[1] = Camps({baseRewards: 10, creatureCount: 1000, creatureHealth: 120,  expPoints:6,   minLevel:1, campMaxLevel:100});
 
-
        MAX_LEVEL = 100;
        TIME_CONSTANT = 1 hours; 
        REGEN_TIME = 300 hours; 
@@ -79,6 +78,11 @@ contract PolyEthernalElves is PolyERC721 {
        operator             = _operator;
     }    
     
+    function newCamps()  public {
+       onlyOwner();
+       camps[4] = Camps({baseRewards: 24, creatureCount: 4000, creatureHealth: 192,  expPoints:9,   minLevel:7, campMaxLevel:30});
+       camps[5] = Camps({baseRewards: 36, creatureCount: 4000, creatureHealth: 264,  expPoints:9,   minLevel:14, campMaxLevel:50});
+    }   
     
 
 //EVENTS
@@ -230,17 +234,10 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
                     require(elf.timestamp < block.timestamp, "elf busy");
                     require(elf.action != 3, "exit passive mode first");  
 
-                    Camps memory camp = camps[campaign_];                    
-  
-                    require(camp.minLevel <= elf.level, "level too low");
-                    require(camp.campMaxLevel >= elf.level, "level too high"); 
-                    require(camp.creatureCount > 0, "no creatures left");
-  
-                    camps[campaign_].creatureCount = camp.creatureCount - 1;         
-
-                    (elf.level, actions.reward, elf.timestamp, elf.inventory) = _gameEngine(campaign_, sector_, elf.level, elf.attackPoints, elf.healthPoints, elf.inventory, useItem);
-
+                 
                     if(gameMode_ == 1){
+
+                        (elf.level, actions.reward, elf.timestamp, elf.inventory) = _campaignsEngine(campaign_, sector_, elf.level, elf.attackPoints, elf.healthPoints, elf.inventory, useItem);
 
                         if(rollWeapons && rollItems){
                         (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, _rand(), 3, elf.weaponTier, elf.primaryWeapon, elf.inventory);  
@@ -253,11 +250,23 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
                     }
 
                      if(gameMode_ == 2){
-                          if(elf.sentinelClass == 1){
-                              if(elf.weaponTier > 2){
-                                  elf.timestamp = _bloodthirst(elf.weaponTier, id_, elf.timestamp, elfOwner);
-                              }
-                          }
+
+
+                        (elf.level, actions.reward, elf.timestamp, elf.inventory) = _bloodthirst(campaign_, sector_, elf.weaponTier, elf.level, elf.attackPoints, elf.healthPoints, elf.inventory, useItem);
+
+                        if(rollItems){
+                        (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, _rand(), 2, elf.weaponTier, elf.primaryWeapon, elf.inventory);  
+                        }    
+
+                        
+                       if(elf.sentinelClass == 1){
+                            
+                                elf.timestamp = _instantKill(elf.timestamp, elf.weaponTier, elfOwner, id_);
+                
+                         }
+                
+
+                       
                      }
 
 
@@ -336,8 +345,17 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
                         sentinels[campaign_] = DataStructures._setElf(hElf.owner, hElf.timestamp, hElf.action, hElf.healthPoints, hElf.attackPoints, hElf.primaryWeapon, hElf.level, actions.traits, actions.class);
 
                 }
-                }
-          
+                //Action 8 is move to polygon
+                }else if(action == 9){//Re-roll cooldown
+
+                    require(bankBalances[elfOwner] >= 5 ether, "Not Enough Ren");
+                    require(elf.sentinelClass == 0, "not a healer"); 
+                    require(elf.action != 3, "cant reroll while passive"); //Cant heal in passve mode
+                    
+                    _setAccountBalance(elfOwner, 5 ether, true);
+                    elf.timestamp = _rollCooldown(elf.timestamp, id_, rand);
+
+                }          
              
             actions.traits   = DataStructures.packAttributes(elf.hair, elf.race, elf.accessories);
             actions.class    = DataStructures.packAttributes(elf.sentinelClass, elf.weaponTier, elf.inventory);
@@ -351,11 +369,18 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
     }
 
 
-function _gameEngine(uint256 _campId, uint256 _sector, uint256 _level, uint256 _attackPoints, uint256 _healthPoints, uint256 _inventory, bool _useItem) internal 
+function _campaignsEngine(uint256 _campId, uint256 _sector, uint256 _level, uint256 _attackPoints, uint256 _healthPoints, uint256 _inventory, bool _useItem) internal
  
  returns(uint256 level, uint256 rewards, uint256 timestamp, uint256 inventory){
   
   Camps memory camp = camps[_campId];  
+  
+  require(camp.minLevel <= _level, "level too low");
+  require(camp.campMaxLevel >= _level, "level too high"); 
+  require(camp.creatureCount > 0, "no creatures left");
+  
+  camps[_campId].creatureCount = camp.creatureCount - 1;  
+
   level = (uint256(camp.expPoints)/3); //convetrt xp to levels
 
   rewards = camp.baseRewards + (2 * (_sector - 1));
@@ -386,22 +411,55 @@ function _gameEngine(uint256 _campId, uint256 _sector, uint256 _level, uint256 _
 
 }
 
-function _bloodthirst(uint256 weaponTier, uint256 id, uint256 timestamp, address owner) internal 
- 
- returns(uint256 timestamp_){
+function _instantKill(uint256 timestamp, uint256 weaponTier, address elfOwner, uint256 id) internal returns(uint256 timestamp_){
 
-     uint16  chance = uint16(_randomize(_rand(), "InstantKill", id)) % 100;
-     uint256 killChance = weaponTier == 3 ? 10 : weaponTier == 4 ? 15 : weaponTier == 5 ? 20 : 0;
+  uint16  chance = uint16(_randomize(_rand(), "InstantKill", id)) % 100;
+  uint256 killChance = weaponTier == 3 ? 10 : weaponTier == 4 ? 15 : weaponTier == 5 ? 20 : 0;
 
     if(chance <= killChance){
         timestamp_ = block.timestamp + (15 minutes);
-        emit BloodThirst(owner, id);
+        emit BloodThirst(elfOwner, id);
     }else{
         timestamp_ = timestamp;
-    }     
+    } 
 
 
  }
+ 
+
+
+function _bloodthirst(uint256 _campId, uint256 _sector, uint256 weaponTier, uint256 _level, uint256 _attackPoints, uint256 _healthPoints, uint256 _inventory, bool _useItem) internal view
+ 
+ returns(uint256 level, uint256 rewards, uint256 timestamp, uint256 inventory){
+  
+  rewards = weaponTier == 3 ? 80 ether : weaponTier == 4 ? 95 ether : weaponTier == 5 ? 120 ether : 0;  
+
+  inventory = _inventory;
+ 
+  if(_useItem){
+         _attackPoints = _inventory == 1 ? _attackPoints * 2   : _attackPoints;
+         _healthPoints = _inventory == 2 ? _healthPoints * 2   : _healthPoints; 
+          rewards      = _inventory == 3 ?  rewards * 2        : rewards;
+          level        = _inventory == 4 ?  level * 2          : level; //if inventory is 4, level reward is doubled
+         _healthPoints = _inventory == 5 ? _healthPoints + 200 : _healthPoints; 
+         _attackPoints = _inventory == 6 ? _attackPoints * 3   : _attackPoints;
+         
+         inventory = 0;
+  }
+
+  level = _level; //+ level;  No level bonus for bloodthirst
+  level = level < MAX_LEVEL ? level : MAX_LEVEL; //if level is greater than max level, set to max level
+                             
+  uint256 creatureHealth =  400; 
+  uint256 attackTime = creatureHealth/_attackPoints;
+  
+  attackTime = attackTime > 0 ? attackTime * TIME_CONSTANT : 0;
+  
+  timestamp = REGEN_TIME/(_healthPoints) + (block.timestamp + attackTime);
+
+}
+
+
 
 
     function _exitPassive(uint256 timeDiff, uint256 _level, address _owner) private returns (uint256 level) {
@@ -424,8 +482,6 @@ function _bloodthirst(uint256 weaponTier, uint256 id, uint256 timestamp, address
                         level = 100;
                     }
                     
-                   
-
                     _setAccountBalance(_owner, rewards, false);
 
     }
@@ -454,6 +510,34 @@ function _bloodthirst(uint256 weaponTier, uint256 id, uint256 timestamp, address
                 newWeapon = ((newWeaponTier - 1) * 3) + (rand % 3);  
             
         
+    }
+
+
+    function _rollCooldown(uint256 _timestamp, uint256 id, uint256 rand) internal view returns (uint256 timestamp_) {
+
+        uint16 chance = uint16 (_randomize(rand, "Cooldown", id) % 100); //percentage chance of re-rolling cooldown
+        uint256 cooldownLeft = _timestamp - block.timestamp; //time left on cooldown
+        timestamp_ = _timestamp; //initialize timestamp to old timestamp
+
+            if(cooldownLeft > 0){
+                    
+                    if(chance > 10 && chance < 70){
+                    
+                        timestamp_ = block.timestamp + (cooldownLeft * 2/3);
+                    
+                    }else if (chance > 70 ){
+                    
+                        timestamp_ = timestamp_ + 5 minutes;
+                    
+                    }else{
+                            
+                        timestamp_ = block.timestamp + (cooldownLeft * 1/2);
+                        
+                        }
+            }
+
+        return timestamp_;    
+                
     }
     
 

@@ -41,12 +41,6 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
         }else{
             onSendCampaign({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem})
         }
-
-        
-
-        
-        
-        //let {success, status, txHash} = await sendCampaign({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem})
         
         onChangeIndex(value)
     }
@@ -56,6 +50,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
     const handleCampaignChange = async (value) => {
         setCampaign(value)
         setActiveCampaign(campaignArray[value])
+        setSectorChange(1)
 
     }
 
