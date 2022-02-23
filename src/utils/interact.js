@@ -669,8 +669,6 @@ export const getCampaign = async(id, chain) => {
     }else{
       response = await gameContract.methods.camps(id).call()
     } 
-
-    console.log(response)
        
     let campaignObj = {
         

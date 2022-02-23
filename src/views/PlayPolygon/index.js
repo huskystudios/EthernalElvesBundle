@@ -27,6 +27,7 @@ const PlayPolygon = () => {
         returnPassive: false,
         heal: false,
         sendCampaign: false,
+        synergize: false,
     });
  
     
@@ -73,6 +74,7 @@ const PlayPolygon = () => {
         const isInactive = (elf) => new Date() > new Date(elf.time * 1000);
         const isPassive = (elf) => elf.action === 3;
         const isStaked = (elf) => elf.elfStatus === "staked";
+        const isDruid = (elf) => elf.sentinelClass === 0;
         const reducer = (accumulator, key) => {
             if (selectedElves.length === 0) return {...accumulator, [key]: false};
 
@@ -94,6 +96,9 @@ const PlayPolygon = () => {
                     break;
                 case "rerollWeapon":
                 case "rerollItem":
+                case "synergize":                    
+                    value = selectedElves.every((elf) => !isInactive(elf) && isDruid(elf));
+                    break;    
                 default:
                     value = selectedElves.every((elf) => !isPassive(elf));
                     break;
@@ -116,7 +121,7 @@ const PlayPolygon = () => {
         setStatus("Sending gasless transaction... waiting for response. Please do not close the window.")
 
         let response = await Moralis.Cloud.run("operatorTransactor", params)
-
+        console.log("SEND HUSKY THIS", response)
         if(response.status){
 
             let txHashLink = `https://polygonscan.com/tx/${response.transaction.transactionHash}`
@@ -405,7 +410,7 @@ const PlayPolygon = () => {
                         </button>
 
                         <button
-                            disabled={!isButtonEnabled.sendCampaign}
+                            disabled={!isButtonEnabled.synergize}
                             className="btn-whale"
                             onClick={() => druidSynergize()}
                         >
