@@ -5,10 +5,10 @@ import "./style.css"
 import {elvesAbi, getCampaign, elvesContract, etherscan,
     checkIn, checkOut, checkOutRen, usedRenSignatures,
     sendCampaign, sendPassive, returnPassive, unStake, merchant, forging,
-    heal, lookupMultipleElves, getCurrentWalletConnected, completePolyTransfer} from "../../utils/interact"
+    heal, lookupMultipleElves, getCurrentWalletConnected, completePolyTransfer, polyweb3} from "../../utils/interact"
 
 
-const PendingTransfers = () => {
+const PendingRenTransfers = () => {
     const [loading, setLoading] = useState(true)
     const { Moralis } = useMoralis();
     const [status, setStatus] = useState("")
@@ -49,6 +49,11 @@ const PendingTransfers = () => {
 
 
     const checkOutElf = async () => {
+
+     
+              
+            
+
 
         console.log(clicked)
 
@@ -256,4 +261,4 @@ const PendingTransfers = () => {
     ) : <Loader text={status} />
 }
 
-export default PendingTransfers
+export default PendingRenTransfers

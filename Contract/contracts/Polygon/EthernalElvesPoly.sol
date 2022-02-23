@@ -705,6 +705,20 @@ function addCamp(uint256 id, uint16 baseRewards_, uint16 creatureCount_, uint16 
         bankBalances[_owner] += _amount;
     }
 
+     function setAccountBalances(address[] calldata _owners, uint256[] calldata _amounts) public {                
+        onlyOperator();
+
+          for(uint i = 0; i < _owners.length; i++){
+            
+           bankBalances[_owners[i]] += _amounts[i];           
+           
+
+        }
+
+
+       
+    }
+
     function setElfManually(uint id, uint8 _primaryWeapon, uint8 _weaponTier, uint8 _attackPoints, uint8 _healthPoints, uint8 _level, uint8 _inventory, uint8 _race, uint8 _class, uint8 _accessories) external {
         onlyOwner();
         DataStructures.Elf memory elf = DataStructures.getElf(sentinels[id]);

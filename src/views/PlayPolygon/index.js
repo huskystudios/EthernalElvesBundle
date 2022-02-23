@@ -147,6 +147,13 @@ const PlayPolygon = () => {
         
     }
 
+    const druidSynergize = async () => {
+           
+        const params =  {functionCall: polygonContract.methods.synergize(clicked, owner).encodeABI()}
+        await sendGaslessFunction(params)
+        
+    }
+
 
     const checkinElf = async () => {
 
@@ -396,6 +403,18 @@ const PlayPolygon = () => {
                         >
                             Re-Roll Item
                         </button>
+
+                        <button
+                           // disabled={!isButtonEnabled.druidSynergize}
+                            className="btn-whale"
+                            onClick={() => druidSynergize()}
+                        >
+                            Synergize Druid
+                        </button>
+
+                        
+
+
                         <button
                             disabled={!isButtonEnabled.sendPassive}
                             className="btn-whale"

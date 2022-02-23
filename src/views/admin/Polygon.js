@@ -52,8 +52,8 @@ const Polygon = () => {
 }
 
 const remoteTx = async () => {
-    const params =  {tokenId: tokenId, sentinel: sentinelDna}
-    let response = await Moralis.Cloud.run("testPolySign", params)
+    
+    let response = await Moralis.Cloud.run("remoteTx")
     console.log(response)
 
     

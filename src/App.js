@@ -34,6 +34,7 @@ const [flip, setFlip] = useState(false)
 
 
     const {address} = await getCurrentWalletConnected()
+
     if(adminWallet.includes(address.toLowerCase())){
       setFlip(true)
     }

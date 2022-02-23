@@ -19,7 +19,6 @@ const [loading1, setLoading1] = useState(true);
 // const [showData, setShowData] = useState(false);
 const [progress, setProgress] = useState(0);
 
-const [gameStatus, setGameStatus] = useState(0);
 const [setWL, getWL] = useState(0);
 const { Moralis } = useMoralis();
 const [max, setMax] = useState(0);
@@ -74,8 +73,7 @@ useEffect(() => {
     setCurrentPrice(price);
     setRenSupply(totalRenSupply);
     setOwnerCount(ownerCount.length)
-    setGameStatus(await Moralis.Cloud.run("getGameStatus"))
-    setActionDistribution(await Moralis.Cloud.run("getActions"))
+     setActionDistribution(await Moralis.Cloud.run("getActions"))
 
     //console.log(await Moralis.Cloud.run("getOwnerBalances"))
     
@@ -161,20 +159,12 @@ setLoading(false)
 };
 
 
-const flipGameState = async (_index) => {
+const remoteTx = async () => {
+    
+  let response = await Moralis.Cloud.run("remoteTx")
+  console.log(response)
 
-  await Moralis.enableWeb3();
-  const index = parseInt(_index)
-      
-  const options = {
-      contractAddress: elvesContract,
-      functionName: index === 1 ? "flipActiveStatus" : "flipMint",
-      abi: elvesAbi.abi,
-     
-    };
-    
-    await Moralis.executeFunction(options);           
-    
+  //  <button className="btn btn-blue" onClick={remoteTx}>HUSKY TEST</button>
 
 }
 
@@ -183,7 +173,8 @@ const flipGameState = async (_index) => {
 return (
 <>
        <div className="dark-1000 h-full d-flex home justify-center items-center black">
-      
+     
+
             <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
             <p>ADMIN CONSOLE</p>
 
@@ -201,27 +192,6 @@ return (
             <ExportGame />
 
             
-                <p>FLIP GAME STATE</p>
-            
-
-   
-
-            <div className="justify-center">
-            {!loading && 
-            <>
-             <button className={`btn ${gameStatus.gameActive ? "btn-green" : "btn-red"}`} onClick={()=> flipGameState(1)}><div className="animate-bounce">flip Active... </div></button>
-             <div className="mint-instructions">
-                <p>{gameStatus.gameActive ? "Game is Active" : "Game is Inactive"}</p>
-            </div>
-             <button className={`btn ${gameStatus.publicMint ? "btn-green" : "btn-red"}`} onClick={()=> flipGameState(2)}><div className="animate-bounce">flip Mint... </div></button>
-             <div className="mint-instructions">
-                <p>{gameStatus.publicMint ? "Public Minting is Active" : "Public Minting is Inactive"}</p>
-            </div>
-         
-            
-            </>}
-            </div>
-
 
         
         </div>  

@@ -30,7 +30,7 @@ const polyElvesAbi = require('./ABI/polyElves.json')
 
 
 const web3 = new Web3(new Web3.providers.HttpProvider(alchemyethkey))
-const polyweb3 = new Web3(new Web3.providers.HttpProvider(polygonKey))
+export const polyweb3 = new Web3(new Web3.providers.HttpProvider(polygonKey))
 
 const nftContract = new web3.eth.Contract(elvesAbi.abi, elvesContract);
 const ercContract = new web3.eth.Contract(mirenAbi.abi, mirenContract);
@@ -882,3 +882,39 @@ export const updateMoralisDb = async ({elf, elves}) => {
 }
 */
 
+/////POLYGON FUNCTIONS////
+
+export const completePolyTransfer = async(props) => {
+
+  console.log(props)
+
+    const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
+      //the transaction
+      const tx = {
+        'from': window.ethereum.selectedAddress,
+        'to': polyElvesContract,
+        'nonce': nonce.toString(),
+        'data': polygonContract.methods.modifyElfDNA(props.ids, props.sentinel).encodeABI()
+      };
+    
+
+
+
+ 
+  try {
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
+        
+  return {
+        success: true,
+        status: (<>Check out your transaction on <a target="_blank" href={`https://polygonscan.com/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash,
+    }
+  } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+    }
+  
+  } 
+
+}
