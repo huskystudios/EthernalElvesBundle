@@ -2,9 +2,8 @@ import React, { useEffect, useState, useMemo } from "react"
 import Loader from "../../components/Loader"
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis"
 import "./style.css"
-import { actionString, campaigns } from "../home/config"
 import Countdown from 'react-countdown';
-import {elvesAbi, getCampaign, elvesContract, etherscan,
+import {
     checkIn,
     sendCampaign, sendPassive, returnPassive, unStake, merchant, forging,
     heal, lookupMultipleElves, getCurrentWalletConnected} from "../../utils/interact"
@@ -16,12 +15,8 @@ const PlayEth = () => {
     const [loading, setLoading] = useState(true)
     const { Moralis } = useMoralis();
     const [status, setStatus] = useState("")
-    const [tryWeapon, setTryWeapon] = useState(false)
-    const [tryItem, setTryItem] = useState(false)
-    const [useItem, setUseItem] = useState(false)
     const [sortBy, setSortBy] = useState({ value: "cooldown", order: "desc" });
-    const [tryCampaign, setTryCampaign] = useState(1)
-    const [trySection, setTrySection] = useState(1)
+
 
     const [renTransfer, setRenTransfer] = useState("")
     
@@ -51,8 +46,9 @@ const PlayEth = () => {
     const resetVariables = async () => {
         setClicked([])
         setNftData([])
+        setNfts([])
         setTxReceipt([])
-        setCampaignModal(false)
+        setCampaignModal(!campaignModal)
         setActiveNfts(!activeNfts)
 
     }

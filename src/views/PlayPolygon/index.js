@@ -2,22 +2,15 @@ import React, { useEffect, useState, useMemo } from "react"
 import Loader from "../../components/Loader"
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis"
 import "./style.css"
-import { actionString, campaignsPoly } from "../home/config"
 import Countdown from 'react-countdown';
-import {elvesAbi, getCampaign, elvesContract, etherscan,
-    checkIn,
-    sendCampaign, sendPassive, returnPassive, unStake, merchant, forging,
-    heal, lookupMultipleElves, getCurrentWalletConnected, polygonContract} from "../../utils/interact"
+import {lookupMultipleElves, getCurrentWalletConnected, polygonContract} from "../../utils/interact"
 import Modal from "../../components/Modal"
-
+import Sector from "../../views/home/components/Sector"
 
 const PlayPolygon = () => {
     const [loading, setLoading] = useState(true)
     const { Moralis } = useMoralis();
     const [status, setStatus] = useState("")
-    const [tryWeapon, setTryWeapon] = useState(false)
-    const [tryItem, setTryItem] = useState(false)
-    const [useItem, setUseItem] = useState(false)
     const [sortBy, setSortBy] = useState({ value: "cooldown", order: "desc" });
     const [tryCampaign, setTryCampaign] = useState(1)
     const [trySection, setTrySection] = useState(1)
@@ -43,6 +36,7 @@ const PlayPolygon = () => {
     const [nftData, setNftData] = useState([])
     const [sortedElves, setSortedElves] = useState([])
     const [activeNfts, setActiveNfts] = useState(true)
+    const [nfts, setNfts] = useState([])
     const [txreceipt, setTxReceipt] = useState()
     const [alert, setAlert] = useState({show: false, value: null})
     const [campaignModal, setCampaignModal] = useState(false)
@@ -52,25 +46,25 @@ const PlayPolygon = () => {
     const resetVariables = async () => {
         setClicked([])
         setNftData([])
+        setNfts([])
         setTxReceipt([])
         setCampaignModal(false)
+        setCampaignModal(!campaignModal)
         setActiveNfts(!activeNfts)
 
     }
     
-   // const { data, error, fetch, isFetching, isLoading } = useWeb3ExecuteFunction();
+ 
+   const handleClick = async (id) => {
 
-
-    const handleClick = async (id) => {
-
-        if (clicked.includes(id)) {
-            setClicked(clicked.filter(item => item !== id))
-        } else {
-            setClicked([...clicked, id])
-        }
+    if (clicked.includes(id.id)) {
+        setClicked(clicked.filter(item => item !== id.id))
+        setNfts(nfts.filter(item => item !== id))
+    } else {
+        setClicked([...clicked, id.id])
+        setNfts([...nfts, id])
     }
-
-    
+}
 
 
     useMemo(() => {
@@ -138,9 +132,10 @@ const PlayPolygon = () => {
 
     }
 
-    const sendCampaignFunction = async () => {
+    const sendCampaignFunction = async (campParams) => {
            
-        const params =  {functionCall: polygonContract.methods.sendCampaign(clicked, tryCampaign, trySection, tryWeapon, tryItem, useItem, owner).encodeABI()}
+        //const params =  {functionCall: polygonContract.methods.sendCampaign(clicked, tryCampaign, trySection, tryWeapon, tryItem, useItem, owner).encodeABI()}
+        const params =  {functionCall: polygonContract.methods.sendCampaign(clicked, campParams.tryCampaign, campParams.trySection, campParams.tryWeapon, campParams.tryItem, campParams.useItem, owner ).encodeABI()}
         await sendGaslessFunction(params)
         
     }
@@ -163,9 +158,7 @@ const PlayPolygon = () => {
     }
 
     const reRoll = async (option) => {
-       // let reRollPrice = .01 * 10**18
-       // let hexString = reRollPrice.toString(16);
-        
+      
         const params =  {
             functionCall: option === "forging" ? polygonContract.methods.forging(clicked, owner).encodeABI() : polygonContract.methods.merchant(clicked, owner).encodeABI() }
         await sendGaslessFunction(params)          
@@ -327,69 +320,33 @@ const PlayPolygon = () => {
             )
         }
 
-
         const renderModal = () => {
-           // if(!campaignModal) return <></>
+
             return(
-
                 <Modal show={campaignModal}>
-                     <h3>All selected Elves will go to the same campaign</h3>
-                       
-                   
-                        <div className="modal-whale-campaign-grid">
-
-                           
-                            <label>Campaign</label>
-                            <select value={tryCampaign} onChange={(e) => setTryCampaign(e.target.value)}>
-                                {campaignsPoly.map((campaign) => {
-                                    let label = `${campaign.id}. ${campaign.name}`;
-                                    return (
-                                        <option value={campaign.id}>{label}</option>
-                                    );
-                                })}
-                            </select>
-                            <label>Section</label>
-                            <input type="number" min="1" max="5" value={trySection} onChange={(e) => setTrySection(e.target.value)}/>
-                            <label>Re-roll Weapon</label>
-                            <input type="checkbox" checked={tryWeapon} onChange={(e) => setTryWeapon(!tryWeapon)}/>
-                            <label>Re-roll Item</label>
-                            <input type="checkbox" checked={tryItem} onChange={(e) => setTryItem(!tryItem)}/>
-                            <label>Use Item</label>
-                            <input type="checkbox" checked={useItem} onChange={(e) => setUseItem(!useItem)}/>
-                        </div>
-                    
-                        <div className="flex">
-                        <button
-                            className="btn-whale"
-                            onClick={sendCampaignFunction}
-                        >
-                            campaign
-                        </button>
-                        </div>
+                        <Sector showpagination={true} chain={"polygon"} data={nfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} mode={"campaign"} />
                 </Modal>
+             )
+         }
+
+
+       
+       
+
+
+        
+        const onChangeIndex = () => {
       
-            )
+            return null
         }
 
         
         const renderBTModal = () => {
-           // if(!campaignBTModal) return <></>
+        
             return(
                 <Modal show={campaignBTModal}>
                         <h3>All selected Elves will go to the same campaign</h3>
-                        <div className="modal-whale-campaign-grid">
-                            <label>Campaign</label>
-                            <select value={tryCampaign} onChange={(e) => setTryCampaign(e.target.value)}>
-                                {campaignsPoly.map((campaign) => {
-                                    let label = `${campaign.id}. ${campaign.name}`;
-                                    return (
-                                        <option value={campaign.id}>{label}</option>
-                                    );
-                                })}
-                            </select>
-                            <label>Section</label>
-                            <input type="number" min="1" max="5" value={trySection} onChange={(e) => setTrySection(e.target.value)}/>
-                        </div>
+                        
                     
                         <div className="flex">
 
@@ -463,7 +420,7 @@ const PlayPolygon = () => {
                         <button
                             disabled={!isButtonEnabled.sendCampaign}
                             className="btn-whale"
-                            onClick={()=> setCampaignModal(true)}
+                            onClick={()=> setCampaignModal(!campaignModal)}
                         >
                             Send to Campaign
                         </button>
@@ -600,7 +557,7 @@ const PlayPolygon = () => {
                                        
 
 
-                return( <tr key={index} className={`${rowSelected} row`} onClick={()=> handleClick(parseInt(line.id))}  > 
+                    return( <tr key={index} className={`${rowSelected} row`} onClick={()=> handleClick(line)}  > 
                     <td>
                     {line.image && <img src={line.image} alt="elf" />}
                     </td>

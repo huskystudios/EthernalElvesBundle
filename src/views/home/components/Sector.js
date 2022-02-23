@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react"
 import {campaigns} from "../config" 
-import {getCampaign, sendCampaign} from "../../../utils/interact"
+import {getCampaign, sendCampaign, getCurrentWalletConnected} from "../../../utils/interact"
 
-const Sector = ({onChangeIndex, onSendCampaign, data, mode, showpagination}) => {
+const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
 
     const [rerollWeapon, setRerollWeapon] = useState(false);
     const [rerollItem, setRerollItem] = useState(false);
@@ -25,6 +25,9 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, showpagination}) => 
     
     }
     const handleChangeIndex = async (value) => {
+
+
+        let {address} = await getCurrentWalletConnected()
       
         let tryTokenids = data.map(nft => {return(nft.id)})
         let tryCampaign = activeCampaign.id.toString()
@@ -33,7 +36,15 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, showpagination}) => 
         let tryItem = rerollItem
         let useItem = useItemValue
 
-        value > 0 && onSendCampaign({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem})
+        if(chain === "polygon"){
+            onSendCampaign({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem, address})
+        }else{
+            onSendCampaign({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem})
+        }
+
+        
+
+        
         
         //let {success, status, txHash} = await sendCampaign({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem})
         
@@ -75,7 +86,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, showpagination}) => 
                 const campaignArry = []
                 for(let i = 0; i < campaigns.length; i++){
     
-                    await getCampaign(campaigns[i].id).then(res => {
+                    await getCampaign(campaigns[i].id, chain).then(res => {
     
                     const camoObj = {
                             name: campaigns[i].name,
@@ -159,7 +170,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, showpagination}) => 
                     </div>
                     
                     {showTooltip(tooltip)}
-                    {showpagination &&
+                   
                     <>
                     <div style={{width: 380}}>
                     <p>weapons &amp; items - look for new stuff when you campaign?</p>
@@ -193,7 +204,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, showpagination}) => 
                             use item
                         </div>
                     </div>
-                    </>}
+                    </>
                 </div>
 
 
@@ -227,7 +238,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, showpagination}) => 
                      
                     </div>
 
-                    {showpagination &&
+                   
                     <div className="elves-panel">
                         {data.map((character) => {
                          
@@ -250,19 +261,19 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, showpagination}) => 
                             )}   
                         )}
                     </div>
-                    }
+                    
 
                      </div>     
                 </div>              
             
             </div>
 
-            {showpagination && 
+           
             <div className="d-flex flex-row justify-around">
                    {/* <button className="btn btn-red" onClick={() => confirm ? setConfirm(false) : handleChangeIndex(mode === "campaign" ? -1 : -3)} >back</button> */} 
                     <button className="btn btn-green" onClick={() => handleChangeIndex(1)}>Confirm</button>
             </div>
-            }
+            
             {renderModal(modal)}
         </div>
         

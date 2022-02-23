@@ -157,7 +157,7 @@
     position: relative;
 }
 .sector-panel {
-    background-image: url(../../assets/images/sector_panel.png);
+    background-color: black;
     background-size: 95% 100%;
     background-position: center;
     background-repeat: no-repeat;

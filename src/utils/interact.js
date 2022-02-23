@@ -654,9 +654,17 @@ export const checkOutRen = async(props) => {
 }
 
 
-export const getCampaign = async(id) => {
+export const getCampaign = async(id, chain) => {
       
-    let response = await gameContract.methods.camps(id).call()
+    let response //= await gameContract.methods.camps(id).call()
+    
+    if(chain === 'polygon'){
+      response = await polygonContract.methods.camps(id).call()
+    }else{
+      response = await gameContract.methods.camps(id).call()
+    } 
+
+    console.log(response)
        
     let campaignObj = {
         
