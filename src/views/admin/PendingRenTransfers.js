@@ -147,8 +147,6 @@ const PendingRenTransfers = () => {
         
         <>
 
-        
-            <div className="dark-1000 h-full d-flex flex-column profile">           
            
                 <div className="d-flex">      
                     <div className="column">
@@ -238,7 +236,6 @@ const PendingRenTransfers = () => {
       
 </div>
 
-</div>
 
 {alert.show && showAlert(alert.value)}
 

@@ -12,8 +12,8 @@ const PlayPolygon = () => {
     const { Moralis } = useMoralis();
     const [status, setStatus] = useState("")
     const [sortBy, setSortBy] = useState({ value: "cooldown", order: "desc" });
-    const [tryCampaign, setTryCampaign] = useState(1)
-    const [trySection, setTrySection] = useState(1)
+    const [tryItem, setTryItem] = useState(1)
+    const [useItem, setUseItem] = useState(1)
 
     const owner = window.ethereum.selectedAddress
 
@@ -147,7 +147,7 @@ const PlayPolygon = () => {
 
     const bloodthirstFunction = async () => {
            
-        const params =  {functionCall: polygonContract.methods.bloodThirst(clicked, tryCampaign, trySection, owner).encodeABI()}
+        const params =  {functionCall: polygonContract.methods.bloodThirst(clicked, tryItem, useItem, owner).encodeABI()}
         await sendGaslessFunction(params)
         
     }
@@ -357,13 +357,52 @@ const PlayPolygon = () => {
         
             return(
                 <Modal show={campaignBTModal}>
-                        <h3>All selected Elves will go to the same campaign</h3>
+                        <h3>Bloodthirst!</h3>
                         
+                        Creature Health is 400HP
+                        <br/>
+                        rewards 
+                        <br/>
+                        weaponTier = 3 ? 80 $REN
+                        <br/>
+                        weaponTier = 4 ? 95 $REN
+                        <br/>
+                        weaponTier = 5 ? 120 $REN
+                        <br/>
+                       
+
+                        <>
+                    <div >
+                    <p>items - look for new items?</p>
+                    </div>
+                    <div className="flex" >
+                    <div className="d-flex items-center">
+           
+                        <div 
+                            className={tryItem ? "btn-sector-option active" : "btn-sector-option"} 
+                            onClick={() => setTryItem(state => !state)} 
+                          
+                        >
+                            item
+                        </div>
+                        </div>
+                        <div className="d-flex items-center">
+                        <div 
+                            className={useItem ? "btn-sector-option active" : "btn-sector-option"} 
+                            onClick={() => setUseItem(state => !state)}
+                          
+                        >
+                            use item
+                        </div>
+                    </div>
+                    </div>
+                    </>
                     
                         <div className="flex">
 
                         <button
-                            className="btn-whale"
+                        
+                            className="btn btn-red"
                             onClick={bloodthirstFunction}
                         >
                             bloodthirst
