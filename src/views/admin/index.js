@@ -10,6 +10,7 @@ import CheckWhitelist from "./CheckWhitelist";
 import ExportGame from "./ExportGame";
 import CampaignAdmin from "./Campaign";
 import Loader from "../../components/Loader";
+import PendingTransfers from "./PendingTransfers";
 
 const Admin = () => {
 
@@ -279,6 +280,8 @@ return (
 
 
           </div>
+
+          <PendingTransfers />
        
 </div>
  </>

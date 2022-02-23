@@ -48,7 +48,7 @@ const PlayEth = () => {
         setNftData([])
         setNfts([])
         setTxReceipt([])
-        setCampaignModal(!campaignModal)
+      //  setCampaignModal(!campaignModal)
         setActiveNfts(!activeNfts)
 
     }

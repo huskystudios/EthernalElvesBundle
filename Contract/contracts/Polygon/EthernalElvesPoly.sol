@@ -55,7 +55,9 @@ contract PolyEthernalElves is PolyERC721 {
                 uint32 campMaxLevel;
         }
     
-   
+   //NewDataSlots///
+    mapping(address => bool)    public auth;
+    
     function initialize() public {
     
        require(!initialized, "Already initialized");
@@ -95,8 +97,20 @@ contract PolyEthernalElves is PolyERC721 {
     event LastKill(address indexed from); 
     event AddCamp(uint256 indexed id, uint256 baseRewards, uint256 creatureCount, uint256 creatureHealth, uint256 expPoints, uint256 minLevel);
     event BloodThirst(address indexed owner, uint256 indexed tokenId); 
+    event ElfTransferedIn(uint256 indexed tokenId, uint256 sentinel); 
        
+
+  function setAuth(address[] calldata adds_, bool status) public {
+       onlyOwner();
+       
+        for (uint256 index = 0; index < adds_.length; index++) {
+            auth[adds_[index]] = status;
+        }
+    }
+
 //////////////EXPORT TO OTHER CHAINS/////////////////
+
+
 
 function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) public returns (bool) {
      
@@ -139,11 +153,11 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
     }
 
 
- function bloodThirst(uint256[] calldata ids, uint256 campaign_, uint256 sector_,  address owner) external {
+ function bloodThirst(uint256[] calldata ids, bool rollItems_, bool useitem_, address owner) external {
           onlyOperator();       
 
           for (uint256 index = 0; index < ids.length; index++) {  
-            _actions(ids[index], 2, owner, campaign_, sector_, false, false, false, 2);
+            _actions(ids[index], 2, owner, 0, 0, false, rollItems_, useitem_, 2);
           }
     }
 
@@ -183,7 +197,16 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
     function heal(uint256 healer, uint256 target, address owner) external {
         onlyOperator();
         _actions(healer, 7, owner, target, 0, false, false, false, 0);
-    }    
+    }
+
+    
+     function synergize(uint256[] calldata ids, address owner) external {
+        onlyOperator();
+          for (uint256 index = 0; index < ids.length; index++) {  
+            _actions(ids[index], 9, owner, 0, 0, false, false, false, 0);
+          }
+
+    }     
 
 
 
@@ -423,10 +446,8 @@ function _instantKill(uint256 timestamp, uint256 weaponTier, address elfOwner, u
         timestamp_ = timestamp;
     } 
 
-
  }
  
-
 
 function _bloodthirst(uint256 _campId, uint256 _sector, uint256 weaponTier, uint256 _level, uint256 _attackPoints, uint256 _healthPoints, uint256 _inventory, bool _useItem) internal view
  
@@ -462,7 +483,7 @@ function _bloodthirst(uint256 _campId, uint256 _sector, uint256 weaponTier, uint
 
 
 
-    function _exitPassive(uint256 timeDiff, uint256 _level, address _owner) private returns (uint256 level) {
+function _exitPassive(uint256 timeDiff, uint256 _level, address _owner) private returns (uint256 level) {
             
             uint256 rewards;
 
@@ -506,6 +527,7 @@ function _bloodthirst(uint256 _campId, uint256 _sector, uint256 weaponTier, uint
                                 newWeaponTier = levelTier - 1 < 1 ? 1 : levelTier - 1;          
                         }
                          
+                newWeaponTier = newWeaponTier > 3 ? 3 : newWeaponTier;
 
                 newWeapon = ((newWeaponTier - 1) * 3) + (rand % 3);  
             
@@ -608,7 +630,8 @@ function elves(uint256 _id) external view returns(address owner, uint timestamp,
     }
 
     function onlyOperator() internal view {    
-       require(msg.sender == operator);
+       require(msg.sender == operator || auth[msg.sender] == true);
+
     }
 
     function onlyOwner() internal view {    
@@ -616,11 +639,13 @@ function elves(uint256 _id) external view returns(address owner, uint timestamp,
     }
 
     function modifyElfDNA(uint256[] calldata ids, uint256[] calldata sentinel) external {
-        require (msg.sender == operator || admin == msg.sender, "not allowed");      
+        require (msg.sender == operator || admin == msg.sender || auth[msg.sender] == true, "not allowed");      
         
         for(uint i = 0; i < ids.length; i++){
             
             sentinels[ids[i]] = sentinel[i];
+            
+            emit ElfTransferedIn(ids[i], sentinel[i]);
 
         }
         
