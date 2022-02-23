@@ -80,12 +80,12 @@ contract PolyEthernalElves is PolyERC721 {
        operator             = _operator;
     }    
     
-    function newCamps()  public {
+ /*   function newCamps()  public {
        onlyOwner();
        camps[4] = Camps({baseRewards: 24, creatureCount: 4000, creatureHealth: 192,  expPoints:9,   minLevel:7, campMaxLevel:30});
        camps[5] = Camps({baseRewards: 36, creatureCount: 4000, creatureHealth: 264,  expPoints:9,   minLevel:14, campMaxLevel:50});
     }   
-    
+   */ 
 
 //EVENTS
 
@@ -157,7 +157,7 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
           onlyOperator();       
 
           for (uint256 index = 0; index < ids.length; index++) {  
-            _actions(ids[index], 2, owner, 0, 0, false, rollItems_, useitem_, 2);
+            _actions(ids[index], 10, owner, 0, 0, false, rollItems_, useitem_, 2);
           }
     }
 
@@ -255,10 +255,8 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
                 }else if(action == 2){//campaign loop - bloodthirst and rampage mode loop.
 
                     require(elf.timestamp < block.timestamp, "elf busy");
-                    require(elf.action != 3, "exit passive mode first");  
-
-                 
-                    if(gameMode_ == 1){
+                    require(elf.action != 3, "exit passive mode first");                   
+                
 
                         (elf.level, actions.reward, elf.timestamp, elf.inventory) = _campaignsEngine(campaign_, sector_, elf.level, elf.attackPoints, elf.healthPoints, elf.inventory, useItem);
 
@@ -268,36 +266,12 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
                         (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, _rand(), 1, elf.weaponTier, elf.primaryWeapon, elf.inventory);  
                         }else if(rollItems){
                         (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, _rand(), 2, elf.weaponTier, elf.primaryWeapon, elf.inventory);  
-                        }                    
-                       
-                    }
+                        }
 
-                     if(gameMode_ == 2){
-
-
-                        (elf.level, actions.reward, elf.timestamp, elf.inventory) = _bloodthirst(campaign_, sector_, elf.weaponTier, elf.level, elf.attackPoints, elf.healthPoints, elf.inventory, useItem);
-
-                        if(rollItems){
-                        (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, _rand(), 2, elf.weaponTier, elf.primaryWeapon, elf.inventory);  
-                        }    
-
-                        
-                       if(elf.sentinelClass == 1){
-                            
-                                elf.timestamp = _instantKill(elf.timestamp, elf.weaponTier, elfOwner, id_);
-                
-                         }
-                
-
-                       
-                     }
-
+                        emit Campaigns(elfOwner, actions.reward, campaign_, sector_, id_);                 
 
                      _setAccountBalance(elfOwner, actions.reward, false);
                  
-                    
-                    emit Campaigns(elfOwner, actions.reward, campaign_, sector_, id_);
-
                 
                 }else if(action == 3){//passive campaign
 
@@ -378,6 +352,30 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
                     _setAccountBalance(elfOwner, 5 ether, true);
                     elf.timestamp = _rollCooldown(elf.timestamp, id_, rand);
 
+                }else if(action == 10){//Bloodthirst
+
+                    require(elf.timestamp < block.timestamp, "elf busy");
+                    require(elf.action != 3, "exit passive mode first");  
+
+                       (elf.level, actions.reward, elf.timestamp, elf.inventory) = _bloodthirst(campaign_, sector_, elf.weaponTier, elf.level, elf.attackPoints, elf.healthPoints, elf.inventory, useItem);
+
+                       if(rollItems){
+                       
+                        (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, _rand(), 2, elf.weaponTier, elf.primaryWeapon, elf.inventory);  
+                       
+                       }    
+
+                        
+                       if(elf.sentinelClass == 1){
+                            
+                                elf.timestamp = _instantKill(elf.timestamp, elf.weaponTier, elfOwner, id_);
+                
+                       }
+                
+
+                       _setAccountBalance(elfOwner, actions.reward, false);                 
+                    
+                
                 }          
              
             actions.traits   = DataStructures.packAttributes(elf.hair, elf.race, elf.accessories);
@@ -705,7 +703,7 @@ function addCamp(uint256 id, uint16 baseRewards_, uint16 creatureCount_, uint16 
         bankBalances[_owner] += _amount;
     }
 
-     function setAccountBalances(address[] calldata _owners, uint256[] calldata _amounts) public {                
+    function setAccountBalances(address[] calldata _owners, uint256[] calldata _amounts) public {                
         onlyOperator();
 
           for(uint i = 0; i < _owners.length; i++){

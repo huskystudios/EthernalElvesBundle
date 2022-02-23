@@ -405,15 +405,12 @@ const PlayPolygon = () => {
                         </button>
 
                         <button
-                           // disabled={!isButtonEnabled.druidSynergize}
+                            disabled={!isButtonEnabled.sendCampaign}
                             className="btn-whale"
                             onClick={() => druidSynergize()}
                         >
                             Synergize Druid
                         </button>
-
-                        
-
 
                         <button
                             disabled={!isButtonEnabled.sendPassive}

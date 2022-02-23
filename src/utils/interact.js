@@ -233,6 +233,12 @@ switch(parseInt(elfAction)){
   case 8:
     elfActionString = chain === "eth" ? "Sent to Polygon" : "Idle"
     break;
+  case 9:
+    elfActionString = "Synergized"
+    break;  
+  case 10:
+    elfActionString = "Bloodthirst"
+    break;
   default:
     elfActionString = "Unknown"
 
@@ -899,6 +905,40 @@ export const completePolyTransfer = async(props) => {
     
 
 
+
+ 
+  try {
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
+        
+  return {
+        success: true,
+        status: (<>Check out your transaction on <a target="_blank" href={`https://polygonscan.com/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash,
+    }
+  } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+    }
+  
+  } 
+
+}
+
+
+export const completePolyRenTransfer = async(props) => {
+
+  console.log(props)
+
+    const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
+      //the transaction
+      const tx = {
+        'from': window.ethereum.selectedAddress,
+        'to': polyElvesContract,
+        'nonce': nonce.toString(),
+        'data': polygonContract.methods.setAccountBalances(props._owners, props._amounts).encodeABI()
+      };
+    
 
  
   try {

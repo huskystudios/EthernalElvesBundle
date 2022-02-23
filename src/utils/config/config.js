@@ -19,8 +19,6 @@ import TalismanOfEnragement from "../../assets/images/items/Talisman_of_Enrageme
 
 export const sentinelClass = ["Druid", "Assassin", "Ranger"] 
 
-
-
 export const actionString =
  [{action: 0, text: 'unstake'},
   {action: 1, text: 'stake'},
@@ -30,7 +28,9 @@ export const actionString =
   {action: 5, text: 're-roll weapon'},
   {action: 6, text: 're-roll item'},
   {action: 7, text: 'healing'},
-  {action: 8, text: 'polygon'}
+  {action: 8, text: 'polygon'},
+  {action: 9, text: 'synergize'},
+  {action: 10, text: 'bloodthirst'}
 ]
 
 export const items = [

@@ -5,7 +5,7 @@ import "./style.css"
 import {elvesAbi, getCampaign, elvesContract, etherscan,
     checkIn, checkOut, checkOutRen, usedRenSignatures,
     sendCampaign, sendPassive, returnPassive, unStake, merchant, forging,
-    heal, lookupMultipleElves, getCurrentWalletConnected, completePolyTransfer, polyweb3} from "../../utils/interact"
+    heal, lookupMultipleElves, getCurrentWalletConnected, completePolyRenTransfer, polyweb3} from "../../utils/interact"
 
 
 const PendingRenTransfers = () => {
@@ -51,14 +51,9 @@ const PendingRenTransfers = () => {
     const checkOutElf = async () => {
 
      
-              
-            
-
-
-        console.log(clicked)
-
-        let tokenIdsArry = []
-        let sentinelArry = []
+         
+        let addresses = []
+        let balances = []
         
 
         nftData.map((item, index) => {
@@ -66,8 +61,8 @@ const PendingRenTransfers = () => {
            
 
             if (clicked.includes((item.id))) {
-                tokenIdsArry.push(item.attributes.tokenId)
-                sentinelArry.push(item.attributes.sentinel)
+                addresses.push(item.attributes.from)
+                balances.push(item.attributes.renAmount)
                 
             }
 
@@ -75,8 +70,8 @@ const PendingRenTransfers = () => {
         })
        
       
-        const params =  {ids:tokenIdsArry , sentinel:sentinelArry}
-        let {success, status, txHash} = await completePolyTransfer(params)
+        const params =  {_owners:addresses , _amounts:balances}
+        let {success, status, txHash} = await completePolyRenTransfer(params)
    
         success && resetVariables()            
  
@@ -93,7 +88,7 @@ const PendingRenTransfers = () => {
                 const {address} = await getCurrentWalletConnected();
                 setStatus("connected to address: " + address)
 
-               const Elves = Moralis.Object.extend("ElvesEthCheckIn");
+               const Elves = Moralis.Object.extend("ElvesRenTransferOut");
                
                let results = []
 
@@ -158,15 +153,11 @@ const PendingRenTransfers = () => {
                 <div className="d-flex">      
                     <div className="column">
                   
-                        <div className="flex">
-                                               
-                        <h2>Pending Transfers</h2>
-                       
-                        </div>
+                        
                     
                    
             <div>
-                <div>Transfers to Polygon </div>
+                <div>REN to Polygon </div>
 
             <div className="flex p-10">
                        
@@ -192,7 +183,7 @@ const PendingRenTransfers = () => {
         <th>Transfer Initiated On</th>
         <th>
             <div className="flex">
-                <span>Sentinel State</span>
+                <span>Ren Amount</span>
                 
             </div>
         </th>
@@ -221,9 +212,7 @@ const PendingRenTransfers = () => {
                         {dateString}
                     </td>
                     <td>
-                     {line.attributes.sentinel && String(line.attributes.sentinel).substring(0, 10) +
-                    "..." +
-                    String(line.attributes.sentinel).substring(68)}
+                     {line.attributes.renAmount/1000000000000000000}
                     </td>
                     <td>{line.attributes.tokenId}</td>
                    

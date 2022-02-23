@@ -11,6 +11,7 @@ import ExportGame from "./ExportGame";
 import CampaignAdmin from "./Campaign";
 import Loader from "../../components/Loader";
 import PendingTransfers from "./PendingTransfers";
+import PendingRenTransfers from "./PendingRenTransfers";
 
 const Admin = () => {
 
@@ -224,16 +225,7 @@ return (
 
 
 
-        <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
-        <p>Level distro</p>
-             {levelDistribution && levelDistribution.map((level, index) => {
-                return (
-                  <div key={index} className="flex">
-                    <div>Level {level.objectId}: {level.tokens.length}</div>
-                   </div> )})}
 
-             
-          </div>
 
           
 
@@ -251,9 +243,21 @@ return (
 
           </div>
 
-          <PendingTransfers />
+       
        
 </div>
+<PendingTransfers />
+<PendingRenTransfers />
+<div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
+        <p>Level distro</p>
+             {levelDistribution && levelDistribution.map((level, index) => {
+                return (
+                  <div key={index} className="flex">
+                    <div>Level {level.objectId}: {level.tokens.length}</div>
+                   </div> )})}
+
+             
+          </div>
  </>
 
 

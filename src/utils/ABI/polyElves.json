@@ -974,13 +974,6 @@
     },
     {
       "inputs": [],
-      "name": "newCamps",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
       "name": "oldSupply",
       "outputs": [
         {
@@ -1149,6 +1142,24 @@
         }
       ],
       "name": "setAccountBalance",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "_owners",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "_amounts",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "setAccountBalances",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
