@@ -231,7 +231,7 @@ switch(parseInt(elfAction)){
     elfActionString = elfTime ? "Healing" : "Done Healing"
     break;
   case 8:
-    elfActionString = chain === "eth" ? "Sent to Polygon" : "Idle"
+    elfActionString = chain === "eth" ? "Sent to Polygon" : elfTime ? "On Eth Cooldown" : "Idle"
     break;
   case 9:
     elfActionString = "Synergized"

@@ -5,14 +5,13 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "./ERC721.sol"; 
 import "./../DataStructures.sol";
 import "./../Interfaces.sol";
-//import "hardhat/console.sol"; 
 
 // We are the Ethernal. The Ethernal Elves         
 // Written by 0xHusky & Beff Jezos. Everything is on-chain for all time to come.
 // Version 2.0.0
 // Release notes: Export Sentinel
 
-contract PolyEthernalElves is PolyERC721 {
+contract PolyEthernalElvesV2 is PolyERC721 {
 
     function name() external pure returns (string memory) { return "Polygon Ethernal Elves"; }
     function symbol() external pure returns (string memory) { return "pELV"; }
@@ -32,7 +31,6 @@ contract PolyEthernalElves is PolyERC721 {
     bool private initialized;
 
     address operator;
-
    
     uint256 public INIT_SUPPLY; 
     uint256 public price;
@@ -98,6 +96,7 @@ contract PolyEthernalElves is PolyERC721 {
     event AddCamp(uint256 indexed id, uint256 baseRewards, uint256 creatureCount, uint256 creatureHealth, uint256 expPoints, uint256 minLevel);
     event BloodThirst(address indexed owner, uint256 indexed tokenId); 
     event ElfTransferedIn(uint256 indexed tokenId, uint256 sentinel); 
+    event RenTransferedIn(address indexed from, uint256 renAmount); 
        
 
   function setAuth(address[] calldata adds_, bool status) public {
@@ -207,18 +206,6 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
           }
 
     }     
-
-
-
-//INTERNALS
-    
-        function _mintElf(address _to) private returns (uint16 id) {
-                  
-            sentinels[id] = 0;
-                
-            _mint(_to, id);           
-
-        }
 
 
         function _actions(
@@ -451,7 +438,7 @@ function _bloodthirst(uint256 _campId, uint256 _sector, uint256 weaponTier, uint
  
  returns(uint256 level, uint256 rewards, uint256 timestamp, uint256 inventory){
   
-  rewards = weaponTier == 3 ? 80 ether : weaponTier == 4 ? 95 ether : weaponTier == 5 ? 120 ether : 0;  
+  rewards = weaponTier == 3 ? 80 ether : weaponTier == 4 ? 95 ether : weaponTier == 5 ? 110 ether : 0;  
 
   inventory = _inventory;
  
@@ -666,6 +653,18 @@ function initMint(address to, uint256 start, uint256 end) external {
     
 */
 
+
+//INTERNALS
+    /*
+        function _mintElf(address _to) private returns (uint16 id) {
+                  
+            sentinels[id] = 0;
+                
+            _mint(_to, id);           
+
+        }
+*/
+
 function addCamp(uint256 id, uint16 baseRewards_, uint16 creatureCount_, uint16 expPoints_, uint16 creatureHealth_, uint16 minLevel_, uint16 maxLevel_) external      
     {
         onlyOwner();
@@ -708,12 +707,11 @@ function addCamp(uint256 id, uint16 baseRewards_, uint16 creatureCount_, uint16 
 
           for(uint i = 0; i < _owners.length; i++){
             
-           bankBalances[_owners[i]] += _amounts[i];           
-           
+           bankBalances[_owners[i]] += _amounts[i];     
+ 
+           emit RenTransferedIn(_owners[i], _amounts[i]);                 
 
         }
-
-
        
     }
 
