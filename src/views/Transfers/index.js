@@ -39,7 +39,7 @@ const Transfers = () => {
             <br/>
             <br/>
             <br/>
-            <TransfersToPolygon admin={true}/>
+            <TransfersToPolygon/>
             </div>
             </div>
 

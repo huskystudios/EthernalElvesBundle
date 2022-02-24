@@ -10,7 +10,7 @@ import {elvesAbi, getCampaign, elvesContract, etherscan,
     heal, lookupMultipleElves, getCurrentWalletConnected, checkRenTransfersIn} from "../../utils/interact"
 
 
-const TransfersToPolygon = ({admin}) => {
+const TransfersToPolygon = () => {
     const [loading, setLoading] = useState(true)
     const { Moralis } = useMoralis();
     const [status, setStatus] = useState("")
@@ -48,7 +48,7 @@ const TransfersToPolygon = ({admin}) => {
 
     const confirmTransfers = async () => {
 
-        console.log(clicked)
+        
         setLoading(true)
         setStatus("Sending gasless tx to confirm elf transfers. Don't close window or refresh.")
 
@@ -75,11 +75,12 @@ const TransfersToPolygon = ({admin}) => {
 
         })
        
+
       
         let params =  {objectIds:elfTransfers, owner:address, asset:"elves"}
         
         let response 
-        
+        console.log(params)
         try{
           setStatus("1. Sending gasless tx to confirm elf transfers. Don't close window or refresh.")
           response = await Moralis.Cloud.run("confirmPendingToPolygon", params);
@@ -121,7 +122,7 @@ const TransfersToPolygon = ({admin}) => {
                let results = []
 
                 let query = new Moralis.Query(Elves);
-               !admin && query.equalTo("from", address);
+                query.equalTo("from", address);
                 query.notEqualTo("status", "completed");                
                 
                 let limit = 50
@@ -148,7 +149,7 @@ const TransfersToPolygon = ({admin}) => {
 
         
         query = new Moralis.Query(ElvesRenTransferIn);
-        !admin && query.equalTo("from", address);
+        query.equalTo("from", address);
         query.notEqualTo("status", "completed");
         let renResults = []
         hasMore = true
