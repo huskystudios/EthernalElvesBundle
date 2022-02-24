@@ -28,6 +28,7 @@ const PlayEth = () => {
         returnPassive: false,
         heal: false,
         sendCampaign: false,
+        sendPolygon: false,
     });
  
     
@@ -75,7 +76,9 @@ const PlayEth = () => {
 
         const isInactive = (elf) => new Date() > new Date(elf.time * 1000);
         const isPassive = (elf) => elf.action === 3;
+        const isPolygon = (elf) => elf.action === 8;
         const isStaked = (elf) => elf.elfStatus === "staked";
+       
         const reducer = (accumulator, key) => {
             if (selectedElves.length === 0) return {...accumulator, [key]: false};
 
@@ -97,6 +100,9 @@ const PlayEth = () => {
                     break;
                 case "rerollWeapon":
                 case "rerollItem":
+                case "sendPolygon": 
+                    value = selectedElves.every((elf) => !isPolygon(elf) && !isPassive(elf)) && selectedElves.length <= 10;
+                    break;
                 default:
                     value = selectedElves.every((elf) => !isPassive(elf));
                     break;
@@ -484,7 +490,7 @@ const PlayEth = () => {
                      
                        
                         <button
-                            /*disabled={!isButtonEnabled.unstake}*/
+                            disabled={!isButtonEnabled.sendPolygon}
                             className="btn-whale"
                             onClick={checkinElf}
                         >

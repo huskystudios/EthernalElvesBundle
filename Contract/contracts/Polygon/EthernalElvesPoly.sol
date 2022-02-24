@@ -198,6 +198,14 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
         _actions(healer, 7, owner, target, 0, false, false, false, 0);
     }
 
+     function healMany(uint256[] calldata healers, uint256[] calldata targets, address owner) external {
+        onlyOperator();
+        
+        for (uint256 index = 0; index < healers.length; index++) {  
+            _actions(healers[index], 7, owner, targets[index], 0, false, false, false, 0);
+        }
+    }
+
     
      function synergize(uint256[] calldata ids, address owner) external {
         onlyOperator();

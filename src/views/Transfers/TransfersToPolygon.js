@@ -102,7 +102,7 @@ const TransfersToPolygon = () => {
         }
         
         setStatus("Done.")
-        resetVariables();
+        //resetVariables();
         setTxReceipt(response);
        
         setLoading(false)
@@ -244,7 +244,7 @@ const TransfersToPolygon = () => {
        
         <th>Token Id</th>
         <th>$REN</th>
-        <th>$Status</th>
+        <th>Status</th>
        
         </tr>
       </thead>

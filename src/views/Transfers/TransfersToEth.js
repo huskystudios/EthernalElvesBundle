@@ -52,32 +52,71 @@ const TransfersToEth = () => {
 
     const checkOutElf = async () => {
 
-        console.log(clicked)
+        const elvesPolyCheckIn = "ElvesPolyCheckIn";
+        const elvesRenTransferIn = "ElvesRenTransferIn"
 
         let tokenIdsArry = []
         let sentinelArry = []
         let signatureArry = []
 
-        nftData.map((item, index) => {
+        let renAmount 
+        let renSignature 
+        let timestamp 
 
+        nftData.map((item, index) => {
            
 
             if (clicked.includes((item.id))) {
+                
+                if(item.className ===  elvesPolyCheckIn){
                 tokenIdsArry.push(item.attributes.tokenId)
                 sentinelArry.push(item.attributes.sentinel)
                 signatureArry.push(item.attributes.signedTransaction.signature)
+                }else if(item.className === elvesRenTransferIn){
+
+                    renAmount = item.attributes.renAmount
+                    timestamp = item.attributes.timestamp
+                    renSignature = item.attributes.signedTransaction.signature
+                }   
+
+                item.set("status", "initiated")
+                item.save()
             }
 
 
         })
        
-      
-        const params =  {ids:tokenIdsArry , sentinel:sentinelArry, signature:signatureArry}
-        let {success, status, txHash} = await checkOut(params)
+      if(tokenIdsArry.length > 0){
+        const params1 =  {ids:tokenIdsArry , sentinel:sentinelArry, signature:signatureArry}
+        let {success, status, txHash} = await checkOut(params1)
    
-        success && resetVariables()            
+        //success && resetVariables()            
  
         setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
+      }
+
+        if(renAmount && renSignature && timestamp){
+        let sigUsed = await usedRenSignatures(renSignature)
+            
+            if(parseInt(sigUsed) === 1){
+                console.log("is true. very naice.")
+                setAlert({show: true, value: {title: "Signature used", content: ("This transaction signature has already been used")}})
+                return
+            }
+
+          
+            const params2 =  {renAmount:renAmount , signature:renSignature, timestamp:timestamp}
+
+            console.log(params2)
+            let {success, status, txHash} = await checkOutRen(params2)       
+        
+     
+        setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
+        }
+        //success && resetVariables()  
+        
+        setClicked([])
+        setNftData([])
                       
         }
 
@@ -232,16 +271,8 @@ const TransfersToEth = () => {
                             className="btn-whale"
                             onClick={checkOutElf}
                         >
-                            Confirm Transfer
-                        </button>
-
-                        <button
-                            /*disabled={!isButtonEnabled.unstake}*/
-                            className="btn-whale"
-                            onClick={checkOutRenFunction}
-                        >
-                            Claim Polygon Ren
-                        </button>
+                            Confirm Transfers
+                        </button>     
 
                     </div>      
                 
@@ -264,6 +295,7 @@ const TransfersToEth = () => {
         <th>Signature</th>
         <th>Token Id</th>
         <th>$REN</th>
+        <th>Status</th>
        
         </tr>
       </thead>
@@ -297,6 +329,7 @@ const TransfersToEth = () => {
                     </td>
                     <td>{line.attributes.tokenId}</td>
                     <td>{line.attributes.renAmount && line.attributes.renAmount/1000000000000000000}</td>
+                    <td>{line.attributes.status}</td>
                 </tr>)
             }
              

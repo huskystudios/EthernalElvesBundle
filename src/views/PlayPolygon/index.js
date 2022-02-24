@@ -26,6 +26,7 @@ const PlayPolygon = () => {
         sendPassive: false,
         returnPassive: false,
         heal: false,
+        healMany: false,
         sendCampaign: false,
         synergize: false,
     });
@@ -86,6 +87,12 @@ const PlayPolygon = () => {
                 case "heal":
                     const [druid, target] = selectedElves;
                     value = druid && isInactive(druid) && druid.sentinelClass === 0 && target && !isInactive(target) && target.sentinelClass !== 0;
+                    break;
+                case "healMany":
+                    let firstHalf = clicked.slice(0, clicked.length/2)
+                    let secondHalf = clicked.slice(clicked.length/2, clicked.length)
+
+                    value = firstHalf.every((elf) => isDruid(elf)) && secondHalf.every((elf) => !isInactive(elf) && elf.sentinelClass !== 0);
                     break;
                 case "sendPassive":
                 case "sendCampaign":
@@ -163,8 +170,11 @@ const PlayPolygon = () => {
     const checkinElf = async () => {
 
         let renToSend = renTransfer === "" ? 0 : renTransfer
+
+        renToSend = Moralis.Units.ETH(renToSend)
+        console.log(renToSend)
         
-        const params =  {functionCall: polygonContract.methods.checkIn(clicked, (renToSend*1000000000000000000).toString(), owner).encodeABI()}
+        const params =  {functionCall: polygonContract.methods.checkIn(clicked, renToSend, owner).encodeABI()}
         await sendGaslessFunction(params)
                       
     }
@@ -192,6 +202,18 @@ const PlayPolygon = () => {
         await sendGaslessFunction(params)
                           
          }
+
+         const healMany = async () => {
+
+            //split the array clicked into two arrays
+
+            let firstHalf = clicked.slice(0, clicked.length/2)
+            let secondHalf = clicked.slice(clicked.length/2, clicked.length)
+
+            const params =  {functionCall: polygonContract.methods.healMany(firstHalf, secondHalf, owner).encodeABI()}
+            await sendGaslessFunction(params)
+                              
+             }
 
 
     
@@ -234,7 +256,7 @@ const PlayPolygon = () => {
                     })
                         
 
-                setStatus("army of elves")
+                setStatus("army of " + tokenArr.length + " elves")
                 const lookupParams = {array: tokenArr, chain: "polygon"}
 
                 const elves = await lookupMultipleElves(lookupParams)
@@ -352,6 +374,10 @@ const PlayPolygon = () => {
             return null
         }
 
+        ///create a function to confirm an action
+
+
+
         
         const renderBTModal = () => {
         
@@ -363,11 +389,11 @@ const PlayPolygon = () => {
                         <br/>
                         rewards 
                         <br/>
-                        weaponTier = 3 ? 80 $REN
+                        weaponTier 3 is 80 $REN
                         <br/>
-                        weaponTier = 4 ? 95 $REN
+                        weaponTier 4 is 95 $REN
                         <br/>
-                        weaponTier = 5 ? 120 $REN
+                        weaponTier 5 is 110 $REN
                         <br/>
                        
 
@@ -476,6 +502,13 @@ const PlayPolygon = () => {
                             onClick={healing}
                         >
                             Heal
+                        </button>
+                        <button
+                            //disabled={!isButtonEnabled.healMany}
+                            className="btn-whale"
+                            onClick={healMany}
+                        >
+                            Heal Many
                         </button>
                         <button
                             disabled={!isButtonEnabled.sendCampaign}
@@ -661,9 +694,8 @@ const PlayPolygon = () => {
 
                 <div>
                     <ul>
-                    <li>
-                        Healing: click a Druid then click the Ranger or Assassin you want to heal next. Then click heal. You should have selected only two elves.
-                        </li>
+                    <li>Healing: click a Druid then click the Ranger or Assassin you want to heal next. Then click heal. You should have selected only two elves.</li>
+                    <li>Heal Many: click a few Druids then click the same number of Rangers or Assassins and then click heal many.</li>
                         <li>
                         Disclaimer: Function overflows are unchecked - make sure you double check before you send.
                         </li>
