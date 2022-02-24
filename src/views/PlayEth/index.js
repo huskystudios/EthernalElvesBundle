@@ -490,7 +490,7 @@ const PlayEth = () => {
                      
                        
                         <button
-                            disabled={!isButtonEnabled.sendPolygon}
+                            //disabled={!isButtonEnabled.sendPolygon}
                             className="btn-whale"
                             onClick={checkinElf}
                         >
