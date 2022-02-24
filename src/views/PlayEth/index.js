@@ -98,11 +98,11 @@ const PlayEth = () => {
                 case "returnPassive":
                     value = selectedElves.every((elf) => isInactive(elf) && isPassive(elf));
                     break;
-                case "rerollWeapon":
-                case "rerollItem":
                 case "sendPolygon": 
-                    value = selectedElves.every((elf) => !isPolygon(elf) && !isPassive(elf)) && selectedElves.length <= 10;
+                    value = selectedElves.every((elf) => !isPolygon(elf) /*&& !isPassive(elf)*/) && selectedElves.length <= 10;
                     break;
+                case "rerollWeapon":
+                case "rerollItem":    
                 default:
                     value = selectedElves.every((elf) => !isPassive(elf));
                     break;

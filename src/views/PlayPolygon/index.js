@@ -88,12 +88,6 @@ const PlayPolygon = () => {
                     const [druid, target] = selectedElves;
                     value = druid && isInactive(druid) && druid.sentinelClass === 0 && target && !isInactive(target) && target.sentinelClass !== 0;
                     break;
-                case "healMany":
-                    let firstHalf = clicked.slice(0, clicked.length/2)
-                    let secondHalf = clicked.slice(clicked.length/2, clicked.length)
-
-                    value = firstHalf.every((elf) => isDruid(elf)) && secondHalf.every((elf) => !isInactive(elf) && elf.sentinelClass !== 0);
-                    break;
                 case "sendPassive":
                 case "sendCampaign":
                     value = selectedElves.every((elf) => isInactive(elf) && !isPassive(elf));
@@ -101,11 +95,11 @@ const PlayPolygon = () => {
                 case "returnPassive":
                     value = selectedElves.every((elf) => isInactive(elf) && isPassive(elf));
                     break;
-                case "rerollWeapon":
-                case "rerollItem":
                 case "synergize":                    
                     value = selectedElves.every((elf) => !isInactive(elf) && isDruid(elf));
                     break;    
+                case "rerollWeapon":
+                case "rerollItem":    
                 default:
                     value = selectedElves.every((elf) => !isPassive(elf));
                     break;

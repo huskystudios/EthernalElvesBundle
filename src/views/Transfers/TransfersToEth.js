@@ -59,6 +59,8 @@ const TransfersToEth = () => {
         let sentinelArry = []
         let signatureArry = []
 
+        let renTxs = []
+
         let renAmount 
         let renSignature 
         let timestamp 
@@ -77,6 +79,8 @@ const TransfersToEth = () => {
                     renAmount = item.attributes.renAmount
                     timestamp = item.attributes.timestamp
                     renSignature = item.attributes.signedTransaction.signature
+
+                    renTxs.push({ renAmount, timestamp, renSignature})
                 }   
 
                 item.set("status", "initiated")
@@ -95,23 +99,29 @@ const TransfersToEth = () => {
         setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
       }
 
-        if(renAmount && renSignature && timestamp){
-        let sigUsed = await usedRenSignatures(renSignature)
+        if(renTxs.length > 0){
+
+            renTxs.map(async (tx)=>{
+
+                let sigUsed = await usedRenSignatures(tx.renSignature)
+                
+                if(parseInt(sigUsed) === 1){
+                    console.log("is true. very naice.")
+                    setAlert({show: true, value: {title: "Signature used", content: ("This transaction signature has already been used")}})
+                    return
+                }
+
             
-            if(parseInt(sigUsed) === 1){
-                console.log("is true. very naice.")
-                setAlert({show: true, value: {title: "Signature used", content: ("This transaction signature has already been used")}})
-                return
-            }
+                const params2 =  {renAmount:tx.renAmount , signature:tx.renSignature, timestamp:tx.timestamp}
 
-          
-            const params2 =  {renAmount:renAmount , signature:renSignature, timestamp:timestamp}
-
-            console.log(params2)
-            let {success, status, txHash} = await checkOutRen(params2)       
+                console.log(params2)
+                let {success, status, txHash} = await checkOutRen(params2)       
+            
         
-     
-        setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
+            setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
+
+            })
+        
         }
         //success && resetVariables()  
         
