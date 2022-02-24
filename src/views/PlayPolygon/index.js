@@ -3,11 +3,15 @@ import Loader from "../../components/Loader"
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis"
 import "./style.css"
 import Countdown from 'react-countdown';
-import {lookupMultipleElves, getCurrentWalletConnected, polygonContract} from "../../utils/interact"
+import {lookupMultipleElves, getCurrentWalletConnected, polygonContract, polyweb3} from "../../utils/interact"
 import Modal from "../../components/Modal"
 import Sector from "../../views/home/components/Sector"
 
+
+
+
 const PlayPolygon = () => {
+
     const [loading, setLoading] = useState(true)
     const { Moralis } = useMoralis();
     const [status, setStatus] = useState("")
@@ -113,19 +117,73 @@ const PlayPolygon = () => {
     }, [clicked, nftData]);
 
 
-     
+
     const sendGaslessFunction = async (params) => {
+
+        let tx 
 
         setLoading(true)
         setCampaignModal(false)
-  
-        setStatus("Sending gasless transaction... waiting for response. Please do not close the window.")
+        
+        try{
+            tx = await Moralis.Cloud.run("defenderRelay", params) 
+            if(tx.data.status){
 
-        let response = await Moralis.Cloud.run("operatorTransactor", params)
-        console.log("SEND HUSKY THIS", response)
+                let fixString = tx.data.result.replaceAll("\"", "")
+
+            let txHashLink = `https://polygonscan.com/tx/${fixString}`
+            let successMessage = <>Check out your transaction on <a target="_blank" href={txHashLink}>Polyscan</a> </>
+            resetVariables()     
+            setAlert({show: true, value: {title: "Tx Sent", content: (successMessage)}})
+            }           
+
+
+        }catch(e){
+            console.log(e)
+        }
+
+        setLoading(false)
+
+        console.log(tx)
+
+        /*
+        const defenderWebhook = "https://api.defender.openzeppelin.com/autotasks/bd97eb6c-8038-466e-9e15-2e933b927dcb/runs/webhook/c897a8c7-c0e5-45ac-abf5-341f0dec2d40/Hd8ttFMzNMuWa7NSZv6meg"
+
+        try{
+            let tx = await fetch(defenderWebhook, {
+             method: 'POST',
+             body: params.functionCall,
+             headers: {
+                 'Content-Type': 'application/json'
+             },
+         });
+
+         console.log(tx)
+         }catch(e){
+             console.log(e)
+             
+
+         }
+*/
+
+
+/*        setLoading(true)
+        setCampaignModal(false)
+        let response 
+  
+        setStatus("Getting signed transaction from dApp. Please do not close the window.")
+
+     
+        //let response = await Moralis.Cloud.run("operatorTransactor", params)
+        let signedTransaction = await Moralis.Cloud.run("operatorTransactorSignedTransaction", params) 
+
+        try{
+            setStatus("Got signed transaction from operator... Sending gasless transaction... Please do not close the window.")
+            response =  await polyweb3.eth.sendSignedTransaction(signedTransaction.rawTransaction); 
+            console.log("SEND HUSKY THIS", response)
         if(response.status){
 
-            let txHashLink = `https://polygonscan.com/tx/${response.transaction.transactionHash}`
+            let txHashLink = `https://polygonscan.com/tx/${response.transactionHash}`
             let successMessage = <>Check out your transaction on <a target="_blank" href={txHashLink}>Polyscan</a> </>
             resetVariables()     
             setAlert({show: true, value: {title: "Tx Sent", content: (successMessage)}})
@@ -133,8 +191,13 @@ const PlayPolygon = () => {
         }else{
             setAlert({show: true, value: {title: "Error", content: ("Something went wrong")}})
         }
+        }catch(e){
+            console.log(e)
+            setAlert({show: true, value: {title: "Error", content: ("Something went wrong")}})
+        }
         
-        setLoading(false)
+       
+        setLoading(false)*/
 
     }
 

@@ -83,7 +83,7 @@ const TransfersToPolygon = () => {
         console.log(params)
         try{
           setStatus("1. Sending gasless tx to confirm elf transfers. Don't close window or refresh.")
-          response = await Moralis.Cloud.run("confirmPendingToPolygon", params);
+          response = await Moralis.Cloud.run("confirmPendingPolygon", params);
           console.log(response)
         }catch(error){
             console.log(error)
@@ -95,7 +95,7 @@ const TransfersToPolygon = () => {
         
         try{
         setStatus("2. Sending gasless tx to confirm ren transfers. Don't close window or refresh.")
-        response = await Moralis.Cloud.run("confirmPendingToPolygon", params);
+        response = await Moralis.Cloud.run("confirmPendingPolygon", params);
         console.log(response)
         }catch(error){
             console.log(error)
