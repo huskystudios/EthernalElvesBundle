@@ -8,7 +8,7 @@ require('@openzeppelin/hardhat-upgrades');
 require("hardhat-gas-reporter");
 require("hardhat-contract-sizer")
 
-const isPolygon = false;
+const isPolygon = true;
 
 
 const { 

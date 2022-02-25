@@ -157,13 +157,11 @@
     position: relative;
 }
 .sector-panel {
-    background-image: url(../../assets/images/sector_panel.png);
+    background-color: black;
     background-size: 95% 100%;
     background-position: center;
     background-repeat: no-repeat;
-    height: 320px;
     width: 1140px;
-    bottom: 0px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 10px;
@@ -172,7 +170,18 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
+
 }
+
+.sector-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 24px;
+    justify-content: space-around;
+    padding: 10px;
+}
+
 
 .active-img {
     position:absolute;
@@ -911,11 +920,9 @@
 }
 
 .game-info {
-    position: absolute;
-    left: 496px;
-    top: 87px;
+    display: flex;
     width: 340px;
-    height: 50px;
+    padding-bottom: 10px;
     font-size: 16px;
     display: flex;
     flex-direction: column;
@@ -932,9 +939,7 @@
 
 .elves-panel {
     /* background-color:rgba(17, 148, 249, 0.43); */
-    position:absolute;
-    left: 880px;
-    top: 60px;
+
     width: 320px;
     height: 230px;
     font-size: 16px;

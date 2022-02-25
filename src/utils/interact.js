@@ -1,10 +1,14 @@
-import { items, sentinelClass } from '../views/home/config';
+import { items, sentinelClass, campaigns } from "./config/config";
+
 
 require('dotenv').config();
 const Web3 = require("web3")
+
 const alchemyethkey = process.env.REACT_APP_ALCHEMY_KEY;
 const etherscanKey = process.env.REACT_APP_ETHERSCAN_KEY;
 const polygonKey = process.env.REACT_APP_POLYGON_KEY;
+
+var api = require('etherscan-api').init(etherscanKey);
 const {
   Multicall,
   ContractCallResults,
@@ -16,20 +20,26 @@ export const etherscan = "etherscan" //"goerli.etherscan"
 export const elvesContract = "0xA351B769A01B445C04AA1b8E6275e03ec05C1E75"
 const mirenContract = "0xe6b055abb1c40b6c0bf3a4ae126b6b8dbe6c5f3f"
 const campaignsContract = "0x367Dd3A23451B8Cc94F7EC1ecc5b3db3745D254e"
+const polyElvesContract = "0x4DeAb743F79b582c9b1d46b4aF61A69477185dd5"
 
 export const elvesAbi = require('./ABI/elves.json')
 const mirenAbi = require('./ABI/miren.json') 
 const campaignAbi = require('./ABI/campaigns.json')
-var api = require('etherscan-api').init(etherscanKey);
+const polyElvesAbi = require('./ABI/polyElves.json')
 
-export const web3 = new Web3(new Web3.providers.HttpProvider(alchemyethkey))
+
+
+const web3 = new Web3(new Web3.providers.HttpProvider(alchemyethkey))
 export const polyweb3 = new Web3(new Web3.providers.HttpProvider(polygonKey))
 
 const nftContract = new web3.eth.Contract(elvesAbi.abi, elvesContract);
 const ercContract = new web3.eth.Contract(mirenAbi.abi, mirenContract);
 const gameContract = new web3.eth.Contract(campaignAbi.abi, campaignsContract);
+export const polygonContract = new polyweb3.eth.Contract(polyElvesAbi.abi, polyElvesContract);
 
 
+
+////////ETH FUNCTIONS////////////////////////////
 export const txReceipt = async ({ txHash, interval }) => {
   module.exports = function getTransactionReceiptMined(txHash, interval) {
     const self = this;
@@ -63,37 +73,71 @@ export const txReceipt = async ({ txHash, interval }) => {
 };
 
 
+export const checkRenTransfersIn = async (sigObject)=>{
+//This very confusing function checks if the signature is valid and if the signature is valid, it returns the pending ren transfers
+  let array = []
+  sigObject.map((item, index) => {
+    array.push(item.attributes.signedTransaction.signature)
+  })
 
-export const updateMoralisDb = async ({elf, elves}) => {
 
-  elves.set("owner_of", elf.owner.toLowerCase())
-  elves.set("action", elf.action)
-  elves.set("level", parseInt(elf.level))
-  elves.set("time", elf.time)
-  
-  elves.save()
-  .then((elf) => {
-    // Execute any logic that should take place after the object is saved.
-    console.log('Object updated with objectId: ' + elf.id );
-  }, (error) => {
-    // Execute any logic that should take place if the save fails.
-    // error is a Moralis.Error with an error code and message.
-    console.log('Failed to create new object, with error code: ' + error.message);
-  });
-  
+  let txArr = []
+  if(array){
+
+    array.map((i, index)=>{
+
+      var tx = {
+        reference: 'Elves'+index.toString(),
+        contractAddress: elvesContract,
+        abi: elvesAbi.abi,
+        calls: [
+        { reference: 'usedSigs'+i.toString(), methodName: 'usedRenSignatures', methodParameters: [i]},
+       
+       ]
+      };
+      txArr.push(tx);
+    return (index)
+    })
+  }
+
+  const multicall = new Multicall({ web3Instance: web3, tryAggregate: true });
+  const contractCallContext: ContractCallContext[] = txArr
+  const results: ContractCallResults = await multicall.call(contractCallContext);
+ 
+  let returnArray = []
+
+  sigObject.map((item, j) => {
+
+    const sigused =  parseInt(results.results[`Elves${j}`].callsReturnContext[0].returnValues[0]) 
+    //sig used must be zero. If it is not zero, it means that the signature has been used
+    if(parseInt(sigused) === 0){
+      returnArray.push(item)
+    }
+   
+  })
+
+  return returnArray 
+
 }
 
 
-export const lookupMultipleElves = async (array)=>{
+export const lookupMultipleElves = async ({array, chain})=>{
 
   let txArr = []
+
+  let params = {
+  abi: chain === "eth" ? elvesAbi.abi : polyElvesAbi.abi,
+  address: chain === "eth" ? elvesContract : polyElvesContract,
+  web3Instance: chain === "eth" ? web3 : polyweb3
+  }
+
 
   if(array){
   array.map((i, index)=>{
     var tx = {
       reference: 'Elves'+i.toString(),
-      contractAddress: elvesContract,
-      abi: elvesAbi.abi,
+      contractAddress: params.address,
+      abi: params.abi,
       calls: [
       { reference: 'elves'+i.toString(), methodName: 'elves', methodParameters: [i]},
       { reference: 'attributes'+i.toString(), methodName: 'attributes', methodParameters: [i]},
@@ -107,7 +151,7 @@ export const lookupMultipleElves = async (array)=>{
   })
 }
 
-  const multicall = new Multicall({ web3Instance: web3, tryAggregate: true });
+  const multicall = new Multicall({ web3Instance: params.web3Instance, tryAggregate: true });
   const contractCallContext: ContractCallContext[] = txArr
   const results: ContractCallResults = await multicall.call(contractCallContext);
 
@@ -163,7 +207,7 @@ let elfActionString
 //swtiches for the elf action
 switch(parseInt(elfAction)){
   case 0:
-    elfActionString = "Idle"
+    elfActionString = chain === "eth" ? "Idle" : "Ready to Return"
     break;
   case 1:
     elfActionString = "Staked, but Idle"
@@ -187,7 +231,13 @@ switch(parseInt(elfAction)){
     elfActionString = elfTime ? "Healing" : "Done Healing"
     break;
   case 8:
-    elfActionString = "Sent to Polygon"
+    elfActionString = chain === "eth" ? "Sent to Polygon" : elfTime ? "On Eth Cooldown" : "Idle"
+    break;
+  case 9:
+    elfActionString = "Synergized"
+    break;  
+  case 10:
+    elfActionString = "Bloodthirst"
     break;
   default:
     elfActionString = "Unknown"
@@ -218,7 +268,8 @@ elfObj = {
     attack: elfAttackPoints, 
     accessories: elfAccessories,
     health: elfHealthPoints,
-    attributes: elfTokenObj.attributes
+    attributes: elfTokenObj.attributes,
+    chain: chain
   }
 
 elfArry.push(elfObj)
@@ -228,7 +279,7 @@ return elfArry
 
 }
 
-////////////TX BUILDER///////////////////
+////////////TX BUILDERs///////////////////
 
 const txPayload = async(txData) => {
   const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
@@ -244,12 +295,11 @@ const txPayload = async(txData) => {
   
   }
 
-
 /////////////////////////////
 
 export const doActions = async(options) => {
 
-  ///NOTE This function is work in progress.
+  ///NOTE This function is work in progress. THIS DOES NOT WORK. 
   
   let tx = await txPayload(nftContract.methods[options.functionName](options.params).encodeABI())
 
@@ -536,39 +586,90 @@ export const withdrawSomeTokenBalance = async({amount}) => {
 }
 
 
+export const checkIn = async(props) => {
 
-
-
-export const getCampaigns = async(ids) => {
+  console.log(props)
   
-  let campaignArry = []
-
-  for(let i = 0; i < ids.length; i++){
-      
-    let response = await gameContract.methods.camps(ids[i]).call()
-    
-    let campaignObj = {
+  let tx = await txPayload(nftContract.methods.checkIn(props.ids, props.renAmount).encodeABI())
+ 
+  try {
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
         
-        id: ids[i],
-        baseRewads: response[0], 
-        creatureCount: response[1], 
-        creatureHealth: response[2], 
-        expPoints: response[3], 
-        items: response[4],
-        minLevel: response[5],
-        weapons: response[6],
-      }
-      campaignArry.push(campaignObj)
+  return {
+        success: true,
+        status: (<>Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash,
+    }
+  } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
     }
   
-  return campaignArry
+  } 
 
 }
 
-export const getCampaign = async(id) => {
+
+export const checkOut = async(props) => {
+
+  console.log(props)
+  
+  let tx = await txPayload(nftContract.methods.checkOut(props.ids, props.sentinel, props.signature, props.authCode).encodeABI())
+ 
+  try {
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
+        
+  return {
+        success: true,
+        status: (<>Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash,
+    }
+  } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+    }
+  
+  } 
+
+}
+
+export const checkOutRen = async(props) => {
+
+  console.log(props)
+  
+  let tx = await txPayload(nftContract.methods.checkOutRen(props.renAmount, props.signature, props.timestamp).encodeABI())
+ 
+  try {
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
+        
+  return {
+        success: true,
+        status: (<>Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash,
+    }
+  } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+    }
+  
+  } 
+
+}
+
+
+export const getCampaign = async(id, chain) => {
       
-    let response = await gameContract.methods.camps(id).call()
+    let response //= await gameContract.methods.camps(id).call()
     
+    if(chain === 'polygon'){
+      response = await polygonContract.methods.camps(id).call()
+    }else{
+      response = await gameContract.methods.camps(id).call()
+    } 
+       
     let campaignObj = {
         
         id: id,
@@ -581,7 +682,7 @@ export const getCampaign = async(id) => {
         weapons: response[6],
       }
 
-  
+
   return campaignObj
 
 }
@@ -647,9 +748,7 @@ export const getTokenSupply = async () => {
     var supply = nftContract.methods.getMintPriceLevel().call();
     return(supply)
    }
-
-
-  
+ 
 
   export const balanceOf = async (address) => {
     var miren = await ercContract.methods.balanceOf(address).call();
@@ -657,7 +756,12 @@ export const getTokenSupply = async () => {
     let balances = {miren: miren}
     return(balances)
     }
-  
+    export const usedRenSignatures = async (signature) => {
+
+      const usedIndex = await nftContract.methods.usedRenSignatures(signature).call();
+      
+      return(usedIndex)
+      }
 
 
 
@@ -761,6 +865,98 @@ export const connectWallet = async () => {
   
   
 
-/////Admin Functions////
+/*
+export const updateMoralisDb = async ({elf, elves}) => {
+
+  elves.set("owner_of", elf.owner.toLowerCase())
+  elves.set("action", elf.action)
+  elves.set("level", parseInt(elf.level))
+  elves.set("time", elf.time)
+  
+  elves.save()
+  .then((elf) => {
+    // Execute any logic that should take place after the object is saved.
+    console.log('Object updated with objectId: ' + elf.id );
+  }, (error) => {
+    // Execute any logic that should take place if the save fails.
+    // error is a Moralis.Error with an error code and message.
+    console.log('Failed to create new object, with error code: ' + error.message);
+  });
+  
+}
+*/
+
+/////POLYGON FUNCTIONS////
+
+export const completePolyTransfer = async(props) => {
+
+  console.log(props)
+
+    const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
+      //the transaction
+      const tx = {
+        'from': window.ethereum.selectedAddress,
+        'to': polyElvesContract,
+        'nonce': nonce.toString(),
+        'data': polygonContract.methods.modifyElfDNA(props.ids, props.sentinel).encodeABI()
+      };
+    
+
+
+
+ 
+  try {
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
+        
+  return {
+        success: true,
+        status: (<>Check out your transaction on <a target="_blank" href={`https://polygonscan.com/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash,
+    }
+  } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+    }
+  
+  } 
+
+}
+
+
+export const completePolyRenTransfer = async(props) => {
+
+  console.log(props)
+
+    const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
+      //the transaction
+      const tx = {
+        'from': window.ethereum.selectedAddress,
+        'to': polyElvesContract,
+        'nonce': nonce.toString(),
+        'data': polygonContract.methods.setAccountBalances(props._owners, props._amounts).encodeABI()
+      };
+    
+
+ 
+  try {
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
+        
+  return {
+        success: true,
+        status: (<>Check out your transaction on <a target="_blank" href={`https://polygonscan.com/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash,
+    }
+  } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+    }
+  
+  } 
+
+}
+
+///////////////
 
 

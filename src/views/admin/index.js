@@ -10,7 +10,8 @@ import CheckWhitelist from "./CheckWhitelist";
 import ExportGame from "./ExportGame";
 import CampaignAdmin from "./Campaign";
 import Loader from "../../components/Loader";
-import Polygon from "./Polygon";
+import PendingTransfers from "./PendingTransfers";
+import PendingRenTransfers from "./PendingRenTransfers";
 
 const Admin = () => {
 
@@ -19,7 +20,6 @@ const [loading1, setLoading1] = useState(true);
 // const [showData, setShowData] = useState(false);
 const [progress, setProgress] = useState(0);
 
-const [gameStatus, setGameStatus] = useState(0);
 const [setWL, getWL] = useState(0);
 const { Moralis } = useMoralis();
 const [max, setMax] = useState(0);
@@ -74,7 +74,7 @@ useEffect(() => {
     setCurrentPrice(price);
     setRenSupply(totalRenSupply);
     setOwnerCount(ownerCount.length)
-    setActionDistribution(await Moralis.Cloud.run("getActions"))
+     setActionDistribution(await Moralis.Cloud.run("getActions"))
 
     //console.log(await Moralis.Cloud.run("getOwnerBalances"))
     
@@ -127,8 +127,9 @@ const refreshMetaData = async () => {
         tokenArray.push(j);
         counter++
       }
-    
-   results = await lookupMultipleElves(tokenArray)
+   const params = {array: tokenArray, chain: "eth"}
+  
+   results = await lookupMultipleElves(params)
    console.log(results)
    results.map(async (elf)=>{
     
@@ -159,20 +160,12 @@ setLoading(false)
 };
 
 
-const flipGameState = async (_index) => {
+const remoteTx = async () => {
+    
+  let response = await Moralis.Cloud.run("dbQ")
+  console.log(response)
 
-  await Moralis.enableWeb3();
-  const index = parseInt(_index)
-      
-  const options = {
-      contractAddress: elvesContract,
-      functionName: index === 1 ? "flipActiveStatus" : "flipMint",
-      abi: elvesAbi.abi,
-     
-    };
-    
-    await Moralis.executeFunction(options);           
-    
+  
 
 }
 
@@ -181,9 +174,9 @@ const flipGameState = async (_index) => {
 return (
 <>
        <div className="dark-1000 h-full d-flex home justify-center items-center black">
-      
+       //  <button className="btn btn-blue" onClick={remoteTx}>HUSKY TEST</button>
+
             <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
-           
             <p>ADMIN CONSOLE</p>
 
             <div>Sentinel Supply: {tokenSupply} <br/> Current Price:{currentPrice.mintCost/1000000000000000000}</div>
@@ -200,27 +193,6 @@ return (
             <ExportGame />
 
             
-                <p>FLIP GAME STATE</p>
-            
-
-   
-
-            <div className="justify-center">
-            {!loading && 
-            <>
-             <button className={`btn ${gameStatus.gameActive ? "btn-green" : "btn-red"}`} onClick={()=> flipGameState(1)}><div className="animate-bounce">flip Active... </div></button>
-             <div className="mint-instructions">
-                <p>{gameStatus.gameActive ? "Game is Active" : "Game is Inactive"}</p>
-            </div>
-             <button className={`btn ${gameStatus.publicMint ? "btn-green" : "btn-red"}`} onClick={()=> flipGameState(2)}><div className="animate-bounce">flip Mint... </div></button>
-             <div className="mint-instructions">
-                <p>{gameStatus.publicMint ? "Public Minting is Active" : "Public Minting is Inactive"}</p>
-            </div>
-         
-            
-            </>}
-            </div>
-
 
         
         </div>  
@@ -235,30 +207,21 @@ return (
              
           </div>
 
+        
+
+
+
+
+          </div>
+
+
+
           <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
-        <p>Action distro</p>
+          <p>Actions</p>
              {actionDistribution && actionDistribution.map((level, index) => {
                 return (
                   <div key={index} className="flex">
                     <div>{level.objectId}: {level.tokens.length}</div>
-                   </div> )})}
-
-             
-          </div>
-
-
-
-
-          </div>
-
-
-
-        <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
-        <p>Level distro</p>
-             {levelDistribution && levelDistribution.map((level, index) => {
-                return (
-                  <div key={index} className="flex">
-                    <div>Level {level.objectId}: {level.tokens.length}</div>
                    </div> )})}
 
              
@@ -279,8 +242,22 @@ return (
 
 
           </div>
+
+       
        
 </div>
+<PendingTransfers />
+<PendingRenTransfers />
+<div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
+        <p>Level distro</p>
+             {levelDistribution && levelDistribution.map((level, index) => {
+                return (
+                  <div key={index} className="flex">
+                    <div>Level {level.objectId}: {level.tokens.length}</div>
+                   </div> )})}
+
+             
+          </div>
  </>
 
 

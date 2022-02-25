@@ -84,3 +84,5 @@ const lastCampaign = await query1.aggregate(pipeline1, { useMasterKey: true })
 
 console.log(lastCampaign)
 console.log(actions)
+
+

@@ -85,3 +85,20 @@
 .btn-claim:disabled {
     opacity: 0.5;
 }
+
+
+.race-darkborne .text-sm:last-child {
+    color: #707BC6;
+}
+
+.race-lightborne .text-sm:last-child {
+    color: #F0D1D7;
+}
+
+.race-primeborne .text-sm:last-child {
+    color: #A369BD;
+}
+
+.race-woodborne .text-sm:last-child {
+    color: #D86561;
+}

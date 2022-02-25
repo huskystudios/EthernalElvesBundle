@@ -18,29 +18,52 @@ const MainLayout = (props) => {
 
     return (
         <div className="app">
+              
             <div className="app-header">
+         
                 <img className="app-logo" src={logoImg} alt="logo" />
                 <div className="header-body"> 
+                <Withdraw />
                     
-                    <div onClick={onClickHome} className="nav-item" to="/">play</div>
-                    <NavLink className="nav-item" to="/whalemode">whale Mode</NavLink>
+                    <div className="nav-item menu">
+                        <span>Play</span>
+                        <div className="menu__items">
+                            <NavLink to="/">
+                                Visual Mode (ETH)
+                            </NavLink>
+                            <NavLink to="/playeth">
+                                Whale Mode (ETH)
+                            </NavLink>
+                            <NavLink to="/playpoly">
+                             Whale Mode (Polygon)
+                            </NavLink>
+                        </div>
+                    </div>
                     <NavLink className="nav-item" to="/profile">profile</NavLink>
                     <ConnectWallet />
-                    <NavLink className="nav-item" to="/mint">mint</NavLink>
+                   
                     <NavLink className="nav-item" to="/faq">faq</NavLink>
-                    <NavLink className="nav-item" to="/lookup">lookup</NavLink>
+                    <NavLink className="nav-item" to="/transfers">transfers</NavLink>
                 </div>
               
-               {/**<ToggleChain /> */} 
-                <Withdraw />
+               {/**<ToggleChain /> 
+                *  <div onClick={onClickHome} className="nav-item" to="/">play</div>
+                *  <NavLink className="nav-item" to="/mint">mint</NavLink>
+                * 
+               */} 
+
+           
+               
                
             </div>
+           
             <div className="mobile-header">
                         <ConnectWallet />
                        
              </div>    
             
             <div className="app-body">
+           
                 {props.children}
             </div>
         </div>

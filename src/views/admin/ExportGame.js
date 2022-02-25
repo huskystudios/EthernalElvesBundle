@@ -64,8 +64,10 @@ const getElfMetaData = async () => {
 		  tokenArray.push(j);
 		  counter++
 		}
+	
+	const params = {array: tokenArray, chain: "eth"}
 	  
-	 results = await lookupMultipleElves(tokenArray)
+	 results = await lookupMultipleElves(params)
 	 console.log(results)
 	 results.map(async (elf)=>{
 	  

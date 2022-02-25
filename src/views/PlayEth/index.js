@@ -2,24 +2,23 @@ import React, { useEffect, useState, useMemo } from "react"
 import Loader from "../../components/Loader"
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis"
 import "./style.css"
-import { actionString, campaigns } from "../home/config"
 import Countdown from 'react-countdown';
-import {elvesAbi, getCampaign, elvesContract, etherscan,
-    
+import {
+    checkIn,
     sendCampaign, sendPassive, returnPassive, unStake, merchant, forging,
     heal, lookupMultipleElves, getCurrentWalletConnected} from "../../utils/interact"
+import Mint from "../mint"
+import Sector from "../../views/home/components/Sector"
+import Modal from "../../components/Modal"
 
-
-const WhaleMode = () => {
+const PlayEth = () => {
     const [loading, setLoading] = useState(true)
     const { Moralis } = useMoralis();
     const [status, setStatus] = useState("")
-    const [tryWeapon, setTryWeapon] = useState(false)
-    const [tryItem, setTryItem] = useState(false)
-    const [useItem, setUseItem] = useState(false)
     const [sortBy, setSortBy] = useState({ value: "cooldown", order: "desc" });
-    const [tryCampaign, setTryCampaign] = useState(1)
-    const [trySection, setTrySection] = useState(1)
+
+
+    const [renTransfer, setRenTransfer] = useState("")
     
     const [isButtonEnabled, setIsButtonEnabled] = useState({
         unstake: false,
@@ -29,6 +28,7 @@ const WhaleMode = () => {
         returnPassive: false,
         heal: false,
         sendCampaign: false,
+        sendPolygon: false,
     });
  
     
@@ -38,15 +38,18 @@ const WhaleMode = () => {
     const [nftData, setNftData] = useState([])
     const [sortedElves, setSortedElves] = useState([])
     const [activeNfts, setActiveNfts] = useState(true)
+    const [nfts, setNfts] = useState([])
     const [txreceipt, setTxReceipt] = useState()
     const [alert, setAlert] = useState({show: false, value: null})
     const [campaignModal, setCampaignModal] = useState(false)
+    const [mintModal, setMintModal] = useState(false)
    
     const resetVariables = async () => {
         setClicked([])
         setNftData([])
+        setNfts([])
         setTxReceipt([])
-        setCampaignModal(false)
+      //  setCampaignModal(!campaignModal)
         setActiveNfts(!activeNfts)
 
     }
@@ -56,10 +59,12 @@ const WhaleMode = () => {
 
     const handleClick = async (id) => {
 
-        if (clicked.includes(id)) {
-            setClicked(clicked.filter(item => item !== id))
+        if (clicked.includes(id.id)) {
+            setClicked(clicked.filter(item => item !== id.id))
+            setNfts(nfts.filter(item => item !== id))
         } else {
-            setClicked([...clicked, id])
+            setClicked([...clicked, id.id])
+            setNfts([...nfts, id])
         }
     }
 
@@ -71,7 +76,9 @@ const WhaleMode = () => {
 
         const isInactive = (elf) => new Date() > new Date(elf.time * 1000);
         const isPassive = (elf) => elf.action === 3;
+        const isPolygon = (elf) => elf.action === 8;
         const isStaked = (elf) => elf.elfStatus === "staked";
+       
         const reducer = (accumulator, key) => {
             if (selectedElves.length === 0) return {...accumulator, [key]: false};
 
@@ -91,8 +98,11 @@ const WhaleMode = () => {
                 case "returnPassive":
                     value = selectedElves.every((elf) => isInactive(elf) && isPassive(elf));
                     break;
+                case "sendPolygon": 
+                    value = selectedElves.every((elf) => !isPolygon(elf) && !isPassive(elf)) && selectedElves.length <= 10;
+                    break;
                 case "rerollWeapon":
-                case "rerollItem":
+                case "rerollItem":    
                 default:
                     value = selectedElves.every((elf) => !isPassive(elf));
                     break;
@@ -132,6 +142,7 @@ const WhaleMode = () => {
                           
          }
 
+
             
     const reRoll = async (option) => {
       
@@ -151,6 +162,22 @@ const WhaleMode = () => {
       
         const params =  {ids: clicked}
         let {success, status, txHash} = await unStake(params)
+   
+        success && resetVariables()            
+ 
+        setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
+                      
+        }
+
+
+
+        
+    const checkinElf = async () => {
+
+        let renToSend = renTransfer === "" ? 0 : renTransfer
+      
+        const params =  {ids: clicked, renAmount: (renToSend*1000000000000000000).toString()}
+        let {success, status, txHash} = await checkIn(params)
    
         success && resetVariables()            
  
@@ -200,10 +227,15 @@ const WhaleMode = () => {
                         
 
                 setStatus("army of elves")
-                const elves = await lookupMultipleElves(tokenArr)
+                const lookupParams = {array: tokenArr, chain: "eth"}
+
+                const elves = await lookupMultipleElves(lookupParams)
                 elves.sort((a, b) => a.time - b.time) 
-               
-                setNftData(elves)        
+
+                //filter out elves whos action is ===8 
+                const filteredElves = elves.filter((elf) => elf.action !== 8)
+                    
+                setNftData(filteredElves)        
                 setStatus(elves.length + " elves")
                 setStatus("done")
                           
@@ -278,9 +310,9 @@ const WhaleMode = () => {
           );
         };
 
-          const sendCampaignFunction = async () => {
+          const sendCampaignFunction = async (params) => {
 
-            const params = {
+            /*const params = {
                 tryTokenids: clicked,
                 tryCampaign,
                 trySection,
@@ -288,8 +320,8 @@ const WhaleMode = () => {
                 tryItem,
                 useItem,
             };
-        
-       
+        */
+            console.log(params)
             let {success, status, txHash} = await sendCampaign(params)
     
             success && resetVariables()            
@@ -300,6 +332,10 @@ const WhaleMode = () => {
             }})
         }
     
+        const onChangeIndex = () => {
+      
+            return null
+        }
 
 
           const showAlert = ({title, content}) => {
@@ -315,12 +351,14 @@ const WhaleMode = () => {
 
 
         const renderModal = () => {
-            if(!campaignModal) return <></>
+           // if(!campaignModal) return <></>
+
+           //
             return(
-                <div className="modal modal-whale-campaign">
-                    <div className="modal-content items-center">
-                        <span className="close-modal" onClick={() => setCampaignModal(false)}>X</span>
-                        <h3>All selected Elves will go to the same campaign</h3>
+               <Modal show={campaignModal}>
+                       <Sector showpagination={true} data={nfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} mode={"campaign"} />
+
+                        {/*<h3>All selected Elves will go to the same campaign</h3>
                         <div className="modal-whale-campaign-grid">
                             <label>Campaign</label>
                             <select value={tryCampaign} onChange={(e) => setTryCampaign(e.target.value)}>
@@ -346,10 +384,23 @@ const WhaleMode = () => {
                             onClick={sendCampaignFunction}
                         >
                             Confirm
-                        </button>
-                    </div>
-                </div>
+                        </button>*/}
+                </Modal>
             )
+        }
+
+
+        const renderMintModal = () => {
+           
+            return(
+                 <Modal show={mintModal}>
+                     <div style={{"display": "flex", "minHeight": "600px",  "flexDirection": "column"}}>
+                    <Mint />
+                    </div>
+                </Modal>
+            
+            )
+
         }
 
 
@@ -366,7 +417,7 @@ const WhaleMode = () => {
                   
                         <div className="flex">
                                                
-                        <h2>Whale Mode</h2>
+                        <h2>GamePlay</h2>
                        
                         </div>
                     
@@ -416,11 +467,41 @@ const WhaleMode = () => {
                         <button
                             disabled={!isButtonEnabled.sendCampaign}
                             className="btn-whale"
-                            onClick={()=> setCampaignModal(true)}
+                            onClick={()=> setCampaignModal(!campaignModal)}
                         >
                             Send to Campaign
                         </button>
-                    </div>     
+                        <button
+                            
+                            className="btn-whale"
+                            onClick={()=> setMintModal(true)}
+                        >
+                            Mint
+                        </button>
+                    </div>   
+            <div>
+                <div>Elf Terminus</div>
+
+            <div className="flex p-10">
+                       
+                       <div>
+                    
+                       <input type={"text"} placeholder={"Ren To Transfer"} value={renTransfer} onChange={(e) => setRenTransfer(e.target.value)}/>
+          
+                      
+                       </div>
+                     
+                       
+                        <button
+                            //disabled={!isButtonEnabled.sendPolygon}
+                            className="btn-whale"
+                            onClick={checkinElf}
+                        >
+                            Send to Polygon
+                        </button>
+                    </div>      
+                
+            </div>
                 
                  
                     
@@ -519,7 +600,7 @@ const WhaleMode = () => {
                                        
 
 
-                return( <tr key={index} className={`${rowSelected} row`} onClick={()=> handleClick(parseInt(line.id))}  > 
+                return( <tr key={index} className={`${rowSelected} row`} onClick={()=> handleClick(line)}  > 
                     <td><img src={line.image} alt="Elf" /></td>
                     <td>{line.name}</td>
                     <td>{line.elfStatus}</td>
@@ -565,6 +646,9 @@ const WhaleMode = () => {
                         Healing: click a Druid then click the Ranger or Assassin you want to heal next. Then click heal. You should have selected only two elves.
                         </li>
                         <li>
+                        Polygon: Any elves sent to Polygon will not show up on the eth table view, but are still visible in "Profile"
+                        </li>
+                        <li>
                         Disclaimer: Function overflows are unchecked - make sure you double check before you send.
                         </li>
                     </ul>
@@ -595,10 +679,12 @@ const WhaleMode = () => {
 
 </div>
 {renderModal()}
+{renderMintModal()}
+
         </>
         
      
     ) : <Loader text={status} />
 }
 
-export default WhaleMode
+export default PlayEth

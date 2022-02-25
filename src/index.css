@@ -110,6 +110,11 @@ button {
   background-image: url(./assets/images/btn_blue.png);
 }
 
+.btn-grey {
+  background-image: url(./assets/images/REN_Button.png);
+}
+
+
 .p-relative {
   position: relative !important;
 }
@@ -120,6 +125,117 @@ button {
 .mb-2 {
   margin-bottom: 2rem ;
 }
+
+.p-5 {
+  padding: 5rem;
+}
+
+.p-4 {
+  padding: 4rem;
+}
+
+.p-3 {
+  padding: 3rem;
+}
+
+.p-2 {
+  padding: 2rem;
+}
+
+.p-1 {
+  padding: 1rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.w-25{
+  width: 25%;
+}
+.w-50 {
+  width: 50%;
+}
+
+.w-66 {
+  width: 66%;
+}
+
+
+
+.justify-center {
+  justify-content: center;
+}
+
+.pt-4{
+  padding-top: 4px;
+} 
+
+.text-xs{
+  font-size: 12px;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.h-64{
+  height: 64px;
+}
+
+.pl-4{
+  padding-left: 4px;
+}
+
+.p-10 {
+  padding: 10px;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.border-b-2 {
+  border-bottom: 2px solid #e6e6e6;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.text-sm {
+  font-size: 12px;
+}
+
+.font-semi-bold {
+  font-weight: 600;
+}
+
+#text {
+  max-width: 8ch;
+}
+
+.mt-1 {
+  margin-top: 1em;
+}
+.mt-3 {
+  margin-top: 3em;
+}
+
+.mb-1 {
+  margin-bottom: 1em;
+}
+
+.mh-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
 
 .btn-next:disabled,
 .btn-prev:disabled {
