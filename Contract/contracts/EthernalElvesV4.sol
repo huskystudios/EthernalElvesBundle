@@ -123,7 +123,7 @@ function checkIn(uint256[] calldata ids, uint256 renAmount) public returns (bool
 
 }
 
- function checkOut(uint256[] calldata ids, uint256[] calldata sentinel, bytes[] memory signatures) public returns (bool) {
+ function checkOut(uint256[] calldata ids, uint256[] calldata sentinel, bytes[] memory signatures, bytes[] memory authCodes) public returns (bool) {
    
     isPlayer();
     require(isTerminalOpen, "Terminal is closed");
@@ -138,7 +138,7 @@ function checkIn(uint256[] calldata ids, uint256 renAmount) public returns (bool
                     
                     require(usedSentinelSignatures[signatures[index]] == 0, "Signature already used");   
 
-                    require(_isSignedByValidator(encodeSentinelForSignature(ids[index], msg.sender, sentinel[index]),signatures[index]), "incorrect signature");
+                    require(_isSignedByValidator(encodeSentinelForSignature(ids[index], msg.sender, sentinel[index], authCodes[index]),signatures[index]), "incorrect signature");
 
                     sentinels[ids[index]] = sentinel[index];
                     usedSentinelSignatures[signatures[index]] = 1;
@@ -166,11 +166,11 @@ function checkIn(uint256[] calldata ids, uint256 renAmount) public returns (bool
  }
 
 //CheckOut Permissions 
-function encodeSentinelForSignature(uint256 id, address owner, uint256 sentinel) public pure returns (bytes32) {
+function encodeSentinelForSignature(uint256 id, address owner, uint256 sentinel, bytes memory authCode) public pure returns (bytes32) {
      return keccak256(
             abi.encodePacked("\x19Ethereum Signed Message:\n32", 
                 keccak256(
-                        abi.encodePacked(id, owner, sentinel))
+                        abi.encodePacked(id, owner, sentinel, authCode))
                         )
                     );
 } 
