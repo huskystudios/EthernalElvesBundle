@@ -53,6 +53,7 @@ contract EthernalElvesV4 is ERC721 {
     bool public isTerminalOpen;
 /////NEW STORAGE FROM THIS LINE V4///////////////////////////////////////////////////////
     mapping(bytes => uint16)  public usedRenSignatures; 
+    mapping(bytes => uint16)  public usedSentinelSignatures; 
 
        function initialize(address _dev1Address, address _dev2Address) public {
     
@@ -134,8 +135,14 @@ function checkIn(uint256[] calldata ids, uint256 renAmount) public returns (bool
          if (travelers > 0) {
 
                 for (uint256 index = 0; index < ids.length; index++) {  
+                    
+                    require(usedSentinelSignatures[signatures[index]] == 0, "Signature already used");   
+
                     require(_isSignedByValidator(encodeSentinelForSignature(ids[index], msg.sender, sentinel[index]),signatures[index]), "incorrect signature");
+
                     sentinels[ids[index]] = sentinel[index];
+                    usedSentinelSignatures[signatures[index]] = 1;
+
                     _actions(ids[index], 0, msg.sender, 0, 0, false, false, false, 0);
                     emit CheckOut(msg.sender, block.timestamp, ids[index]);
                 }
@@ -442,9 +449,9 @@ function _isSignedByValidator(bytes32 _hash, bytes memory _signature) private vi
 
                 }else if(action == 5){//forge loop for weapons
                    
-                    require(msg.value >= .04 ether, "Wrong value sent");  
+                    require(msg.value >= .01 ether, "Wrong value sent");  
                     require(elf.action != 3, "Cant roll in passive"); //Cant roll in passve mode  
-                    require(elf.weaponTier <= 3, "Cannot roll a new weapon");
+                    require(elf.weaponTier <= 3, "Cannot roll a new weapon"); //T4 and T5 cannot roll new weapons
                    //                    
                    // (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, rand, 1, elf.weaponTier, elf.primaryWeapon, elf.inventory);
                    (elf.primaryWeapon, elf.weaponTier) = _rollWeapon(elf.level, id_, rand);
@@ -553,8 +560,7 @@ function _isSignedByValidator(bytes32 _hash, bytes memory _signature) private vi
 
     function _rollWeapon(uint256 level, uint256 id, uint256 rand) internal pure returns (uint256 newWeapon, uint256 newWeaponTier) {
     
-        
-        
+                
         uint256 levelTier = level == 100 ? 5 : uint256((level/20) + 1);
         uint256  chance = _randomize(rand, "Weapon", id) % 100;
       
