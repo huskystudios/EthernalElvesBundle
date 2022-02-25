@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react"
-import Loader from "../../../components/Loader"
-import { useMoralis, useWeb3ExecuteFunction } from "react-moralis"
+import { useMoralis } from "react-moralis"
 import "./../style.css"
 import Countdown from 'react-countdown';
 import {
@@ -25,7 +24,7 @@ import Mint from "../../mint";
 
 
 
-const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, visualMode}) => {
+const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, visualMode, reloadData, setReloadData}) => {
 
     
     const { Moralis } = useMoralis();
@@ -458,6 +457,10 @@ const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, vi
                         
 
                         <button className="btn-whale" onClick={() => setVisualMode(!visualMode)}>Visual mode</button>
+
+                        <button className="btn-whale" onClick={() => setReloadData(!reloadData)}>Reload Data</button>
+
+                        
 
 
                     </div>      

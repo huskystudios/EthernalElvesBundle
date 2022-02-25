@@ -55,6 +55,7 @@ const Home = () => {
     const [status, setStatus] = useState()
     const [loadingText, setLoadingText] = useState()
     const [visualMode, setVisualMode] = useState(false)
+    const [reloadData, setReloadData] = useState(false)
 
 
 
@@ -344,7 +345,7 @@ const Home = () => {
         }
 
         getData()
-    }, [txreceipt, chain])
+    }, [txreceipt, chain, reloadData])
 
     const resetVariables = async () => {
         setIndex(0)
@@ -413,6 +414,8 @@ const Home = () => {
                 }
                 healMany()
             } else {
+
+              
 
                 if(clicked[0].classString !== "Druid") {
                     setAlert({
@@ -549,10 +552,22 @@ const Home = () => {
 
                         
                       {visualMode ?
-                      <>{index === 0 && <Help chain={chain} data={data} toggle={toggle} clicked={clicked} selectAll={selectAll}  />}</>
-                      : <>{index === 0 && <TableMode  chain={chain} data={data} toggle={toggle} visualMode={visualMode} setVisualMode={setVisualMode} clicked={clicked} toggleChain={toggleChain} selectAll={selectAll}  />}</>}
-                      }
-                        
+                      <>
+                      {index === 0 && <Help chain={chain} data={data} toggle={toggle} clicked={clicked} selectAll={selectAll}  />}
+                      </> : <>
+                      {index === 0 && <TableMode  
+                                            chain={chain} 
+                                            data={data} 
+                                            toggle={toggle} 
+                                            visualMode={visualMode} 
+                                            setVisualMode={setVisualMode} 
+                                            clicked={clicked} 
+                                            toggleChain={toggleChain} 
+                                            selectAll={selectAll}  
+                                            reloadData={reloadData}
+                                            setReloadData={setReloadData}
+                                            />}</>}
+                                              
 
                        
 
