@@ -40,6 +40,13 @@ export const actionString =
   {action: 10, text: 'bloodthirst'}
 ]
 
+export const rollCosts =[
+    {action:"forging", ren: 200, eth:.01},
+    {action:"merchant", ren: 200, eth:.01},
+    {action:"synergize", ren: 5, eth:0}
+
+]
+
 export const items = [
     {
         item: 0,

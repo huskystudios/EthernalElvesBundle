@@ -12,6 +12,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
     const [modal, setModal] = useState({show: false, nft: null})
     const [creatureHealth, setCreatureHealth] = useState("")
     const [mirenRewards, setMirenRewards] = useState("")
+    const [alert, setAlert] = useState({ show: false, value: null })
 
     const [campaign, setCampaign] = useState(0)
     const [activeCampaign, setActiveCampaign] = useState(0)
@@ -28,6 +29,39 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
 
 
         let {address} = await getCurrentWalletConnected()
+        let levelValidation = []
+        
+        data.map(item => {
+            if (parseInt(item.level) >= parseInt(activeCampaign.minLevel) && parseInt(item.level) <= parseInt(activeCampaign.maxLevel)) {
+
+                
+            }else{
+                levelValidation.push(item)
+            }        
+        
+        })
+
+        if(levelValidation.length > 0){
+            setAlert({show: true, value: {
+                title: "Levels not in range", 
+                content: `You can't use this campaign because you have anElf with level ${levelValidation[0].level} in this sector and the campaign requires level ${activeCampaign.minLevel} to ${activeCampaign.maxLevel}`
+            }})
+
+            return
+        }
+
+        if(parseInt(activeCampaign.creatureCount) === 0){
+            setAlert({show: true, value: {
+                title: "No creatures left", 
+                content: `No creatures left in this campaign`
+            }})
+
+            return
+        }
+
+
+
+
       
         let tryTokenids = data.map(nft => {return(nft.id)})
         let tryCampaign = activeCampaign.id.toString()
@@ -111,7 +145,16 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
             getCampaignData()
         }, [])
 
+        const showAlert = ({ title, content }) => {
 
+            return (
+                <div className="alert">
+                    <h3>{title}</h3>
+                    <pre>{content}</pre>
+                    <button className="btn btn-red" onClick={() => setAlert({ show: false })}>close</button>
+                </div>
+            )
+        }
     
         
 
@@ -249,7 +292,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
                             
                             <div key={character.id} className="elf-rect">
                                 <img src={character.image} 
-                                onMouseEnter={() => setTooltip(`Expected regeneration time: ${time} hours`)}
+                                onMouseEnter={() => setTooltip(`Expected regeneration time: ${time} hours. Elf level: ${character.level} `)}
                                 onMouseLeave={() => setTooltip("")} 
                                 alt="elf" onClick={() => setModal({show: true, nft: character})} />
                             </div>
@@ -270,6 +313,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
             </div>
             
             {renderModal(modal)}
+            {alert.show && showAlert(alert.value)}
         </div>
         
     ) : <></>

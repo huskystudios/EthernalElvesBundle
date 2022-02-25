@@ -1,17 +1,34 @@
 import React, { useEffect, useMemo, useState } from "react"
 import Loader from "../../components/Loader"
+import './style.css'
 import Control from "./components/Control"
 import Overview from "./components/Overview"
-import './style.css'
-import { campaigns } from "./config"
-import SelectToken from "./components/SelectToken"
+import { campaigns, actions, actionString, rollCosts } from "./config"
 import Actions from "./components/Actions"
 import Receive from "./components/Receive"
 import Sector from "./components/Sector"
 import Success from "./components/Success"
 import Collection from "./components/Collection"
-import { actions, actionString } from "./config"
-import { elvesAbi, elvesContract, etherscan, sendCampaign, lookupMultipleElves, getCurrentWalletConnected } from "../../utils/interact"
+
+import {
+    elvesAbi,
+    elvesContract,
+    etherscan,
+    checkIn,
+    sendCampaign, 
+    sendPassive, 
+    returnPassive, 
+    unStake, 
+    merchant, 
+    forging,
+    heal, 
+    lookupMultipleElves, 
+    getCurrentWalletConnected,
+    polygonContract, 
+    polyweb3
+} from "../../utils/interact"
+
+
 import { useMoralis } from "react-moralis";
 import Staking from "./components/Staking"
 import Help from "./components/Help"
@@ -44,6 +61,46 @@ const Home = () => {
 
     const { Moralis } = useMoralis();
 
+    ////////////////////////////
+
+
+
+
+    const sendGaslessFunction = async (params) => {
+
+
+        let tx 
+
+     
+       
+        
+        try{
+            tx = await Moralis.Cloud.run("defenderRelay", params) 
+
+            console.log(tx)
+            if(tx.data.status){
+
+                let fixString = tx.data.result.replaceAll("\"", "")
+
+            let txHashLink = `https://polygonscan.com/tx/${fixString}`
+            let successMessage = <>Check out your transaction on <a target="_blank" href={txHashLink}>Polyscan</a> </>
+            resetVariables()     
+            setAlert({show: true, value: {title: "Tx Sent", content: (successMessage)}})
+            }           
+
+
+        }catch(e){
+            console.log(e)
+        }
+
+        
+
+        console.log(tx)
+
+        
+
+    }
+
 
     /////////////////////////////
 
@@ -51,7 +108,8 @@ const Home = () => {
 
     const sendCampaignFunction = async (params) => {
 
-        console.log("sendCampaignFunction", params)
+        if(chain === "eth"){
+            console.log("sendCampaignFunction", params)
         let { success, status, txHash } = await sendCampaign(params)
 
         success && resetVariables()
@@ -63,18 +121,54 @@ const Home = () => {
             }
         })
 
-        //   
-
+        }else{
+            const polyParams =  {functionCall: polygonContract.methods.sendCampaign(params).encodeABI()}
+            await sendGaslessFunction(polyParams)
+        }
+        
         console.log("sendCampaign", params)
-     
-
      
 
     }
 
+    const healing = async () => {
+        if(chain === "eth"){
+         const params =  {healer: clicked[0].id, target: clicked[1].id}
+         let {success, status, txHash} = await heal(params)
+    
+         success && resetVariables()
+         setAlert({show: true, value: {title: "Tx Sent", content: (status)}})   
+        
+        }else{
+            const params =  {functionCall: polygonContract.methods.heal(clicked[0].id, clicked[1].id, wallet).encodeABI()}
+            await sendGaslessFunction(params)
+        }
+        
+                          
+    }
+
+    const healMany = async () => {
+
+        //split the array clicked into two arrays
+
+        let firstHalf = clicked.slice(0, clicked.length/2)
+        let secondHalf = clicked.slice(clicked.length/2, clicked.length)
+
+        const params =  {functionCall: polygonContract.methods.healMany(firstHalf, secondHalf, wallet).encodeABI()}
+        await sendGaslessFunction(params)
+                          
+         }
+
+    
+
 
 
     //////////////////////////   
+
+
+
+
+    /////////////////////////
 
 
     const doAction = async (option) => {
@@ -267,6 +361,7 @@ const Home = () => {
     // const [warning, setWarning] = useState(false)
     const [healers, setHealers] = useState([])
     const [targets, setTargets] = useState([])
+
     const renderHealModal = () => {
         if(!healModal) return <></>
         const handleChange = (e) => {
@@ -276,8 +371,38 @@ const Home = () => {
             if(multi) {
                 console.log("heal many")
             } else {
+
+                if(clicked[0].classString !== "Druid") {
+                    setAlert({
+                        show: true, value: {
+                            title: "Error",
+                            content: "You can only heal with Druids"
+                        }})  
+                        return
+                }
+
+                if(clicked[0].cooldown === true) {
+                    setAlert({
+                        show: true, value: {
+                            title: "Error",
+                            content: "Druid in cooldown!"
+                        }})  
+                        return
+                        
+
+                }
+                if(clicked[1].cooldown === false) {
+                    setAlert({
+                        show: true, value: {
+                            title: "Error",
+                            content: "Target is not cooldown!"
+                        }})  
+                        return
+                }
+
+                healing()
                 console.log("heal someoone", tokenId)
-                doAction({action:"heal", healIds: tokenId})
+                //doAction({action:"heal", healIds: tokenId})
                 setHealModal(false)
                 setMulti(false)
             }
@@ -297,9 +422,9 @@ const Home = () => {
             <div className="modal">
                 <div className="modal-content items-center">
                     <span className="close-modal" onClick={() => {setHealModal(false); setMulti(false)}}>X</span>
-                    <h3>who do you wish to heal?</h3>
+                    <h3>Confirm Heal</h3>
                    
-                    {!multi ? <input placeholder="1017" className="heal-input" value={tokenId} onChange={handleChange} /> :
+                    {!multi ? <>Heal {clicked[0].classString} #{clicked[1].id} with Druid #{clicked[0].id}?</> :
                     <div className="flex flex-column w-full items-center">
                         <h4>Select healers</h4>
                         <div className="nft-grid">
@@ -378,11 +503,10 @@ const Home = () => {
                         {index === 1 && activeNfts.length > 1 ? <Collection nft={activeNfts} onChangeIndex={onChangeIndex} /> : null}
                         {index === 1 && activeNfts.length === 1 ? <Overview nft={activeNfts} onRunWeb3={doAction} onChangeIndex={onChangeIndex} /> : null}
                         {index === 2 && <Actions doAction={doAction} actions={actions} onChangeIndex={onChangeIndex} setGameMode={setGameMode} />}
-                        {index === 3 && <Staking nft={activeNfts} onRunWeb3={doAction} onChangeIndex={onChangeIndex} />}
-                      
-                        {index === 5 && <Sector campaign={campaign} data={activeNfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} mode={gameMode} />}
-                        {index === 6 && <Success success={success} sector={sector} campaign={campaign} data={activeNfts} onChangeIndex={onChangeIndex} />}
-                        {index === 7 && <Receive onChangeIndex={onChangeIndex} />}
+                        {index === 3 && <Staking nft={activeNfts} onRunWeb3={doAction} onChangeIndex={onChangeIndex} />}                      
+                        {index === 4 && <Sector campaign={campaign} data={activeNfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} mode={gameMode} />}
+                        {index === 5 && <Success success={success} sector={sector} campaign={campaign} data={activeNfts} chain={chain} onChangeIndex={onChangeIndex} />}
+                        {index === 6 && <Receive onChangeIndex={onChangeIndex} />}
                       
 
                     </div>

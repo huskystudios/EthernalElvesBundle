@@ -60,8 +60,6 @@ const TableMode = ({data, clicked, toggle}) => {
     const [nfts, setNfts] = useState([])
     const [txreceipt, setTxReceipt] = useState()
     const [alert, setAlert] = useState({show: false, value: null})
-    const [campaignModal, setCampaignModal] = useState(false)
-    const [campaignBTModal, setCampaignBTModal] = useState(false)
     const [mintModal, setMintModal] = useState(false)
     const [confirm, setConfirm] = useState(false)
    
@@ -70,8 +68,7 @@ const TableMode = ({data, clicked, toggle}) => {
         setNftData([])
         setNfts([])
         setTxReceipt([])
-        setCampaignModal(false)
-        setCampaignModal(!campaignModal)
+       
         setActiveNfts(!activeNfts)
 
     }
@@ -134,7 +131,6 @@ const TableMode = ({data, clicked, toggle}) => {
         let tx 
 
      
-        setCampaignModal(false)
         
         try{
             tx = await Moralis.Cloud.run("defenderRelay", params) 
@@ -163,13 +159,7 @@ const TableMode = ({data, clicked, toggle}) => {
 
     }
 
-    const sendCampaignFunction = async (campParams) => {
-           
-        //const params =  {functionCall: polygonContract.methods.sendCampaign(clicked, tryCampaign, trySection, tryWeapon, tryItem, useItem, owner).encodeABI()}
-        const params =  {functionCall: polygonContract.methods.sendCampaign(clicked, campParams.tryCampaign, campParams.trySection, campParams.tryWeapon, campParams.tryItem, campParams.useItem, owner ).encodeABI()}
-        await sendGaslessFunction(params)
-        
-    }
+
 
     const bloodthirstFunction = async () => {
            
@@ -215,24 +205,9 @@ const TableMode = ({data, clicked, toggle}) => {
         }
 
 
-    const healing = async () => {
 
-        const params =  {functionCall: polygonContract.methods.heal(clicked[0], clicked[1], owner).encodeABI()}
-        await sendGaslessFunction(params)
-                          
-         }
 
-         const healMany = async () => {
-
-            //split the array clicked into two arrays
-
-            let firstHalf = clicked.slice(0, clicked.length/2)
-            let secondHalf = clicked.slice(clicked.length/2, clicked.length)
-
-            const params =  {functionCall: polygonContract.methods.healMany(firstHalf, secondHalf, owner).encodeABI()}
-            await sendGaslessFunction(params)
-                              
-             }
+      
 
              const unStakeElf = async () => {
       
@@ -341,27 +316,10 @@ const TableMode = ({data, clicked, toggle}) => {
             )
         }
 
-        const renderModal = () => {
-
-            return(
-                <Modal show={campaignModal}>
-                        <Sector showpagination={true} chain={"polygon"} data={nfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} mode={"campaign"} />
-                </Modal>
-             )
-         }
-
-
-       
+     
        
 
 
-        
-        const onChangeIndex = () => {
-      
-            return null
-        }
-
-        ///create a function to confirm an action
 
 
 
@@ -369,7 +327,7 @@ const TableMode = ({data, clicked, toggle}) => {
         const renderBTModal = () => {
         
             return(
-                <Modal show={campaignBTModal}>
+                <Modal>
                         <h3>Bloodthirst!</h3>
                         
                         Creature Health is 400HP
@@ -637,9 +595,7 @@ const TableMode = ({data, clicked, toggle}) => {
                     <ul>
                     <li>Healing: click a Druid then click the Ranger or Assassin you want to heal next. Then click heal. You should have selected only two elves.</li>
                     <li>Heal Many: click a few Druids then click the same number of Rangers or Assassins and then click heal many.</li>
-                        <li>
-                        Disclaimer: Function overflows are unchecked - make sure you double check before you send.
-                        </li>
+                        
                     </ul>
                
                 </div>
@@ -656,8 +612,6 @@ const TableMode = ({data, clicked, toggle}) => {
 </div>
 
 </div>
-{renderModal()}
-{renderBTModal()}
 {renderMintModal()}
 {alert.show && showAlert(alert.value)}
 
