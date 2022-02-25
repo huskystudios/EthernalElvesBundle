@@ -58,6 +58,7 @@ const TransfersToEth = () => {
         let tokenIdsArry = []
         let sentinelArry = []
         let signatureArry = []
+        let authCodesArry = []
 
         let renTxs = []
 
@@ -66,7 +67,9 @@ const TransfersToEth = () => {
         let timestamp 
 
         nftData.map((item, index) => {
-           
+            
+           // tx = await Moralis.Cloud.run("signForEthReturn", params) 
+            
 
             if (clicked.includes((item.id))) {
                 
@@ -74,6 +77,8 @@ const TransfersToEth = () => {
                 tokenIdsArry.push(item.attributes.tokenId)
                 sentinelArry.push(item.attributes.sentinel)
                 signatureArry.push(item.attributes.signedTransaction.signature)
+                authCodesArry.push(item.attributes.authCode)
+
                 }else if(item.className === elvesRenTransferIn){
 
                     renAmount = item.attributes.renAmount
@@ -91,7 +96,7 @@ const TransfersToEth = () => {
         })
        
       if(tokenIdsArry.length > 0){
-        const params1 =  {ids:tokenIdsArry , sentinel:sentinelArry, signature:signatureArry}
+        const params1 =  {ids:tokenIdsArry , sentinel:sentinelArry, signature:signatureArry, authCode:authCodesArry}
         let {success, status, txHash} = await checkOut(params1)
    
         //success && resetVariables()            

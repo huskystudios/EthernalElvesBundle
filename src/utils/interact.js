@@ -615,7 +615,7 @@ export const checkOut = async(props) => {
 
   console.log(props)
   
-  let tx = await txPayload(nftContract.methods.checkOut(props.ids, props.sentinel, props.signature).encodeABI())
+  let tx = await txPayload(nftContract.methods.checkOut(props.ids, props.sentinel, props.signature, props.authCode).encodeABI())
  
   try {
     const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})

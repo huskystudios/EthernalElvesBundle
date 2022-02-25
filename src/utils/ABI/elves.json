@@ -450,6 +450,11 @@
           "internalType": "bytes[]",
           "name": "signatures",
           "type": "bytes[]"
+        },
+        {
+          "internalType": "bytes[]",
+          "name": "authCodes",
+          "type": "bytes[]"
         }
       ],
       "name": "checkOut",
@@ -586,6 +591,11 @@
           "internalType": "uint256",
           "name": "sentinel",
           "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "authCode",
+          "type": "bytes"
         }
       ],
       "name": "encodeSentinelForSignature",
@@ -1445,6 +1455,25 @@
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "name": "usedSentinelSignatures",
+      "outputs": [
+        {
+          "internalType": "uint16",
+          "name": "",
+          "type": "uint16"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "validator",
       "outputs": [
@@ -1493,7 +1522,7 @@
       ],
       "name": "withdrawSomeTokenBalance",
       "outputs": [],
-      "stateMutability": "nonpayable",  
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
