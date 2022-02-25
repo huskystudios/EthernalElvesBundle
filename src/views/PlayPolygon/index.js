@@ -327,9 +327,11 @@ const PlayPolygon = () => {
 
                 const elves = await lookupMultipleElves(lookupParams)
                 elves.sort((a, b) => a.time - b.time) 
-               
-                setNftData(elves)        
-                setStatus(elves.length + " elves")
+                //filter out elves whos action is ===8 
+                const filteredElves = elves.filter((elf) => elf.action !== 0)
+                
+                setNftData(filteredElves)        
+                setStatus(filteredElves.length + " elves")
                 setStatus("done")
                           
                setLoading(false)
