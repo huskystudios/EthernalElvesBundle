@@ -36,7 +36,7 @@ const Actions = ({onChangeIndex, actions, setGameMode}) => {
                         )}
                     </div>
                     <div className="d-flex flex-row justify-around">
-                        <button className="btn btn-red" onClick={() => onChangeIndex(-1)} >back</button>
+                        <button className="btn btn-red" onClick={() => onChangeIndex(-2)} >back</button>
                     </div>
                 </div>
             </div>

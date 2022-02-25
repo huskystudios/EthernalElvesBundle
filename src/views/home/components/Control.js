@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import hBar from "../../../assets/images/health_bar.png"
 import lBar from "../../../assets/images/level_bar.png"
 import Countdown from 'react-countdown';
@@ -8,14 +8,13 @@ const PAGE_COUNT = 3
 const MAX_HEALTH = 100
 const MAX_LEVEL = 100
 
-const Control = ({data, activities, onSelect}) => {
+const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3, onForge, onMerchant, onHeal }) => {
     const [currentPage, setCurrentPage] = useState(0)
     const [nfts, setNfts] = useState([])
-    const [clicked, setClicked] = useState([]);
-    
+
     const [activeNft, setActiveNft] = useState()
     const [activeNftHealth, setActiveNftHealth] = useState(0)
-
+    const [open, setOpen] = useState(false)
     const [tooltip, setTooltip] = useState({
         show: false,
         value: null
@@ -25,139 +24,149 @@ const Control = ({data, activities, onSelect}) => {
     const getLastCampaign = async (tokenId) => {
 
 
-    const params =  {tokenId: tokenId}
-    const lastCamp = await Moralis.Cloud.run("getLastCampaignByUser", params);
+        const params = { tokenId: tokenId }
+        const lastCamp = await Moralis.Cloud.run("getLastCampaignByUser", params);
 
-      const res = lastCamp[0]
+        const res = lastCamp[0]
 
- //   console.log(tokenId, "tokenId", lastCamp)
- //   const ElfCampaigns = Moralis.Object.extend("ElfCampaignsActivity");
- //   let query = new Moralis.Query(ElfCampaigns);  
- //   query.equalTo("tokenId", tokenId.toString());
- //   const res = await query.first();
-   // console.log("huh?", tokenId, res.attributes.sector, res.attributes.campaign, Moralis.Units.FromWei(res.attributes.amount))
-    if(res){
-        return{
-            sector: res.sector, //res.attributes.sector,
-            campaign: res.campaign, //res.attributes.campaign,
-            amount: Moralis.Units.FromWei(res.amount),
-            string: "Last Campaign was in camp " + res.campaign + " and in sector " + res.sector + ". You earned " + Moralis.Units.FromWei(res.amount) + " $REN"
+        //   console.log(tokenId, "tokenId", lastCamp)
+        //   const ElfCampaigns = Moralis.Object.extend("ElfCampaignsActivity");
+        //   let query = new Moralis.Query(ElfCampaigns);  
+        //   query.equalTo("tokenId", tokenId.toString());
+        //   const res = await query.first();
+        // console.log("huh?", tokenId, res.attributes.sector, res.attributes.campaign, Moralis.Units.FromWei(res.attributes.amount))
+        if (res) {
+            return {
+                sector: res.sector, //res.attributes.sector,
+                campaign: res.campaign, //res.attributes.campaign,
+                amount: Moralis.Units.FromWei(res.amount),
+                string: "Last Campaign was in camp " + res.campaign + " and in sector " + res.sector + ". You earned " + Moralis.Units.FromWei(res.amount) + " $REN"
+            }
         }
-    }
-    
-    
+
+
 
 
     }
-
-    const toggle = async (character) => {
-        
+    useEffect(() => {
+        if (clicked.length === 0) {
+            return setActiveNft(null)
+        }
+        const character = clicked[clicked.length - 1]
         setActiveNft(character)
 
-                            
         const tOne = new Date(character.time * 1000)
         const tZero = new Date()
-        let healthBar  = 5
+        let healthBar = 5
 
         //time difference in hours
         const diff = Math.abs(tZero.getTime() - tOne.getTime()) / 36e5;
-        
-        if(diff < 10){
+
+        if (diff < 10) {
             healthBar = 75
-        }else if(diff < 16){
+        } else if (diff < 16) {
             healthBar = 60
-        }else if(diff < 24){
+        } else if (diff < 24) {
             healthBar = 20
-        }else if(diff < 48){
+        } else if (diff < 48) {
             healthBar = 2
         }
-            console.log(diff)
         let fullHealth = tZero.getTime() > tOne.getTime() ? true : false
-        
+
         healthBar = fullHealth ? 100 : healthBar
-        
-
-      
         setActiveNftHealth(healthBar)
-
-        
-        if(clicked.includes(character)){
-            setClicked(clicked.filter(char => char !== character))
-            setActiveNft(null)
-        } else {
-            if(clicked.length <= 7) {
-                setClicked([...clicked, character])
-            }else{
-                    //set status to "You can only select 8 at a time"
-            }
-        }
-  }
-
-
+    }, [clicked])
 
     useEffect(() => {
- 
-        if(PAGE_COUNT * currentPage < data.length){
+
+        if (PAGE_COUNT * currentPage < data.length) {
             const showNfts = data.slice(currentPage * PAGE_COUNT, (currentPage + 1) * PAGE_COUNT)
             setNfts(showNfts);
         }
 
     }, [currentPage, data, setNfts, clicked])
-    const onPageChange = ( value ) => {
-        if(value > 0 && PAGE_COUNT * (currentPage + 1) < data.length)
+    const onPageChange = (value) => {
+        if (value > 0 && PAGE_COUNT * (currentPage + 1) < data.length)
             setCurrentPage(currentPage + 1)
-        if(value < 0 && currentPage > 0)
+        if (value < 0 && currentPage > 0)
             setCurrentPage(currentPage - 1)
 
     }
+    const drop = useRef("actions");
+    const handleClick = (e) => {
+        if(!drop.current) return;
+        if (!e.target.closest(`#${drop.current.id}`) && open) {
+          setOpen(false);
+        }
+    }
+    React.useEffect(() => {
+        document.addEventListener("click", handleClick);
+        return () => {
+          document.removeEventListener("click", handleClick);
+        };
+    });
+    const handleGameModes = (clicked) => {
+        onSelect(clicked)
+    }
     return (
         <div className="control-panel">
-            <span className="btn-select" onClick={() => onSelect(clicked)}>select {clicked.length > 0 ? clicked.length : ""}</span>
-            <div className="nft-wrapper">
+            <span className="btn-select">
+                <div className="dropdown" ref={drop} id="actions">
+                    <button className="dropbtn" onClick={() => setOpen(open => !open)}>Actions</button>
+                    {open && <div className="dropdown-content">
+                        <span onClick={onForge}>forge</span>
+                        <span onClick={onMerchant}>merchant</span>
+                        <span onClick={onHeal}>heal</span>
+                        <span onClick={() => handleGameModes(clicked)} >game modes</span>
+                        <span onClick={() => onRunWeb3({action:"unStake"})}>unstake</span>
+                    </div>}
+                </div>
+            </span>
+            {/* <div className="nft-wrapper">
                 {nfts.map((character, index) => {
                     let classes = "nft"
 
-                    if(clicked.includes(character)){
-                        classes="nft-selected"
+                    if (clicked.includes(character)) {
+                        classes = "nft-selected"
                     }
-               
-                    return(
+
+                    return (
                         <div
-                        className={classes}
-                        key={index}
-                        onClick={() => {    
-                            toggle(character)                            
-                        }}
-                        onMouseEnter={async () => {
-                            let campaignData = await getLastCampaign(character.id)
-                            setTooltip({
-                                show: true,
-                                value: {
-                                    title: `${character.classString} ${character.name}`,
-                                    content: `HealthPoints: ${character.health}\nLevel: ${character.level}`, 
-                                    timestamp: character.time,
-                                    actionString: character.actionString,
-                                    lastCampaign: campaignData ? campaignData.string : null
-                                }
-                            })
-                        }}
-                        onMouseLeave={() => setTooltip({
-                            show: false,
-                            value: null
-                        })}
-                    >
-                        <img src={character.image} alt="nft" />
-                        <span>#{character.id}</span>
-                    </div>
+                            className={classes}
+                            key={index}
+                            onClick={() => {
+                                toggle(character)
+                            }}
+                            onMouseEnter={async () => {
+                                let campaignData = await getLastCampaign(character.id)
+                                setTooltip({
+                                    show: true,
+                                    value: {
+                                        title: `${character.classString} ${character.name}`,
+                                        content: `HealthPoints: ${character.health}\nLevel: ${character.level}`,
+                                        timestamp: character.time,
+                                        actionString: character.actionString,
+                                        lastCampaign: campaignData ? campaignData.string : null
+                                    }
+                                })
+                            }}
+                            onMouseLeave={() => setTooltip({
+                                show: false,
+                                value: null
+                            })}
+                        >
+                            <img src={character.image} alt="nft" />
+                            <span>#{character.id}</span>
+                        </div>
                     )
                 }
-                
+
                 )}
-            </div>
-            <div className="inventory-wrapper">
+            </div> */}
+            {/* <div className="inventory-wrapper">
                 {
-                    clicked?.map(( item, index ) => 
-                        <img 
+                    clicked?.map((item, index) =>
+                        <img
                             key={index}
                             onMouseEnter={() => setTooltip({
                                 show: false,
@@ -172,22 +181,37 @@ const Control = ({data, activities, onSelect}) => {
                             })}
                             className="inventory-item"
                             src={item.image}
-                            alt="" 
+                            alt=""
                         />
                     )
                 }
-            </div>
+            </div> */}
+            <div className="active-attributes d-flex flex-column">
+                    {activeNft?.attributes.map((attribute, index) => {
+                        if(index < 6) return <div className="d-flex flex-row justify-between" key={index}>
+                            <span className="attribute-name">{attribute.trait_type}:</span>
+                            <span className="attribute-value">{attribute.value}</span>
+                        </div>})}
+                    {activeNft && <div className="d-flex flex-row justify-between">
+                        <span className="attribute-name">$Ren Earned:</span>
+                        <span className="attribute-value">0</span>
+                    </div>}
+                    {activeNft && <div className="d-flex flex-row justify-between">
+                        <span className="attribute-name">Last Action:</span>
+                        <span className="attribute-value">0</span>
+                    </div>}
+                </div>  
             {activeNft && <>
-            <img className="health-bar" style={activeNft ? {clipPath: `polygon(0 0, ${activeNftHealth / MAX_HEALTH * 100}% 0, ${activeNftHealth / MAX_HEALTH * 100}% 100%, 0% 100%)`} : null} src={hBar} alt="health bar" />
-            <img className="level-bar" style={activeNft ? {clipPath: `polygon(0 0, ${activeNft.level / MAX_LEVEL * 100}% 0, ${activeNft.level / MAX_LEVEL * 100}% 100%, 0% 100%)`} : null} src={lBar} alt="level bar" />
+                <img className="health-bar" style={activeNft ? { clipPath: `polygon(0 0, ${activeNftHealth / MAX_HEALTH * 100}% 0, ${activeNftHealth / MAX_HEALTH * 100}% 100%, 0% 100%)` } : null} src={hBar} alt="health bar" />
+                <img className="level-bar" style={activeNft ? { clipPath: `polygon(0 0, ${activeNft.level / MAX_LEVEL * 100}% 0, ${activeNft.level / MAX_LEVEL * 100}% 100%, 0% 100%)` } : null} src={lBar} alt="level bar" />
             </>}
-            { activeNft && <img className="active-thumb" src={activeNft.image} alt="level bar" /> }
+            {activeNft && <img className="active-thumb" src={activeNft.image} alt="level bar" />}
             <span className="active-id">{activeNft ? `#${activeNft.id}` : ''}</span>
             <button className="btn-prev" onClick={() => onPageChange(-1)} />
             <button className="btn-next" onClick={() => onPageChange(1)} />
             {tooltip.show && showTooltip(tooltip.value)}
             {activeNft && activeNft.inventoryImage && (
-                <div className="activities">  
+                <div className="activities">
                     <img src={activeNft.inventoryImage} alt="Item" title={`${activeNft.inventoryString}: ${activeNft.inventoryDescription}`} />
                     <strong>{activeNft.inventoryString}</strong>
                     <span>{activeNft.inventoryDescription}</span>
@@ -197,25 +221,25 @@ const Control = ({data, activities, onSelect}) => {
     )
 }
 
-const showTooltip = ({title, content, timestamp, lastCampaign, actionString}) => {
+const showTooltip = ({ title, content, timestamp, lastCampaign, actionString }) => {
 
     const date = new Date(timestamp * 1000)
     const isActive = new Date() > date
 
     let passiveString
 
-    if(actionString === "Sent to Passive Campaign"){
-        let timesince = Math.floor(((new Date() - date) / 1000)/(60*60*24))
+    if (actionString === "Sent to Passive Campaign") {
+        let timesince = Math.floor(((new Date() - date) / 1000) / (60 * 60 * 24))
         passiveString = `Time spent in ${actionString}: ${timesince} days`
     }
-    
+
 
     return (
         <div className="tooltip">
             <h3>{title}</h3>
             <pre>{content}</pre>
             {passiveString && <pre>{passiveString}</pre>}
-            {!isActive &&  <pre>Ready in:{" "}<Countdown date={date} /></pre>}
+            {!isActive && <pre>Ready in:{" "}<Countdown date={date} /></pre>}
             <pre>Activity: {actionString}</pre>
             <pre>{lastCampaign}</pre>
         </div>
