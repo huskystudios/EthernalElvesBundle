@@ -546,8 +546,8 @@ const Home = () => {
                     <div className="dark-1000 h-full d-flex home justify-center items-center">
                         {alert.show && showAlert(alert.value)}
 
-                        {index === 0 && <TableMode data={data} toggle={toggle} clicked={clicked} selectAll={selectAll}  />}
-                        {index === 100 && <Help data={data} toggle={toggle} clicked={clicked} selectAll={selectAll}  />}
+                        {index === 0 && <TableMode chain={chain} data={data} toggle={toggle} clicked={clicked} selectAll={selectAll}  />}
+                        {index === 100 && <Help chain={chain} data={data} toggle={toggle} clicked={clicked} selectAll={selectAll}  />}
                         
                         
 

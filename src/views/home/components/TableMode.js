@@ -25,7 +25,7 @@ import Mint from "../../mint";
 
 
 
-const TableMode = ({data, clicked, toggle}) => {
+const TableMode = ({data, clicked, toggle, chain}) => {
 
     
     const { Moralis } = useMoralis();
@@ -61,6 +61,7 @@ const TableMode = ({data, clicked, toggle}) => {
     const [txreceipt, setTxReceipt] = useState()
     const [alert, setAlert] = useState({show: false, value: null})
     const [mintModal, setMintModal] = useState(false)
+    const [transfersModal, setTransfersModal] = useState(false)
     const [confirm, setConfirm] = useState(false)
    
     const resetVariables = async () => {
@@ -174,13 +175,22 @@ const TableMode = ({data, clicked, toggle}) => {
     const checkinElf = async () => {
 
         let renToSend = renTransfer === "" ? 0 : renTransfer
+        
+        let ids = clicked.map((elf) => elf.id)
 
         renToSend = Moralis.Units.ETH(renToSend)
-        console.log(renToSend)
-        
-        const params =  {functionCall: polygonContract.methods.checkIn(clicked, renToSend, owner).encodeABI()}
-        await sendGaslessFunction(params)
-                      
+        console.log(renToSend, ids)
+
+        if(chain === "eth"){
+            const params =  {ids: ids, renAmount: (renToSend).toString()}
+            let {success, status, txHash} = await checkIn(params)
+     
+            setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
+
+        }else{
+            const params =  {functionCall: polygonContract.methods.checkIn(ids, renToSend, owner).encodeABI()}
+            await sendGaslessFunction(params)
+        }                      
     }
 
  
@@ -372,8 +382,7 @@ const TableMode = ({data, clicked, toggle}) => {
             )
         }
 
-        const renderMintModal = () => {
-           
+        const renderMintModal = () => {           
             return(
                  <Modal show={mintModal}>
                      <div style={{"display": "flex", "minHeight": "600px",  "flexDirection": "column"}}>
@@ -382,8 +391,33 @@ const TableMode = ({data, clicked, toggle}) => {
                 </Modal>
             
             )
-
         }
+
+        const renderTransfersModal = () => {           
+            
+            
+            return(
+                 
+                 
+                 <Modal show={transfersModal}>
+                    <div className="flex flex-column w-full items-center">
+                    
+                        <h4>Elf Terminus</h4>
+                        <p className="text-danger">(Using the Elf Terminus can result in losing access to your elf. Please read instructions carefully.)</p>
+                        <input type={"text"} placeholder={"Ren To Transfer"} value={renTransfer} onChange={(e) => setRenTransfer(e.target.value)}/>
+                    <div className="flex mt-1">
+                    <button className="btn-whale"  onClick={checkinElf}>
+                        Confirm Transfer
+                     </button>
+                    </div>
+                    </div>
+                
+                </Modal>
+            
+            )
+        }
+
+
 
 
 
@@ -399,25 +433,18 @@ const TableMode = ({data, clicked, toggle}) => {
                          
                  
             <div>
-                <div>Elf Terminus</div>
+   
 
             <div className="flex p-10">
                        
-                       <div>
-                    
-                       <input type={"text"} placeholder={"Ren To Transfer"} value={renTransfer} onChange={(e) => setRenTransfer(e.target.value)}/>
-          
-                      
-                       </div>
-                     
-                       
-                        <button
-                            /*disabled={!isButtonEnabled.unstake}*/
+            <button
+                            
                             className="btn-whale"
-                            onClick={checkinElf}
+                            onClick={()=> setTransfersModal(!transfersModal)}
                         >
-                            Send to Ethereum
+                            Transfers
                         </button>
+       
 
                         <button
                             disabled={!isButtonEnabled.unstake}
@@ -431,7 +458,7 @@ const TableMode = ({data, clicked, toggle}) => {
                         <button
                             
                             className="btn-whale"
-                            onClick={()=> setMintModal(true)}
+                            onClick={()=> setMintModal(!mintModal)}
                         >
                             Mint
                         </button>
@@ -602,6 +629,7 @@ const TableMode = ({data, clicked, toggle}) => {
 
 </div>
 {renderMintModal()}
+{renderTransfersModal()}
 {alert.show && showAlert(alert.value)}
 
         </>

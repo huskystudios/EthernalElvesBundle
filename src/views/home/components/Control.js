@@ -119,7 +119,7 @@ const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3
                         <span onClick={onHeal}>heal</span>
                         {chain === "polygon" && <span onClick={onSynergize}>synergize</span>}
                         <span onClick={() => handleGameModes(clicked)} >game modes</span>
-                        <span onClick={() => onRunWeb3({action:"unStake"})}>unstake</span>
+                                       
                     </div>}
                 </div>
             </span>
