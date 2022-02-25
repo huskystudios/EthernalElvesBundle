@@ -67,8 +67,14 @@ const PlayPolygon = () => {
         setClicked(clicked.filter(item => item !== id.id))
         setNfts(nfts.filter(item => item !== id))
     } else {
-        setClicked([...clicked, id.id])
-        setNfts([...nfts, id])
+
+        if(clicked.length <= 9) {
+            setClicked([...clicked, id.id])
+            setNfts([...nfts, id])
+            }else{
+                setAlert({show: true, value: {title: "Max selected", content: ("You can only select ten items at a time")}})
+            }
+        
     }
 }
 
