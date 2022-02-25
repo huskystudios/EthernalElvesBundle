@@ -68,36 +68,24 @@ const Home = () => {
 
     const sendGaslessFunction = async (params) => {
 
-
         let tx 
-
-     
-       
-        
         try{
             tx = await Moralis.Cloud.run("defenderRelay", params) 
 
             console.log(tx)
             if(tx.data.status){
 
-                let fixString = tx.data.result.replaceAll("\"", "")
-
+            let fixString = tx.data.result.replaceAll("\"", "")
             let txHashLink = `https://polygonscan.com/tx/${fixString}`
             let successMessage = <>Check out your transaction on <a target="_blank" href={txHashLink}>Polyscan</a> </>
-            resetVariables()     
+            
             setAlert({show: true, value: {title: "Tx Sent", content: (successMessage)}})
             }           
 
 
         }catch(e){
             console.log(e)
-        }
-
-        
-
-        console.log(tx)
-
-        
+        }        
 
     }
 
@@ -140,8 +128,9 @@ const Home = () => {
          setAlert({show: true, value: {title: "Tx Sent", content: (status)}})   
         
         }else{
+            console.log(clicked[0].id, clicked[1].id, wallet)
             const params =  {functionCall: polygonContract.methods.heal(clicked[0].id, clicked[1].id, wallet).encodeABI()}
-            await sendGaslessFunction(params)
+            sendGaslessFunction(params)
         }
         
                           
@@ -152,7 +141,8 @@ const Home = () => {
         let targetIds = targets.map(el => el.id)
 
         const params =  {functionCall: polygonContract.methods.healMany(healerIds, targetIds, wallet).encodeABI()}
-        await sendGaslessFunction(params)
+        console.log(healers, targets, wallet)
+        sendGaslessFunction(params)
                           
     }
 
@@ -193,7 +183,7 @@ const Home = () => {
         const params =  {functionCall: option === "forging" ? polygonContract.methods.forging(rollerIds, wallet).encodeABI() : 
         option === "merchant" ? polygonContract.methods.merchant(rollerIds, wallet).encodeABI() : polygonContract.methods.synergize(rollerIds, wallet).encodeABI()}
         console.log(params, wallet, rollerIds)
-        //await sendGaslessFunction(params)   
+        sendGaslessFunction(params)   
         }
 
         setModal({show: false, content: ""})
