@@ -231,8 +231,11 @@ const PlayEth = () => {
 
                 const elves = await lookupMultipleElves(lookupParams)
                 elves.sort((a, b) => a.time - b.time) 
-               
-                setNftData(elves)        
+
+                //filter out elves whos action is ===8 
+                const filteredElves = elves.filter((elf) => elf.action !== 8)
+                    
+                setNftData(filteredElves)        
                 setStatus(elves.length + " elves")
                 setStatus("done")
                           
@@ -641,6 +644,9 @@ const PlayEth = () => {
                     <ul>
                     <li>
                         Healing: click a Druid then click the Ranger or Assassin you want to heal next. Then click heal. You should have selected only two elves.
+                        </li>
+                        <li>
+                        Polygon: Any elves sent to Polygon will not show up on the eth table view, but are still visible in "Profile"
                         </li>
                         <li>
                         Disclaimer: Function overflows are unchecked - make sure you double check before you send.
