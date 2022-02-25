@@ -269,7 +269,8 @@ elfObj = {
     accessories: elfAccessories,
     health: elfHealthPoints,
     attributes: elfTokenObj.attributes,
-    chain: chain
+    chain: chain,
+    cooldown: elfTime,
   }
 
 elfArry.push(elfObj)

@@ -1,22 +1,40 @@
 import React, { useEffect, useState, useMemo } from "react"
-import Loader from "../../components/Loader"
+import Loader from "../../../components/Loader"
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis"
-import "./style.css"
+import "./../style.css"
 import Countdown from 'react-countdown';
 import {
     checkIn,
-    sendCampaign, sendPassive, returnPassive, unStake, merchant, forging,
-    heal, lookupMultipleElves, getCurrentWalletConnected} from "../../utils/interact"
-import Mint from "../mint"
-import Sector from "../../views/home/components/Sector"
-import Modal from "../../components/Modal"
+    sendCampaign, 
+    sendPassive, 
+    returnPassive, 
+    unStake, 
+    merchant, 
+    forging,
+    heal, 
+    lookupMultipleElves, 
+    getCurrentWalletConnected,
+    polygonContract, 
+    polyweb3
+} from "../../../utils/interact"
 
-const PlayEth = () => {
-    const [loading, setLoading] = useState(true)
+import Modal from "../../../components/Modal"
+import Sector from "./Sector"
+import Mint from "../../mint";
+
+
+
+
+const TableMode = ({data, clicked, toggle}) => {
+
+    
     const { Moralis } = useMoralis();
     const [status, setStatus] = useState("")
     const [sortBy, setSortBy] = useState({ value: "cooldown", order: "desc" });
+    const [tryItem, setTryItem] = useState(1)
+    const [useItem, setUseItem] = useState(1)
 
+    const owner = window.ethereum.selectedAddress
 
     const [renTransfer, setRenTransfer] = useState("")
     
@@ -27,13 +45,14 @@ const PlayEth = () => {
         sendPassive: false,
         returnPassive: false,
         heal: false,
+        healMany: false,
         sendCampaign: false,
-        sendPolygon: false,
+        synergize: false,
     });
  
     
 
-    const [clicked, setClicked] = useState([]);
+   
 
     const [nftData, setNftData] = useState([])
     const [sortedElves, setSortedElves] = useState([])
@@ -42,33 +61,26 @@ const PlayEth = () => {
     const [txreceipt, setTxReceipt] = useState()
     const [alert, setAlert] = useState({show: false, value: null})
     const [campaignModal, setCampaignModal] = useState(false)
+    const [campaignBTModal, setCampaignBTModal] = useState(false)
     const [mintModal, setMintModal] = useState(false)
+    const [confirm, setConfirm] = useState(false)
    
     const resetVariables = async () => {
-        setClicked([])
+      
         setNftData([])
         setNfts([])
         setTxReceipt([])
-      //  setCampaignModal(!campaignModal)
+        setCampaignModal(false)
+        setCampaignModal(!campaignModal)
         setActiveNfts(!activeNfts)
 
     }
     
-   // const { data, error, fetch, isFetching, isLoading } = useWeb3ExecuteFunction();
+ 
+   const handleClick = async (nft) => {
 
-
-    const handleClick = async (id) => {
-
-        if (clicked.includes(id.id)) {
-            setClicked(clicked.filter(item => item !== id.id))
-            setNfts(nfts.filter(item => item !== id))
-        } else {
-            setClicked([...clicked, id.id])
-            setNfts([...nfts, id])
-        }
+    toggle(nft)
     }
-
-    
 
 
     useMemo(() => {
@@ -76,9 +88,8 @@ const PlayEth = () => {
 
         const isInactive = (elf) => new Date() > new Date(elf.time * 1000);
         const isPassive = (elf) => elf.action === 3;
-        const isPolygon = (elf) => elf.action === 8;
         const isStaked = (elf) => elf.elfStatus === "staked";
-       
+        const isDruid = (elf) => elf.sentinelClass === 0;
         const reducer = (accumulator, key) => {
             if (selectedElves.length === 0) return {...accumulator, [key]: false};
 
@@ -98,9 +109,9 @@ const PlayEth = () => {
                 case "returnPassive":
                     value = selectedElves.every((elf) => isInactive(elf) && isPassive(elf));
                     break;
-                case "sendPolygon": 
-                    value = selectedElves.every((elf) => !isPolygon(elf) && !isPassive(elf)) && selectedElves.length <= 10;
-                    break;
+                case "synergize":                    
+                    value = selectedElves.every((elf) => !isInactive(elf) && isDruid(elf));
+                    break;    
                 case "rerollWeapon":
                 case "rerollItem":    
                 default:
@@ -116,130 +127,133 @@ const PlayEth = () => {
     }, [clicked, nftData]);
 
 
-    const passiveMode = async (option) => {
-      
-        console.log(option)
-       
-       const params = {ids: clicked}
-            
-       let {success, status, txHash} = option === "passive" ? await sendPassive(params) : await returnPassive(params)
-    
-       success && resetVariables()            
 
-       setAlert({show: true, value: {title: "Tx Sent", content: (status)}})        
-                      
+    const sendGaslessFunction = async (params) => {
+
+
+        let tx 
+
+     
+        setCampaignModal(false)
+        
+        try{
+            tx = await Moralis.Cloud.run("defenderRelay", params) 
+
+            console.log(tx)
+            if(tx.data.status){
+
+                let fixString = tx.data.result.replaceAll("\"", "")
+
+            let txHashLink = `https://polygonscan.com/tx/${fixString}`
+            let successMessage = <>Check out your transaction on <a target="_blank" href={txHashLink}>Polyscan</a> </>
+            resetVariables()     
+            setAlert({show: true, value: {title: "Tx Sent", content: (successMessage)}})
+            }           
+
+
+        }catch(e){
+            console.log(e)
         }
-
-
-        const healing = async () => {
-      
-         const params =  {healer: clicked[0], target: clicked[1]}
-         let {success, status, txHash} = await heal(params)
-    
-         success && resetVariables()            
-  
-         setAlert({show: true, value: {title: "Tx Sent", content: (status)}})       
-                          
-         }
-
-
-            
-    const reRoll = async (option) => {
-      
-      
-        const params =  {ids: clicked}
-        let {success, status, txHash} = option === "forging" ? await forging(params) : await merchant(params)
-   
-        success && resetVariables()            
- 
-        setAlert({show: true, value: {title: "Tx Sent", content: (status)}})             
-                      
-        }
-
-
-
-    const unStakeElf = async () => {
-      
-        const params =  {ids: clicked}
-        let {success, status, txHash} = await unStake(params)
-   
-        success && resetVariables()            
- 
-        setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
-                      
-        }
-
-
 
         
+
+        console.log(tx)
+
+        
+
+    }
+
+    const sendCampaignFunction = async (campParams) => {
+           
+        //const params =  {functionCall: polygonContract.methods.sendCampaign(clicked, tryCampaign, trySection, tryWeapon, tryItem, useItem, owner).encodeABI()}
+        const params =  {functionCall: polygonContract.methods.sendCampaign(clicked, campParams.tryCampaign, campParams.trySection, campParams.tryWeapon, campParams.tryItem, campParams.useItem, owner ).encodeABI()}
+        await sendGaslessFunction(params)
+        
+    }
+
+    const bloodthirstFunction = async () => {
+           
+        const params =  {functionCall: polygonContract.methods.bloodThirst(clicked, tryItem, useItem, owner).encodeABI()}
+        await sendGaslessFunction(params)
+        
+    }
+
+    const druidSynergize = async () => {
+           
+        const params =  {functionCall: polygonContract.methods.synergize(clicked, owner).encodeABI()}
+        await sendGaslessFunction(params)
+        
+    }
+
+
     const checkinElf = async () => {
 
         let renToSend = renTransfer === "" ? 0 : renTransfer
+
+        renToSend = Moralis.Units.ETH(renToSend)
+        console.log(renToSend)
+        
+        const params =  {functionCall: polygonContract.methods.checkIn(clicked, renToSend, owner).encodeABI()}
+        await sendGaslessFunction(params)
+                      
+    }
+
+    const reRoll = async (option) => {
       
-        const params =  {ids: clicked, renAmount: (renToSend*1000000000000000000).toString()}
-        let {success, status, txHash} = await checkIn(params)
-   
-        success && resetVariables()            
- 
-        setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
+        const params =  {
+            functionCall: option === "forging" ? polygonContract.methods.forging(clicked, owner).encodeABI() : polygonContract.methods.merchant(clicked, owner).encodeABI() }
+        await sendGaslessFunction(params)          
                       
         }
+
+
+    const passiveMode = async (option) => {
+
+        const params =  {functionCall: option === "passive" ? polygonContract.methods.passive(clicked, owner).encodeABI() : polygonContract.methods.returnPassive(clicked, owner).encodeABI() }
+        await sendGaslessFunction(params)       
+                      
+        }
+
+
+    const healing = async () => {
+
+        const params =  {functionCall: polygonContract.methods.heal(clicked[0], clicked[1], owner).encodeABI()}
+        await sendGaslessFunction(params)
+                          
+         }
+
+         const healMany = async () => {
+
+            //split the array clicked into two arrays
+
+            let firstHalf = clicked.slice(0, clicked.length/2)
+            let secondHalf = clicked.slice(clicked.length/2, clicked.length)
+
+            const params =  {functionCall: polygonContract.methods.healMany(firstHalf, secondHalf, owner).encodeABI()}
+            await sendGaslessFunction(params)
+                              
+             }
+
+             const unStakeElf = async () => {
+      
+                const params =  {ids: clicked}
+                let {success, status, txHash} = await unStake(params)
+           
+                success && resetVariables()            
+         
+                setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
+                              
+                }
         
-    
+
 
     
         useEffect(() => {
+            
             const getData = async () => {
-                const {address} = await getCurrentWalletConnected();
-                setStatus("connected to address: " + address)
-     
-           //    await Moralis.enableWeb3();
-
-               const Elves = Moralis.Object.extend("Elves");
-                let query = new Moralis.Query(Elves);
-                query.equalTo("owner_of", address);
-                let limit = 50
-
-                //page through the results
-                let results = []
-                let hasMore = true
-                let page = 1
-		while (hasMore) {
-
-			query.limit(limit);
-			query.skip(limit * (page - 1));
-			query.withCount();
-			const response = await query.find();
-			let currentIndex = limit * (page)
-			currentIndex > response.count ? hasMore = false : hasMore = true
-			page++
-			setStatus(currentIndex / response.count * 100)
-			
-			results = results.concat(response.results)
-			
-		}      
-        
-        const tokenArr = [];
-                                    
-                    results.map((elf) => {
-                    tokenArr.push(elf.attributes.token_id)
-                    })
-                        
-
-                setStatus("army of elves")
-                const lookupParams = {array: tokenArr, chain: "eth"}
-
-                const elves = await lookupMultipleElves(lookupParams)
-                elves.sort((a, b) => a.time - b.time) 
-
-                //filter out elves whos action is ===8 
-                const filteredElves = elves.filter((elf) => elf.action !== 8)
-                    
-                setNftData(filteredElves)        
-                setStatus(elves.length + " elves")
-                setStatus("done")
-                          
-               setLoading(false)
+                setNftData(data)           
+                
+               
             }
             
             getData()
@@ -310,32 +324,10 @@ const PlayEth = () => {
           );
         };
 
-          const sendCampaignFunction = async (params) => {
 
-            /*const params = {
-                tryTokenids: clicked,
-                tryCampaign,
-                trySection,
-                tryWeapon,
-                tryItem,
-                useItem,
-            };
-        */
-            console.log(params)
-            let {success, status, txHash} = await sendCampaign(params)
+
+
     
-            success && resetVariables()            
-    
-            setAlert({show: true, value: {
-                title: "Tx Sent", 
-                content: (status)            
-            }})
-        }
-    
-        const onChangeIndex = () => {
-      
-            return null
-        }
 
 
           const showAlert = ({title, content}) => {
@@ -349,20 +341,89 @@ const PlayEth = () => {
             )
         }
 
-
         const renderModal = () => {
-           // if(!campaignModal) return <></>
 
-           //
             return(
-               <Modal show={campaignModal}>
-                       <Sector showpagination={true} data={nfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} mode={"campaign"} />
-
-                        
+                <Modal show={campaignModal}>
+                        <Sector showpagination={true} chain={"polygon"} data={nfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} mode={"campaign"} />
                 </Modal>
-            )
+             )
+         }
+
+
+       
+       
+
+
+        
+        const onChangeIndex = () => {
+      
+            return null
         }
 
+        ///create a function to confirm an action
+
+
+
+        
+        const renderBTModal = () => {
+        
+            return(
+                <Modal show={campaignBTModal}>
+                        <h3>Bloodthirst!</h3>
+                        
+                        Creature Health is 400HP
+                        <br/>
+                        rewards 
+                        <br/>
+                        weaponTier 3 is 80 $REN
+                        <br/>
+                        weaponTier 4 is 95 $REN
+                        <br/>
+                        weaponTier 5 is 110 $REN
+                        <br/>
+                       
+
+                        <>
+                    <div >
+                    <p>items - look for new items?</p>
+                    </div>
+                    <div className="flex" >
+                    <div className="d-flex items-center">
+           
+                        <div 
+                            className={tryItem ? "btn-sector-option active" : "btn-sector-option"} 
+                            onClick={() => setTryItem(state => !state)} 
+                          
+                        >
+                            item
+                        </div>
+                        </div>
+                        <div className="d-flex items-center">
+                        <div 
+                            className={useItem ? "btn-sector-option active" : "btn-sector-option"} 
+                            onClick={() => setUseItem(state => !state)}
+                          
+                        >
+                            use item
+                        </div>
+                    </div>
+                    </div>
+                    </>
+                    
+                        <div className="flex">
+
+                        <button
+                        
+                            className="btn btn-red"
+                            onClick={bloodthirstFunction}
+                        >
+                            bloodthirst
+                        </button>
+                        </div>
+                        </Modal>
+            )
+        }
 
         const renderMintModal = () => {
            
@@ -379,80 +440,17 @@ const PlayEth = () => {
 
 
 
-    return !loading ? (
+    return (
         
         <>
 
-        {alert.show && showAlert(alert.value)}
-            <div className="dark-1000 h-full d-flex flex-column profile">           
+        
+            <div className="table-mode">           
            
                 <div className="d-flex">      
                     <div className="column">
-                  
-                        <div className="flex">
-                                               
-                        <h2>GamePlay</h2>
-                       
-                        </div>
-                    
-                    <div className="flex p-10">
-                        <button
-                            disabled={!isButtonEnabled.unstake}
-                            className="btn-whale"
-                            onClick={unStakeElf}
-                        >
-                            Unstake
-                        </button>
-                        <button
-                            disabled={!isButtonEnabled.rerollWeapon}
-                            className="btn-whale"
-                            onClick={() => reRoll("forging")}
-                        >
-                            Re-Roll Weapon
-                        </button>
-                        <button
-                            disabled={!isButtonEnabled.rerollItem}
-                            className="btn-whale"
-                            onClick={() => reRoll("merchant")}
-                        >
-                            Re-Roll Item
-                        </button>
-                        <button
-                            disabled={!isButtonEnabled.sendPassive}
-                            className="btn-whale"
-                            onClick={() => passiveMode("passive")}
-                        >
-                            Send to Passive
-                        </button>
-                        <button
-                            disabled={!isButtonEnabled.returnPassive}
-                            className="btn-whale"
-                            onClick={() => passiveMode("returnPassive")}
-                        >
-                            Return from Passive
-                        </button>
-                        <button
-                            disabled={!isButtonEnabled.heal}
-                            className="btn-whale"
-                            onClick={healing}
-                        >
-                            Heal
-                        </button>
-                        <button
-                            disabled={!isButtonEnabled.sendCampaign}
-                            className="btn-whale"
-                            onClick={()=> setCampaignModal(!campaignModal)}
-                        >
-                            Send to Campaign
-                        </button>
-                        <button
-                            
-                            className="btn-whale"
-                            onClick={()=> setMintModal(true)}
-                        >
-                            Mint
-                        </button>
-                    </div>   
+                         
+                 
             <div>
                 <div>Elf Terminus</div>
 
@@ -467,12 +465,31 @@ const PlayEth = () => {
                      
                        
                         <button
-                            //disabled={!isButtonEnabled.sendPolygon}
+                            /*disabled={!isButtonEnabled.unstake}*/
                             className="btn-whale"
                             onClick={checkinElf}
                         >
-                            Send to Polygon
+                            Send to Ethereum
                         </button>
+
+                        <button
+                            disabled={!isButtonEnabled.unstake}
+                            className="btn-whale"
+                            onClick={unStakeElf}
+                        >
+                            Unstake
+                        </button>
+                        
+
+                        <button
+                            
+                            className="btn-whale"
+                            onClick={()=> setMintModal(true)}
+                        >
+                            Mint
+                        </button>
+
+
                     </div>      
                 
             </div>
@@ -480,7 +497,7 @@ const PlayEth = () => {
                  
                     
     <div className="table-whale">          
-      <table style={{width: '100%'}}>
+      <table className="dark-1000" style={{width: '100%'}}>
       <thead style={{textAlign: "left"}}>
         <tr>
         <th></th>
@@ -569,13 +586,15 @@ const PlayEth = () => {
                         }
                     }
                 
-                    let rowSelected = clicked.includes(parseInt(line.id)) ? "rowSelected" : ""
+                    let rowSelected = clicked.includes(line) ? "rowSelected" : ""
 
-                                       
+                   
 
 
-                return( <tr key={index} className={`${rowSelected} row`} onClick={()=> handleClick(line)}  > 
-                    <td><img src={line.image} alt="Elf" /></td>
+                    return( <tr key={line.id} className={`${rowSelected} row`} onClick={()=> handleClick(line)}  > 
+                    <td>
+                    {line.image && <img src={line.image} alt="elf" />}
+                    </td>
                     <td>{line.name}</td>
                     <td>{line.elfStatus}</td>
                     <td>
@@ -616,12 +635,8 @@ const PlayEth = () => {
 
                 <div>
                     <ul>
-                    <li>
-                        Healing: click a Druid then click the Ranger or Assassin you want to heal next. Then click heal. You should have selected only two elves.
-                        </li>
-                        <li>
-                        Polygon: Any elves sent to Polygon will not show up on the eth table view, but are still visible in "Profile"
-                        </li>
+                    <li>Healing: click a Druid then click the Ranger or Assassin you want to heal next. Then click heal. You should have selected only two elves.</li>
+                    <li>Heal Many: click a few Druids then click the same number of Rangers or Assassins and then click heal many.</li>
                         <li>
                         Disclaimer: Function overflows are unchecked - make sure you double check before you send.
                         </li>
@@ -629,18 +644,7 @@ const PlayEth = () => {
                
                 </div>
 
-                <div className="flex flex-wrap">
-                {clicked.map((id, index) => {
-                    const elf = nftData.find(line => line.id === id)
-                  
-                    return(
-                        <div className="whale-thumb" key={index}>
-                            <img src={elf.image} alt="elf" />
-                          
-                         </div>   
-                    )})}
 
-              </div>
 
 
             </div>
@@ -653,12 +657,14 @@ const PlayEth = () => {
 
 </div>
 {renderModal()}
+{renderBTModal()}
 {renderMintModal()}
+{alert.show && showAlert(alert.value)}
 
         </>
         
      
-    ) : <Loader text={status} />
+    ) 
 }
 
-export default PlayEth
+export default TableMode

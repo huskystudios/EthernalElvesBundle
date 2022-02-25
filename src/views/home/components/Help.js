@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import Dropdown from "../../../components/Dropdown/"
 import Button from "../../../components/Dropdown/button";
 
-const Help = ({data, toggle, clicked, selectAll}) => {
+const Help = ({data, toggle, clicked, selectAll, excludeAction}) => {
     // console.log(data)
     const [now, setNow] = useState(new Date());
     const [timer, setTimer] = useState(0);
@@ -15,7 +15,6 @@ const Help = ({data, toggle, clicked, selectAll}) => {
     const [levelCnt, setLevelCnt] = useState()
     const [toggleAll, setToggleAll] = useState(true)
     const handleClick = (nft) => {
-        if(nft.actionString.toLowerCase() !== "unknown")
         toggle(nft)
     }
     const getTimeString = (timestamp) => {

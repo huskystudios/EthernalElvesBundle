@@ -6,7 +6,6 @@ import './style.css'
 import { campaigns } from "./config"
 import SelectToken from "./components/SelectToken"
 import Actions from "./components/Actions"
-import Campaign from "./components/Campaign"
 import Receive from "./components/Receive"
 import Sector from "./components/Sector"
 import Success from "./components/Success"
@@ -16,8 +15,16 @@ import { elvesAbi, elvesContract, etherscan, sendCampaign, lookupMultipleElves, 
 import { useMoralis } from "react-moralis";
 import Staking from "./components/Staking"
 import Help from "./components/Help"
+import TableMode from "./components/TableMode"
 
 const Home = () => {
+
+
+    const [chain, setChain] = useState("eth")
+    const [excludeAction, setExcludeAction] = useState(8)
+    const [blockscan, setBlockscan] = useState("etherscan.io")
+
+
     const [loading, setLoading] = useState(true)
     const [index, setIndex] = useState(0)
     const [data, setData] = useState()
@@ -59,44 +66,9 @@ const Home = () => {
         //   
 
         console.log("sendCampaign", params)
-        /* 
+     
 
-        await Moralis.enableWeb3();
-        const options = {
-                contractAddress: elvesContract,
-                functionName: "sendCampaign",
-                abi: elvesAbi.abi,
-                params: params,
-                awaitReceipt: false // should be switched to false
-              };
-
-           const tx = await Moralis.executeFunction(options);
-             
-              tx.on("transactionHash", (hash) => { 
-                resetVariables()
-                setAlert({show: true, value: {
-                    title: "Tx Sent", 
-                    content: (<>✅ Check out your transaction on <a target="_blank" href={`https://${etherscan}.io/tx/${hash}`}>Etherscan</a> </>)            
-              }})
-               
-            })
-             
-              tx.on("receipt", (receipt) => { 
-
-                setTxReceipt(receipt)
-                let response
-
-                receipt.events.Action.isArray ? response = `Elf#${ receipt.events.Action.map(nft => {return(nft.returnValues.tokenId)})} have started doing ${actionString[receipt.events.Action[0].returnValues.action].text}`
-                : response = `Elf#${receipt.events.Action.returnValues.tokenId} has started doing action ${actionString[receipt.events.Action.returnValues.action].text}`
-                
-                setAlert({show: true, value: {
-                      title: "Tx Successful", 
-                   content: response         
-             }})
-           
-            })
-                     
-           */
+     
 
     }
 
@@ -167,18 +139,23 @@ const Home = () => {
 
     const getElvesfromMoralis = async (address) => {
 
-
+        setLoading(true)
         const params = { address: address }
         setLoadingText(`25% Fetching elves for address ${address}`)
-        const userTokenArray = await Moralis.Cloud.run("getElvesFromDb", params);
+        const array = await Moralis.Cloud.run("getElvesFromDb", params);
 
         setLoadingText(`50% Getting metadata from the blockchain`)
-        const elves = await lookupMultipleElves(userTokenArray)
+        const elves = await lookupMultipleElves({array, chain})
         elves.sort((a, b) => a.id - b.id)
 
-        setData(elves)
+        
 
+        const filteredElves = elves.filter((elf) => elf.action !== excludeAction)
 
+        console.log("elves", filteredElves)
+        setData(filteredElves)
+
+      
         setLoadingText(`100% Done!`)
         elves && setLoading(false)
 
@@ -194,6 +171,21 @@ const Home = () => {
             setActiveNfts(nfts)
             setIndex(2)
         }
+    }
+
+    const toggleChain = () => {
+
+        if(chain === "eth"){
+            setChain("polygon")
+            setBlockscan("polyscan.com")
+            setExcludeAction(0)
+        
+        }else{
+            setChain("eth")
+            setBlockscan("etherscan.io")
+            setExcludeAction(8)
+        }
+
     }
 
 
@@ -225,7 +217,7 @@ const Home = () => {
         }
 
         getData()
-    }, [txreceipt])
+    }, [txreceipt, chain])
 
     const resetVariables = async () => {
         setIndex(0)
@@ -252,7 +244,7 @@ const Home = () => {
         if (clicked.includes(character)) {
             setClicked(clicked.filter(char => char !== character))
         } else {
-            if (clicked.length <= 7) {
+            if (clicked.length <= 9) {
                 setClicked([...clicked, character])
             }
             else {
@@ -317,7 +309,7 @@ const Home = () => {
                         </div>
                         <h4>Select targets</h4>
                         <div className="nft-grid">
-                        {data.filter(nft => nft.classString !== "Druid").map((nft) => 
+                        {data.filter(nft => nft.cooldown === true ).map((nft) => 
                             <img onClick={() => handleClickTarget(nft)} className={targets.includes(nft) ? "active" : null} src={nft.image} alt={nft.id} key={nft.id} />
                         )}
                         </div>
@@ -361,10 +353,7 @@ const Home = () => {
                             <span>0.01 eth</span>
                             <button className="btn-modal" onClick={handleEthClick} >{modal.content} with eth</button>
                         </div>
-                       {/* <div className="d-flex flex-column">
-                            <span>10 miren</span>
-                            <button disabled className="btn-modal" onClick={handleEthClick}>{modal.content} with $ren</button>
-                        </div>*/}
+
                     </div>
                 </div>
             </div>
@@ -374,38 +363,44 @@ const Home = () => {
         <>
             {loading ? <Loader text={loadingText} /> :
                 <>
+
+               
                     <div className="dark-1000 h-full d-flex home justify-center items-center">
                         {alert.show && showAlert(alert.value)}
 
+                        {index === 0 && <TableMode data={data} toggle={toggle} clicked={clicked} selectAll={selectAll}  />}
+                        {index === 100 && <Help data={data} toggle={toggle} clicked={clicked} selectAll={selectAll}  />}
+                        
+                        
 
-                        {index === 0 && <Help data={data} toggle={toggle} clicked={clicked} selectAll={selectAll}  />}
+                       
 
                         {index === 1 && activeNfts.length > 1 ? <Collection nft={activeNfts} onChangeIndex={onChangeIndex} /> : null}
                         {index === 1 && activeNfts.length === 1 ? <Overview nft={activeNfts} onRunWeb3={doAction} onChangeIndex={onChangeIndex} /> : null}
                         {index === 2 && <Actions doAction={doAction} actions={actions} onChangeIndex={onChangeIndex} setGameMode={setGameMode} />}
                         {index === 3 && <Staking nft={activeNfts} onRunWeb3={doAction} onChangeIndex={onChangeIndex} />}
-                        {index === 4 && <Campaign onSetCampaign={setCampaign} onChangeIndex={onChangeIndex} />}
+                      
                         {index === 5 && <Sector campaign={campaign} data={activeNfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} mode={gameMode} />}
                         {index === 6 && <Success success={success} sector={sector} campaign={campaign} data={activeNfts} onChangeIndex={onChangeIndex} />}
                         {index === 7 && <Receive onChangeIndex={onChangeIndex} />}
-                        {index === 0 && data && wallet && 
+                      
+
+                    </div>
+                    {index === 0 && data && wallet && 
+                     <div className="d-flex justify-center items-center">
                             <Control 
                                 data={data} 
                                 clicked={clicked} 
                                 activities={getActivities} 
+                                toggleChain={toggleChain}
                                 onRunWeb3={doAction} 
                                 onSelect={onSelect} 
                                 onChangeIndex={onChangeIndex} 
                                 onForge={() => setModal({show: true, action:"forging", heading:"DO YOU WANT TO FORGE A NEW WEAPON?", content:"forge"})}
                                 onMerchant={() => setModal({show: true, action:"merchant", heading:"DO YOU WANT TO TRY FOR A NEW ITEM?", content:"buy"})}
                                 onHeal={() => setHealModal(true)}
-                            />}
-
-                    </div>
-                    <div className="dark-1000 h-full d-flex home-mobile justify-center items-center">
-                        <div className="btn-lounge" onClick={() => window.location.href = "/profile"}>Whitelist Mint</div>
-                        <div className="btn-lounge" onClick={() => window.location.href = "/mint"}>Mint</div>
-                    </div>
+                            />
+                           </div> }
 
                 </>
             }

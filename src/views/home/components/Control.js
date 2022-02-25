@@ -8,7 +8,7 @@ const PAGE_COUNT = 3
 const MAX_HEALTH = 100
 const MAX_LEVEL = 100
 
-const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3, onForge, onMerchant, onHeal }) => {
+const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3, onForge, onMerchant, onHeal, toggleChain }) => {
     const [currentPage, setCurrentPage] = useState(0)
     const [nfts, setNfts] = useState([])
 
@@ -122,70 +122,7 @@ const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3
                     </div>}
                 </div>
             </span>
-            {/* <div className="nft-wrapper">
-                {nfts.map((character, index) => {
-                    let classes = "nft"
-
-                    if (clicked.includes(character)) {
-                        classes = "nft-selected"
-                    }
-
-                    return (
-                        <div
-                            className={classes}
-                            key={index}
-                            onClick={() => {
-                                toggle(character)
-                            }}
-                            onMouseEnter={async () => {
-                                let campaignData = await getLastCampaign(character.id)
-                                setTooltip({
-                                    show: true,
-                                    value: {
-                                        title: `${character.classString} ${character.name}`,
-                                        content: `HealthPoints: ${character.health}\nLevel: ${character.level}`,
-                                        timestamp: character.time,
-                                        actionString: character.actionString,
-                                        lastCampaign: campaignData ? campaignData.string : null
-                                    }
-                                })
-                            }}
-                            onMouseLeave={() => setTooltip({
-                                show: false,
-                                value: null
-                            })}
-                        >
-                            <img src={character.image} alt="nft" />
-                            <span>#{character.id}</span>
-                        </div>
-                    )
-                }
-
-                )}
-            </div> */}
-            {/* <div className="inventory-wrapper">
-                {
-                    clicked?.map((item, index) =>
-                        <img
-                            key={index}
-                            onMouseEnter={() => setTooltip({
-                                show: false,
-                                value: {
-                                    title: item.name,
-                                    content: item.description
-                                }
-                            })}
-                            onMouseLeave={() => setTooltip({
-                                show: false,
-                                value: null
-                            })}
-                            className="inventory-item"
-                            src={item.image}
-                            alt=""
-                        />
-                    )
-                }
-            </div> */}
+            
             <div className="active-attributes d-flex flex-column">
                     {activeNft?.attributes.map((attribute, index) => {
                         if(index < 6) return <div className="d-flex flex-row justify-between" key={index}>
@@ -217,6 +154,7 @@ const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3
                     <span>{activeNft.inventoryDescription}</span>
                 </div>
             )}
+            <button onClick={toggleChain}>TOGGLE CHAIN</button>
         </div>
     )
 }
