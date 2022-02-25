@@ -14,7 +14,7 @@
     min-width: 1366px;
     position: absolute;
     bottom: 0px;
-    z-index: 10000;
+    z-index: 100;
 }
 
 .responsive {
@@ -862,7 +862,7 @@
     top: 100px;
     left: 50px;
     border-radius: 8px;
-    z-index: 1000;
+    z-index: 1000000000;
     font-size: 12px;
     -webkit-box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
     -moz-box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);

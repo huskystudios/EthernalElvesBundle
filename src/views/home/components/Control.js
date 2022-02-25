@@ -8,7 +8,7 @@ const PAGE_COUNT = 3
 const MAX_HEALTH = 100
 const MAX_LEVEL = 100
 
-const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3, onForge, onMerchant, onHeal, toggleChain }) => {
+const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3, onForge, onMerchant, onHeal, onSynergize, toggleChain, chain }) => {
     const [currentPage, setCurrentPage] = useState(0)
     const [nfts, setNfts] = useState([])
 
@@ -117,6 +117,7 @@ const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3
                         <span onClick={onForge}>forge</span>
                         <span onClick={onMerchant}>merchant</span>
                         <span onClick={onHeal}>heal</span>
+                        {chain === "polygon" && <span onClick={onSynergize}>synergize</span>}
                         <span onClick={() => handleGameModes(clicked)} >game modes</span>
                         <span onClick={() => onRunWeb3({action:"unStake"})}>unstake</span>
                     </div>}

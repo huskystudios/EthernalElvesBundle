@@ -168,12 +168,7 @@ const TableMode = ({data, clicked, toggle}) => {
         
     }
 
-    const druidSynergize = async () => {
-           
-        const params =  {functionCall: polygonContract.methods.synergize(clicked, owner).encodeABI()}
-        await sendGaslessFunction(params)
-        
-    }
+
 
 
     const checkinElf = async () => {
@@ -188,13 +183,7 @@ const TableMode = ({data, clicked, toggle}) => {
                       
     }
 
-    const reRoll = async (option) => {
-      
-        const params =  {
-            functionCall: option === "forging" ? polygonContract.methods.forging(clicked, owner).encodeABI() : polygonContract.methods.merchant(clicked, owner).encodeABI() }
-        await sendGaslessFunction(params)          
-                      
-        }
+ 
 
 
     const passiveMode = async (option) => {

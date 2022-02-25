@@ -147,17 +147,48 @@ const Home = () => {
                           
     }
 
-    const healMany = async () => {
+    const healMany = async () => {       
+        let healerIds = healers.map(el => el.id)
+        let targetIds = targets.map(el => el.id)
 
-        //split the array clicked into two arrays
-
-        let firstHalf = clicked.slice(0, clicked.length/2)
-        let secondHalf = clicked.slice(clicked.length/2, clicked.length)
-
-        const params =  {functionCall: polygonContract.methods.healMany(firstHalf, secondHalf, wallet).encodeABI()}
+        const params =  {functionCall: polygonContract.methods.healMany(healerIds, targetIds, wallet).encodeABI()}
         await sendGaslessFunction(params)
                           
-         }
+    }
+
+    const druidSynergize = async () => {
+
+        //fistler ids from clicked
+
+        let healerIds = clicked.map(el => el.id)
+           
+        const params =  {functionCall: polygonContract.methods.synergize(healerIds, wallet).encodeABI()}
+        await sendGaslessFunction(params)
+        
+    }
+
+    const reRoll = async (option) => {
+
+        let rollerIds = clicked.map(el => el.id)
+               
+        if(chain === "eth"){              
+        const params =  {ids: rollerIds}
+        let {success, status, txHash} = option === "forging" ? await forging(params) : await merchant(params)
+     
+        setAlert({show: true, value: {title: "Tx Sent", content: (status)}})  
+        }
+        else{
+            
+        const params =  {functionCall: option === "forging" ? polygonContract.methods.forging(rollerIds, wallet).encodeABI() : 
+        option === "merchant" ? polygonContract.methods.merchant(rollerIds, wallet).encodeABI() : polygonContract.methods.synergize(rollerIds, wallet).encodeABI()}
+        
+        await sendGaslessFunction(params)   
+        }
+
+        setModal({show: false, content: ""})
+
+                          
+    }
 
     
 
@@ -370,6 +401,15 @@ const Home = () => {
         const heal = () => {
             if(multi) {
                 console.log("heal many")
+                if(healers.length !== targets.length) {
+                    setAlert({
+                        show: true, value: {
+                            title: "Error",
+                            content: "Mismatch in healers and targets"
+                        }})  
+                        return
+                }
+                healMany()
             } else {
 
                 if(clicked[0].classString !== "Druid") {
@@ -387,8 +427,7 @@ const Home = () => {
                             title: "Error",
                             content: "Druid in cooldown!"
                         }})  
-                        return
-                        
+                        return                        
 
                 }
                 if(clicked[1].cooldown === false) {
@@ -442,7 +481,7 @@ const Home = () => {
                     </div>}
                     <div className="flex mt-1">
                         <button className="btn-modal" onClick={heal}>CONFIRM</button>
-                        <button className="btn-modal" onClick={handleMulti}>{!multi ? "HEAL MANY" : "HEAL ONE"}</button>
+                        {chain === "polygon" && <button className="btn-modal" onClick={handleMulti}>{!multi ? "HEAL MANY" : "HEAL ONE"}</button>}
                     </div>
                 </div>
             </div>
@@ -451,12 +490,15 @@ const Home = () => {
     const renderModal = () => {
         if(!modal.show) return <></>
         const handleEthClick = () => {
-            doAction({action:modal.action})
+            reRoll(modal.action)
             setModal({show: false, content: ""})
         }
-        const handleMirenClick = () => {
-            setModal({show: false, content: ""})
-        }
+
+        //get object from rollcosts that matches modal.action
+        const cost = rollCosts.find(cost => cost.action === modal.action)
+
+        console.log(cost)
+
         return (
             <div className="modal">
                 <div className="modal-content">
@@ -465,21 +507,43 @@ const Home = () => {
                     {modal.action === "forging" && 
                         <>
                         <p>there is 20% chance you will get a higher tier weapon, 10% chance you will get downgraded and 70% chance you get a different weapon within the same tier.</p>
-                        </>
+                        <p>you cannot roll T4 & T5 weapons</p>                        
+                         <div className="d-flex flex-row justify-around align-center">
+                         <div className="d-flex flex-column">
+             
+                             <span>0.01 eth</span>
+                             <button className="btn-modal" onClick={handleEthClick} >{modal.content} with eth</button>
+                         </div>
+                         </div>
+                         </>
                     }
                     {modal.action === "merchant" && 
                         <>
                         <p>there is 20% chance you will get a new item..</p>
+                        <div className="d-flex flex-row justify-around align-center">
+                         <div className="d-flex flex-column">
+             
+                             <span>0.01 eth</span>
+                             <button className="btn-modal" onClick={handleEthClick} >{modal.content} with eth</button>
+                         </div>
+                         </div>
                         </>
                     }
-                    <div className="d-flex flex-row justify-around align-center">
-                        <div className="d-flex flex-column">
-            
-                            <span>0.01 eth</span>
-                            <button className="btn-modal" onClick={handleEthClick} >{modal.content} with eth</button>
-                        </div>
+                    {modal.action === "synergize" && 
+                        <>
+                        <p>there is 10% chance you will reduce you're druid cooldown by 50% and a 60% chance to reduce cooldown by 33%. There is a 30% chance you'll get a 5 minute pentaly.</p>
+                        <div className="d-flex flex-row justify-around align-center">
+                         <div className="d-flex flex-column">
+             
+                             <span>0.01 eth</span>
+                             <button className="btn-modal" onClick={handleEthClick} >{modal.content} with eth</button>
+                         </div>
+                         </div>
+                        </>
+                    }
+                   
 
-                    </div>
+                   
                 </div>
             </div>
         )
@@ -523,6 +587,8 @@ const Home = () => {
                                 onForge={() => setModal({show: true, action:"forging", heading:"DO YOU WANT TO FORGE A NEW WEAPON?", content:"forge"})}
                                 onMerchant={() => setModal({show: true, action:"merchant", heading:"DO YOU WANT TO TRY FOR A NEW ITEM?", content:"buy"})}
                                 onHeal={() => setHealModal(true)}
+                                onSynergize={() => setModal({show: true, action:"synergize", heading:"DO YOU WANT TO SYNERGIZE?", content:"synergize"})}
+                                chain={chain}
                             />
                            </div> }
 
