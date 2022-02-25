@@ -261,7 +261,7 @@ const Home = () => {
         }
     }
     const selectAll = (characters = []) => {
-        const selected = characters.filter(chr => chr.actionString.toLowerCase() !== "unknown").slice(0, 8)
+        const selected = characters.filter(chr => chr.action !== 8).slice(0, 8)
         setClicked(selected)
     }
     useEffect(() => {

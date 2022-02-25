@@ -86,7 +86,7 @@ const Help = ({data, toggle, clicked, selectAll}) => {
                     <div className="collection-selection" >
                         <div className="card-grid">
                             {filterdData.map((nft) => (
-                                <div className={`character-card ${nft.actionString.toLowerCase() === "unknown" ? "greyout" : ""} ${clicked.includes(nft) ? "active" : ""}`} key={nft.id} onClick={() => { handleClick(nft)}}>
+                                <div className={`character-card ${nft.action === 8 ? "greyout" : ""} ${clicked.includes(nft) ? "active" : ""}`} key={nft.id} onClick={() => { handleClick(nft)}}>
                                     <div className="d-flex justify-between font-size-sm">
                                         <span>{nft.actionString}</span>
                                         <span>#{nft.id}</span>
