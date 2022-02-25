@@ -142,9 +142,15 @@ const Home = () => {
         let healerIds = healers.map(el => el.id)
         let targetIds = targets.map(el => el.id)
 
+        if(healerIds.length === 0 || targetIds.length === 0){
+            setAlert({show: true, value: {title: "Error", content: "Please select at least one healer and one target"}})
+            return
+        }
+
         const params =  {functionCall: polygonContract.methods.healMany(healerIds, targetIds, wallet).encodeABI()}
         console.log(healers, targets, wallet)
         sendGaslessFunction(params)
+
                           
     }
 
