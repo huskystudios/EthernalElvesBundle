@@ -7,14 +7,16 @@ logger.info("Cloudfunction is online captain...");
 ////Global and State Variables////
 //proxies
 const validator = "0x80861814a8775de20F9506CF41932E95f80f7035"
+const polyValidator = "0x86aB4B499235dC882F4dffD37bBDc9C76ae4964d"
 const operator = "0xa2B877EC3234F50C33Ff7d0605F7591053d06E31"
 const bridgeOperator = "0xf8a747448A0b5c137779C7e1d89FdCb389B795e7"
-const renOperator = "0x86aB4B499235dC882F4dffD37bBDc9C76ae4964d"
+
 //keys
 const validatorKey = "";
+const polyValidatorKey = "";
 const operatorKey =  "";
 const bridgeOperatorKey = "";
-const renOperatorKey = "";
+
 
 //Addresses
 const elvesAddress = "0xA351B769A01B445C04AA1b8E6275e03ec05C1E75" ;

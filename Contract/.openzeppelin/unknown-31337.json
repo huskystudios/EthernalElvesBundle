@@ -2,19 +2,19 @@
   "manifestVersion": "3.2",
   "admin": {
     "address": "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
-    "txHash": "0x6086b3ad5b5fff11bb60852a1df78cb53238f6bb5370cd66d80404d6f0940505",
+    "txHash": "0xb163a8c69f40e0d2708d840ef6166a5ce8a0c7de9ea35addf6cf5a3e4ec6e2c4",
     "deployTransaction": {
-      "hash": "0x6086b3ad5b5fff11bb60852a1df78cb53238f6bb5370cd66d80404d6f0940505",
+      "hash": "0xb163a8c69f40e0d2708d840ef6166a5ce8a0c7de9ea35addf6cf5a3e4ec6e2c4",
       "type": 2,
       "accessList": [],
-      "blockHash": "0x4e88396fec4cf7047fefed632f033b2d2a524023061fe50211cba8b2fbd18730",
+      "blockHash": "0x37d1b0ed54f0cd20f2e395f4ff0b6187d88a6bdc6fe87b2e3235566264b24551",
       "blockNumber": 13,
       "transactionIndex": 0,
       "confirmations": 1,
       "from": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
       "gasPrice": {
         "type": "BigNumber",
-        "hex": "0x4aa123cc"
+        "hex": "0x4aa18837"
       },
       "maxPriorityFeePerGas": {
         "type": "BigNumber",
@@ -22,7 +22,7 @@
       },
       "maxFeePerGas": {
         "type": "BigNumber",
-        "hex": "0x59a77d98"
+        "hex": "0x59a8466e"
       },
       "gasLimit": {
         "type": "BigNumber",
@@ -35,9 +35,9 @@
       },
       "nonce": 12,
       "data": "0x608060405234801561001057600080fd5b50600080546001600160a01b031916339081178255604051909182917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908290a350610759806100616000396000f3fe60806040526004361061007b5760003560e01c80639623609d1161004e5780639623609d1461011157806399a88ec414610124578063f2fde38b14610144578063f3b7dead146101645761007b565b8063204e1c7a14610080578063715018a6146100bc5780637eff275e146100d35780638da5cb5b146100f3575b600080fd5b34801561008c57600080fd5b506100a061009b366004610515565b610184565b6040516001600160a01b03909116815260200160405180910390f35b3480156100c857600080fd5b506100d1610215565b005b3480156100df57600080fd5b506100d16100ee366004610554565b610292565b3480156100ff57600080fd5b506000546001600160a01b03166100a0565b6100d161011f36600461058c565b61031c565b34801561013057600080fd5b506100d161013f366004610554565b6103ad565b34801561015057600080fd5b506100d161015f366004610515565b610405565b34801561017057600080fd5b506100a061017f366004610515565b6104ef565b6000806000836001600160a01b03166040516101aa90635c60da1b60e01b815260040190565b600060405180830381855afa9150503d80600081146101e5576040519150601f19603f3d011682016040523d82523d6000602084013e6101ea565b606091505b5091509150816101f957600080fd5b8080602001905181019061020d9190610538565b949350505050565b6000546001600160a01b031633146102485760405162461bcd60e51b815260040161023f906106c0565b60405180910390fd5b600080546040516001600160a01b03909116907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908390a3600080546001600160a01b0319169055565b6000546001600160a01b031633146102bc5760405162461bcd60e51b815260040161023f906106c0565b6040516308f2839760e41b81526001600160a01b038281166004830152831690638f283970906024015b600060405180830381600087803b15801561030057600080fd5b505af1158015610314573d6000803e3d6000fd5b505050505050565b6000546001600160a01b031633146103465760405162461bcd60e51b815260040161023f906106c0565b60405163278f794360e11b81526001600160a01b03841690634f1ef286903490610376908690869060040161065d565b6000604051808303818588803b15801561038f57600080fd5b505af11580156103a3573d6000803e3d6000fd5b5050505050505050565b6000546001600160a01b031633146103d75760405162461bcd60e51b815260040161023f906106c0565b604051631b2ce7f360e11b81526001600160a01b038281166004830152831690633659cfe6906024016102e6565b6000546001600160a01b0316331461042f5760405162461bcd60e51b815260040161023f906106c0565b6001600160a01b0381166104945760405162461bcd60e51b815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201526564647265737360d01b606482015260840161023f565b600080546040516001600160a01b03808516939216917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a3600080546001600160a01b0319166001600160a01b0392909216919091179055565b6000806000836001600160a01b03166040516101aa906303e1469160e61b815260040190565b600060208284031215610526578081fd5b81356105318161070b565b9392505050565b600060208284031215610549578081fd5b81516105318161070b565b60008060408385031215610566578081fd5b82356105718161070b565b915060208301356105818161070b565b809150509250929050565b6000806000606084860312156105a0578081fd5b83356105ab8161070b565b925060208401356105bb8161070b565b9150604084013567ffffffffffffffff808211156105d7578283fd5b818601915086601f8301126105ea578283fd5b8135818111156105fc576105fc6106f5565b604051601f8201601f19908116603f01168101908382118183101715610624576106246106f5565b8160405282815289602084870101111561063c578586fd5b82602086016020830137856020848301015280955050505050509250925092565b600060018060a01b038416825260206040818401528351806040850152825b818110156106985785810183015185820160600152820161067c565b818111156106a95783606083870101525b50601f01601f191692909201606001949350505050565b6020808252818101527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604082015260600190565b634e487b7160e01b600052604160045260246000fd5b6001600160a01b038116811461072057600080fd5b5056fea2646970667358221220d849f96f3086b9f82cdcf665adb8c697ace05638da1c7c16ab2d26293717af6764736f6c63430008020033",
-      "r": "0xf2f73a5439bd9d995e0a09a8e5a082b48a58fc8fde453bf9098a5753e8ffd014",
-      "s": "0x2682cf406a267912a56eef4cde95128c29895030a0c5c9c3cbe214c67c8ad629",
-      "v": 1,
+      "r": "0xcc73bdda9f95301d033fbb8152164ca28f464f30ae8de607f918d9cd634dbf86",
+      "s": "0x726849ce88664c6101105f5a35147b19617c0eac15bffbbebd971b170ee9d21c",
+      "v": 0,
       "creates": "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
       "chainId": 31337
     }
@@ -1099,21 +1099,6 @@
       "kind": "transparent"
     },
     {
-      "address": "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
-      "txHash": "0x3195ac6221e1bbeda119a9c28faf94d192be963e5cae2800259d58f9dfe8e064",
-      "kind": "transparent"
-    },
-    {
-      "address": "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
-      "txHash": "0xd4211cd824c76e60e080316bdf431cba94c8ec3b25d3787506747b05c4fa819d",
-      "kind": "transparent"
-    },
-    {
-      "address": "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE",
-      "txHash": "0x87f89b24a60e0e1361f3368883ffe92660f1f889c2414946ca4d173b8afe5166",
-      "kind": "transparent"
-    },
-    {
       "address": "0x809d550fca64d94Bd9F66E60752A544199cfAC3D",
       "txHash": "0xc7cd71099a0387d8d42966948320cc8d2610a7bc5eeb164f61192cffe70ee36e",
       "kind": "transparent"
@@ -1246,6 +1231,21 @@
     {
       "address": "0x9849832a1d8274aaeDb1112ad9686413461e7101",
       "txHash": "0xd1620cea6688bf7df151374a0c439feb0af2aa3f3e632a9d1e3a17269c281563",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
+      "txHash": "0x17ef902b0c6cec2decf3ba55a7e17b222eb8993d76a983a4167bb44c30db1193",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
+      "txHash": "0xfa1ac0a8f6b47fe34075794e0ea1aa8bf4b924708778aa3707c77ae8ff198835",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE",
+      "txHash": "0x70e08fc47b4e5c38053bb9c029301289e009c6548e0eb9508529022983f4ddfe",
       "kind": "transparent"
     }
   ],
@@ -1686,7 +1686,7 @@
     },
     "0198b6f8ab0f2bccb573423c52c3415af1edab685c23717992cf6e92755170ec": {
       "address": "0x9A676e781A523b5d0C0e43731313A708CB607508",
-      "txHash": "0xcae45520ea4f44297d8ce3d5c308c51faa3e5d1f652d477934659a64f6265777",
+      "txHash": "0x22e87d40c5280f069515c1ff436b6a77e37c2da74ed2b54b1d3a4a46618363d4",
       "layout": {
         "storage": [
           {
@@ -1750,7 +1750,7 @@
     },
     "0933981ec54fb323e2b60e1ac2fd2c60c7af8d32fe67079a27bc005e233b4d30": {
       "address": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
-      "txHash": "0xd788aba08949a4b87c09a4115d0dca70b73da3b0e2b2e4bea074989a3550c095",
+      "txHash": "0xe1194df3434b6ca9957ba557a46a37099194a6e7c47a9a4836a4e594c151545a",
       "layout": {
         "storage": [
           {
@@ -1864,9 +1864,9 @@
         }
       }
     },
-    "b84e7d02f41c3ffa798be496fba2e8424b7834354ac6370e9b8edc4cefe70b5b": {
+    "b5d87e1031bd344fad77b262988894e56526a27136280da2dcf0d18b9f72986c": {
       "address": "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e",
-      "txHash": "0xd4323c210d06e68267d706cceba2273de649733d457355122b76aab72976b595",
+      "txHash": "0xf8ebe5e1fc7925262a0ee6c868a2be9fe66e9e3b5b8192c6639f914c559298e2",
       "layout": {
         "storage": [
           {
@@ -1918,134 +1918,140 @@
             "src": "contracts\\ERC721.sol:44"
           },
           {
-            "contract": "EthernalElvesV2",
+            "contract": "EthernalElvesV3",
             "label": "elfmetaDataHandler",
-            "type": "t_contract(IElfMetaDataHandler)7190",
+            "type": "t_contract(IElfMetaDataHandler)7202",
             "src": "contracts\\EthernalElves.sol:24"
           },
           {
-            "contract": "EthernalElvesV2",
+            "contract": "EthernalElvesV3",
             "label": "campaigns",
-            "type": "t_contract(ICampaigns)7216",
+            "type": "t_contract(ICampaigns)7228",
             "src": "contracts\\EthernalElves.sol:25"
           },
           {
-            "contract": "EthernalElvesV2",
+            "contract": "EthernalElvesV3",
             "label": "ren",
-            "type": "t_contract(IERC20Lite)7180",
+            "type": "t_contract(IERC20Lite)7192",
             "src": "contracts\\EthernalElves.sol:26"
           },
           {
-            "contract": "EthernalElvesV2",
+            "contract": "EthernalElvesV3",
             "label": "isGameActive",
             "type": "t_bool",
             "src": "contracts\\EthernalElves.sol:32"
           },
           {
-            "contract": "EthernalElvesV2",
+            "contract": "EthernalElvesV3",
             "label": "isMintOpen",
             "type": "t_bool",
             "src": "contracts\\EthernalElves.sol:33"
           },
           {
-            "contract": "EthernalElvesV2",
+            "contract": "EthernalElvesV3",
             "label": "isWlOpen",
             "type": "t_bool",
             "src": "contracts\\EthernalElves.sol:34"
           },
           {
-            "contract": "EthernalElvesV2",
+            "contract": "EthernalElvesV3",
             "label": "initialized",
             "type": "t_bool",
             "src": "contracts\\EthernalElves.sol:35"
           },
           {
-            "contract": "EthernalElvesV2",
+            "contract": "EthernalElvesV3",
             "label": "dev1Address",
             "type": "t_address",
             "src": "contracts\\EthernalElves.sol:37"
           },
           {
-            "contract": "EthernalElvesV2",
+            "contract": "EthernalElvesV3",
             "label": "dev2Address",
             "type": "t_address",
             "src": "contracts\\EthernalElves.sol:38"
           },
           {
-            "contract": "EthernalElvesV2",
+            "contract": "EthernalElvesV3",
             "label": "terminus",
             "type": "t_address",
             "src": "contracts\\EthernalElves.sol:39"
           },
           {
-            "contract": "EthernalElvesV2",
+            "contract": "EthernalElvesV3",
             "label": "validator",
             "type": "t_address",
             "src": "contracts\\EthernalElves.sol:40"
           },
           {
-            "contract": "EthernalElvesV2",
+            "contract": "EthernalElvesV3",
             "label": "INIT_SUPPLY",
             "type": "t_uint256",
             "src": "contracts\\EthernalElves.sol:42"
           },
           {
-            "contract": "EthernalElvesV2",
+            "contract": "EthernalElvesV3",
             "label": "price",
             "type": "t_uint256",
             "src": "contracts\\EthernalElves.sol:43"
           },
           {
-            "contract": "EthernalElvesV2",
+            "contract": "EthernalElvesV3",
             "label": "ketchup",
             "type": "t_bytes32",
             "src": "contracts\\EthernalElves.sol:44"
           },
           {
-            "contract": "EthernalElvesV2",
+            "contract": "EthernalElvesV3",
             "label": "_remaining",
             "type": "t_array(t_uint256)dyn_storage",
             "src": "contracts\\EthernalElves.sol:46"
           },
           {
-            "contract": "EthernalElvesV2",
+            "contract": "EthernalElvesV3",
             "label": "sentinels",
             "type": "t_mapping(t_uint256,t_uint256)",
             "src": "contracts\\EthernalElves.sol:47"
           },
           {
-            "contract": "EthernalElvesV2",
+            "contract": "EthernalElvesV3",
             "label": "bankBalances",
             "type": "t_mapping(t_address,t_uint256)",
             "src": "contracts\\EthernalElves.sol:48"
           },
           {
-            "contract": "EthernalElvesV2",
+            "contract": "EthernalElvesV3",
             "label": "auth",
             "type": "t_mapping(t_address,t_bool)",
             "src": "contracts\\EthernalElves.sol:49"
           },
           {
-            "contract": "EthernalElvesV2",
+            "contract": "EthernalElvesV3",
             "label": "whitelist",
             "type": "t_mapping(t_address,t_uint16)",
             "src": "contracts\\EthernalElves.sol:50"
           },
           {
-            "contract": "EthernalElvesV2",
+            "contract": "EthernalElvesV3",
             "label": "isTerminalOpen",
             "type": "t_bool",
             "src": "contracts\\EthernalElves.sol:53"
+          },
+          {
+            "contract": "EthernalElvesV3",
+            "label": "usedRenSignatures",
+            "type": "t_mapping(t_bytes_memory_ptr,t_uint16)",
+            "src": "contracts\\EthernalElves.sol:55"
           }
         ],
         "types": {
-          "t_contract(IElfMetaDataHandler)7190": {
+          "t_contract(IElfMetaDataHandler)7202": {
             "label": "contract IElfMetaDataHandler"
           },
-          "t_contract(ICampaigns)7216": {
+          "t_contract(ICampaigns)7228": {
             "label": "contract ICampaigns"
           },
-          "t_contract(IERC20Lite)7180": {
+          "t_contract(IERC20Lite)7192": {
             "label": "contract IERC20Lite"
           },
           "t_bool": {
@@ -2077,6 +2083,12 @@
           },
           "t_uint16": {
             "label": "uint16"
+          },
+          "t_mapping(t_bytes_memory_ptr,t_uint16)": {
+            "label": "mapping(bytes => uint16)"
+          },
+          "t_bytes_storage": {
+            "label": "bytes"
           },
           "t_mapping(t_uint256,t_address)": {
             "label": "mapping(uint256 => address)"

@@ -53,7 +53,7 @@ const TransfersToPolygon = () => {
     const confirmTransfers = async () => {
 
         
-        setLoading(true)
+       
         setStatus("Sending gasless tx to confirm elf transfers. Don't close window or refresh.")
 
         let {address} = await getCurrentWalletConnected()
@@ -86,6 +86,7 @@ const TransfersToPolygon = () => {
         let response 
         console.log(params)
         try{
+          setLoading(true)
           setStatus("1. Sending gasless tx to confirm elf transfers. Don't close window or refresh.")
           response = await Moralis.Cloud.run("confirmPendingPolygon", params);
           setTxReceipt(response)
@@ -99,6 +100,7 @@ const TransfersToPolygon = () => {
  
         
         try{
+        setLoading(true)
         setStatus("2. Sending gasless tx to confirm ren transfers. Don't close window or refresh.")
         response = await Moralis.Cloud.run("confirmPendingPolygon", params);
         setTxReceipt(response)

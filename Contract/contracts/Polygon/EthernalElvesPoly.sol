@@ -53,8 +53,12 @@ contract PolyEthernalElvesV2 is PolyERC721 {
                 uint32 campMaxLevel;
         }
     
-   //NewDataSlots///
+   
     mapping(address => bool)    public auth;
+   //NewDataSlots///
+    mapping(bytes => uint16)  public usedRenSignatures;
+    address polyValidator;
+   
     
     function initialize() public {
     
@@ -76,7 +80,13 @@ contract PolyEthernalElvesV2 is PolyERC721 {
        onlyOwner();
        elfmetaDataHandler   = IElfMetaDataHandler(_inventory);
        operator             = _operator;
-    }    
+    }
+
+    function setValidator(address _validator)  public {
+       onlyOwner();
+      
+       polyValidator = _validator;
+    }      
     
  /*   function newCamps()  public {
        onlyOwner();
@@ -127,7 +137,7 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
           }
 
             if (renAmount > 0) {
-                        
+
                     if(bankBalances[owner] - renAmount >= 0) {                      
                         _setAccountBalance(owner, renAmount, true);
                         emit RenTransferOut(owner,block.timestamp,renAmount);
@@ -135,6 +145,52 @@ function checkIn(uint256[] calldata ids, uint256 renAmount, address owner) publi
              }
     
 
+}
+
+ function checkOutRen(uint256[] calldata renAmounts, bytes[] memory renSignatures, uint256[] calldata timestamps, address[] calldata owners) public returns (bool) {
+   
+   onlyOperator();
+    require(isTerminalOpen, "Terminal is closed"); 
+    
+
+        for(uint i = 0; i < owners.length; i++){
+             require(usedRenSignatures[renSignatures[i]] == 0, "Signature already used");   
+             require(_isSignedByValidator(encodeRenForSignature(renAmounts[i], owners[i], timestamps[i]),renSignatures[i]), "incorrect signature");
+             usedRenSignatures[renSignatures[i]] = 1;
+             
+             bankBalances[owners[i]] += renAmounts[i];     
+             emit RenTransferedIn(owners[i], renAmounts[i]);    
+        }
+
+            
+       
+    }
+    
+
+
+function encodeRenForSignature(uint256 renAmount, address owner, uint256 timestamp) public pure returns (bytes32) {
+     return keccak256(
+            abi.encodePacked("\x19Ethereum Signed Message:\n32", 
+                keccak256(
+                        abi.encodePacked(renAmount, owner, timestamp))
+                        )
+                    );
+}  
+  
+function _isSignedByValidator(bytes32 _hash, bytes memory _signature) private view returns (bool) {
+    
+    bytes32 r;
+    bytes32 s;
+    uint8 v;
+           assembly {
+                r := mload(add(_signature, 0x20))
+                s := mload(add(_signature, 0x40))
+                v := byte(0, mload(add(_signature, 0x60)))
+            }
+        
+            address signer = ecrecover(_hash, v, r, s);
+            return signer == polyValidator;
+  
 }
 
 
