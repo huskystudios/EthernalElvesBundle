@@ -135,45 +135,7 @@ const TransfersToEth = () => {
                       
         }
 
-        const checkOutRenFunction = async () => {
-           
-              
-            let renAmount 
-            let renSignature 
-            let timestamp 
-    
-            nftData.map((item, index) => {
-    
-                if (clicked.includes((item.id))) {
-                 
-                    renAmount = item.attributes.renAmount
-                    timestamp = item.attributes.timestamp
-                    renSignature = item.attributes.signedTransaction.signature
-                }   
-    
-            })
-
-           
-           
-            let sigUsed = await usedRenSignatures(renSignature)
-            
-            if(parseInt(sigUsed) === 1){
-                console.log("is true. very naice.")
-                setAlert({show: true, value: {title: "Signature used", content: ("This transaction signature has already been used")}})
-                return
-            }
-
-          
-            const params =  {renAmount:renAmount , signature:renSignature, timestamp:timestamp}
-
-            console.log(params)
-            let {success, status, txHash} = await checkOutRen(params)
        
-            success && resetVariables()            
-     
-            setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
-                          
-            }
 
     
      
