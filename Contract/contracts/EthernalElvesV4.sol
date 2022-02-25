@@ -442,8 +442,9 @@ function _isSignedByValidator(bytes32 _hash, bytes memory _signature) private vi
 
                 }else if(action == 5){//forge loop for weapons
                    
-                    require(msg.value >= .01 ether);  
-                    require(elf.action != 3); //Cant roll in passve mode  
+                    require(msg.value >= .04 ether, "Wrong value sent");  
+                    require(elf.action != 3, "Cant roll in passive"); //Cant roll in passve mode  
+                    require(elf.weaponTier <= 3, "Cannot roll a new weapon");
                    //                    
                    // (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, rand, 1, elf.weaponTier, elf.primaryWeapon, elf.inventory);
                    (elf.primaryWeapon, elf.weaponTier) = _rollWeapon(elf.level, id_, rand);
@@ -552,9 +553,10 @@ function _isSignedByValidator(bytes32 _hash, bytes memory _signature) private vi
 
     function _rollWeapon(uint256 level, uint256 id, uint256 rand) internal pure returns (uint256 newWeapon, uint256 newWeaponTier) {
     
+        
+        
         uint256 levelTier = level == 100 ? 5 : uint256((level/20) + 1);
-                
-                uint256  chance = _randomize(rand, "Weapon", id) % 100;
+        uint256  chance = _randomize(rand, "Weapon", id) % 100;
       
                 if(chance > 10 && chance < 80){
         
@@ -570,8 +572,8 @@ function _isSignedByValidator(bytes32 _hash, bytes memory _signature) private vi
                         }
                          
                 newWeaponTier = newWeaponTier > 3 ? 3 : newWeaponTier;
-                newWeapon = ((newWeaponTier - 1) * 3) + (rand % 3);  
-            
+
+                newWeapon = ((newWeaponTier - 1) * 3) + (rand % 3);              
         
     }
     

@@ -44,7 +44,7 @@ describe("Ethernal Elves Contracts", function () {
   const MetadataHandler = await ethers.getContractFactory("ElfMetadataHandler");
   const Miren = await ethers.getContractFactory("Miren");
   //const Elves = await ethers.getContractFactory("EthernalElves");
-  const Elves = await ethers.getContractFactory("EthernalElvesV2");
+  const Elves = await ethers.getContractFactory("EthernalElvesV4");
   const Campaigns = await ethers.getContractFactory("ElfCampaignsV3");
   const Terminus = await ethers.getContractFactory("ElvesTerminus");
   //const Bridge = await ethers.getContractFactory("FxBaseRootTunnel");
@@ -117,7 +117,7 @@ describe("Ethernal Elves Contracts", function () {
   await ren.setMinter(owner.address, 1)
  //await ren.setMinter(terminus.address, 1)
 
-  await elves.flipWhitelist();
+  //await elves.flipWhitelist();
   await elves.flipMint();
   await elves.flipActiveStatus();
   await elves.flipTerminal();
@@ -133,7 +133,43 @@ describe("Ethernal Elves Contracts", function () {
 
   });
 
+
+  
+
   describe("Check In, Check Out", function () {
+    it("Stake Sentinels with Contract", async function () {
+
+      await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
+
+      //elves.connect(addr3).forging([1],{ value: ethers.utils.parseEther(".01")});//fail
+      //elves.connect(addr3).forging([1],{ value: ethers.utils.parseEther("0.0")});     
+
+      let weaponTier = 0
+      let level = 25     
+
+      await elves.setElfManually(1,1,weaponTier,1,1,level,1,1,1,0)
+
+      await elves.connect(addr3).forging([1], {value: ethers.utils.parseEther("0.04")})
+
+      console.log(await elves.attributes(1))
+      console.log(await elves.elves(1))
+     
+
+
+      //check out
+
+   //   let sentinelDNA = "45427413644928360261459227712385514627098612091526571146141633128741054971904"
+// console.log(await elves.getSentinel(2))
+   //   await elves.connect(addr3).checkOut(1, sentinelDNA)
+
+
+    })
+
+  });
+
+
+
+ /* describe("Check In, Check Out", function () {
     it("Stake Sentinels with Contract", async function () {
 
       await elves.connect(addr3).mint({ value: ethers.utils.parseEther(mintPrice)});
@@ -160,6 +196,8 @@ describe("Ethernal Elves Contracts", function () {
     })
 
   });
+
+  */
 
  /*  describe("Test Re-roll", function () {
       it("Reroll probabailities", async function () {
@@ -365,6 +403,7 @@ describe("Ethernal Elves Contracts", function () {
         
   })
 
+  /*
 
 describe("Game Play", function () {
 
@@ -419,15 +458,15 @@ describe("Game Play", function () {
 
       console.log("After Campaig2n:");
       //await elves.connect(addr3).returnPassive([3]);
-      await elves.connect(addr3).forging([4], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).forging([4], {value: ethers.utils.parseEther("0.04")})
       console.log("After Campaig3n:");
-      await elves.connect(addr3).merchant([4], {value: ethers.utils.parseEther("0.01")})
-      await elves.connect(addr3).forging([5], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([4], {value: ethers.utils.parseEther("0.04")})
+      await elves.connect(addr3).forging([5], {value: ethers.utils.parseEther("0.04")})
       console.log("After Campaig3n:");
-      await elves.connect(addr3).merchant([5], {value: ethers.utils.parseEther("0.01")})
-      await elves.connect(addr3).forging([6], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([5], {value: ethers.utils.parseEther("0.04")})
+      await elves.connect(addr3).forging([6], {value: ethers.utils.parseEther("0.04")})
       console.log("After Campaig3n:");
-      await elves.connect(addr3).merchant([6], {value: ethers.utils.parseEther("0.01")})
+      await elves.connect(addr3).merchant([6], {value: ethers.utils.parseEther("0.04")})
 
       console.log("After Campai4gn:");
      // await elves.connect(addr3).heal(3,4)
@@ -538,6 +577,6 @@ describe("Admin Functions", function () {
   });
 
   
-
+*/
 });
 
