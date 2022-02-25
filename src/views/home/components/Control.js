@@ -155,7 +155,7 @@ const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3
                     <span>{activeNft.inventoryDescription}</span>
                 </div>
             )}
-            <button onClick={toggleChain}>TOGGLE CHAIN</button>
+           
         </div>
     )
 }

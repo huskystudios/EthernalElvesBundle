@@ -25,7 +25,7 @@ import Mint from "../../mint";
 
 
 
-const TableMode = ({data, clicked, toggle, chain}) => {
+const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, visualMode}) => {
 
     
     const { Moralis } = useMoralis();
@@ -124,7 +124,7 @@ const TableMode = ({data, clicked, toggle, chain}) => {
         setIsButtonEnabled(buttonEnabledState);
     }, [clicked, nftData]);
 
-
+    
 
     const sendGaslessFunction = async (params) => {
 
@@ -151,12 +151,6 @@ const TableMode = ({data, clicked, toggle, chain}) => {
         }catch(e){
             console.log(e)
         }
-
-        
-
-        console.log(tx)
-
-        
 
     }
 
@@ -455,13 +449,15 @@ const TableMode = ({data, clicked, toggle, chain}) => {
                         </button>
                         
 
-                        <button
-                            
-                            className="btn-whale"
-                            onClick={()=> setMintModal(!mintModal)}
-                        >
+                        <button className="btn-whale" onClick={()=> setMintModal(!mintModal)}>
                             Mint
                         </button>
+
+                        <button  className="btn-whale" onClick={toggleChain}>TOGGLE CHAIN - {chain}</button>
+
+                        
+
+                        <button className="btn-whale" onClick={() => setVisualMode(!visualMode)}>Visual mode</button>
 
 
                     </div>      

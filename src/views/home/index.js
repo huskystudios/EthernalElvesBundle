@@ -54,6 +54,7 @@ const Home = () => {
     const [wallet, setWallet] = useState()
     const [status, setStatus] = useState()
     const [loadingText, setLoadingText] = useState()
+    const [visualMode, setVisualMode] = useState(false)
 
 
 
@@ -546,9 +547,11 @@ const Home = () => {
                     <div className="dark-1000 h-full d-flex home justify-center items-center">
                         {alert.show && showAlert(alert.value)}
 
-                        {index === 0 && <TableMode chain={chain} data={data} toggle={toggle} clicked={clicked} selectAll={selectAll}  />}
-                        {index === 100 && <Help chain={chain} data={data} toggle={toggle} clicked={clicked} selectAll={selectAll}  />}
                         
+                      {visualMode ?
+                      <>{index === 0 && <Help chain={chain} data={data} toggle={toggle} clicked={clicked} selectAll={selectAll}  />}</>
+                      : <>{index === 0 && <TableMode  chain={chain} data={data} toggle={toggle} visualMode={visualMode} setVisualMode={setVisualMode} clicked={clicked} toggleChain={toggleChain} selectAll={selectAll}  />}</>}
+                      }
                         
 
                        
