@@ -1,105 +1,126 @@
-import React, { useState } from "react"
-import assassinHelp from "../../../assets/images/help/assassin.png"
-import druidHelp from "../../../assets/images/help/druids.png"
-import rangerHelp from "../../../assets/images/help/rangers.png"
-import gameModes from "../../../assets/images/help/gamemodes.png"
-import items from "../../../assets/images/help/items.png"
-import rewards from "../../../assets/images/help/rewards.png"
-import utility from "../../../assets/images/help/utility.png"
-import creatureHeal from "../../../assets/images/help/creatureHeal.png";
+import React, { useState, useEffect } from "react"
+import Dropdown from "../../../components/Dropdown/"
+import Button from "../../../components/Dropdown/button";
 
-const characters = [{src:assassinHelp, name:"Assassins"}, {src:druidHelp, name:"Druids"}, {src:rangerHelp, name:"Rangers"}] 
-const gamemodes = [{src:gameModes, name:"Game Modes"}, {src:items, name:"Items"}, {src:rewards, name:"Rewards"}, {src:utility, name:"Utility"}, {src:creatureHeal, name:"Creature Health"}]
-
-const Help = () => {
-
-    const [modal, setModal] = useState({show: false, content: ""})
-
-   
-
-    const renderModal = () => {
-        if(!modal.show) return <></>
-
-        return (
-            <div className="modal">
-                <div className="image-modal-content">
-                    <span className="close-modal" onClick={() => setModal({show: false, content: ""})}>X</span>
-                    <h3>{modal.heading}</h3>
-                    
-                    <div className="image-container">
-                    <img  className="responsive" src={modal.src} />
-                    </div>
-                   
-
-                    <div className="d-flex flex-row justify-around align-center">
-                        <div className="d-flex flex-column">
-            
-                            
-                            <button className="btn-modal" onClick={() => setModal({show: false, content: ""})}>close</button>
+const Help = ({data, toggle, clicked, selectAll}) => {
+    // console.log(data)
+    const [now, setNow] = useState(new Date());
+    const [timer, setTimer] = useState(0);
+    const [classes, setClasses] = useState([])
+    const [actions, setActions] = useState([])
+    const [levels, setLevels] = useState([])
+    const [filterdData, setFilteredData] = useState(data)
+    const [classCnt, setClassCnt] = useState()
+    const [actionCnt, setActionCnt] = useState()
+    const [levelCnt, setLevelCnt] = useState()
+    const [toggleAll, setToggleAll] = useState(true)
+    const handleClick = (nft) => {
+        if(nft.actionString.toLowerCase() !== "unknown")
+        toggle(nft)
+    }
+    const getTimeString = (timestamp) => {
+        const endTime = new Date(timestamp * 1000)
+        const elapsed = endTime.getTime() - now.getTime()
+        const seconds = Number(elapsed / 1000);
+        const d = Math. floor(seconds / (3600*24));
+        const h = Math. floor(seconds % (3600*24) / 3600);
+        const m = Math. floor(seconds % 3600 / 60);
+        const s = Math. floor(seconds % 60);
+        return d > 0 ? `${d.toString().padStart(2, '0')}:${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}` : h > 0 ? `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}` : `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
+    }
+    useEffect(() => {
+        setTimeout(() => {
+            setNow(new Date())
+            setTimer(timer * -1)
+        }, 1000)
+    }, [timer])
+    useEffect(() => {
+        let tmpData = data
+        if(classes.length) {
+            tmpData = tmpData.filter(element => classes.includes(element.classString))
+        }
+        if(actions.length) {
+            tmpData = tmpData.filter(element => actions.includes(element.actionString))
+        }
+        if(levels.length) {
+            tmpData = tmpData.filter(element => levels.includes(element.level.toString()))
+        }
+        setFilteredData(tmpData)
+    }, [data, classes, actions, levels])
+    useEffect(() => {
+        const countClasses = {}
+        const countActions = {}
+        const countLevels = {}
+        data.forEach((nft) => {
+            // console.log(nft)
+            countClasses[nft.classString] = (countClasses[nft.classString] || 0) + 1
+            countActions[nft.actionString] = (countActions[nft.actionString] || 0) + 1
+            countLevels[nft.level] = (countLevels[nft.level] || 0) + 1
+        })
+        setClassCnt(countClasses)
+        setActionCnt(countActions)
+        setLevelCnt(countLevels)
+    }, [data])
+    const handleSelectAll = () => {
+        if(filterdData.length === 0) return
+        selectAll()
+        if(toggleAll) selectAll(filterdData)
+        setToggleAll(toggle => !toggle)
+    }
+    useEffect(() => {
+        if(clicked.length === filterdData.length) setToggleAll(false)
+        else setToggleAll(true)
+        if(filterdData.length === 0) setToggleAll(true)
+    }, [clicked, filterdData])
+    return (
+        <>
+            <div className="collection-content d-flex flex-column">
+                <div className="filter-panel">
+                    <Dropdown title="Action" options={["Idle", "Staked", "On Campaign", "Healing", "Done Healing", "Unknown"]} count={actionCnt} onChange={setActions} selected={actions} />
+                    <Dropdown title="Class" options={["Assassin", "Druid", "Ranger"]} onChange={setClasses} selected={classes} count={classCnt} />
+                    <Dropdown title="Level" options={levelCnt ? Object.keys(levelCnt) : []} onChange={setLevels} selected={levels} count={levelCnt} />
+                    <Button onClick={handleSelectAll} value={toggleAll ? "Select All" : "Deselect All"} />
+                    <span className="total-sentinel">Total Sentinels ({data.length})</span>
+                </div>
+                <div className="collection-panel">
+                    <div className="collection-selection" >
+                        <div className="card-grid">
+                            {filterdData.map((nft) => (
+                                <div className={`character-card ${nft.actionString.toLowerCase() === "unknown" ? "greyout" : ""} ${clicked.includes(nft) ? "active" : ""}`} key={nft.id} onClick={() => { handleClick(nft)}}>
+                                    <div className="d-flex justify-between font-size-sm">
+                                        <span>{nft.actionString}</span>
+                                        <span>#{nft.id}</span>
+                                    </div>
+                                    <img className="character-image" src={nft.image} />
+                                    <span>Level: {nft.level}</span>
+                                    <div className="d-flex justify-between font-size-xs items-center mt-1">
+                                        <span className="props-title">weapon</span>
+                                        <span className="props-value">{nft.attributes[3].value}</span>
+                                    </div>
+                                    <div className="d-flex justify-between font-size-xs items-center mt-1">
+                                        <span className="props-title">item</span>
+                                        <span className="props-value">{nft.inventoryString}</span>
+                                    </div>
+                                    <div className="d-flex justify-between font-size-xs items-center mt-1">
+                                        <span className="props-title">timer</span>
+                                        <span className="props-value">{Date.now() > nft.time * 1000 ? "" : getTimeString(nft.time)}</span>
+                                    </div>
+                                    <div className="d-flex justify-between font-size-xs items-center mt-1">
+                                        <span className="props-title">hp</span>
+                                        <span>{nft.health}</span>
+                                        <span className="props-title">ap</span>
+                                        <span>{nft.attack}</span>
+                                    </div>
+                                    <div className="d-flex justify-between font-size-xs items-center">
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-
                     </div>
                 </div>
             </div>
-        )
-    }
-
-
-    return (
-
-        <>
-
-               <div className="collection-content d-flex flex-column">
-                    <div className="collection-panel">
-
-
-                    <div className="collection-heading">
-                              Game Guide
-                            </div>
-                        <div className="collection-selection" >
-                            
-                <h1>Sentinels</h1>
-                <div className="d-flex flex-row justify-around flex-wrap p-">
-                {characters.map((character, index) => {
-
-                    return(
-                        <div className="collection-image"  key={index}>
-                            <img width={100} src={character.src} alt={character.name} onClick={() => setModal({show: true, heading: character.name, src:character.src})}/>
-                            <h2>{character.name}</h2>
-                        </div>
-                    )})}
-
-                </div>
-         
-                <h1>Gameplay</h1>
-    
-                <div className="d-flex flex-row justify-around flex-wrap ">
-            {gamemodes.map((gamemode, index) => {
-                        return(
-                            <div className="collection-image" key={index}>
-                                <img width={100} src={gamemode.src} alt="assassin" onClick={() => setModal({show: true, heading: gamemode.name, src:gamemode.src})}/>
-                                <h2>{gamemode.name}</h2>
-                            </div>
-                        )
-                })}
-
-                </div>
-  
-       
-       
-             </div> 
-        </div>
-     </div>
-
-
-
-
-
-            {renderModal()}
-          
-        
         </>
-        
+
     )
 }
 

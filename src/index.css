@@ -5,11 +5,15 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-transform: uppercase;
+  text-transform: uppercase !important;
   color: white;
   background: black;
 }
-
+:root {
+  /* Set neon color */
+  --neon-text-color: #f40;
+  --neon-border-color: #08f;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -64,13 +68,21 @@ button {
 .text-white {
   color: white;
 }
+.text-danger {
+  color: var(--neon-text-color);
+}
 .text-center {
   text-align: center; 
 }
 .font-size-md {
-  font-size: 18px;
+  font-size: 16px;
 }
-
+.font-size-sm {
+  font-size: 12px;
+}
+.font-size-xs {
+  font-size: 10px;
+}
 .btn {
   text-transform: uppercase;
   font-weight: 600;
@@ -115,4 +127,75 @@ button {
   background: rgba(0, 0, 0, 0.8);
 }
 
+.mt-1 {
+  margin-top: 6px !important;
+}
+
+.dropdown-btn {
+  background-color: #00000000;
+  border-radius: 5px;
+  /*border: 1px solid white;*/
+  color: white;
+  padding: 6px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  min-width: 200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Montserrat";
+  text-transform: uppercase;
+  box-shadow:
+        0 0 .5rem #ccc,
+        0 0 0.5rem var(--neon-border-color),
+        inset 0 0 0.5rem var(--neon-border-color);
+  text-shadow:
+        -0.2rem -0.2rem 1rem #fff,
+        0.2rem 0.2rem 1rem #fff,
+        0 0 2rem var(--neon-text-color),
+        0 0 4rem var(--neon-text-color),
+        0 0 6rem var(--neon-text-color),
+        0 0 8rem var(--neon-text-color),
+        0 0 10rem var(--neon-text-color);
+}
+
+.dropdown-btn:hover, .dropdown-btn:focus {
+  background-color: #ffffff10;
+}
+
+.mul-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.mul-dropdown-content {
+  display: flex;
+  margin-top: 0px;
+  flex-direction: column;
+  position: absolute;
+  background-color: rgba(0,0,0,0.8);
+  /*min-width: 160px;*/
+  overflow: auto;
+  /*box-shadow: 0px 8px 16px 0px rgba(255,255,255,0.2);*/
+  z-index: 1;
+  width: 100%;
+  box-shadow:
+        0 0 .5rem #ccc,
+        0 0 0.5rem var(--neon-border-color),
+        inset 0 0 0.5rem var(--neon-border-color);
+  box-sizing: border-box;
+  padding: 0px;
+}
+
+.mul-dropdown-content li {
+  color: white;
+  padding: 14px 20px;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+}
+.mul-dropdown-content li.active {
+  background-color: #0088ff7c;
+}
+.mul-dropdown li:hover {background-color: #0088ff3c;}
 
