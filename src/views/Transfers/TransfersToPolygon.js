@@ -22,13 +22,11 @@ const TransfersToPolygon = () => {
     const [activeNfts, setActiveNfts] = useState(true)
     const [txreceipt, setTxReceipt] = useState()
     const [alert, setAlert] = useState({show: false, value: null})
-    const [campaignModal, setCampaignModal] = useState(false)
+
    
     const resetVariables = async () => {
         setClicked([])
         setNftData([])
-        setTxReceipt([])
-        setCampaignModal(false)
         setActiveNfts(!activeNfts)
 
     }
@@ -90,6 +88,7 @@ const TransfersToPolygon = () => {
         try{
           setStatus("1. Sending gasless tx to confirm elf transfers. Don't close window or refresh.")
           response = await Moralis.Cloud.run("confirmPendingPolygon", params);
+          setTxReceipt(response)
           console.log(response)
         }catch(error){
             console.log(error)
@@ -102,20 +101,19 @@ const TransfersToPolygon = () => {
         try{
         setStatus("2. Sending gasless tx to confirm ren transfers. Don't close window or refresh.")
         response = await Moralis.Cloud.run("confirmPendingPolygon", params);
+        setTxReceipt(response)
         console.log(response)
         }catch(error){
             console.log(error)
         }
         
         setStatus("Done.")
-        //resetVariables();
-        setTxReceipt(response);
-       
+        resetVariables();
+               
         setLoading(false)
-        //setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
+
 
  }
-
        
 
         useEffect(() => {
@@ -187,7 +185,7 @@ const TransfersToPolygon = () => {
         }
         
         getData()
-          },[setTxReceipt]);
+          },[txreceipt]);
 
 
         const showAlert = ({title, content}) => {

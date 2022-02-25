@@ -194,6 +194,7 @@ const PendingTransfers = () => {
       
         <th>Token Id</th>
         <th>Owner</th>
+        <th>Status</th>
       
        
         </tr>
@@ -223,6 +224,7 @@ const PendingTransfers = () => {
                     </td>
                     <td>{line.attributes.tokenId}</td>
                     <td>{line.attributes.from}</td>
+                    <td>{line.attributes.status}</td>
                    
                 </tr>)
             }

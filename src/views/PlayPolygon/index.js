@@ -126,6 +126,7 @@ const PlayPolygon = () => {
 
     const sendGaslessFunction = async (params) => {
 
+
         let tx 
 
         setLoading(true)
@@ -133,6 +134,8 @@ const PlayPolygon = () => {
         
         try{
             tx = await Moralis.Cloud.run("defenderRelay", params) 
+
+            console.log(tx)
             if(tx.data.status){
 
                 let fixString = tx.data.result.replaceAll("\"", "")

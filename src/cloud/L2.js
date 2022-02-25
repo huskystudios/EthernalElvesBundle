@@ -35,7 +35,7 @@ const elves = new ethWeb3.eth.Contract(elvesABI,elvesAddress);
 //Relays
 const defender1 = "https://api.defender.openzeppelin.com/autotasks/bd97eb6c-8038-466e-9e15-2e933b927dcb/runs/webhook/c897a8c7-c0e5-45ac-abf5-341f0dec2d40/Hd8ttFMzNMuWa7NSZv6meg"
 const defender2 = "https://api.defender.openzeppelin.com/autotasks/71bef792-a03f-400a-a487-cc33c4439ab5/runs/webhook/c897a8c7-c0e5-45ac-abf5-341f0dec2d40/VQvJ4ZMffaFzPVh4e4H57j"
-
+const defender3 = "https://api.defender.openzeppelin.com/autotasks/105dfaf7-cf10-42f8-ae11-013ff1c978fe/runs/webhook/c897a8c7-c0e5-45ac-abf5-341f0dec2d40/8VH788u8tnLJK6rafEfLuQ"
 ///
 
 Moralis.Cloud.define("getAllOwners", async(request) => {
@@ -214,7 +214,26 @@ const res = await query.first();
 });
 
 //////////////Test Code////////////////////////////
+Moralis.Cloud.define("dbQ", async(request) => {
+  const query = new Moralis.Query("ElvesEthCheckIn");
+  
+  const pipeline = [
+    {match: {status: "initiated"}},
+    {lookup: {
+        from: "ElvesPolyCheckOut",
+        localField: "sentinel",
+        foreignField: "sentinel",
+        as: "sentinelDna"
+      }}
+  ];
 
+  
+  const ownerCount = await query.aggregate(pipeline, { useMasterKey: true })
+  
+  return ownerCount
+
+  })
+  
 
 
 Moralis.Cloud.define("testPolySign", async(request) => {
@@ -327,8 +346,6 @@ let param1 = []
 let param2 = []
 
 let ElvesClass
-let operatorNonce
-let operatorKey
 
 let confirmedArray = []    
 
@@ -340,14 +357,12 @@ let error
 if(asset === "elves"){
 
     ElvesClass = Moralis.Object.extend("ElvesEthCheckIn")
-    operatorNonce = await polyWeb3.eth.getTransactionCount(bridgeOperator)
-    operatorKey = bridgeOperatorKey
+
   
 }else if(asset === "ren"){
 
     ElvesClass = Moralis.Object.extend("ElvesRenTransferOut")
-    operatorNonce = await polyWeb3.eth.getTransactionCount(renOperator)
-    operatorKey = renOperatorKey
+
 }
 
 let query = new Moralis.Query(ElvesClass);
@@ -365,7 +380,7 @@ if(asset === "elves"){
         confirmedArray.push(item)
     })
 
-    txData = polyElves.methods.modifyElfDNA(param1, param2).encodeABI()
+    //txData = polyElves.methods.modifyElfDNA(param1, param2).encodeABI()
 
 }else if(asset === "ren"){
 
@@ -378,21 +393,22 @@ if(asset === "elves"){
   
      })
 
-    txData = polyElves.methods.setAccountBalances(param1, param2).encodeABI()
+    //txData = polyElves.methods.setAccountBalances(param1, param2).encodeABI()
 }
 
 
 if(confirmedArray.length > 0) {
     
-      fullfilltx = await Moralis.Cloud.httpRequest({ 
+     fullfilltx = await Moralis.Cloud.httpRequest({ 
                     method: 'POST', 
                     headers: {
                       'Content-Type': 'application/json;charset=utf-8'
                     },
-                    url: defender2, 
-                    body: {functionCall: txData}
+                    url: defender3, //defender2 for old method
+       				body: {asset: asset, param1: param1, param2: param2}
+                    //body: {functionCall: txData}
                     })
-  
+
        if(fullfilltx.data.status === "success"){
 
             confirmedArray.map((item, index) => {
@@ -403,7 +419,8 @@ if(confirmedArray.length > 0) {
     
   }
 
-const statusMessages = {status: null, param1:param1, param2:param2, fullfilltx: fullfilltx, ca: confirmedArray, error: error}
+const statusMessages = {param1:param1, param2:param2, 
+                        fullfilltx: fullfilltx, ca: confirmedArray, error: error}
 
 return statusMessages
 

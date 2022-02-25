@@ -99,7 +99,7 @@ const PlayEth = () => {
                     value = selectedElves.every((elf) => isInactive(elf) && isPassive(elf));
                     break;
                 case "sendPolygon": 
-                    value = selectedElves.every((elf) => !isPolygon(elf) /*&& !isPassive(elf)*/) && selectedElves.length <= 10;
+                    value = selectedElves.every((elf) => !isPolygon(elf) && !isPassive(elf)) && selectedElves.length <= 10;
                     break;
                 case "rerollWeapon":
                 case "rerollItem":    
@@ -493,7 +493,7 @@ const PlayEth = () => {
                      
                        
                         <button
-                            //disabled={!isButtonEnabled.sendPolygon}
+                            disabled={!isButtonEnabled.sendPolygon}
                             className="btn-whale"
                             onClick={checkinElf}
                         >
