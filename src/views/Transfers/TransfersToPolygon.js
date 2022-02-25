@@ -32,6 +32,8 @@ const TransfersToPolygon = () => {
         setActiveNfts(!activeNfts)
 
     }
+
+
     
    
     const handleClick = async (id) => {
@@ -39,7 +41,11 @@ const TransfersToPolygon = () => {
         if (clicked.includes(id)) {
             setClicked(clicked.filter(item => item !== id))
         } else {
+            if(clicked.length <= 9) {
             setClicked([...clicked, id])
+            }else{
+                setAlert({show: true, value: {title: "Max selected", content: ("You can only select ten items at a time")}})
+            }
         }
 
        

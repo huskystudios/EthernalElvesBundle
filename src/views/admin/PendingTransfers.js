@@ -193,6 +193,7 @@ const PendingTransfers = () => {
         </th>
       
         <th>Token Id</th>
+        <th>Owner</th>
       
        
         </tr>
@@ -221,6 +222,7 @@ const PendingTransfers = () => {
                     String(line.attributes.sentinel).substring(68)}
                     </td>
                     <td>{line.attributes.tokenId}</td>
+                    <td>{line.attributes.from}</td>
                    
                 </tr>)
             }
