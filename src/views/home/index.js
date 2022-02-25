@@ -156,16 +156,6 @@ const Home = () => {
                           
     }
 
-    const druidSynergize = async () => {
-
-        //fistler ids from clicked
-
-        let healerIds = clicked.map(el => el.id)
-           
-        const params =  {functionCall: polygonContract.methods.synergize(healerIds, wallet).encodeABI()}
-        await sendGaslessFunction(params)
-        
-    }
 
     const reRoll = async (option) => {
 
@@ -178,15 +168,35 @@ const Home = () => {
         setAlert({show: true, value: {title: "Tx Sent", content: (status)}})  
         }
         else{
+            if(option === "forging"){
+            //check rollerIds.weaponTier greater than 3 
+            let weaponTier = clicked.map(el => el.weaponTier)
+            let weaponTierMax = weaponTier.reduce((a, b) => Math.max(a, b))
+            console.log(weaponTierMax, weaponTier)
+            if(weaponTierMax > 3){
+                setAlert({show: true, value: {title: "Error", content: "You can only forge with a current weapon tier of 3 or less"}})
+                return
+            }
+            }
+            if(option === "synergize"){
+                //check rollerIds.sentinelClass to see if druid
+                let sentinelClass = clicked.map(el => el.sentinelClass)
+                let sentinelClassMax = sentinelClass.reduce((a, b) => Math.max(a, b))
+                console.log(sentinelClassMax, sentinelClass)
+                if(sentinelClassMax !== 0){
+                    setAlert({show: true, value: {title: "Error", content: "You can only synergize with druids"}})
+                    return
+                }
+                
+            }
             
         const params =  {functionCall: option === "forging" ? polygonContract.methods.forging(rollerIds, wallet).encodeABI() : 
         option === "merchant" ? polygonContract.methods.merchant(rollerIds, wallet).encodeABI() : polygonContract.methods.synergize(rollerIds, wallet).encodeABI()}
-        
-        await sendGaslessFunction(params)   
+        console.log(params, wallet, rollerIds)
+        //await sendGaslessFunction(params)   
         }
 
         setModal({show: false, content: ""})
-
                           
     }
 
@@ -265,6 +275,7 @@ const Home = () => {
     const getElvesfromMoralis = async (address) => {
 
         setLoading(true)
+        setClicked([])
         const params = { address: address }
         setLoadingText(`25% Fetching elves for address ${address}`)
         const array = await Moralis.Cloud.run("getElvesFromDb", params);
@@ -490,12 +501,13 @@ const Home = () => {
     const renderModal = () => {
         if(!modal.show) return <></>
         const handleEthClick = () => {
-            reRoll(modal.action)
-            setModal({show: false, content: ""})
+            reRoll(modal.action)         
         }
 
         //get object from rollcosts that matches modal.action
         const cost = rollCosts.find(cost => cost.action === modal.action)
+
+        let costString = chain === "polygon" ? `${cost.ren} REN` : `${cost.eth} ETH`
 
         console.log(cost)
 
@@ -508,39 +520,26 @@ const Home = () => {
                         <>
                         <p>there is 20% chance you will get a higher tier weapon, 10% chance you will get downgraded and 70% chance you get a different weapon within the same tier.</p>
                         <p>you cannot roll T4 & T5 weapons</p>                        
-                         <div className="d-flex flex-row justify-around align-center">
-                         <div className="d-flex flex-column">
-             
-                             <span>0.01 eth</span>
-                             <button className="btn-modal" onClick={handleEthClick} >{modal.content} with eth</button>
-                         </div>
-                         </div>
                          </>
                     }
                     {modal.action === "merchant" && 
                         <>
                         <p>there is 20% chance you will get a new item..</p>
-                        <div className="d-flex flex-row justify-around align-center">
-                         <div className="d-flex flex-column">
-             
-                             <span>0.01 eth</span>
-                             <button className="btn-modal" onClick={handleEthClick} >{modal.content} with eth</button>
-                         </div>
-                         </div>
                         </>
                     }
                     {modal.action === "synergize" && 
                         <>
                         <p>there is 10% chance you will reduce you're druid cooldown by 50% and a 60% chance to reduce cooldown by 33%. There is a 30% chance you'll get a 5 minute pentaly.</p>
+                        </>
+                    }
+
                         <div className="d-flex flex-row justify-around align-center">
                          <div className="d-flex flex-column">
              
-                             <span>0.01 eth</span>
-                             <button className="btn-modal" onClick={handleEthClick} >{modal.content} with eth</button>
+                             <span>{costString}</span>
+                             <button className="btn-modal" onClick={handleEthClick} >{modal.content} </button>
                          </div>
                          </div>
-                        </>
-                    }
                    
 
                    
