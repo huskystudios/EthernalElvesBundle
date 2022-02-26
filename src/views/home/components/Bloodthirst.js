@@ -86,11 +86,18 @@ const Bloodthirst = ({onChangeIndex, onSendCampaign, data, chain}) => {
         <div>
 
             <div className="d-flex flex-column overview-content">         
-            <div className="sector-panel">
-            <div className="overview-heading">
-                      Bloodthirst
+                <div className="sector-panel">
+                         <div className="overview-heading">
+                                 Bloodthirst
+                     
+                            </div>
+                         
+                        
+  
+                 <div className="sector-options">
+                    
+                      <div>
 
-                                     
                       Creature Health is 400HP
                         <br/>
                         rewards 
@@ -101,19 +108,7 @@ const Bloodthirst = ({onChangeIndex, onSendCampaign, data, chain}) => {
                         <br/>
                         weaponTier 5 is 110 $REN
                         <br/>
-                       
-
-                     
-            </div>
-                         
-                        
-  
-                 <div className="sector-options">
-
-
-         
-                    
-                      
+                      </div>
 
                  <div>
                                  
