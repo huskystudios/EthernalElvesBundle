@@ -616,7 +616,7 @@ function handleMoralisError(err) {
 
         //get object from rollcosts that matches modal.action
         const cost = rollCosts.find(cost => cost.action === modal.action)
-
+        console.log(cost, modal.action)
         let costString = chain === "polygon" ? `${cost.ren} REN` : `${cost.eth} ETH`
 
         console.log(cost)

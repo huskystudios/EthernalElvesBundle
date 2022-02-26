@@ -62,7 +62,8 @@ const Staking = ({onChangeIndex, nft, onRunWeb3}) => {
                                 </tbody>
                             </table>
                             <br/>
-                            <img style={{width: 150}} src={nft[0].image} alt={nft.id} />
+                            {nft.length > 0 &&
+                            <img style={{width: 150}} src={nft[0].image} alt={nft.id} />}
                             <p>Rewards: $ren daily</p>
                             <p>level: 1 level per day</p>
                         </div>

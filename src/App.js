@@ -60,12 +60,16 @@ const [flip, setFlip] = useState(false)
               <Route exact path="/faq">
                 <Faq />               
               </Route>
-              <Route exact path="/playeth">
+              {/*
+                 <Route exact path="/playeth">
                 <PlayEth />
                </Route>
                <Route exact path="/playpoly">
                 <PlayPolygon />
                </Route>
+            
+              */}
+             
                <Route exact path="/transfers">
                 <Transfers />
                </Route>

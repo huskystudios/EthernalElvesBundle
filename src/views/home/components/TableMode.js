@@ -134,10 +134,6 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
 
 
 
-   
-
-
-
     const checkinElf = async () => {
 
         // get cooldown from clicked and get action from clicked
@@ -151,7 +147,9 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
             }
 
             //get ids that have action 2 from clicked
-            let action2Ids = clicked.filter(elf => elf.action === 2)
+            let action2Ids = clicked.filter(elf => elf.action === 3)
+
+            console.log(action2Ids, cooldownIds)
 
             if(action2Ids.length > 0){
                 setAlert({show: true, value: {title: "Action", content: "You can't check in elves that are on passive"}})
@@ -190,8 +188,19 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
        
 
              const unStakeElf = async () => {
-      
-                const params =  {ids: clicked}
+
+                if(chain === "polygon"){
+                    setAlert({show: true, value: {title: "Not supported", content: "Unstaking is not supported on Polygon"}})
+                    return
+                }
+                if(clicked.length === 0){
+                    setAlert({show: true, value: {title: "No Elves", content: "You need to select at least one elf"}})
+                    return
+                }
+
+                let ids = clicked.map((elf) => elf.id)
+                
+                const params =  {ids: ids}
                 let {success, status, txHash} = await unStake(params)
            
                 success && resetVariables()            
@@ -356,7 +365,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
                             <div className="flex justify-center p-2">
                                     
                             <button className="btn-whale"  onClick={()=> setTransfersModal(!transfersModal)}> Transfers </button>
-                            <button disabled={!isButtonEnabled.unstake} className="btn-whale" onClick={unStakeElf}> Unstake </button>
+                            <button className="btn-whale" onClick={unStakeElf}> Unstake </button>
                             <button className="btn-whale" onClick={()=> setMintModal(!mintModal)}> Mint </button>
                            
                             <button disabled className="btn-whale" onClick={() => setVisualMode(!visualMode)}>Visual mode</button>
