@@ -2,10 +2,7 @@ import React, { useEffect, useState, useMemo } from "react"
 import Loader from "../../components/Loader"
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis"
 import "./style.css"
-import { actionString, campaigns } from "../home/config"
-import Countdown from 'react-countdown';
-import {elvesAbi, getCampaign, elvesContract, etherscan,
-    checkIn, checkOut, checkOutRen, usedRenSignatures,
+import {checkIn, checkOut, checkOutRen, usedRenSignatures,
     sendCampaign, sendPassive, returnPassive, unStake, merchant, forging,
     heal, lookupMultipleElves, getCurrentWalletConnected, checkRenTransfersIn} from "../../utils/interact"
 
@@ -16,7 +13,7 @@ const TransfersToEth = () => {
     const [status, setStatus] = useState("")
 
 
- 
+    
     
 
     const [clicked, setClicked] = useState([]);
@@ -27,6 +24,7 @@ const TransfersToEth = () => {
     const [txreceipt, setTxReceipt] = useState()
     const [alert, setAlert] = useState({show: false, value: null})
     const [campaignModal, setCampaignModal] = useState(false)
+    const [sigButton, setSigButton] = useState(false)
    
     const resetVariables = async () => {
         setClicked([])
@@ -44,6 +42,12 @@ const TransfersToEth = () => {
             setClicked(clicked.filter(item => item !== id))
         } else {
             setClicked([...clicked, id])
+        }
+
+        if(clicked.length === 1) {
+            setSigButton(true)
+        }else{
+            setSigButton(false)
         }
 
        
@@ -96,10 +100,11 @@ const TransfersToEth = () => {
         })
        
       if(tokenIdsArry.length > 0){
+  
         const params1 =  {ids:tokenIdsArry , sentinel:sentinelArry, signature:signatureArry, authCode:authCodesArry}
         let {success, status, txHash} = await checkOut(params1)
    
-        //success && resetVariables()            
+        success && resetVariables()            
  
         setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
       }
@@ -135,9 +140,44 @@ const TransfersToEth = () => {
                       
         }
 
-       
+        const generateSignature = async () => {
 
-    
+            const elvesPolyCheckIn = "ElvesPolyCheckIn";
+            const elvesRenTransferIn = "ElvesRenTransferIn"
+
+            let asset
+        nftData.map((item, index) => {
+            if (clicked.includes((item.id))) {
+
+               if(item.className ===  elvesPolyCheckIn){
+
+                    asset = "elves"
+               }else if(item.className === elvesRenTransferIn){
+
+                    asset = "ren"
+               }
+
+            }  
+
+        })
+
+            const params = {objectIds: clicked[0], asset: asset}
+
+            console.log(params)
+            
+            try{
+               const renBalanceContract = await Moralis.Cloud.run("signForEthReturn",params);//in contract
+
+                console.log(renBalanceContract)
+            }catch(e){
+                console.log(e)
+            }
+
+     
+            
+
+        }
+
      
         useEffect(() => {
             const getData = async () => {
@@ -199,15 +239,15 @@ const TransfersToEth = () => {
        //check if signature has been used.
       
        setStatus("checking pending ren transfers")        
-       let sigcheckresponse 
-        if(renResults.length > 0){
-            sigcheckresponse = await checkRenTransfersIn(renResults)
+      
+       console.log(renResults)
+        if(renResults.length > 0){            
+            let sigcheckresponse = await checkRenTransfersIn(renResults)
             results = results.concat(sigcheckresponse)
         }
        
 
-        setNftData(results)        
-        
+        setNftData(results) 
         setStatus("done")                  
         setLoading(false)
         }
@@ -232,17 +272,10 @@ const TransfersToEth = () => {
     return !loading ? (
         
         <>
-
-        
-            
            
                 <div className="d-flex">      
                     <div className="column">
-                  
-
-                    
-                   
-            <div>
+                        <div>
                 <div>Transfers to Eth </div>
 
             <div className="flex p-10">
@@ -253,6 +286,13 @@ const TransfersToEth = () => {
                             onClick={checkOutElf}
                         >
                             Confirm Transfers
+                        </button>   
+                        <button
+                            disabled={sigButton}
+                            className="btn-whale"
+                            onClick={generateSignature}
+                        >
+                         Generate Signatures
                         </button>     
 
                     </div>      
@@ -283,13 +323,20 @@ const TransfersToEth = () => {
       <tbody>
      
 
-            {nftData.map((line, index) => {
+            {nftData && nftData.map((line, index) => {
 
-
+                console.log(nftData)
+                
                 const date = new Date(line.attributes.timestamp * 1000)
                 const dateString = date.toString()
 
                 let rowSelected = clicked.includes((line.id)) ? "rowSelected" : ""
+
+                let signature = line.attributes.signedTransaction
+
+                signature = signature ? signature.signature : "no signature"
+
+                
 
                 return( <tr key={index} className={`${rowSelected} row`} onClick={()=> handleClick((line.id))}  > 
                    <td>
@@ -304,9 +351,9 @@ const TransfersToEth = () => {
                     String(line.attributes.sentinel).substring(68)}
                     </td>
                     <td>
-                    { String(line.attributes.signedTransaction.signature).substring(0, 15) +
+                    { String(signature).substring(0, 15) +
                     "..." +
-                    String(line.attributes.signedTransaction.signature).substring(108)}
+                    String(signature).substring(108)}
                     </td>
                     <td>{line.attributes.tokenId}</td>
                     <td>{line.attributes.renAmount && line.attributes.renAmount/1000000000000000000}</td>
