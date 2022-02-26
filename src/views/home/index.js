@@ -125,6 +125,14 @@ const Home = () => {
 
     const sendCampaignFunction = async (params) => {
 
+        //list clicked items who have cooldown
+        let cooldown = clicked.filter(item => item.cooldown === true)
+        if(cooldown.length > 0){
+            setAlert({show: true, value: {title: "Cooldown", content: "You have cooldown on some elves. Please reselect elves with no cooldown."}})
+            return
+        }
+
+
         if(chain === "eth"){
             console.log("sendCampaignFunction", params)
         let { success, status, txHash } = await sendCampaign(params)
