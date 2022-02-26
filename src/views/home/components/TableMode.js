@@ -13,7 +13,7 @@ import Mint from "../../mint";
 import Loader from "../../../components/Loader";
 import thevoid from "../../../assets/images/thevoid.png";
 
-
+const allowedWallets = ["0xccfb66d52076a8295592642068c45d06fa6e36f6", "0xccb6d1e4acec2373077cb4a6151b1506f873a1a5"]
 
 
 const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisualMode, visualMode, reloadData, setReloadData, polyBalance}) => {
@@ -22,6 +22,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
     const { Moralis } = useMoralis();
     const [sortBy, setSortBy] = useState({ value: "cooldown", order: "desc" });
     const [renTransfer, setRenTransfer] = useState("")
+    const [allowed, setAllowed] = useState(false)
     
     const [isButtonEnabled, setIsButtonEnabled] = useState({
         unstake: false,
@@ -53,6 +54,14 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
         setActiveNfts(!activeNfts)
 
     }
+
+    useEffect(() => {
+        if(allowedWallets.includes(owner)) {
+            setAllowed(true)
+        }
+    }, [owner])
+
+    
     
  
    const handleClick = async (nft) => {
@@ -315,7 +324,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
                  <Modal show={transfersModal}>
                     
                     
-                 {/*       <h4>Prism Transfer Module</h4>                        
+                <h4>Prism Transfer Module</h4>                        
                        
                         <img src={thevoid} alt="elfTerminus" className="w-3/4"/>
                        
@@ -345,7 +354,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
                      </button>
                     </div>
                     
-                        */}
+                     
                 
                 </Modal>
             
@@ -364,7 +373,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
 
                             <div className="flex justify-center p-2">
                                     
-                            {/*<button className="btn-whale"  onClick={()=> setTransfersModal(!transfersModal)}> Transfers </button>*/}
+                            {allowed && <button className="btn-whale"  onClick={()=> setTransfersModal(!transfersModal)}> Transfers </button>}
                             <button className="btn-whale" onClick={unStakeElf}> Unstake </button>
                             <button className="btn-whale" onClick={()=> setMintModal(!mintModal)}> Mint </button>
                            

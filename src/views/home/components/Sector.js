@@ -169,10 +169,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, chain}) => {
 
             <div className="d-flex flex-column overview-content">         
             <div className="sector-panel">
-            <div className="overview-heading">
-                      
-                 </div>
-                         
+                           
                          <div className="carousel">
                              <button className="btn_prev" onClick={() => handleCampaignChange(campaign === 0 ? campaignArray.length - 1 : campaign - 1)} />
                              <div className="campaign-slide-passive">

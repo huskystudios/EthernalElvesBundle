@@ -153,6 +153,8 @@ const Home = () => {
     }
 
     const bloodthirstFunction = async (params) => {
+
+       
            
         const btParams =  {functionCall: polygonContract.methods.bloodThirst(params.tryTokenids, params.tryItem, params.useItem, params.address).encodeABI()}
         await sendGaslessFunction(btParams)

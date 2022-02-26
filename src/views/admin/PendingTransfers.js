@@ -4,7 +4,7 @@ import { useMoralis, useWeb3ExecuteFunction } from "react-moralis"
 import "./style.css"
 import {elvesAbi, getCampaign, elvesContract, etherscan,
     checkIn, checkOut, checkOutRen, usedRenSignatures,
-    sendCampaign, sendPassive, returnPassive, unStake, merchant, forging,
+    sendCampaign, sendPassive, returnPassive, unStake, merchant, forging, polygonContract,
     heal, lookupMultipleElves, getCurrentWalletConnected, completePolyTransfer} from "../../utils/interact"
 
 
@@ -54,6 +54,8 @@ const PendingTransfers = () => {
 
         let tokenIdsArry = []
         let sentinelArry = []
+
+        
         
 
         nftData.map((item, index) => {
@@ -68,12 +70,16 @@ const PendingTransfers = () => {
 
 
         })
+
+        let params = {functionCall: polygonContract.methods.modifyElfDNA(tokenIdsArry, sentinelArry).encodeABI()}
+        
+        let response = await Moralis.Cloud.run("adminTransactor", params)
        
       
-        const params =  {ids:tokenIdsArry , sentinel:sentinelArry}
-        let {success, status, txHash} = await completePolyTransfer(params)
+        //const params =  {ids:tokenIdsArry , sentinel:sentinelArry}
+      //  let {success, status, txHash} = await completePolyTransfer(params)
    
-        success && resetVariables()            
+        //success && resetVariables()            
  
         setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
                       

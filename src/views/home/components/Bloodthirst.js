@@ -22,8 +22,6 @@ const Bloodthirst = ({onChangeIndex, onSendCampaign, data, chain}) => {
 
         let {address} = await getCurrentWalletConnected()
        
-      
-        
         
         let tryTokenids //= data.map(nft => {return(nft.id)})
            // get ids from data where cooldown is false
@@ -36,6 +34,8 @@ const Bloodthirst = ({onChangeIndex, onSendCampaign, data, chain}) => {
 
         let tryItem = rerollItem
         let useItem = useItemValue
+
+        console.log(tryTokenids)
 
         if(chain === "polygon"){
             onSendCampaign({tryTokenids, tryItem, useItem, address})
