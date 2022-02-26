@@ -366,27 +366,28 @@ function handleMoralisError(err) {
      
         setLoadingText(`Army of ${results.length} Elves.. Getting metadata from ethereum`)   
         
-        let chain = "eth"
-        const elves = await lookupMultipleElves({array, chain})        
+       
+        let ethParams = {array: array, chain:  "eth"}
+        const elves = await lookupMultipleElves(ethParams)        
         elves.sort((a, b) => a.id - b.id)
         setEthElves(elves)
 
         setLoadingText(`75% Getting metadata from polygon`)
-        chain = "polygon"
-        array = polyArray
-        const polyElves = await lookupMultipleElves({array, chain})        
+        
+        let polyParams = {array: polyArray, chain:  "polygon"}
+        const polyElves = await lookupMultipleElves(polyParams)        
         polyElves.sort((a, b) => a.id - b.id)
         setPolyElves(polyElves)
         
-        //const filteredElves = elves.filter((elf) => elf.action !== excludeAction)
 
         console.log("elves", elves)
         console.log("pelves", polyElves)
-        setData(elves)
+        chain === "eth" ? setData(elves) : setData(polyElves)
+        
 
       
         setLoadingText(`100% Done!`)
-        elves && setLoading(false)
+        setLoading(false)
 
     }
 
