@@ -639,7 +639,7 @@ function handleMoralisError(err) {
                     }
                     {modal.action === "synergize" && 
                         <>
-                        <p>there is 10% chance you will reduce you're druid cooldown by 50% and a 60% chance to reduce cooldown by 33%. There is a 30% chance you'll get a 5 minute pentaly.</p>
+                        <p>there is 10% chance you will reduce you're druid cooldown by 50% and a 60% chance to reduce cooldown by 33%. There is a 30% chance you'll get a 5 minute penalty.</p>
                         </>
                     }
 
