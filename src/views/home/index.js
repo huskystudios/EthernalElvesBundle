@@ -25,7 +25,8 @@ import {
     lookupMultipleElves, 
     getCurrentWalletConnected,
     polygonContract, 
-    polyweb3
+    polyweb3,
+    balanceOf
 } from "../../utils/interact"
 
 
@@ -61,31 +62,26 @@ const Home = () => {
     const [polyBalance, setPolyBalance] = useState(0)
     const [balance, setBalance] = useState(0);
     const [miren, setMiren] = useState(0);
+    
     const [modalActions, setModalActions] = useState({ show: false, value: null })    
   
   
-  const getRenBalance = async (address) => {
-   
-    const renBalanceContract = await Moralis.Cloud.run("getBalance", {address});//in contract
-    const renBalanceWallet = await Moralis.Cloud.run("getMiren", {address});//in wallet
-    const getPolyBalance = await Moralis.Cloud.run("getPolyBalance", {address});//in wallet  
-    
-    setBalance(renBalanceContract/1000000000000000000);
-    setMiren(renBalanceWallet/1000000000000000000);
-    setPolyBalance(getPolyBalance/1000000000000000000);
-  
-  }
+    const getRenBalance = async (address) => {
+
+        let allbalances = await balanceOf(address);
+         
+         setBalance(allbalances.contractRen/1000000000000000000);
+         setMiren(allbalances.miren/1000000000000000000);
+         setPolyBalance(allbalances.polyMiren/1000000000000000000);
+       
+       }
   
 
 
 
     const { Moralis } = useMoralis();
 
-    ////////////////////////////
-
-
-
-
+    
     const sendGaslessFunction = async (params) => {
 
         let tx 
@@ -311,6 +307,7 @@ const Home = () => {
 
         setLoadingText(`50% Getting metadata from the blockchain`)
         const elves = await lookupMultipleElves({array, chain})
+        
         elves.sort((a, b) => a.id - b.id)
 
         

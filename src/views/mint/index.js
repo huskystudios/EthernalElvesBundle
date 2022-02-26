@@ -4,28 +4,21 @@ import './style.css'
 import {
     getTokenSupply, 
     getMintPriceLevel,
-    elvesAbi, 
-    elvesContract,
-    etherscan,
     mint
 
 } from "../../utils/interact"
-import { useMoralis, useWeb3ExecuteFunction } from "react-moralis"
+import { useMoralis } from "react-moralis"
 import Loader from "../../components/Loader"
 
 const Mint = () => {
 
-    const { enableWeb3, isWeb3Enabled, Moralis} = useMoralis()
+    const {Moralis} = useMoralis()
 
     const [txReceipt, setTxReceipt] = useState();
     const [loading, setLoading] = useState(true);
-    // const query = useQuery();
-    // const wlflag = query.get("wl");
-    // const address = query.get("address");
-    // const signature = query.get("signature");
-
+    
     const max = 6666;
-    //const [init, setInit] = useState(3300);
+
     const [supply, setSupply] = useState(5000);
    
     const [currentPrice, setCurrentPrice] = useState(600);
@@ -35,8 +28,6 @@ const Mint = () => {
     const [alert, setAlert] = useState({show: false, value: null})
 
 
-   // let mintcredentials = {role: wlflag, address:address, signature: signature}
-   // let wl = wlflag ? true : false;
 
     const [tooltip, setTooltip] = useState({
         show: false,
@@ -63,32 +54,17 @@ const Mint = () => {
 
         getTokenSupplyFromChain()
 
-         /*   if(!isWeb3Enabled){
-                setStatus("enable web3")
-                enableWeb3() 
-               
-            
-            }else{
-                getTokenSupplyFromChain()
-                
-            }
-     */
        
-    }, [txReceipt])
+    }, [])
     
 
     const getTokenSupplyFromChain = async ()=>{
         
         setStatus("getting current price")
-        //const price = await Moralis.executeFunction(readOptions("getMintPriceLevel"));
         setSupply(await getTokenSupply());    
         setStatus("getting total supply")
-        //const totalSupply = await Moralis.executeFunction(readOptions("totalSupply"));
-        //setSupply(totalSupply);
         setCurrentPrice(await getMintPriceLevel())
         setStatus("done")   
-      
-        
        
         setLoading(false)
               } 
@@ -127,8 +103,7 @@ const Mint = () => {
             
             </div>
           
-            {/*error && <div className="mint-error"> Cannot estimate gas. You probably don't have enough $REN or Max Supply has been reached</div>*/}
-            
+                     
         <div className="mint-instructions">
            {supply && <p>Elves Minted: {parseInt(supply)}/{max}</p>}
                

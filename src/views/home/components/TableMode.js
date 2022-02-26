@@ -268,9 +268,9 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
         const renderMintModal = () => {           
             return(
                  <Modal show={mintModal}>
-                     <div style={{"display": "flex", "minHeight": "600px",  "flexDirection": "column"}}>
-                    <Mint />
-                    </div>
+                     
+                        <Mint />
+                    
                 </Modal>
             
             )

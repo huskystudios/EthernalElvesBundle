@@ -1,6 +1,6 @@
 import React from "react"
 import { useState, useEffect } from "react"
-import {withdrawTokenBalance, getCurrentWalletConnected, withdrawSomeTokenBalance} from "../utils/interact"
+import {withdrawTokenBalance, getCurrentWalletConnected, withdrawSomeTokenBalance, balanceOf} from "../utils/interact"
 import {useMoralis, useChain} from "react-moralis"
 import Modal from "../components/Modal"
 
@@ -18,14 +18,15 @@ const Withdraw = () => {
 
 
 const getRenBalance = async (address) => {
- 
-  const renBalanceContract = await Moralis.Cloud.run("getBalance", {address});//in contract
-  const renBalanceWallet = await Moralis.Cloud.run("getMiren", {address});//in wallet
-  const getPolyBalance = await Moralis.Cloud.run("getPolyBalance", {address});//in wallet  
+
+ let allbalances = await balanceOf(address);
+
+ console.log(allbalances)
+
   
-  setBalance(renBalanceContract/1000000000000000000);
-  setMiren(renBalanceWallet/1000000000000000000);
-  setPolyBalance(getPolyBalance/1000000000000000000);
+  setBalance(allbalances.contractRen/1000000000000000000);
+  setMiren(allbalances.miren/1000000000000000000);
+  setPolyBalance(allbalances.polyMiren/1000000000000000000);
 
 }
 

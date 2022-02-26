@@ -31,30 +31,7 @@ const ConnectWallet = () => {
      setWallet(address)
     //  setStatus(status);
     addWalletListener(); 
-    
- /*   
-    if(!isWeb3Enabled){await enableWeb3()}
-     const currentUser = Moralis.User.current();
 
-       
-   //  Moralis.User.enableUnsafeCurrentUser()
-
-    
-      if (currentUser) {
-      
-        setWallet(currentUser.attributes.ethAddress)  
-      } else {
-        authenticate(authParams).then((user)=>{
-         
-          setWallet(user.attributes.ethAddress);
-          onSetWallet(user.attributes.ethAddress);    
-           
-          })
-      }
-
-    
-
-*/
     }
     
     isMetaMaskInstalled();

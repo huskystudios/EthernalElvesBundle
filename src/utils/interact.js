@@ -754,9 +754,29 @@ export const getTokenSupply = async () => {
  
 
   export const balanceOf = async (address) => {
-    var miren = await ercContract.methods.balanceOf(address).call();
+    
+    let miren 
+    let contractRen
+    let polyMiren
+    
+    try{
+      miren = await ercContract.methods.balanceOf(address).call();      
+    }catch(e){
+      console.log(e)
+    }
+    try{
+      contractRen = await nftContract.methods.bankBalances(address).call();      
+    }catch(e){
+      console.log(e)
+    }
+    try{
+      polyMiren = await polygonContract.methods.balanceOf(address).call();
+    }catch(e){
+      console.log(e)
+    }
+    
    
-    let balances = {miren: miren}
+    let balances = {miren: miren, contractRen: contractRen, polyMiren: polyMiren}
     return(balances)
     }
     export const usedRenSignatures = async (signature) => {
