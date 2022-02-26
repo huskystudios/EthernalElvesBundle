@@ -299,18 +299,44 @@ const Home = () => {
 
 
 
+function handleMoralisError(err) {
+  switch (err.code) {
+    case Moralis.Error.INVALID_SESSION_TOKEN:
+      Moralis.User.logOut();
+      // If web browser, render a log in screen
+      // If Express.js, redirect the user to the log in route
+      console.log("ok")
+      break;
+
+    // Other Moralis API errors that you want to explicitly handle
+  }
+}
+
+
+
+
+
     const getElvesfromMoralis = async (address) => {
 
         setLoading(true)
         setClicked([])
-        
+        console.log("1")
         setLoadingText(`25% Fetching elves for address ${address}`)
         
         const Elves = Moralis.Object.extend("Elves");
+        
         let query = new Moralis.Query(Elves);
         
         query.equalTo("owner_of", address);
-        const results = await query.find();
+        
+       let results = await query.find().then(function(results) {
+          
+          return results
+        
+        }, function(err) {
+            handleMoralisError(err);
+        });
+
         
         let array = []
         let polyArray = []
@@ -323,8 +349,7 @@ const Home = () => {
                 array.push(elf.attributes.token_id)
             }
             })
-
-        console.log(array)
+     
 
         setLoadingText(`50% Getting metadata from ethereum`)
         let chain = "eth"
