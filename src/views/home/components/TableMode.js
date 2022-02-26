@@ -11,6 +11,8 @@ import {
 import Modal from "../../../components/Modal"
 import Mint from "../../mint";
 import Loader from "../../../components/Loader";
+import thevoid from "../../../assets/images/thevoid.png";
+
 
 
 
@@ -283,18 +285,32 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
                  
                  
                  <Modal show={transfersModal}>
-                    <div className="flex flex-column w-full items-center">
                     
-                        <h4>Elf Terminus</h4>
+                    
+                        <h4>Prism Transfer Module</h4>                        
+                       
+                        <img src={thevoid} alt="elfTerminus" className="w-3/4"/>
+                       
+                   
+                    <p className="text-danger">(Using the Elf Terminus can result in losing access to your elf. Please read instructions carefully.)</p>
+
+                    <div className="flex flex-column w-full items-center">
+                        <h4>Travellers Selected</h4>
+                        <div className="nft-grid">
+                        {clicked.map((nft) => 
+                            <img src={nft.image} alt={nft.id} key={nft.id} />
+                        )}
+                        </div>
                         
-                        <p className="text-danger">(Using the Elf Terminus can result in losing access to your elf. Please read instructions carefully.)</p>
-                        <input type={"text"} placeholder={"Ren To Transfer"} value={renTransfer} onChange={(e) => setRenTransfer(e.target.value)}/>
+                    </div>
                     <div className="flex mt-1">
+                    <input type={"text"} placeholder={"Ren To Transfer"} value={renTransfer} onChange={(e) => setRenTransfer(e.target.value)}/>
                     <button className="btn-whale"  onClick={checkinElf}>
                         Confirm Transfer
                      </button>
                     </div>
-                    </div>
+                    
+                    
                 
                 </Modal>
             
