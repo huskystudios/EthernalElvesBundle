@@ -742,7 +742,7 @@
     background-position: center;
     background-repeat: no-repeat;
     height: calc(100vh - 140px);
-    max-height: 640px;
+    max-height: 740px;
     width: calc(100vw - 20px);
     max-width: 1600px;
     bottom: 0px;

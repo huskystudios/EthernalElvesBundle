@@ -232,8 +232,8 @@ const Home = () => {
                 let time = clicked.map(el => el.time)
                 let timeMax = time.reduce((a, b) => Math.max(a, b))
                 console.log(timeMax, time)
-                if(timeMax > 12){
-                    setAlert({show: true, value: {title: "Error", content: "You can only synergize with a current time of 12 or less"}})
+                if(timeMax > 13){
+                    setAlert({show: true, value: {title: "Error", content: "You can only synergize with a Druid who's on healing cooldown"}})
                     return
                 }
 
@@ -266,6 +266,12 @@ const Home = () => {
 
         const ids = activeNfts.map(nft => { return (nft.id) })
         console.log(option)
+        //require ids cooldown to be false
+        let cooldown = activeNfts.filter(item => item.cooldown === true)
+        if(cooldown.length > 0){
+            setAlert({show: true, value: {title: "Cooldown", content: "You have cooldown on some elves. Please reselect elves with no cooldown."}})
+            return
+        }
         if(chain === "eth"){
                 if(option.action === "sendPassive"){
                     const params =  {ids: ids}
