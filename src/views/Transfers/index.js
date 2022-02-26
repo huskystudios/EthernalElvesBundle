@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react"
 import Loader from "../../components/Loader"
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis"
-import "./style.css"
 import { actionString, campaigns } from "../home/config"
 import Countdown from 'react-countdown';
 import {elvesAbi, getCampaign, elvesContract, etherscan,

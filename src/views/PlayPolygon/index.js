@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react"
 import Loader from "../../components/Loader"
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis"
-import "./style.css"
 import Countdown from 'react-countdown';
 import {lookupMultipleElves, getCurrentWalletConnected, polygonContract, polyweb3} from "../../utils/interact"
 import Modal from "../../components/Modal"

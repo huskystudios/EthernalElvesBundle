@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react"
 import Loader from "../../components/Loader"
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis"
-import "./style.css"
 import {checkIn, checkOut, checkOutRen, usedRenSignatures,
     sendCampaign, sendPassive, returnPassive, unStake, merchant, forging,
     heal, lookupMultipleElves, getCurrentWalletConnected, checkRenTransfersIn} from "../../utils/interact"
