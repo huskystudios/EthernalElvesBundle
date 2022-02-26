@@ -25,7 +25,9 @@ const MainLayout = (props) => {
                 <div className="header-body"> 
                 <Withdraw />
                     
-                    <div className="nav-item menu">
+                    
+                    <div onClick={onClickHome} className="nav-item" to="/">play</div>
+                    {/*}<div className="nav-item menu">
                         <span>Play</span>
                         <div className="menu__items">
                             <NavLink to="/">
@@ -37,8 +39,9 @@ const MainLayout = (props) => {
                             <NavLink to="/playpoly">
                              Whale Mode (Polygon)
                             </NavLink>
-                        </div>
-                    </div>
+                              </div>
+                              </div>
+                    */} 
                     <NavLink className="nav-item" to="/profile">profile</NavLink>
                     <ConnectWallet />
                    

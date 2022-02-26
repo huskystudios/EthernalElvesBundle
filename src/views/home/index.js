@@ -246,59 +246,40 @@ const Home = () => {
 
     const doAction = async (option) => {
 
-        await Moralis.enableWeb3();
+        const ids = activeNfts.map(nft => { return (nft.id) })
 
-        const first = activeNfts.map(nft => { return (nft.id) })
+        if(chain === "eth"){
+                if(option === "sendPassive"){
+                    const params =  {ids: ids, address: wallet}
+                    let {success, status, txHash} = await sendPassive(params)
+                    success && resetVariables()
+                    setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
 
-        const rerollParams = { ids: activeNfts.map(nft => { return (nft.id) }), action_: option.toString() }
-        const healParams = { healer: first[0], target: option.healIds }
-        let value = option.action === "forging" || option.action === "merchant" ? Moralis.Units.ETH("0.01") : Moralis.Units.ETH("0")
-        let params = option.action === "heal" ? healParams : rerollParams
+                }else{
+                    const params =  {ids: ids, address: wallet}
+                    let {success, status, txHash} = await returnPassive(params)
+                    success && resetVariables()
+                    setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
 
-        console.log(healParams)
-
-        const options = {
-            contractAddress: elvesContract,
-            functionName: option.action,
-            abi: elvesAbi.abi,
-            params: params,
-            msgValue: value,
-            awaitReceipt: false // should be switched to false
-        };
-
-        const tx = await Moralis.executeFunction(options);
-
-        tx.on("transactionHash", (hash) => {
-            resetVariables()
-            setAlert({
-                show: true, value: {
-                    title: "Tx Successful",
-                    content: (<>✅ Check out your transaction on <a target="_blank" rel="noreferrer" href={`https://${etherscan}.io/tx/${hash}`}>Etherscan</a> </>)
                 }
-            })
-
-        })
-
-        tx.on("receipt", (receipt) => {
-
-            setTxReceipt(receipt)
-            let response
-
-            receipt.events.Action.isArray ? response = `Elf#${receipt.events.Action.map(nft => { return (nft.returnValues.tokenId) })} have started doing ${actionString[receipt.events.Action[0].returnValues.action].text}`
-                : response = `Elf#${receipt.events.Action.returnValues.tokenId} has started doing action ${actionString[receipt.events.Action.returnValues.action].text}`
 
 
+        }else{
+            if(option === "sendPassive"){
+                const params =  {functionCall: polygonContract.methods.passive(ids, wallet).encodeABI()}
+                await sendGaslessFunction(params)
+                
 
 
+            }else{
+                const params =  {functionCall: polygonContract.methods.returnPassive(ids, wallet).encodeABI()}
+                await sendGaslessFunction(params)               
 
-            setAlert({
-                show: true, value: {
-                    title: "Tx Successful",
-                    content: response
-                }
-            })
+                
+            }
+           
+        }
 
-        })
 
     }
 
@@ -418,7 +399,11 @@ const Home = () => {
                 setClicked([...clicked, character])
             }
             else {
-                //set status to "You can only select 8 at a time"
+               setAlert({
+                    show: true, value: {
+                        title: "Too many characters",
+                        content: "You can only select 10 characters at a time"}})
+
             }
         }
     }
@@ -455,9 +440,7 @@ const Home = () => {
                         return
                 }
                 healMany()
-            } else {
-
-              
+            } else {              
 
                 if(clicked[0].classString !== "Druid") {
                     setAlert({
@@ -504,6 +487,10 @@ const Home = () => {
             if(targets.includes(nft)) setTargets(targets.filter(item => item !== nft))
             else setTargets(state => [...state, nft])
         }
+        //filter druids whos have no cooldown
+        let healerSelect = data.filter(item => item.cooldown === false && item.classString === "Druid")
+        let targetSelect = data.filter(item => item.cooldown === true && item.classString !== "Druid")
+
         return(
             <div className="modal">
                 <div className="modal-content items-center">
@@ -514,13 +501,13 @@ const Home = () => {
                     <div className="flex flex-column w-full items-center">
                         <h4>Select healers</h4>
                         <div className="nft-grid">
-                        {data.filter(nft => nft.classString === "Druid").map((nft) => 
+                        {healerSelect.map((nft) => 
                             <img onClick={() => handleClickHealer(nft)} className={healers.includes(nft) ? "active" : null} src={nft.image} alt={nft.id} key={nft.id} />
                         )}
                         </div>
                         <h4>Select targets</h4>
                         <div className="nft-grid">
-                        {data.filter(nft => nft.cooldown === true ).map((nft) => 
+                        {targetSelect.map((nft) => 
                             <img onClick={() => handleClickTarget(nft)} className={targets.includes(nft) ? "active" : null} src={nft.image} alt={nft.id} key={nft.id} />
                         )}
                         </div>

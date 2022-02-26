@@ -117,7 +117,8 @@ const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3
                         
                         <span onClick={onForge}>forge</span>
                         <span onClick={onMerchant}>merchant</span>
-                        <span onClick={onHeal}>heal</span>
+
+                        {clicked.length > 1 && <span onClick={onHeal}>heal</span>}
                         {chain === "polygon" && <span onClick={onSynergize}>synergize</span>}
                         <span onClick={() => handleGameModes(clicked)} >game modes</span>
                                        

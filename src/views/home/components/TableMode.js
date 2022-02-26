@@ -20,6 +20,7 @@ import {
 import Modal from "../../../components/Modal"
 import Sector from "./Sector"
 import Mint from "../../mint";
+import Loader from "../../../components/Loader";
 
 
 
@@ -62,6 +63,7 @@ const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, vi
     const [mintModal, setMintModal] = useState(false)
     const [transfersModal, setTransfersModal] = useState(false)
     const [confirm, setConfirm] = useState(false)
+    const [loading, setLoading] = useState(false)
    
     const resetVariables = async () => {
       
@@ -127,10 +129,8 @@ const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, vi
 
     const sendGaslessFunction = async (params) => {
 
-
-        let tx 
-
-     
+        setLoading(true)
+        let tx     
         
         try{
             tx = await Moralis.Cloud.run("defenderRelay", params) 
@@ -150,6 +150,7 @@ const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, vi
         }catch(e){
             console.log(e)
         }
+        setLoading(false)
 
     }
 
@@ -198,12 +199,7 @@ const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, vi
  
 
 
-    const passiveMode = async (option) => {
 
-        const params =  {functionCall: option === "passive" ? polygonContract.methods.passive(clicked, owner).encodeABI() : polygonContract.methods.returnPassive(clicked, owner).encodeABI() }
-        await sendGaslessFunction(params)       
-                      
-        }
 
 
 
@@ -423,7 +419,7 @@ const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, vi
 
 
 
-    return (
+    return !loading ? (
         
         <>
          <div className="d-flex">      
@@ -594,7 +590,7 @@ const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, vi
         </>
         
      
-    ) 
+    ) : <Loader />
 }
 
 export default TableMode
