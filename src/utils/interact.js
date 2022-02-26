@@ -770,7 +770,7 @@ export const getTokenSupply = async () => {
       console.log(e)
     }
     try{
-      polyMiren = await polygonContract.methods.balanceOf(address).call();
+      polyMiren = await polygonContract.methods.bankBalances(address).call();
     }catch(e){
       console.log(e)
     }
