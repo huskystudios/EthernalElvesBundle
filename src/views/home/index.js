@@ -223,6 +223,7 @@ const Home = () => {
             
             if(option === "synergize"){
                 //check rollerIds.sentinelClass to see if druid
+                console.log(clicked)
                 let sentinelClass = clicked.map(el => el.sentinelClass)
                 let sentinelClassMax = sentinelClass.reduce((a, b) => Math.max(a, b))
                 console.log(sentinelClassMax, sentinelClass)
@@ -230,14 +231,26 @@ const Home = () => {
                     setAlert({show: true, value: {title: "Error", content: "You can only synergize with druids"}})
                     return
                 }
-                // if time is greater than 12 hours then you cant synergize
+                
                 let time = clicked.map(el => el.time)
                 let timeMax = time.reduce((a, b) => Math.max(a, b))
-                console.log(timeMax, time)
-                if(timeMax > 13){
-                    setAlert({show: true, value: {title: "Error", content: "You can only synergize with a Druid who's on healing cooldown"}})
+                
+                //timemax to date
+                let cooldownEnd = new Date(timeMax * 1000)
+                let now = new Date()
+                let diff = cooldownEnd - now
+                //diff in hours
+                let diffHours = Math.floor(diff / 1000 / 60 / 60)
+                console.log(diffHours)
+
+                  
+                if(diffHours > 13){
+                    setAlert({show: true, value: {title: "Error", content: "You can only synergize with a time of 12 hours or less"}})
                     return
                 }
+                
+              
+             
 
                 
             }
@@ -325,8 +338,7 @@ function handleMoralisError(err) {
         
         const Elves = Moralis.Object.extend("Elves");
         
-        let query = new Moralis.Query(Elves);
-        
+        let query = new Moralis.Query(Elves);        
         query.equalTo("owner_of", address);
         
        let results = await query.find().then(function(results) {
@@ -340,6 +352,8 @@ function handleMoralisError(err) {
         
         let array = []
         let polyArray = []
+
+      
         
         results.map((elf) => {
             
@@ -350,8 +364,8 @@ function handleMoralisError(err) {
             }
             })
      
-
-        setLoadingText(`50% Getting metadata from ethereum`)
+        setLoadingText(`Army of ${results.length} Elves.. Getting metadata from ethereum`)   
+        
         let chain = "eth"
         const elves = await lookupMultipleElves({array, chain})        
         elves.sort((a, b) => a.id - b.id)
@@ -708,7 +722,7 @@ function handleMoralisError(err) {
                                 onBloodthirst={() => setModalActions({show: !modalActions.show, action:"bloodthirst", value:3 })}
                                 onCampaign={() => setModalActions({show: !modalActions.show, action:"campaign", value:2})}
                                 onPassiveMode={() => setModalActions({show:!modalActions.show, action:"passive", value:1})}
-                                onSynergize={() => setModalActions({show: true, action:"synergize", heading:"DO YOU WANT TO SYNERGIZE?", content:"synergize"})}
+                                onSynergize={() => setModal({show: true, action:"synergize", heading:"DO YOU WANT TO SYNERGIZE?", content:"synergize"})}
                                 chain={chain}
                             />
                            </div> }
