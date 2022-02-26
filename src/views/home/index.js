@@ -340,14 +340,42 @@ function handleMoralisError(err) {
         
         let query = new Moralis.Query(Elves);        
         query.equalTo("owner_of", address);
-        
-       let results = await query.find().then(function(results) {
+
+        let limit = 50
+
+        //page through the results
+        let results = []
+        let hasMore = true
+        let page = 1
+          try{
+            while (hasMore) {
+
+                query.limit(limit);
+                query.skip(limit * (page - 1));
+                query.withCount();
+                const response = await query.find();
+                let currentIndex = limit * (page)
+                currentIndex > response.count ? hasMore = false : hasMore = true
+                page++
+                setStatus(currentIndex / response.count * 100)
+                
+                results = results.concat(response.results)
+                
+            }  
+          }catch(e){
+
+            results = await query.find().then(function(results) {
           
-          return results
+                return results
+              
+              }, function(err) {
+                  handleMoralisError(err);
+              });
+
+          }  
+                
         
-        }, function(err) {
-            handleMoralisError(err);
-        });
+       
 
         
         let array = []

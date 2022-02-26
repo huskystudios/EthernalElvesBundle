@@ -315,7 +315,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
                  <Modal show={transfersModal}>
                     
                     
-                        <h4>Prism Transfer Module</h4>                        
+                 {/*       <h4>Prism Transfer Module</h4>                        
                        
                         <img src={thevoid} alt="elfTerminus" className="w-3/4"/>
                        
@@ -345,7 +345,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
                      </button>
                     </div>
                     
-                    
+                        */}
                 
                 </Modal>
             
@@ -364,7 +364,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
 
                             <div className="flex justify-center p-2">
                                     
-                            <button className="btn-whale"  onClick={()=> setTransfersModal(!transfersModal)}> Transfers </button>
+                            {/*<button className="btn-whale"  onClick={()=> setTransfersModal(!transfersModal)}> Transfers </button>*/}
                             <button className="btn-whale" onClick={unStakeElf}> Unstake </button>
                             <button className="btn-whale" onClick={()=> setMintModal(!mintModal)}> Mint </button>
                            
