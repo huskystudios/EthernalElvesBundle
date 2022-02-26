@@ -26,9 +26,9 @@ const Actions = ({onChangeIndex, actions, setGameMode}) => {
                                 <img src={action.image} alt={action.text} />
                                 <button
                                     className="btn-action" 
-                                    onClick={() => {if(i === 2) return; handleClick(1 + i)}}
-                                    onMouseEnter={() => i === 2 && setShow(true)}
-                                    onMouseLeave={() => i === 2 && setShow(false)} 
+                                    onClick={() => handleClick(1 + i)}
+                                   // onMouseEnter={() => i === 2 && setShow(true)}
+                                   // onMouseLeave={() => i === 2 && setShow(false)} 
                                 >
                                     {action.text}
                                 </button>

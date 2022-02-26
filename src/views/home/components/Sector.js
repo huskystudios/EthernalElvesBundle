@@ -308,7 +308,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
 
            
             <div className="d-flex flex-row justify-around">
-                   {/* <button className="btn btn-red" onClick={() => confirm ? setConfirm(false) : handleChangeIndex(mode === "campaign" ? -1 : -3)} >back</button> */} 
+                    <button className="btn btn-red" onClick={() =>   handleChangeIndex(mode === "campaign" ? -1 : -3)} >back</button>  
                     <button className="btn btn-green" onClick={() => handleChangeIndex(1)}>Confirm</button>
             </div>
             

@@ -247,16 +247,16 @@ const Home = () => {
     const doAction = async (option) => {
 
         const ids = activeNfts.map(nft => { return (nft.id) })
-
+        console.log(option)
         if(chain === "eth"){
-                if(option === "sendPassive"){
-                    const params =  {ids: ids, address: wallet}
+                if(option.action === "sendPassive"){
+                    const params =  {ids: ids}
                     let {success, status, txHash} = await sendPassive(params)
                     success && resetVariables()
                     setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
 
-                }else{
-                    const params =  {ids: ids, address: wallet}
+                }else if (option.action === "returnPassive"){
+                    const params =  {ids: ids}
                     let {success, status, txHash} = await returnPassive(params)
                     success && resetVariables()
                     setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
@@ -265,13 +265,12 @@ const Home = () => {
 
 
         }else{
-            if(option === "sendPassive"){
+            if(option.action === "sendPassive"){
                 const params =  {functionCall: polygonContract.methods.passive(ids, wallet).encodeABI()}
-                await sendGaslessFunction(params)
-                
+                await sendGaslessFunction(params)               
 
 
-            }else{
+            }else if (option.action === "returnPassive"){
                 const params =  {functionCall: polygonContract.methods.returnPassive(ids, wallet).encodeABI()}
                 await sendGaslessFunction(params)               
 
