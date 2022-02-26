@@ -421,6 +421,7 @@ const Home = () => {
         setCampaign(campaigns[0])
         setSector(1)
         setSuccess(false)
+        setClicked([])
     }
 
 

@@ -300,7 +300,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
                         {clicked.map((nft) => 
                             <img src={nft.image} alt={nft.id} key={nft.id} />
                         )}
-                        </div>
+                    </div>
                         
                     </div>
                     <div className="flex mt-1">
@@ -332,9 +332,10 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
                             <button className="btn-whale"  onClick={()=> setTransfersModal(!transfersModal)}> Transfers </button>
                             <button disabled={!isButtonEnabled.unstake} className="btn-whale" onClick={unStakeElf}> Unstake </button>
                             <button className="btn-whale" onClick={()=> setMintModal(!mintModal)}> Mint </button>
-                            <button className="btn-whale" onClick={toggleChain}>On {chain}</button>
+                           
                             <button disabled className="btn-whale" onClick={() => setVisualMode(!visualMode)}>Visual mode</button>
-                            <button className="btn-whale" onClick={() => setReloadData(!reloadData)}>Reload Data</button>
+                            <button className="btn btn-green" onClick={() => setReloadData(!reloadData)}>Reload Data</button>
+                            <button className="btn btn-blue" onClick={toggleChain}>On {chain}</button>
                             </div>      
     
         <div className="collection-panel">
