@@ -311,7 +311,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
          <div className="d-flex">      
                     <div className="column">             
 
-                            <div className="flex justify-center">
+                            <div className="flex justify-center p-2">
                                     
                             <button className="btn-whale"  onClick={()=> setTransfersModal(!transfersModal)}> Transfers </button>
                             <button disabled={!isButtonEnabled.unstake} className="btn-whale" onClick={unStakeElf}> Unstake </button>

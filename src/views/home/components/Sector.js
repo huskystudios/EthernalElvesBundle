@@ -3,7 +3,7 @@ import {campaigns} from "../config"
 import {getCampaign, sendCampaign, getCurrentWalletConnected} from "../../../utils/interact"
 import Loader from "../../../components/Loader";
 
-const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
+const Sector = ({onChangeIndex, onSendCampaign, data, chain}) => {
 
     const [rerollWeapon, setRerollWeapon] = useState(false);
     const [rerollItem, setRerollItem] = useState(false);
@@ -95,7 +95,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
         return (
             <div className="sector-tooltip">
                 {/* <h3>{title}</h3> */}
-                <pre>{mode !== "campaign" ? "You can't click on bloodthirst mode!" : content}</pre>
+                <pre>{content}</pre>
             </div>
         )
     }
@@ -221,7 +221,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
                     <div className="d-flex items-center">
                         <div 
                             className={rerollWeapon ? "btn-sector-option active" : "btn-sector-option"} 
-                            onClick={() => mode === "campaign" && setRerollWeapon(state => !state)}
+                            onClick={() => setRerollWeapon(state => !state)}
                             onMouseEnter={() => setTooltip("Do you want to roll a new Weapon?")}
                             onMouseLeave={() => setTooltip("")}
                         >
@@ -229,7 +229,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
                         </div>
                         <div 
                             className={rerollItem ? "btn-sector-option active" : "btn-sector-option"} 
-                            onClick={() => mode === "campaign" && setRerollItem(state => !state)} 
+                            onClick={() => setRerollItem(state => !state)} 
                             onMouseEnter={() => setTooltip("Do you want to roll a new Item?")}
                             onMouseLeave={() => setTooltip("")} 
                         >
@@ -239,7 +239,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
                         <div className="d-flex items-center">
                         <div 
                             className={useItemValue ? "btn-sector-option active" : "btn-sector-option"} 
-                            onClick={() => mode === "campaign" && setUseItemValue(state => !state)}
+                            onClick={() => setUseItemValue(state => !state)}
                             onMouseEnter={() => setTooltip(`Do you use your item in {${"item in stash"}}?`)}
                             onMouseLeave={() => setTooltip("")}
                         >
@@ -252,7 +252,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
 
                     <div className="game-info">
                      
-                        <span>{`Game Mode: ${mode}`}</span>
+                      
                         <span>{`sector: ${sector}`}</span>
                         <span>
                             reroll weapon:
