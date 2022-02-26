@@ -29,7 +29,7 @@
 .btn-select {
     cursor: pointer;
     position:absolute;
-    left: 560px;
+    right: 180px;
     top: 3px;
     color: white;
     width: 235px;
@@ -1472,3 +1472,22 @@ background-image: url(../../assets/images/stats_back_hover.png);
     cursor: pointer;
   }
   
+
+  .btn-control-close {
+    cursor: pointer;
+    position:absolute;
+    left: 560px;
+    top: 3px;
+    color: white;
+    width: 235px;
+    height: 40px;
+    text-align: center;
+    font-size: 18px;
+    padding-top: 18px;
+}
+.btn-control-close:hover {
+    -webkit-text-shadow: 1px 1px 3px cyan;
+    -moz-text-shadow: 1px 1px 3px cyan;
+    text-shadow: 1px 1px 3px cyan;
+    /* color: cyan; */
+  }

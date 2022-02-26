@@ -17,6 +17,7 @@ const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3
     const [activeNft, setActiveNft] = useState()
     const [activeNftHealth, setActiveNftHealth] = useState(0)
     const [open, setOpen] = useState(false)
+    const [consoleOpen, setConsoleOpen] = useState(true)
     const [tooltip, setTooltip] = useState({
         show: false,
         value: null
@@ -111,10 +112,10 @@ const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3
         onSelect(clicked)
     }
     return (
-        <div className="control-panel">
-            <span className="btn-select">
+        <>
+             <span className="btn-select">
                 <div className="dropdown" ref={drop} id="actions">
-                    <button className="dropbtn" onClick={() => setOpen(open => !open)}>Actions</button>
+                    <button className="btn btn-blue" onClick={() => setOpen(open => !open)}>Actions</button>
                     {clicked.length > 0 && open && <div className="dropdown-content">
                         
                         <span onClick={onForge}>forge</span>
@@ -128,6 +129,12 @@ const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3
                                        
                     </div>}
                 </div>
+            </span>
+    {consoleOpen &&     
+        <div className="control-panel">      
+
+                <span className="btn-control-close">                
+                        <button className="dropbtn" onClick={() => setConsoleOpen(consoleOpen => !consoleOpen)}>Close</button>
             </span>
             
             <div className="active-attributes d-flex flex-column">
@@ -160,9 +167,10 @@ const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3
                     <strong>{activeNft.inventoryString}</strong>
                     <span>{activeNft.inventoryDescription}</span>
                 </div>
-            )}
-           
+            )}           
         </div>
+        }
+        </>
     )
 }
 
