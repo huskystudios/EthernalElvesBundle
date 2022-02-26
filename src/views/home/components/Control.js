@@ -113,7 +113,8 @@ const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3
             <span className="btn-select">
                 <div className="dropdown" ref={drop} id="actions">
                     <button className="dropbtn" onClick={() => setOpen(open => !open)}>Actions</button>
-                    {open && <div className="dropdown-content">
+                    {clicked.length > 0 && open && <div className="dropdown-content">
+                        
                         <span onClick={onForge}>forge</span>
                         <span onClick={onMerchant}>merchant</span>
                         <span onClick={onHeal}>heal</span>

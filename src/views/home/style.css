@@ -742,8 +742,9 @@
     background-position: center;
     background-repeat: no-repeat;
     height: calc(100vh - 420px);
-    max-height: 640px;
-    width: 1366px;
+    max-height: 740px;
+    width: calc(100vw - 20px);
+    max-width: 1600px;
     bottom: 0px;
     margin-left: auto;
     margin-right: auto;
@@ -1257,10 +1258,8 @@
 .table-whale {
   
   border: 1px solid #454545;
-  overflow-y: auto;
-  height: 60%;
-  max-height: 900px;
-  
+  overflow-y: unset!important;
+  height: 100%!important;
   padding: 12px;
   font-size: 14px;
 }

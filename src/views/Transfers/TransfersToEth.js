@@ -197,10 +197,14 @@ const TransfersToEth = () => {
     
     }
        //check if signature has been used.
+      
        setStatus("checking pending ren transfers")        
-       let sigcheckresponse = await checkRenTransfersIn(renResults)
+       let sigcheckresponse 
+        if(renResults.length > 0){
+            sigcheckresponse = await checkRenTransfersIn(renResults)
+            results = results.concat(sigcheckresponse)
+        }
        
-       results = results.concat(sigcheckresponse)
 
         setNftData(results)        
         

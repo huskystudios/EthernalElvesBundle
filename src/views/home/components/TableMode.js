@@ -24,7 +24,7 @@ import Mint from "../../mint";
 
 
 
-const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, visualMode, reloadData, setReloadData}) => {
+const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, visualMode, reloadData, setReloadData, polyBalance}) => {
 
     
     const { Moralis } = useMoralis();
@@ -167,6 +167,8 @@ const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, vi
 
     const checkinElf = async () => {
 
+        
+
         let renToSend = renTransfer === "" ? 0 : renTransfer
         
         let ids = clicked.map((elf) => elf.id)
@@ -181,8 +183,15 @@ const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, vi
             setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
 
         }else{
+
+            if(Moralis.Units.ETH(polyBalance) < renToSend){
+                setAlert({show: true, value: {title: "Not enough REN", content: (`You need ${(renToSend -polyBalance)/1000000000000000000 } more REN`)}})
+                return
+            }
+
             const params =  {functionCall: polygonContract.methods.checkIn(ids, renToSend, owner).encodeABI()}
             await sendGaslessFunction(params)
+            setRenTransfer(!renTransfer)
         }                      
     }
 
@@ -417,58 +426,22 @@ const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, vi
     return (
         
         <>
+         <div className="d-flex">      
+                    <div className="column">             
 
-        
-            <div className="table-mode">           
-           
-                <div className="d-flex">      
-                    <div className="column">
-                         
-                 
-            <div>
-   
-
-            <div className="flex p-10">
-                       
-            <button
-                            
-                            className="btn-whale"
-                            onClick={()=> setTransfersModal(!transfersModal)}
-                        >
-                            Transfers
-                        </button>
-       
-
-                        <button
-                            disabled={!isButtonEnabled.unstake}
-                            className="btn-whale"
-                            onClick={unStakeElf}
-                        >
-                            Unstake
-                        </button>
-                        
-
-                        <button className="btn-whale" onClick={()=> setMintModal(!mintModal)}>
-                            Mint
-                        </button>
-
-                        <button  className="btn-whale" onClick={toggleChain}>TOGGLE CHAIN - {chain}</button>
-
-                        
-
-                        <button className="btn-whale" onClick={() => setVisualMode(!visualMode)}>Visual mode</button>
-
-                        <button className="btn-whale" onClick={() => setReloadData(!reloadData)}>Reload Data</button>
-
-                        
-
-
-                    </div>      
-                
-            </div>
-                
-                 
-                    
+                            <div className="flex justify-center">
+                                    
+                            <button className="btn-whale"  onClick={()=> setTransfersModal(!transfersModal)}> Transfers </button>
+                            <button disabled={!isButtonEnabled.unstake} className="btn-whale" onClick={unStakeElf}> Unstake </button>
+                            <button className="btn-whale" onClick={()=> setMintModal(!mintModal)}> Mint </button>
+                            <button className="btn-whale" onClick={toggleChain}>On {chain}</button>
+                           {/* <button className="btn-whale" onClick={() => setVisualMode(!visualMode)}>Visual mode</button>*/}
+                            <button className="btn-whale" onClick={() => setReloadData(!reloadData)}>Reload Data</button>
+                            </div>      
+    
+        <div className="collection-panel">
+             <div className="collection-selection" >
+             
     <div className="table-whale">          
       <table className="dark-1000" style={{width: '100%'}}>
       <thead style={{textAlign: "left"}}>
@@ -606,23 +579,10 @@ const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, vi
                 </tbody>
                 </table>
 
-                <div>
-                    <ul>
-                    <li>Healing: click a Druid then click the Ranger or Assassin you want to heal next. Then click heal. You should have selected only two elves.</li>
-                    <li>Heal Many: click a few Druids then click the same number of Rangers or Assassins and then click heal many.</li>
-                        
-                    </ul>
-               
-                </div>
-
-
-
-
-            </div>
-
-     
-      </div>
             
+            </div>
+          </div>
+      </div>
                 
 </div>
 

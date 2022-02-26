@@ -56,6 +56,25 @@ const Home = () => {
     const [loadingText, setLoadingText] = useState()
     const [visualMode, setVisualMode] = useState(false)
     const [reloadData, setReloadData] = useState(false)
+    const [polyBalance, setPolyBalance] = useState(0)
+    const [balance, setBalance] = useState(0);
+    const [miren, setMiren] = useState(0);
+
+    
+  
+  
+  const getRenBalance = async (address) => {
+   
+    const renBalanceContract = await Moralis.Cloud.run("getBalance", {address});//in contract
+    const renBalanceWallet = await Moralis.Cloud.run("getMiren", {address});//in wallet
+    const getPolyBalance = await Moralis.Cloud.run("getPolyBalance", {address});//in wallet  
+    
+    setBalance(renBalanceContract/1000000000000000000);
+    setMiren(renBalanceWallet/1000000000000000000);
+    setPolyBalance(getPolyBalance/1000000000000000000);
+  
+  }
+  
 
 
 
@@ -71,6 +90,8 @@ const Home = () => {
     const sendGaslessFunction = async (params) => {
 
         let tx 
+        setLoading(true)
+        setLoadingText("Sending transaction...")
         try{
             tx = await Moralis.Cloud.run("defenderRelay", params) 
 
@@ -82,12 +103,17 @@ const Home = () => {
             let successMessage = <>Check out your transaction on <a target="_blank" href={txHashLink}>Polyscan</a> </>
             
             setAlert({show: true, value: {title: "Tx Sent", content: (successMessage)}})
+            setReloadData(!reloadData)
+            setClicked([]);
+            setIndex(0)
             }           
 
 
         }catch(e){
             console.log(e)
-        }        
+        }   
+        setLoading(false)
+
 
     }
 
@@ -112,7 +138,7 @@ const Home = () => {
         })
 
         }else{
-            const polyParams =  {functionCall: polygonContract.methods.sendCampaign(params).encodeABI()}
+            const polyParams =  {functionCall: polygonContract.methods.sendCampaign(params.tryTokenids, params.tryCampaign, params.trySection, params.tryWeapon, params.tryItem, params.useItem, params.address).encodeABI()}
             await sendGaslessFunction(polyParams)
         }
         
@@ -158,6 +184,7 @@ const Home = () => {
     const reRoll = async (option) => {
 
         let rollerIds = clicked.map(el => el.id)
+        const cost = rollCosts.find(cost => cost.action === option)
                
         if(chain === "eth"){              
         const params =  {ids: rollerIds}
@@ -166,6 +193,11 @@ const Home = () => {
         setAlert({show: true, value: {title: "Tx Sent", content: (status)}})  
         }
         else{
+            if(parseInt(polyBalance) < parseInt(cost.ren)){
+                setAlert({show: true, value: {title: "Error", content: "You require more ren to perform this action"}})
+                return
+            }
+
             if(option === "forging"){
             //check rollerIds.weaponTier greater than 3 
             let weaponTier = clicked.map(el => el.weaponTier)
@@ -174,8 +206,10 @@ const Home = () => {
             if(weaponTierMax > 3){
                 setAlert({show: true, value: {title: "Error", content: "You can only forge with a current weapon tier of 3 or less"}})
                 return
+            }           
+
             }
-            }
+            
             if(option === "synergize"){
                 //check rollerIds.sentinelClass to see if druid
                 let sentinelClass = clicked.map(el => el.sentinelClass)
@@ -346,6 +380,8 @@ const Home = () => {
         const getData = async () => {
             const { address } = await getCurrentWalletConnected();
             setWallet(address)
+            getRenBalance(address)
+
             address && setLoadingText(`10% Wallet connected`)
             address && await getElvesfromMoralis(address)
         }
@@ -445,7 +481,7 @@ const Home = () => {
                     setAlert({
                         show: true, value: {
                             title: "Error",
-                            content: "Target is not cooldown!"
+                            content: "Target is not in cooldown!"
                         }})  
                         return
                 }
@@ -474,7 +510,7 @@ const Home = () => {
                     <span className="close-modal" onClick={() => {setHealModal(false); setMulti(false)}}>X</span>
                     <h3>Confirm Heal</h3>
                    
-                    {!multi ? <>Heal {clicked[0].classString} #{clicked[1].id} with Druid #{clicked[0].id}?</> :
+                    {!multi ? <>Heal {clicked[1].classString} #{clicked[1].id} with {clicked[0].classString} #{clicked[0].id}?</> :
                     <div className="flex flex-column w-full items-center">
                         <h4>Select healers</h4>
                         <div className="nft-grid">
@@ -572,6 +608,7 @@ const Home = () => {
                                             selectAll={selectAll}  
                                             reloadData={reloadData}
                                             setReloadData={setReloadData}
+                                            polyBalance={polyBalance}
                                             />}</>}
                                               
 
@@ -581,7 +618,7 @@ const Home = () => {
                         {index === 1 && activeNfts.length === 1 ? <Overview nft={activeNfts} onRunWeb3={doAction} onChangeIndex={onChangeIndex} /> : null}
                         {index === 2 && <Actions doAction={doAction} actions={actions} onChangeIndex={onChangeIndex} setGameMode={setGameMode} />}
                         {index === 3 && <Staking nft={activeNfts} onRunWeb3={doAction} onChangeIndex={onChangeIndex} />}                      
-                        {index === 4 && <Sector campaign={campaign} data={activeNfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} mode={gameMode} />}
+                        {index === 4 && <Sector chain={chain} campaign={campaign} data={activeNfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} mode={gameMode} />}
                         {index === 5 && <Success success={success} sector={sector} campaign={campaign} data={activeNfts} chain={chain} onChangeIndex={onChangeIndex} />}
                         {index === 6 && <Receive onChangeIndex={onChangeIndex} />}
                       

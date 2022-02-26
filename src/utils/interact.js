@@ -76,6 +76,7 @@ export const txReceipt = async ({ txHash, interval }) => {
 export const checkRenTransfersIn = async (sigObject)=>{
 //This very confusing function checks if the signature is valid and if the signature is valid, it returns the pending ren transfers
   let array = []
+  if(sigObject.length > 0){
   sigObject.map((item, index) => {
     array.push(item.attributes.signedTransaction.signature)
   })
@@ -117,6 +118,7 @@ export const checkRenTransfersIn = async (sigObject)=>{
   })
 
   return returnArray 
+}
 
 }
 
