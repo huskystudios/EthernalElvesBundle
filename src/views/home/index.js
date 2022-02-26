@@ -33,6 +33,7 @@ import { useMoralis } from "react-moralis";
 import Staking from "./components/Staking"
 import Help from "./components/Help"
 import TableMode from "./components/TableMode"
+import Bloodthirst from "./components/Bloodthirst"
 
 const Home = () => {
 
@@ -578,7 +579,7 @@ const Home = () => {
                     <div className="dark-1000 h-full d-flex home justify-center items-center">
                         {alert.show && showAlert(alert.value)}
 
-                        
+                       
                       {visualMode ?
                       <>
                       {index === 0 && <Help chain={chain} data={data} toggle={toggle} clicked={clicked} selectAll={selectAll}  />}
@@ -599,14 +600,15 @@ const Home = () => {
                                               
 
                        
-
+                       
                         {index === 1 && activeNfts.length > 1 ? <Collection nft={activeNfts} onChangeIndex={onChangeIndex} /> : null}
                         {index === 1 && activeNfts.length === 1 ? <Overview nft={activeNfts} onRunWeb3={doAction} onChangeIndex={onChangeIndex} /> : null}
                         {index === 2 && <Actions doAction={doAction} actions={actions} onChangeIndex={onChangeIndex} setGameMode={setGameMode} />}
                         {index === 3 && <Staking nft={activeNfts} onRunWeb3={doAction} onChangeIndex={onChangeIndex} />}                      
                         {index === 4 && <Sector chain={chain} campaign={campaign} data={activeNfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} mode={gameMode} />}
                         {index === 5 && <Success success={success} sector={sector} campaign={campaign} data={activeNfts} chain={chain} onChangeIndex={onChangeIndex} />}
-                        {index === 6 && <Receive onChangeIndex={onChangeIndex} />}
+                        {index === 6 && <Bloodthirst chain={chain} campaign={campaign} data={activeNfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} mode={gameMode} />}
+                        {index === 7 && <Receive onChangeIndex={onChangeIndex} />}
                       
 
                     </div>
