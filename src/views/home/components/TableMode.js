@@ -298,7 +298,14 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
                         <h4>Travellers Selected</h4>
                         <div className="nft-grid">
                         {clicked.map((nft) => 
+                            <div className="nft-card" key={nft.id}>
                             <img src={nft.image} alt={nft.id} key={nft.id} />
+                            <div className="nft-card-info">
+                              
+                                <p>{nft.name}</p>
+                              
+                            </div>
+                            </div>
                         )}
                     </div>
                         
