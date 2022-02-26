@@ -140,6 +140,25 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
 
     const checkinElf = async () => {
 
+        // get cooldown from clicked and get action from clicked
+        
+       ///get ids that have cooldown from clicked
+         let cooldownIds = clicked.filter(elf => elf.cooldown === true)
+
+         if(cooldownIds.length > 0){
+            setAlert({show: true, value: {title: "Cooldown", content: "You can't check in elves that are on cooldown"}})
+            return
+            }
+
+            //get ids that have action 2 from clicked
+            let action2Ids = clicked.filter(elf => elf.action === 2)
+
+            if(action2Ids.length > 0){
+                setAlert({show: true, value: {title: "Action", content: "You can't check in elves that are on passive"}})
+                return
+            }
+
+
         
 
         let renToSend = renTransfer === "" ? 0 : renTransfer
