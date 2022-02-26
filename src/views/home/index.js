@@ -228,6 +228,15 @@ const Home = () => {
                     setAlert({show: true, value: {title: "Error", content: "You can only synergize with druids"}})
                     return
                 }
+                // if time is greater than 12 hours then you cant synergize
+                let time = clicked.map(el => el.time)
+                let timeMax = time.reduce((a, b) => Math.max(a, b))
+                console.log(timeMax, time)
+                if(timeMax > 12){
+                    setAlert({show: true, value: {title: "Error", content: "You can only synergize with a current time of 12 or less"}})
+                    return
+                }
+
                 
             }
             
