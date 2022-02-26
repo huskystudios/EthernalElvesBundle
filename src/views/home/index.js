@@ -43,6 +43,8 @@ const Home = () => {
     const [chain, setChain] = useState("eth")
     const [excludeAction, setExcludeAction] = useState(8)
     const [blockscan, setBlockscan] = useState("etherscan.io")
+    const [ethElves, setEthElves] = useState()
+    const [polyElves, setPolyElves] = useState()
 
 
     const [loading, setLoading] = useState(true)
@@ -301,21 +303,47 @@ const Home = () => {
 
         setLoading(true)
         setClicked([])
-        const params = { address: address }
+        
         setLoadingText(`25% Fetching elves for address ${address}`)
-        const array = await Moralis.Cloud.run("getElvesFromDb", params);
-
-        setLoadingText(`50% Getting metadata from the blockchain`)
-        const elves = await lookupMultipleElves({array, chain})
         
+        const Elves = Moralis.Object.extend("Elves");
+        let query = new Moralis.Query(Elves);
+        
+        query.equalTo("owner_of", address);
+        const results = await query.find();
+        
+        let array = []
+        let polyArray = []
+        
+        results.map((elf) => {
+            
+            if(elf.get("chain") === "polygon"){
+                polyArray.push(elf.attributes.token_id)
+            }else{
+                array.push(elf.attributes.token_id)
+            }
+            })
+
+        console.log(array)
+
+        setLoadingText(`50% Getting metadata from ethereum`)
+        let chain = "eth"
+        const elves = await lookupMultipleElves({array, chain})        
         elves.sort((a, b) => a.id - b.id)
+        setEthElves(elves)
 
+        setLoadingText(`75% Getting metadata from polygon`)
+        chain = "polygon"
+        array = polyArray
+        const polyElves = await lookupMultipleElves({array, chain})        
+        polyElves.sort((a, b) => a.id - b.id)
+        setPolyElves(polyElves)
         
+        //const filteredElves = elves.filter((elf) => elf.action !== excludeAction)
 
-        const filteredElves = elves.filter((elf) => elf.action !== excludeAction)
-
-        console.log("elves", filteredElves)
-        setData(filteredElves)
+        console.log("elves", elves)
+        console.log("pelves", polyElves)
+        setData(elves)
 
       
         setLoadingText(`100% Done!`)
@@ -341,11 +369,15 @@ const Home = () => {
             setChain("polygon")
             setBlockscan("polyscan.com")
             setExcludeAction(0)
+            setData(polyElves)
+            setClicked([])
         
         }else{
             setChain("eth")
             setBlockscan("etherscan.io")
             setExcludeAction(8)
+            setData(ethElves)
+            setClicked([])
         }
 
     }
@@ -381,7 +413,7 @@ const Home = () => {
         }
 
         getData()
-    }, [txreceipt, chain, reloadData])
+    }, [txreceipt, reloadData])
 
     const resetVariables = async () => {
         setIndex(0)
@@ -590,7 +622,7 @@ const Home = () => {
                 <>
 
       
-                    <div className="dark-1000 h-full d-flex home justify-center p-1">
+                    <div className="dark-1000 h-full d-flex home justify-center">
                     <div className="flex-column">       
                         {alert.show && showAlert(alert.value)}
 
