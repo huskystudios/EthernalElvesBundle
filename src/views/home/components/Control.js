@@ -130,12 +130,16 @@ const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3
                     </div>}
                 </div>
             </span>
+            {!consoleOpen && <span className="btn-control-open">                
+                        <button className="btn btn-blue" onClick={() => setConsoleOpen(consoleOpen => !consoleOpen)}>Maximize</button>
+               </span>
+            }
     {consoleOpen &&     
         <div className="control-panel">      
 
                 <span className="btn-control-close">                
-                        <button className="dropbtn" onClick={() => setConsoleOpen(consoleOpen => !consoleOpen)}>Close</button>
-            </span>
+                        <button className="dropbtn" onClick={() => setConsoleOpen(consoleOpen => !consoleOpen)}>Minimize</button>
+               </span>
             
             <div className="active-attributes d-flex flex-column">
                     {activeNft?.attributes.map((attribute, index) => {

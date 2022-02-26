@@ -1491,3 +1491,16 @@ background-image: url(../../assets/images/stats_back_hover.png);
     text-shadow: 1px 1px 3px cyan;
     /* color: cyan; */
   }
+
+  .btn-control-open {
+    cursor: pointer;
+    position:absolute;
+    left: 833px;
+    bottom: 3px;
+    color: white;
+    width: 235px;
+    height: 40px;
+    text-align: center;
+    font-size: 18px;
+    padding-top: 18px;
+}
