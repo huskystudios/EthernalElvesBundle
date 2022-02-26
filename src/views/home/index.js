@@ -576,7 +576,7 @@ const Home = () => {
                 <>
 
                
-                    <div className="dark-1000 h-full d-flex home justify-center items-center">
+                    <div className="dark-1000 h-full d-flex home justify-center p-1">
                         {alert.show && showAlert(alert.value)}
 
                        
