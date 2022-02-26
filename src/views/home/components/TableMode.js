@@ -335,7 +335,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
                            
                             <button disabled className="btn-whale" onClick={() => setVisualMode(!visualMode)}>Visual mode</button>
                             <button className="btn btn-green" onClick={() => setReloadData(!reloadData)}>Reload Data</button>
-                            <button className="btn btn-blue" onClick={toggleChain}>On {chain}</button>
+                            <button className="btn btn-blue" onClick={toggleChain}>Active: {chain}</button>
                             </div>      
     
         <div className="collection-panel">
