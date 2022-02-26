@@ -61,6 +61,7 @@ const Staking = ({onChangeIndex, nft, onRunWeb3}) => {
                                     </tr>
                                 </tbody>
                             </table>
+                            
                             <br/>
                             {nft.length > 0 &&
                             <img style={{width: 150}} src={nft[0].image} alt={nft.id} />}
