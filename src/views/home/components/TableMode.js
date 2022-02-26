@@ -4,38 +4,21 @@ import "./../style.css"
 import Countdown from 'react-countdown';
 import {
     checkIn,
-    sendCampaign, 
-    sendPassive, 
-    returnPassive, 
     unStake, 
-    merchant, 
-    forging,
-    heal, 
-    lookupMultipleElves, 
-    getCurrentWalletConnected,
     polygonContract, 
-    polyweb3
 } from "../../../utils/interact"
 
 import Modal from "../../../components/Modal"
-import Sector from "./Sector"
 import Mint from "../../mint";
 import Loader from "../../../components/Loader";
 
 
 
-
-const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, visualMode, reloadData, setReloadData, polyBalance}) => {
+const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisualMode, visualMode, reloadData, setReloadData, polyBalance}) => {
 
     
     const { Moralis } = useMoralis();
-    const [status, setStatus] = useState("")
     const [sortBy, setSortBy] = useState({ value: "cooldown", order: "desc" });
-    const [tryItem, setTryItem] = useState(1)
-    const [useItem, setUseItem] = useState(1)
-
-    const owner = window.ethereum.selectedAddress
-
     const [renTransfer, setRenTransfer] = useState("")
     
     const [isButtonEnabled, setIsButtonEnabled] = useState({
@@ -50,11 +33,7 @@ const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, vi
         synergize: false,
     });
  
-    
-
-   
-
-    const [nftData, setNftData] = useState([])
+  
     const [sortedElves, setSortedElves] = useState([])
     const [activeNfts, setActiveNfts] = useState(true)
     const [nfts, setNfts] = useState([])
@@ -65,19 +44,16 @@ const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, vi
     const [confirm, setConfirm] = useState(false)
     const [loading, setLoading] = useState(false)
    
-    const resetVariables = async () => {
-      
-        setNftData([])
+    const resetVariables = async () => {     
+  
         setNfts([])
-        setTxReceipt([])
-       
+        setTxReceipt([])      
         setActiveNfts(!activeNfts)
 
     }
     
  
    const handleClick = async (nft) => {
-
     toggle(nft)
     }
 
@@ -156,13 +132,7 @@ const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, vi
 
 
 
-    const bloodthirstFunction = async () => {
-           
-        const params =  {functionCall: polygonContract.methods.bloodThirst(clicked, tryItem, useItem, owner).encodeABI()}
-        await sendGaslessFunction(params)
-        
-    }
-
+   
 
 
 
@@ -196,15 +166,7 @@ const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, vi
         }                      
     }
 
- 
-
-
-
-
-
-
-
-      
+       
 
              const unStakeElf = async () => {
       
@@ -218,18 +180,6 @@ const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, vi
                 }
         
 
-
-    
-        useEffect(() => {
-            
-            const getData = async () => {
-                setNftData(data)           
-                
-               
-            }
-            
-            getData()
-          },[activeNfts, txreceipt]);
 
 
         useEffect(() => {
@@ -336,6 +286,7 @@ const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, vi
                     <div className="flex flex-column w-full items-center">
                     
                         <h4>Elf Terminus</h4>
+                        
                         <p className="text-danger">(Using the Elf Terminus can result in losing access to your elf. Please read instructions carefully.)</p>
                         <input type={"text"} placeholder={"Ren To Transfer"} value={renTransfer} onChange={(e) => setRenTransfer(e.target.value)}/>
                     <div className="flex mt-1">
@@ -366,7 +317,7 @@ const TableMode = ({data, clicked, toggle, chain, toggleChain, setVisualMode, vi
                             <button disabled={!isButtonEnabled.unstake} className="btn-whale" onClick={unStakeElf}> Unstake </button>
                             <button className="btn-whale" onClick={()=> setMintModal(!mintModal)}> Mint </button>
                             <button className="btn-whale" onClick={toggleChain}>On {chain}</button>
-                           {/* <button className="btn-whale" onClick={() => setVisualMode(!visualMode)}>Visual mode</button>*/}
+                            <button disabled className="btn-whale" onClick={() => setVisualMode(!visualMode)}>Visual mode</button>
                             <button className="btn-whale" onClick={() => setReloadData(!reloadData)}>Reload Data</button>
                             </div>      
     

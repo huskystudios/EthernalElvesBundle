@@ -68,7 +68,7 @@ const Staking = ({onChangeIndex, nft, onRunWeb3}) => {
                         </div>
                     </div>
                     <div className="d-flex flex-row justify-between">
-                        <button className="btn btn-red" onClick={() => onChangeIndex(-1)} >back</button>
+                        <div></div>
                         {enableReturn ? <button className="btn btn-green" onClick={() => onRunWeb3({action: "returnPassive"})} >return</button>
                         : <button className="btn btn-green" onClick={() => onRunWeb3({action:"sendPassive"})} >send</button>    
                     }

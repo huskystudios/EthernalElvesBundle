@@ -165,7 +165,7 @@ const remoteTx = async () => {
   let response = await Moralis.Cloud.run("dbQ")
   console.log(response)
 
-  
+   //  <button className="btn btn-blue" onClick={remoteTx}>HUSKY TEST</button>
 
 }
 
@@ -174,7 +174,7 @@ const remoteTx = async () => {
 return (
 <>
        <div className="dark-1000 h-full d-flex home justify-center items-center black">
-       //  <button className="btn btn-blue" onClick={remoteTx}>HUSKY TEST</button>
+      
 
             <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
             <p>ADMIN CONSOLE</p>
@@ -247,7 +247,7 @@ return (
        
 </div>
 <PendingTransfers />
-<PendingRenTransfers />
+
 <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
         <p>Level distro</p>
              {levelDistribution && levelDistribution.map((level, index) => {

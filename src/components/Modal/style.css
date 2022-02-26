@@ -22,6 +22,7 @@
       background-color: #000000;
       margin: 7% auto; /* 15% from the top and centered */
       width: 80%; /* Could be more or less, depending on screen size */
+      min-height: 800px;
   
 }
 

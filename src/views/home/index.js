@@ -34,6 +34,7 @@ import Staking from "./components/Staking"
 import Help from "./components/Help"
 import TableMode from "./components/TableMode"
 import Bloodthirst from "./components/Bloodthirst"
+import Modal from "../../components/Modal"
 
 const Home = () => {
 
@@ -60,8 +61,7 @@ const Home = () => {
     const [polyBalance, setPolyBalance] = useState(0)
     const [balance, setBalance] = useState(0);
     const [miren, setMiren] = useState(0);
-
-    
+    const [modalActions, setModalActions] = useState({ show: false, value: null })    
   
   
   const getRenBalance = async (address) => {
@@ -78,8 +78,6 @@ const Home = () => {
   
 
 
-
-    const [gameMode, setGameMode] = useState("");
 
     const { Moralis } = useMoralis();
 
@@ -156,6 +154,13 @@ const Home = () => {
 
     }
 
+    const bloodthirstFunction = async (params) => {
+           
+        const btParams =  {functionCall: polygonContract.methods.bloodThirst(params.tryTokenids, params.tryItem, params.useItem, params.address).encodeABI()}
+        await sendGaslessFunction(btParams)
+        
+    }
+
     const healing = async () => {
         if(chain === "eth"){
          const params =  {healer: clicked[0].id, target: clicked[1].id}
@@ -168,8 +173,7 @@ const Home = () => {
             console.log(clicked[0].id, clicked[1].id, wallet)
             const params =  {functionCall: polygonContract.methods.heal(clicked[0].id, clicked[1].id, wallet).encodeABI()}
             sendGaslessFunction(params)
-        }
-        
+        }        
                           
     }
 
@@ -251,17 +255,6 @@ const Home = () => {
     }
 
     
-
-
-
-    //////////////////////////   
-
-
-
-
-    /////////////////////////
-
-
     const doAction = async (option) => {
 
         const ids = activeNfts.map(nft => { return (nft.id) })
@@ -405,10 +398,11 @@ const Home = () => {
     const showAlert = ({ title, content }) => {
 
         return (
-            <div className="alert">
+            <div className="alert-bar" >
+                <img src={data[0].image} alt="alert" />
                 <h3>{title}</h3>
                 <pre>{content}</pre>
-                <button className="btn btn-red" onClick={() => setAlert({ show: false })}>close</button>
+                <div className="close-modal" onClick={() => setAlert({ show: false })}>X</div>
             </div>
         )
     }
@@ -494,7 +488,7 @@ const Home = () => {
 
                 healing()
                 console.log("heal someoone", tokenId)
-                //doAction({action:"heal", healIds: tokenId})
+              
                 setHealModal(false)
                 setMulti(false)
             }
@@ -598,8 +592,9 @@ const Home = () => {
             {loading ? <Loader text={loadingText} /> :
                 <>
 
-               
+      
                     <div className="dark-1000 h-full d-flex home justify-center p-1">
+                    <div className="flex-column">       
                         {alert.show && showAlert(alert.value)}
 
                        
@@ -609,7 +604,7 @@ const Home = () => {
                       </> : <>
                       {index === 0 && <TableMode  
                                             chain={chain} 
-                                            data={data} 
+                                            nftData={data} 
                                             toggle={toggle} 
                                             visualMode={visualMode} 
                                             setVisualMode={setVisualMode} 
@@ -619,9 +614,15 @@ const Home = () => {
                                             reloadData={reloadData}
                                             setReloadData={setReloadData}
                                             polyBalance={polyBalance}
+                                            owner={wallet}
                                             />}</>}
-                                              
-
+                        <Modal show={modalActions.show}>
+                            {modalActions.value === 1 && <Staking nft={activeNfts} onRunWeb3={doAction} onChangeIndex={onChangeIndex} />}
+                            {modalActions.value === 2 && <Sector chain={chain} campaign={campaign} data={activeNfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} />}
+                            {modalActions.value === 3 && <Bloodthirst chain={chain} campaign={campaign} data={activeNfts} onSendCampaign={bloodthirstFunction} onChangeIndex={onChangeIndex} />}
+                        </Modal>                      
+                        
+                {/* 
                        
                        
                         {index === 1 && activeNfts.length > 1 ? <Collection nft={activeNfts} onChangeIndex={onChangeIndex} /> : null}
@@ -632,8 +633,9 @@ const Home = () => {
                         {index === 5 && <Success success={success} sector={sector} campaign={campaign} data={activeNfts} chain={chain} onChangeIndex={onChangeIndex} />}
                         {index === 6 && <Bloodthirst chain={chain} campaign={campaign} data={activeNfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} mode={gameMode} />}
                         {index === 7 && <Receive onChangeIndex={onChangeIndex} />}
-                      
+                    */}   
 
+                    </div>
                     </div>
                     {index === 0 && data && wallet && 
                      <div className="d-flex justify-center items-center">
@@ -648,15 +650,20 @@ const Home = () => {
                                 onForge={() => setModal({show: true, action:"forging", heading:"DO YOU WANT TO FORGE A NEW WEAPON?", content:"forge"})}
                                 onMerchant={() => setModal({show: true, action:"merchant", heading:"DO YOU WANT TO TRY FOR A NEW ITEM?", content:"buy"})}
                                 onHeal={() => setHealModal(true)}
-                                onSynergize={() => setModal({show: true, action:"synergize", heading:"DO YOU WANT TO SYNERGIZE?", content:"synergize"})}
+                                onBloodthirst={() => setModalActions({show: !modalActions.show, action:"bloodthirst", value:3 })}
+                                onCampaign={() => setModalActions({show: !modalActions.show, action:"campaign", value:2})}
+                                onPassiveMode={() => setModalActions({show:!modalActions.show, action:"passive", value:1})}
+                                onSynergize={() => setModalActions({show: true, action:"synergize", heading:"DO YOU WANT TO SYNERGIZE?", content:"synergize"})}
                                 chain={chain}
                             />
                            </div> }
-
+                          
                 </>
             }
+            
             {renderModal()}
             {renderHealModal()}
+            
         </>
     )
 }

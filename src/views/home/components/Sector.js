@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import {campaigns} from "../config" 
 import {getCampaign, sendCampaign, getCurrentWalletConnected} from "../../../utils/interact"
+import Loader from "../../../components/Loader";
 
 const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
 
@@ -17,6 +18,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
     const [campaign, setCampaign] = useState(0)
     const [activeCampaign, setActiveCampaign] = useState(0)
     const [campaignArray, setCampaignArray] = useState(0)
+    const [loadingStatus, setLoadingStatus] = useState(true)
 
     const setSectorChange = (value) => {
     
@@ -76,7 +78,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
             onSendCampaign({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem})
         }
         
-        onChangeIndex(value)
+       // onChangeIndex(value)
     }
 
 
@@ -113,10 +115,11 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
         useEffect(() => {
             const getCampaignData = async() => {
                 const campaignArry = []
+                setLoadingStatus("finding creatures to slay")
                 for(let i = 0; i < campaigns.length; i++){
     
                     await getCampaign(campaigns[i].id, chain).then(res => {
-    
+                        setLoadingStatus("found camp " + campaigns[i].name)
                     const camoObj = {
                             name: campaigns[i].name,
                             id: campaigns[i].id,
@@ -140,6 +143,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
                 setSector(1)
                 setMirenRewards(parseInt(campaignArry[campaign].baseRewads) + (2 * (parseInt(1) - 1)))
                 setCreatureHealth(((parseInt(1) - 1) * 12) + parseInt(campaignArry[campaign].creatureHealth))
+                setLoadingStatus("done")
                 
             }
             getCampaignData()
@@ -298,7 +302,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
                             </div>
                             )}   
                         )}
-                    </div>
+                             </div>
                     
 
                      </div>     
@@ -308,7 +312,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
 
            
             <div className="d-flex flex-row justify-around">
-                    <button className="btn btn-red" onClick={() =>   handleChangeIndex(mode === "campaign" ? -1 : -3)} >back</button>  
+                  
                     <button className="btn btn-green" onClick={() => handleChangeIndex(1)}>Confirm</button>
             </div>
             
@@ -316,7 +320,7 @@ const Sector = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
             {alert.show && showAlert(alert.value)}
         </div>
         
-    ) : <></>
+    ) : <Loader text={loadingStatus} />
 }
 
 

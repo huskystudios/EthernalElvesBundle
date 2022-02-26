@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import {campaigns} from "../config" 
 import {getCampaign, sendCampaign, getCurrentWalletConnected} from "../../../utils/interact"
 
-const Bloodthirst = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
+const Bloodthirst = ({onChangeIndex, onSendCampaign, data, chain}) => {
 
     const [rerollWeapon, setRerollWeapon] = useState(false);
     const [rerollItem, setRerollItem] = useState(false);
@@ -10,70 +10,35 @@ const Bloodthirst = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
     const [sector, setSector] = useState(1)
     const [tooltip, setTooltip] = useState("");
     const [modal, setModal] = useState({show: false, nft: null})
-    const [creatureHealth, setCreatureHealth] = useState("")
-    const [mirenRewards, setMirenRewards] = useState("")
+    const [creatureHealth, setCreatureHealth] = useState(400)
+
     const [alert, setAlert] = useState({ show: false, value: null })
 
-    const [campaign, setCampaign] = useState(0)
-    const [activeCampaign, setActiveCampaign] = useState(0)
-    const [campaignArray, setCampaignArray] = useState(0)
 
-    const setSectorChange = (value) => {
-    
-    setSector(value)
-    setMirenRewards(parseInt(activeCampaign.baseRewads) + (2 * (parseInt(value) - 1)))
-    setCreatureHealth(((parseInt(value) - 1) * 12) + parseInt(activeCampaign.creatureHealth))
-    
-    }
+
+
     const handleChangeIndex = async (value) => {
 
 
         let {address} = await getCurrentWalletConnected()
-        let levelValidation = []
+       
+      
         
-        data.map(item => {
-            if (parseInt(item.level) >= parseInt(activeCampaign.minLevel) && parseInt(item.level) <= parseInt(activeCampaign.maxLevel)) {
-
+        
+        let tryTokenids //= data.map(nft => {return(nft.id)})
+           // get ids from data where cooldown is false
+        tryTokenids = data.filter(nft => {
+            return nft.cooldown === false
+        }).map(nft => {
+            return nft.id
                 
-            }else{
-                levelValidation.push(item)
-            }        
-        
         })
 
-        if(levelValidation.length > 0){
-            setAlert({show: true, value: {
-                title: "Levels not in range", 
-                content: `You can't use this campaign because you have anElf with level ${levelValidation[0].level} in this sector and the campaign requires level ${activeCampaign.minLevel} to ${activeCampaign.maxLevel}`
-            }})
-
-            return
-        }
-
-        if(parseInt(activeCampaign.creatureCount) === 0){
-            setAlert({show: true, value: {
-                title: "No creatures left", 
-                content: `No creatures left in this campaign`
-            }})
-
-            return
-        }
-
-
-
-
-      
-        let tryTokenids = data.map(nft => {return(nft.id)})
-        let tryCampaign = activeCampaign.id.toString()
-        let trySection = sector.toString()
-        let tryWeapon = rerollWeapon
         let tryItem = rerollItem
         let useItem = useItemValue
 
         if(chain === "polygon"){
-            onSendCampaign({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem, address})
-        }else{
-            onSendCampaign({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem})
+            onSendCampaign({tryTokenids, tryItem, useItem, address})
         }
         
         onChangeIndex(value)
@@ -81,19 +46,12 @@ const Bloodthirst = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
 
 
 
-    const handleCampaignChange = async (value) => {
-        setCampaign(value)
-        setActiveCampaign(campaignArray[value])
-        setSectorChange(1)
-
-    }
-
     const showTooltip = (content) => {
         if(content === "") return <></>
         return (
             <div className="sector-tooltip">
                 {/* <h3>{title}</h3> */}
-                <pre>{mode !== "campaign" ? "You can't click on bloodthirst mode!" : content}</pre>
+                <pre>{content}</pre>
             </div>
         )
     }
@@ -123,10 +81,7 @@ const Bloodthirst = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
             )
         }
     
-        
-
-
-
+       
     return (
         <div>
 
@@ -134,15 +89,9 @@ const Bloodthirst = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
             <div className="sector-panel">
             <div className="overview-heading">
                       Bloodthirst
-            </div>
-                         
-                        
-  
-                 <div className="sector-options">
 
-                 <h3>Bloodthirst!</h3>
-                        
-                        Creature Health is 400HP
+                                     
+                      Creature Health is 400HP
                         <br/>
                         rewards 
                         <br/>
@@ -155,6 +104,14 @@ const Bloodthirst = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
                        
 
                      
+            </div>
+                         
+                        
+  
+                 <div className="sector-options">
+
+
+         
                     
                       
 
@@ -171,7 +128,7 @@ const Bloodthirst = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
                     <div className="d-flex items-center">
                         <div 
                             className={rerollWeapon ? "btn-sector-option active" : "btn-sector-option"} 
-                            onClick={() => mode === "campaign" && setRerollWeapon(state => !state)}
+                            onClick={() => setRerollWeapon(state => !state)}
                             onMouseEnter={() => setTooltip("Do you want to roll a new Weapon?")}
                             onMouseLeave={() => setTooltip("")}
                         >
@@ -179,7 +136,7 @@ const Bloodthirst = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
                         </div>
                         <div 
                             className={rerollItem ? "btn-sector-option active" : "btn-sector-option"} 
-                            onClick={() => mode === "campaign" && setRerollItem(state => !state)} 
+                            onClick={() =>  setRerollItem(state => !state)} 
                             onMouseEnter={() => setTooltip("Do you want to roll a new Item?")}
                             onMouseLeave={() => setTooltip("")} 
                         >
@@ -189,7 +146,7 @@ const Bloodthirst = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
                         <div className="d-flex items-center">
                         <div 
                             className={useItemValue ? "btn-sector-option active" : "btn-sector-option"} 
-                            onClick={() => mode === "campaign" && setUseItemValue(state => !state)}
+                            onClick={() => setUseItemValue(state => !state)}
                             onMouseEnter={() => setTooltip(`Do you use your item in {${"item in stash"}}?`)}
                             onMouseLeave={() => setTooltip("")}
                         >
@@ -256,7 +213,7 @@ const Bloodthirst = ({onChangeIndex, onSendCampaign, data, mode, chain}) => {
 
            
             <div className="d-flex flex-row justify-around">
-                    <button className="btn btn-red" onClick={() =>   handleChangeIndex(mode === "campaign" ? -1 : -3)} >back</button>  
+                 
                     <button className="btn btn-green" onClick={() => handleChangeIndex(1)}>Confirm</button>
             </div>
             

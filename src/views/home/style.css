@@ -1429,8 +1429,46 @@ background-image: url(../../assets/images/stats_back_hover.png);
     display: flex;
     flex-direction: column;
 
-    
-
-
-
 }
+
+.alert-bar {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 55px;
+    background-color:rgba(0, 0, 0, 1);
+    padding: 14px;
+    margin: 20px;
+    max-width: 1490px;
+    border-radius: 8px;
+    z-index: 1000000000;
+    font-size: 12px;
+    -webkit-box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
+    -moz-box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
+    box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
+}
+.alert-bar pre {
+    font-family: "Montserrat";
+    width: 100%;
+    align-self: middle;
+    white-space: pre-wrap;
+}
+
+.alert-bar .close-modal {
+    align-self: baseline; 
+    cursor: pointer;
+  }
+
+  .alert-bar img {
+    align-self: middle;
+    width: 80px;
+    cursor: pointer;
+  }
+  
+  .alert-bar h3 {
+    align-self: middle;
+    width: 150px;
+    cursor: pointer;
+  }
+  
