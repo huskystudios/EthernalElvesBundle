@@ -122,14 +122,6 @@ const Bloodthirst = ({onChangeIndex, onSendCampaign, data, chain}) => {
                     
                     <div className="d-flex items-center">
                         <div 
-                            className={rerollWeapon ? "btn-sector-option active" : "btn-sector-option"} 
-                            onClick={() => setRerollWeapon(state => !state)}
-                            onMouseEnter={() => setTooltip("Do you want to roll a new Weapon?")}
-                            onMouseLeave={() => setTooltip("")}
-                        >
-                            weapon
-                        </div>
-                        <div 
                             className={rerollItem ? "btn-sector-option active" : "btn-sector-option"} 
                             onClick={() =>  setRerollItem(state => !state)} 
                             onMouseEnter={() => setTooltip("Do you want to roll a new Item?")}

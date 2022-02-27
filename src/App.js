@@ -70,9 +70,7 @@ const [flip, setFlip] = useState(false)
             
               */}
              
-               <Route exact path="/transfers">
-                <Transfers />
-               </Route>
+              
              </Switch>
           </MainLayout>
         </Router>

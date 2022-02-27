@@ -190,8 +190,10 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
 
             const params =  {functionCall: polygonContract.methods.checkIn(ids, renToSend, owner).encodeABI()}
             await sendGaslessFunction(params)
-            setRenTransfer(!renTransfer)
-        }                      
+         
+        }    
+        
+        setTransfersModal(!transfersModal)
     }
 
        
@@ -373,7 +375,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
 
                             <div className="flex justify-center p-2">
                                     
-                            {allowed && <button className="btn-whale"  onClick={()=> setTransfersModal(!transfersModal)}> Transfers </button>}
+                            <button className="btn-whale"  onClick={()=> setTransfersModal(!transfersModal)}> Transfers </button>
                             <button className="btn-whale" onClick={unStakeElf}> Unstake </button>
                             <button className="btn-whale" onClick={()=> setMintModal(!mintModal)}> Mint </button>
                            
