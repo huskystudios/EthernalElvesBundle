@@ -407,7 +407,8 @@ function handleMoralisError(err) {
         let polyParams = {array: polyArray, chain:  "polygon"}
         const polyElves = await lookupMultipleElves(polyParams)        
         polyElves.sort((a, b) => a.id - b.id)
-        setPolyElves(polyElves)
+        let polyfiltered = polyElves.filter(item => item.action !== 0)
+        setPolyElves(polyfiltered)
         
 
         console.log("elves", elves)

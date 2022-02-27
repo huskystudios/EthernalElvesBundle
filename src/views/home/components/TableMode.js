@@ -189,7 +189,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
             }
 
             const params =  {functionCall: polygonContract.methods.checkIn(ids, renToSend, owner).encodeABI()}
-            await sendGaslessFunction(params)
+            sendGaslessFunction(params)
          
         }    
         
