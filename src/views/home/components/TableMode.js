@@ -13,7 +13,7 @@ import Mint from "../../mint";
 import Loader from "../../../components/Loader";
 import thevoid from "../../../assets/images/thevoid.png";
 
-const allowedWallets = ["0xccfb66d52076a8295592642068c45d06fa6e36f6", "0xccb6d1e4acec2373077cb4a6151b1506f873a1a5"]
+const allowedWallets = ["0xccb6d1e4acec2373077cb4a6151b1506f873a1a5"]
 
 
 const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisualMode, visualMode, reloadData, setReloadData, polyBalance}) => {
@@ -173,7 +173,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
         let ids = clicked.map((elf) => elf.id)
 
         renToSend = Moralis.Units.ETH(renToSend)
-        console.log(renToSend, ids)
+        
 
         if(chain === "eth"){
             const params =  {ids: ids, renAmount: (renToSend).toString()}
@@ -350,7 +350,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
                         
                     </div>
                     <div className="flex mt-1">
-                    <input type={"text"} placeholder={"Ren To Transfer"} value={renTransfer} onChange={(e) => setRenTransfer(e.target.value)}/>
+                    {allowed && <input type={"text"} placeholder={"Ren To Transfer"} value={renTransfer} onChange={(e) => setRenTransfer(e.target.value)}/>}
                     <button className="btn-whale"  onClick={checkinElf}>
                         Confirm Transfer
                      </button>
@@ -375,7 +375,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
 
                             <div className="flex justify-center p-2">
                                     
-                            <button className="btn-whale"  onClick={()=> setTransfersModal(!transfersModal)}> Transfers </button>
+                           
                             <button className="btn-whale" onClick={unStakeElf}> Unstake </button>
                             <button className="btn-whale" onClick={()=> setMintModal(!mintModal)}> Mint </button>
                            
