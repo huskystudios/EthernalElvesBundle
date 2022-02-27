@@ -701,6 +701,24 @@ function elves(uint256 _id) external view returns(address owner, uint timestamp,
         
     }
 
+    function prismBridge(uint256[] calldata ids, uint256[] calldata sentinel) external {
+        require (msg.sender == operator || admin == msg.sender || auth[msg.sender] == true, "not allowed");
+        require(isTerminalOpen);
+        
+        for(uint i = 0; i < ids.length; i++){
+
+            DataStructures.Elf memory elf = DataStructures.getElf(sentinels[i]);            
+            require(elf.owner == address(0), "Already in Polygon");
+            
+            sentinels[ids[i]] = sentinel[i];
+            
+            emit ElfTransferedIn(ids[i], sentinel[i]);
+
+        }
+        
+        
+    }
+
 
 
 //ADMIN Only
