@@ -198,7 +198,7 @@ const claimPolyRen = async () => {
                                     onClick={claimCustomAmountPolygon}
                                     disabled={polyBalanceToClaim <= 0}
                                 >
-                                   Initiate Claim {polyBalanceToClaim.toFixed()} REN
+                                   Initiate Claim {polyBalanceToClaim} REN
                                 </button>
                                 </div>
                             </>}
