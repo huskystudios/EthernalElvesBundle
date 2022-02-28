@@ -121,12 +121,13 @@ const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3
                         <span onClick={onForge}>forge</span>
                         <span onClick={onMerchant}>merchant</span>
                         <span onClick={onCampaign}>campaign</span>
-                       
+                        {chain === "polygon" && <span onClick={onBloodthirst}>bloodthirst</span>}
                         <span onClick={onPassiveMode}>passive mode</span>
                         {clicked.length > 1 && <span onClick={onHeal}>heal</span>}
-                        {/*
-                        {chain === "polygon" && <span onClick={onBloodthirst}>bloodthirst</span>}
                         {chain === "polygon" && <span onClick={onSynergize}>synergize</span>}
+                        {/*
+                        
+                        
                         */}
                                        
                     </div>}

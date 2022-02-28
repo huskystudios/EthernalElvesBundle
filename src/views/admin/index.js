@@ -246,7 +246,6 @@ return (
        
        
 </div>
-<PendingTransfers />
 
 <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
         <p>Level distro</p>

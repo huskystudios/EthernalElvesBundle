@@ -375,7 +375,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
 
                             <div className="flex justify-center p-2">
                                     
-                            <button className="btn-whale"  onClick={()=> setTransfersModal(!transfersModal)}> Transfers </button>
+                           {/*<button className="btn-whale"  onClick={()=> setTransfersModal(!transfersModal)}> Transfers </button>*/}
                             <button className="btn-whale" onClick={unStakeElf}> Unstake </button>
                             <button className="btn-whale" onClick={()=> setMintModal(!mintModal)}> Mint </button>
                            
