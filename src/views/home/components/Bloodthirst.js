@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import {campaigns} from "../config" 
 import {getCampaign, sendCampaign, getCurrentWalletConnected} from "../../../utils/interact"
 
-const Bloodthirst = ({onChangeIndex, onSendCampaign, data, chain}) => {
+const Bloodthirst = ({setAlert,onChangeIndex, onSendCampaign, data, chain}) => {
 
     const [rerollWeapon, setRerollWeapon] = useState(false);
     const [rerollItem, setRerollItem] = useState(false);
@@ -12,7 +12,7 @@ const Bloodthirst = ({onChangeIndex, onSendCampaign, data, chain}) => {
     const [modal, setModal] = useState({show: false, nft: null})
     const [creatureHealth, setCreatureHealth] = useState(400)
 
-    const [alert, setAlert] = useState({ show: false, value: null })
+   // const [alert, setAlert] = useState({ show: false, value: null })
 
 
 
@@ -32,6 +32,18 @@ const Bloodthirst = ({onChangeIndex, onSendCampaign, data, chain}) => {
                 
         })
 
+       let weaponTiers = data.filter(nft => {
+            return nft.weaponTier < 3 
+        }).map(nft => {
+            return nft.id                
+        })
+
+        if(weaponTiers.length > 0){
+
+            setAlert({ show: true, value: {title: "Warning", content: "Lower than T3 weapons detected. Are you sure?"} })
+        }
+        
+
         let tryItem = rerollItem
         let useItem = useItemValue
 
@@ -41,7 +53,7 @@ const Bloodthirst = ({onChangeIndex, onSendCampaign, data, chain}) => {
             onSendCampaign({tryTokenids, tryItem, useItem, address})
         }
         
-        onChangeIndex(value)
+        //onChangeIndex(value)
     }
 
 
@@ -201,7 +213,7 @@ const Bloodthirst = ({onChangeIndex, onSendCampaign, data, chain}) => {
             </div>
             
             {renderModal(modal)}
-            {alert.show && showAlert(alert.value)}
+           
         </div>
         
     ) 

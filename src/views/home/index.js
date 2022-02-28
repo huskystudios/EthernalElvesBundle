@@ -722,7 +722,7 @@ function handleMoralisError(err) {
                         <Modal show={modalActions.show}>
                             {modalActions.value === 1 && <Staking nft={activeNfts} onRunWeb3={doAction} onChangeIndex={onChangeIndex} />}
                             {modalActions.value === 2 && <Sector chain={chain} campaign={campaign} data={activeNfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} />}
-                            {modalActions.value === 3 && <Bloodthirst chain={chain} campaign={campaign} data={activeNfts} onSendCampaign={bloodthirstFunction} onChangeIndex={onChangeIndex} />}
+                            {modalActions.value === 3 && <Bloodthirst setAlert={setAlert} chain={chain} campaign={campaign} data={activeNfts} onSendCampaign={bloodthirstFunction} onChangeIndex={onChangeIndex} />}
                         </Modal>                      
                         
                 {/* 
