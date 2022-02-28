@@ -80,6 +80,7 @@ const claimCustomAmountPolygon = async () => {
               
              
             setStatus(successMessage)
+            await getRenBalance(owner.address)
             setPolyBalanceToClaim(0)
             setModal(!modal)            
             }           
