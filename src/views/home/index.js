@@ -189,7 +189,7 @@ const Home = () => {
         const params =  {functionCall: polygonContract.methods.healMany(healerIds, targetIds, wallet).encodeABI()}
         console.log(healers, targets, wallet)
         sendGaslessFunction(params)
-
+        setHealModal(false)
                           
     }
 
@@ -626,8 +626,9 @@ function handleMoralisError(err) {
                         <h4>Select targets</h4>
                         <div className="nft-grid">
                         {targetSelect.map((nft) => 
+                            
                             <img onClick={() => handleClickTarget(nft)} className={targets.includes(nft) ? "active" : null} src={nft.image} alt={nft.id} key={nft.id} />
-                        )}
+                                                    )}
                         </div>
                         <p className="text-danger">(The number of healers needs to match the number of targets.)</p>
                     </div>}
@@ -704,6 +705,7 @@ function handleMoralisError(err) {
                       {index === 0 && <Help chain={chain} data={data} toggle={toggle} clicked={clicked} selectAll={selectAll}  />}
                       </> : <>
                       {index === 0 && <TableMode  
+                                            setAlert={setAlert}
                                             chain={chain} 
                                             nftData={data} 
                                             toggle={toggle} 

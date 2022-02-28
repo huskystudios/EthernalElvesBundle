@@ -16,7 +16,7 @@ import thevoid from "../../../assets/images/thevoid.png";
 const allowedWallets = ["0xccb6d1e4acec2373077cb4a6151b1506f873a1a5"]
 
 
-const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisualMode, visualMode, reloadData, setReloadData, polyBalance}) => {
+const TableMode = ({setAlert, nftData, owner, clicked, toggle, chain, toggleChain, setVisualMode, visualMode, reloadData, setReloadData, polyBalance}) => {
 
     
     const { Moralis } = useMoralis();
@@ -41,7 +41,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
     const [activeNfts, setActiveNfts] = useState(true)
     const [nfts, setNfts] = useState([])
     const [txreceipt, setTxReceipt] = useState()
-    const [alert, setAlert] = useState({show: false, value: null})
+  //  const [alert, setAlert] = useState({show: false, value: null})
     const [mintModal, setMintModal] = useState(false)
     const [transfersModal, setTransfersModal] = useState(false)
     const [confirm, setConfirm] = useState(false)
@@ -152,6 +152,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
 
          if(cooldownIds.length > 0){
             setAlert({show: true, value: {title: "Cooldown", content: "You can't check in elves that are on cooldown"}})
+            setTransfersModal(!transfersModal)
             return
             }
 
@@ -161,6 +162,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
             console.log(action2Ids, cooldownIds)
 
             if(action2Ids.length > 0){
+                setTransfersModal(!transfersModal)
                 setAlert({show: true, value: {title: "Action", content: "You can't check in elves that are on passive"}})
                 return
             }
@@ -534,7 +536,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
 </div>
 {renderMintModal()}
 {renderTransfersModal()}
-{alert.show && showAlert(alert.value)}
+{/*alert.show && showAlert(alert.value)*/}
 
         </>
         

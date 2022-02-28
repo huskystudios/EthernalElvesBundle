@@ -160,7 +160,7 @@ const claimPolyRen = async () => {
        <h1>REN Balances</h1>
 
        <div>
-             <p>REN in wallet: {miren} </p>
+             <p>REN in wallet: {miren.toFixed()} </p>
         </div>
 
         <div>
@@ -198,7 +198,7 @@ const claimPolyRen = async () => {
                                     onClick={claimCustomAmountPolygon}
                                     disabled={polyBalanceToClaim <= 0}
                                 >
-                                   Initiate Claim {polyBalanceToClaim} REN
+                                   Initiate Claim {polyBalanceToClaim.toFixed()} REN
                                 </button>
                                 </div>
                             </>}
