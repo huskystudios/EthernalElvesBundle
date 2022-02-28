@@ -146,11 +146,7 @@ const Bloodthirst = ({onChangeIndex, onSendCampaign, data, chain}) => {
 
                     <div className="game-info">
                      
-                        <span>
-                            reroll weapon:
-                            {" "}
-                            {rerollWeapon ? <b>YES</b> : <strong>NO</strong>}
-                        </span>
+        
                         <span>
                             reroll item: 
                             {" "}
