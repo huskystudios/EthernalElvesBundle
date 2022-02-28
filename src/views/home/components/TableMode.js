@@ -112,7 +112,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
         setIsButtonEnabled(buttonEnabledState);
     }, [clicked, nftData]);
 
-    
+   
 
     const sendGaslessFunction = async (params) => {
 
@@ -350,7 +350,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
                         
                     </div>
                     <div className="flex mt-1">
-                    {allowed && <input type={"text"} placeholder={"Ren To Transfer"} value={renTransfer} onChange={(e) => setRenTransfer(e.target.value)}/>}
+                    {/*chain === "eth" && */<input type={"text"} placeholder={"Ren To Transfer"} value={renTransfer} onChange={(e) => setRenTransfer(e.target.value)}/>}
                     <button className="btn-whale"  onClick={checkinElf}>
                         Confirm Transfer
                      </button>
@@ -375,7 +375,7 @@ const TableMode = ({nftData, owner, clicked, toggle, chain, toggleChain, setVisu
 
                             <div className="flex justify-center p-2">
                                     
-                           {/*<button className="btn-whale"  onClick={()=> setTransfersModal(!transfersModal)}> Transfers </button>*/}
+                            <button className="btn-whale"  onClick={()=> setTransfersModal(!transfersModal)}> Transfers </button>
                             <button className="btn-whale" onClick={unStakeElf}> Unstake </button>
                             <button className="btn-whale" onClick={()=> setMintModal(!mintModal)}> Mint </button>
                            

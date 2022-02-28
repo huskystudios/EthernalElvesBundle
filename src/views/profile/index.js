@@ -25,12 +25,12 @@ const Profile = () => {
   
   const getRenBalance = async (address) => {
     //await Moralis.enableWeb3();
-    const renBalanceContract = await Moralis.Cloud.run("getBalance", {address});//in contract
-    const renBalanceWallet = await Moralis.Cloud.run("getMiren", {address});//in wallet
+    //const renBalanceContract = await Moralis.Cloud.run("getBalance", {address});//in contract
+    //const renBalanceWallet = await Moralis.Cloud.run("getMiren", {address});//in wallet
   
     
-    setBalance(renBalanceContract/1000000000000000000);
-    setMiren(renBalanceWallet/1000000000000000000);
+   // setBalance(renBalanceContract/1000000000000000000);
+  //  setMiren(renBalanceWallet/1000000000000000000);
   }
     
 
@@ -117,7 +117,7 @@ const Profile = () => {
             const getData = async () => {
                 const {address} = await getCurrentWalletConnected();
                 setStatus("connected to address: " + address)
-                address && await getRenBalance(address)
+     
                 address && await getUserData(address)
             }
             
