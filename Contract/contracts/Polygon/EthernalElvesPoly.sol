@@ -707,7 +707,7 @@ function elves(uint256 _id) external view returns(address owner, uint timestamp,
         
         for(uint i = 0; i < ids.length; i++){
 
-            DataStructures.Elf memory elf = DataStructures.getElf(sentinels[i]);            
+            DataStructures.Elf memory elf = DataStructures.getElf(sentinels[ids[i]]);            
             require(elf.owner == address(0), "Already in Polygon");
             
             sentinels[ids[i]] = sentinel[i];
