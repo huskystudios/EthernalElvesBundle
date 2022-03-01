@@ -58,39 +58,15 @@ return options
 useEffect(() => {
     async function init() {
 
-
-      await Moralis.enableWeb3();     
-      //console.log(await Moralis.Cloud.run("ownersAndBalances"))
-
-    const initsupply = await Moralis.executeFunction(readOptions("INIT_SUPPLY"));
-    const maxSupply = await Moralis.executeFunction(readOptions("maxSupply"));
-    const price = await Moralis.executeFunction(readOptions("getMintPriceLevel"));
-    const totalSupply = await Moralis.executeFunction(readOptions("totalSupply"));
     const ownerCount = await Moralis.Cloud.run("getAllOwners")
     const totalRenSupply = 0 //await Moralis.executeFunction(readOptions("totalRenSupply"));
     
-    setInit(parseInt(initsupply));
-    setMax(parseInt(maxSupply));
-    setTokenSupply(parseInt((totalSupply)))
-    setCurrentPrice(price);
     setRenSupply(totalRenSupply);
     setOwnerCount(ownerCount.length)
-     setActionDistribution(await Moralis.Cloud.run("getActions"))
-
-    //console.log(await Moralis.Cloud.run("getOwnerBalances"))
-    
+    setActionDistribution(await Moralis.Cloud.run("getActions"))
    
-    let levels = await Moralis.Cloud.run("levelDistribution")
-
-      //sort levels by objectId
-      levels.sort(function(a, b) {
-        return a.objectId - b.objectId;
-      });
-
-      console.log(ownerCount)
-
-setLevelDistribution(levels)
     
+    console.log(ownerCount.length)
     console.log(ownerCount.sort((a, b) => b.tokens - a.tokens))
 
     setLoading(false);
@@ -102,23 +78,21 @@ setLevelDistribution(levels)
 
 
 const refreshMetaData = async () => {
-  // set school contract
-  setProgress(1)
-
  
+  setProgress(1)
 
   let results = []
 
   let start = 1
   let supply = tokenSupply//parseInt(cloudSupply.supply) ///tokenSupply
   let stop = 0
-  let steps = supply < 44 ? supply : 44
+  let steps = 33
 
  
   let counter = 0
   let i = 0
 
-  while(counter<supply){
+  while(counter<6666){
          
     start = i*steps + 1
     stop = start + steps - 1
@@ -161,14 +135,6 @@ setLoading(false)
 };
 
 
-const remoteTx = async () => {
-    
-  let response = await Moralis.Cloud.run("dbQ")
-  console.log(response)
-
-   //  <button className="btn btn-blue" onClick={remoteTx}>HUSKY TEST</button>
-
-}
 
 
 
