@@ -25,7 +25,9 @@ const getRenBalance = async (address) => {
 
  let allbalances = await balanceOf(address);
 
- console.log(allbalances)
+ Moralis.Cloud.run("updateUser", {ownerBalances: allbalances, ownerAddress: address})
+
+ console.log("Account balances:", allbalances)
 
   
   setBalance(allbalances.contractRen/1000000000000000000);
@@ -36,6 +38,12 @@ const getRenBalance = async (address) => {
 
 const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
+
+const getUser = async () => {
+
+ // Moralis
+
 }
 
 

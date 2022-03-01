@@ -331,8 +331,10 @@ function handleMoralisError(err) {
 
 
 
-    const getElvesfromMoralis = async (address) => {
 
+    const getElvesfromMoralis = async (address, userData) => {
+
+        let activeChain = userData.get("ownerChainPref")
         setLoading(true)
         setClicked([])
         console.log("1")
@@ -413,8 +415,9 @@ function handleMoralisError(err) {
 
         console.log("elves", elves)
         console.log("pelves", polyElves)
-        chain === "eth" ? setData(elves) : setData(polyElves)
+        activeChain === "eth" ? setData(elves) : setData(polyElves)
         
+        Moralis.Cloud.run("updateUser", {ownerAddress: address, ownerElves: results.length})
 
       
         setLoadingText(`100% Done!`)
@@ -434,14 +437,16 @@ function handleMoralisError(err) {
         }
     }
 
-    const toggleChain = () => {
+    const toggleChain = async() => {
 
+        const {address} = await getCurrentWalletConnected()
         if(chain === "eth"){
             setChain("polygon")
             setBlockscan("polyscan.com")
             setExcludeAction(0)
             setData(polyElves)
             setClicked([])
+            Moralis.Cloud.run("updateUser", {ownerAddress: address, ownerChainPref: "polygon"})
         
         }else{
             setChain("eth")
@@ -449,6 +454,7 @@ function handleMoralisError(err) {
             setExcludeAction(8)
             setData(ethElves)
             setClicked([])
+            Moralis.Cloud.run("updateUser", {ownerAddress: address, ownerChainPref: "eth"})
         }
 
     }
@@ -478,9 +484,11 @@ function handleMoralisError(err) {
             const { address } = await getCurrentWalletConnected();
             setWallet(address)
             getRenBalance(address)
+            let userData = await Moralis.Cloud.run("getUserData", {ownerAddress: address})
+            userData.attributes.ownerChainPref ? setChain(userData.attributes.ownerChainPref) : setChain("eth")
 
             address && setLoadingText(`10% Wallet connected`)
-            address && await getElvesfromMoralis(address)
+            address && await getElvesfromMoralis(address, userData)
         }
 
         getData()

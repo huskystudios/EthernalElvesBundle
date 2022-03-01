@@ -23,21 +23,32 @@ const ConnectWallet = () => {
   // Unsubscribe to onAccountChanged events
   
 */
+
+useEffect(() => {
+  const init = async () => {
+    const {address, status} = await getCurrentWalletConnected();
+   setWallet(address)
+   
+  //  setStatus(status);
+  addWalletListener(); 
+
+  }
+  
+  isMetaMaskInstalled();
+ // unsubscribe()
+  init()
+}, []);
   
 
   useEffect(() => {
-    const init = async () => {
-      const {address, status} = await getCurrentWalletConnected();
-     setWallet(address)
-    //  setStatus(status);
-    addWalletListener(); 
-
-    }
     
-    isMetaMaskInstalled();
-   // unsubscribe()
-    init()
-}, []);
+    const createUser = async () => {
+      const {address, status} = await getCurrentWalletConnected();
+       Moralis.Cloud.run("createUser", {ownerAddress: address})
+    }    
+
+   createUser()
+}, [walletAddress]);
 
 function addWalletListener() {
   if (window.ethereum) {

@@ -40,7 +40,8 @@ const Bloodthirst = ({setAlert,onChangeIndex, onSendCampaign, data, chain}) => {
 
         if(weaponTiers.length > 0){
 
-            setAlert({ show: true, value: {title: "Warning", content: "Lower than T3 weapons detected. Are you sure?"} })
+            setAlert({ show: true, value: {title: "Warning", content: "You need at least a Tier 3 weapon to enter this mode."} })
+            return
         }
         
 
