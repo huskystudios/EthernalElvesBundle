@@ -364,7 +364,7 @@ function handleMoralisError(err) {
 
     const getElvesfromMoralis = async (address, userData) => {
 
-        let activeChain = userData.get("ownerChainPref")
+        let activeChain = userData.attributes.ownerChainPref ? userData.attributes.ownerChainPref : "eth"
         setLoading(true)
         setClicked([])
         console.log("1")
@@ -446,6 +446,7 @@ function handleMoralisError(err) {
         console.log("elves", elves)
         console.log("pelves", polyElves)
         activeChain === "eth" ? setData(elves) : setData(polyElves)
+        
          
         let resolveEns
         try{

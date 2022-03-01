@@ -34,7 +34,7 @@ const [levelDistribution, setLevelDistribution] = useState([]);
 const [actionDistribution, setActionDistribution] = useState([]);
 
 
-const Elves = Moralis.Object.extend("Elves");
+
 
 
 function readOptions(contractMethod) {
@@ -78,7 +78,8 @@ useEffect(() => {
 
 
 const refreshMetaData = async () => {
- 
+
+  const Elves = Moralis.Object.extend("Elves");
   setProgress(1)
 
   let results = []
@@ -135,6 +136,57 @@ setLoading(false)
 };
 
 
+const checkElfLocation = async () => {
+ 
+
+  const ElvesLocation = Moralis.Object.extend("ElvesLocation");
+  setProgress(1)
+
+  let results = []
+
+  let start = 1
+  let supply = 6666//parseInt(cloudSupply.supply) ///tokenSupply
+  
+
+  let i = 1
+  
+  while(i<6667){
+
+  //  const pElves = await polygonContract.methods.elves(tokenId).call();
+ //   const eElves = await nftContract.methods.elves(tokenId).call();
+   
+    //owner timestamp action
+   
+    let query = new Moralis.Query(ElvesLocation);  
+ //   query.equalTo("token_id", elf.id);
+    const res = await query.first();
+    if(!res){
+      const elvesObject = new ElvesLocation();
+  //    elvesObject.set("ownerPoly", pElves.owner)
+  //    elvesObject.set("tsPoly", pElves.timestamp)
+  //    elvesObject.set("actionPoly", pElves.action)
+//
+   //   elvesObject.set("token_id", elf.id)
+      elvesObject.save() 
+      console.log("object created")
+      }else{
+   //     res.set("owner_of", elf.owner);
+        res.save()
+        console.log("object saved")
+      }
+
+  
+   
+    setProgress(i/supply*100)
+    i++
+  }
+
+setProgress(100)
+setLoading(false)
+  
+};
+
+
 
 
 
@@ -166,8 +218,7 @@ return (
 
              
         <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
-              <CampaignAdmin />
-
+         
               <p>HODLERS</p>
               {ownerCount && ownerCount}
              
