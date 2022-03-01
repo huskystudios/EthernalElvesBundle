@@ -44,7 +44,7 @@ const MainLayout = (props) => {
                     */} 
                     <NavLink className="nav-item" to="/profile">profile</NavLink>
                     <ConnectWallet />
-                    <NavLink className="nav-item" to={{ pathname: "https://transfers.ethernalElves.com"}} target="_blank">transfers</NavLink>
+                    <NavLink className="nav-item" to={{ pathname: "https://transfers.ethernalElves.com"}} target="_blank">confirm transfers</NavLink>
                    
                     <NavLink className="nav-item" to="/faq">faq</NavLink>
                
