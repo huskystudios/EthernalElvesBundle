@@ -741,7 +741,7 @@
     background-size: 95% 100%;
     background-position: center;
     background-repeat: no-repeat;
-    height: calc(100vh - 440px);
+    height: calc(100vh - 340px);
     width: calc(100vw - 20px);
     max-width: 1600px;
     bottom: 0px;
@@ -757,7 +757,7 @@
     background-size: 95% 100%;
     background-position: center;
     background-repeat: no-repeat;
-    height: 100vh;
+    height: 80vh;
     width: calc(100vw - 20px);
     max-width: 1600px;
     bottom: 0px;
