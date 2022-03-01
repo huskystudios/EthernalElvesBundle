@@ -362,8 +362,6 @@ function handleMoralisError(err) {
 
 
 
-
-
     const getElvesfromMoralis = async (address, userData) => {
 
         let activeChain = userData.get("ownerChainPref")

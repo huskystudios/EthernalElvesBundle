@@ -38,13 +38,35 @@ useEffect(() => {
  // unsubscribe()
   init()
 }, []);
+
+
+function handleMoralisError(err) {
+  switch (err.code) {
+    case Moralis.Error.INVALID_SESSION_TOKEN:
+      Moralis.User.logOut();
+      // If web browser, render a log in screen
+      // If Express.js, redirect the user to the log in route
+      console.log("ok")
+      break;
+
+    // Other Moralis API errors that you want to explicitly handle
+  }
+}
+
+
   
 
   useEffect(() => {
     
     const createUser = async () => {
       const {address, status} = await getCurrentWalletConnected();
-       Moralis.Cloud.run("createUser", {ownerAddress: address})
+       Moralis.Cloud.run("createUser", {ownerAddress: address}).then(function(results) {
+          
+        return results
+      
+      }, function(err) {
+          handleMoralisError(err);
+      });
     }    
 
    createUser()
