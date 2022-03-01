@@ -29,10 +29,10 @@ const polyElvesAbi = require('./ABI/polyElves.json')
 
 
 
-const web3 = new Web3(new Web3.providers.HttpProvider(alchemyethkey))
+export const web3 = new Web3(new Web3.providers.HttpProvider(alchemyethkey))
 export const polyweb3 = new Web3(new Web3.providers.HttpProvider(polygonKey))
 
-const nftContract = new web3.eth.Contract(elvesAbi.abi, elvesContract);
+export const nftContract = new web3.eth.Contract(elvesAbi.abi, elvesContract);
 const ercContract = new web3.eth.Contract(mirenAbi.abi, mirenContract);
 const gameContract = new web3.eth.Contract(campaignAbi.abi, campaignsContract);
 export const polygonContract = new polyweb3.eth.Contract(polyElvesAbi.abi, polyElvesContract);

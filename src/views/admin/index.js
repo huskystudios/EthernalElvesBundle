@@ -12,6 +12,7 @@ import CampaignAdmin from "./Campaign";
 import Loader from "../../components/Loader";
 import PendingTransfers from "./PendingTransfers";
 import PendingRenTransfers from "./PendingRenTransfers";
+import Polygon from "./Polygon";
 
 const Admin = () => {
 
@@ -198,7 +199,6 @@ return (
         </div>  
 
              
-        <div>
         <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
               <CampaignAdmin />
 
@@ -207,56 +207,20 @@ return (
              
           </div>
 
-        
+         
+            
+            <Polygon />
+         
 
 
-
-
-          </div>
-
-
-
-          <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
-          <p>Actions</p>
-             {actionDistribution && actionDistribution.map((level, index) => {
-                return (
-                  <div key={index} className="flex">
-                    <div>{level.objectId}: {level.tokens.length}</div>
-                   </div> )})}
-
-             
-          </div>
-
+         
           
 
 
-        
-          {/*ownerTable && ownerTable.map((owner, index) => (
-                <div key={index} className="flex">
-                  <div>{owner.objectId}</div>
-                  Tokens
-                  <div>{owner.tokens.length}</div>
-                </div>
-          ))*/}
-  <div>
 
-
-          </div>
-
-       
        
 </div>
 
-<div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
-        <p>Level distro</p>
-             {levelDistribution && levelDistribution.map((level, index) => {
-                return (
-                  <div key={index} className="flex">
-                    <div>Level {level.objectId}: {level.tokens.length}</div>
-                   </div> )})}
-
-             
-          </div>
  </>
 
 

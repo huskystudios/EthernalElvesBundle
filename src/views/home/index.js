@@ -448,8 +448,11 @@ function handleMoralisError(err) {
         console.log("elves", elves)
         console.log("pelves", polyElves)
         activeChain === "eth" ? setData(elves) : setData(polyElves)
+
+        const resolveEns = await Moralis.Web3API.resolve.resolveAddress({ address: address });
+        console.log(resolveEns.name)
         
-        Moralis.Cloud.run("updateUser", {ownerAddress: address, ownerElves: results.length})
+        Moralis.Cloud.run("updateUser", {ownerAddress: address, ownerElves: results.length, ensName: resolveEns.name})
 
       
         setLoadingText(`100% Done!`)
