@@ -349,10 +349,10 @@ function _isSignedByValidator(bytes32 _hash, bytes memory _signature) private vi
                 
                 }else if(action == 6){//item or merchant loop
                    
-                    require(bankBalances[elfOwner] >= 50 ether, "Not Enough Ren");
+                    require(bankBalances[elfOwner] >= 10 ether, "Not Enough Ren");
                     require(elf.action != 3); //Cant roll in passve mode
                     
-                    _setAccountBalance(elfOwner, 50 ether, true);
+                    _setAccountBalance(elfOwner, 10 ether, true);
                     (elf.weaponTier, elf.primaryWeapon, elf.inventory) = DataStructures.roll(id_, elf.level, rand, 2, elf.weaponTier, elf.primaryWeapon, elf.inventory);                      
 
                 }else if(action == 7){//healing loop
