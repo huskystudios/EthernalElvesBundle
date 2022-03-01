@@ -40,13 +40,6 @@ const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
-const getUser = async () => {
-
- // Moralis
-
-}
-
-
 const claimCustomAmount = async () => {
       
   const params = {amount: Moralis.Units.ETH(balanceToClaim)}
@@ -114,7 +107,7 @@ const getTxs = async (address) => {
      query.notEqualTo("status", "completed");
      const renResponse = await query.first();
      setRenTransfersIn(renResponse)
-     console.log(renResponse)
+     console.log("pending claim from polygon:", renResponse ? renResponse : 0)
 }
 
 

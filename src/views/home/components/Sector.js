@@ -60,12 +60,17 @@ const Sector = ({onChangeIndex, onSendCampaign, data, chain}) => {
 
             return
         }
-
-
-
-
       
         let tryTokenids = data.map(nft => {return(nft.id)})
+        if(tryTokenids.length === 0){
+            setAlert({show: true, value: {
+                title: "No creatures left",
+                content: `Select atleast one elf to enter this campaign`
+            }})
+            return
+        }
+
+
         let tryCampaign = activeCampaign.id.toString()
         let trySection = sector.toString()
         let tryWeapon = rerollWeapon

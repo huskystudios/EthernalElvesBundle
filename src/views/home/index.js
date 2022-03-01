@@ -36,6 +36,7 @@ import Help from "./components/Help"
 import TableMode from "./components/TableMode"
 import Bloodthirst from "./components/Bloodthirst"
 import Modal from "../../components/Modal"
+import Heal from "./components/Heal"
 
 const Home = () => {
 
@@ -86,6 +87,7 @@ const Home = () => {
     
     const sendGaslessFunction = async (params) => {
 
+       
         let tx 
         setLoading(true)
         setLoadingText("Sending transaction...")
@@ -162,18 +164,30 @@ const Home = () => {
     }
 
     const healing = async () => {
+        
+        if(healers.length !== targets.length){
+            setAlert({show: true, value: {title: "Error", content: "Please the same number of healers and targets"}})
+            setModalActions({show: !modalActions.show, value: null})
+            return
+        }
+
+        let healer = healers[0].id
+        let target = targets[0].id
+
         if(chain === "eth"){
-         const params =  {healer: clicked[0].id, target: clicked[1].id}
+         const params =  {healer: healer, target: target}
          let {success, status, txHash} = await heal(params)
     
          success && resetVariables()
          setAlert({show: true, value: {title: "Tx Sent", content: (status)}})   
         
         }else{
-            console.log(clicked[0].id, clicked[1].id, wallet)
-            const params =  {functionCall: polygonContract.methods.heal(clicked[0].id, clicked[1].id, wallet).encodeABI()}
+            console.log(healer, target, wallet)
+            const params =  {functionCall: polygonContract.methods.heal(healer, target, wallet).encodeABI()}
             sendGaslessFunction(params)
-        }        
+          resetVariables()
+        }  
+        console.log(healer, target, wallet)      
                           
     }
 
@@ -183,12 +197,19 @@ const Home = () => {
 
         if(healerIds.length === 0 || targetIds.length === 0){
             setAlert({show: true, value: {title: "Error", content: "Please select at least one healer and one target"}})
+            setModalActions({show: !modalActions.show, value: null})
+            return
+        }
+        if(healers.length !== targets.length){
+            setAlert({show: true, value: {title: "Error", content: "Please the same number of healers and targets"}})
+            setModalActions({show: !modalActions.show, value: null})
             return
         }
 
         const params =  {functionCall: polygonContract.methods.healMany(healerIds, targetIds, wallet).encodeABI()}
         console.log(healers, targets, wallet)
         sendGaslessFunction(params)
+        resetVariables()
         setHealModal(false)
                           
     }
@@ -198,7 +219,13 @@ const Home = () => {
 
         let rollerIds = clicked.map(el => el.id)
         const cost = rollCosts.find(cost => cost.action === option)
-               
+        
+        if(rollerIds.length === 0){
+            setAlert({show: true, value: {title: "Error", content: "Please select at least one elf"}})
+            return
+        }
+        
+        
         if(chain === "eth"){              
         const params =  {ids: rollerIds}
         let {success, status, txHash} = option === "forging" ? await forging(params) : await merchant(params)
@@ -274,10 +301,15 @@ const Home = () => {
         console.log(option)
         //require ids cooldown to be false
         let cooldown = activeNfts.filter(item => item.cooldown === true)
+        if(ids.length === 0){
+            setAlert({show: true, value: {title: "Error", content: "Please select at least one elf"}})
+            return
+        }
         if(cooldown.length > 0){
             setAlert({show: true, value: {title: "Cooldown", content: "You have cooldown on some elves. Please reselect elves with no cooldown."}})
             return
         }
+
         if(chain === "eth"){
                 if(option.action === "sendPassive"){
                     const params =  {ids: ids}
@@ -501,6 +533,9 @@ function handleMoralisError(err) {
         setSector(1)
         setSuccess(false)
         setClicked([])
+        setHealers([])
+        setTargets([])
+        setModalActions({show: !modalActions.show, value: null})
     }
 
 
@@ -731,6 +766,19 @@ function handleMoralisError(err) {
                             {modalActions.value === 1 && <Staking nft={activeNfts} onRunWeb3={doAction} onChangeIndex={onChangeIndex} />}
                             {modalActions.value === 2 && <Sector chain={chain} campaign={campaign} data={activeNfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} />}
                             {modalActions.value === 3 && <Bloodthirst setAlert={setAlert} chain={chain} campaign={campaign} data={activeNfts} onSendCampaign={bloodthirstFunction} onChangeIndex={onChangeIndex} />}
+                            {modalActions.value === 4 && 
+                            <Heal 
+                                clicked={clicked}
+                                setAlert={setAlert}
+                                chain={chain}
+                                data={data}
+                                healing={healing}
+                                healMany={healMany}
+                                healers={healers}
+                                targets={targets}
+                                setHealers={setHealers}
+                                setTargets={setTargets}                                
+                            />}
                         </Modal>                      
                         
                 {/* 
@@ -760,7 +808,7 @@ function handleMoralisError(err) {
                                 onChangeIndex={onChangeIndex} 
                                 onForge={() => setModal({show: true, action:"forging", heading:"DO YOU WANT TO FORGE A NEW WEAPON?", content:"forge"})}
                                 onMerchant={() => setModal({show: true, action:"merchant", heading:"DO YOU WANT TO TRY FOR A NEW ITEM?", content:"buy"})}
-                                onHeal={() => setHealModal(true)}
+                                onHeal={() => setModalActions({show: !modalActions.show, action:"bloodthirst", value:4 })}
                                 onBloodthirst={() => setModalActions({show: !modalActions.show, action:"bloodthirst", value:3 })}
                                 onCampaign={() => setModalActions({show: !modalActions.show, action:"campaign", value:2})}
                                 onPassiveMode={() => setModalActions({show:!modalActions.show, action:"passive", value:1})}

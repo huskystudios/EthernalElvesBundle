@@ -108,22 +108,20 @@ const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3
           document.removeEventListener("click", handleClick);
         };
     });
-    const handleGameModes = (clicked) => {
-        onSelect(clicked)
-    }
+
     return (
         <>
              <span className="btn-select">
                 <div className="dropdown" ref={drop} id="actions">
                     <button className="btn btn-blue" onClick={() => setOpen(open => !open)}>Actions</button>
-                    {clicked.length > 0 && open && <div className="dropdown-content">
+                    {open && <div className="dropdown-content">
                         
                         <span onClick={onForge}>forge</span>
                         <span onClick={onMerchant}>merchant</span>
                         <span onClick={onCampaign}>campaign</span>
                         {chain === "polygon" && <span onClick={onBloodthirst}>bloodthirst</span>}
                         <span onClick={onPassiveMode}>passive mode</span>
-                        {clicked.length > 1 && <span onClick={onHeal}>heal</span>}
+                        <span onClick={onHeal}>heal</span>
                         {chain === "polygon" && <span onClick={onSynergize}>synergize</span>}
                         {/*
                         
