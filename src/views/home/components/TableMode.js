@@ -23,6 +23,7 @@ const TableMode = ({setAlert, nftData, owner, clicked, toggle, chain, toggleChai
     const [sortBy, setSortBy] = useState({ value: "cooldown", order: "desc" });
     const [renTransfer, setRenTransfer] = useState("")
     const [allowed, setAllowed] = useState(false)
+    const [maximize, setMaximize] = useState(false)
     
     const [isButtonEnabled, setIsButtonEnabled] = useState({
         unstake: false,
@@ -372,21 +373,20 @@ const TableMode = ({setAlert, nftData, owner, clicked, toggle, chain, toggleChai
     return !loading ? (
         
         <>
-         <div className="d-flex">      
-                    <div className="column">             
+          
 
                             <div className="flex justify-center p-2">
                                     
                             <button className="btn-whale"  onClick={()=> setTransfersModal(!transfersModal)}> Transfers </button>
                             <button className="btn-whale" onClick={unStakeElf}> Unstake </button>
                             <button className="btn-whale" onClick={()=> setMintModal(!mintModal)}> Mint </button>
-                           
-                            <button disabled className="btn-whale" onClick={() => setVisualMode(!visualMode)}>Visual mode</button>
+                            <button className="btn-whale" onClick={()=> setMaximize(!maximize)}> {!maximize ? "expand table" : "minimize table"} </button>
+                            {/*<button disabled className="btn-whale" onClick={() => setVisualMode(!visualMode)}>Visual mode</button>*/}
                             <button className="btn btn-green" onClick={() => setReloadData(!reloadData)}>Reload Data</button>
                             <button className="btn btn-blue" onClick={toggleChain}>Active: {chain}</button>
                             </div>      
     
-        <div className="collection-panel">
+        <div className={!maximize ? "collection-panel" : "collection-panel-max"} >
              <div className="collection-selection" >
              
     <div className="table-whale">          
@@ -531,9 +531,7 @@ const TableMode = ({setAlert, nftData, owner, clicked, toggle, chain, toggleChai
           </div>
       </div>
                 
-</div>
 
-</div>
 {renderMintModal()}
 {renderTransfersModal()}
 {/*alert.show && showAlert(alert.value)*/}

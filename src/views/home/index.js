@@ -451,8 +451,8 @@ function handleMoralisError(err) {
          
         let resolveEns
         try{
-            resolveEns = await Moralis.Web3API.resolve.resolveAddress({ address: address });
-            console.log(resolveEns.name)
+           // resolveEns = await Moralis.Web3API.resolve.resolveAddress({ address: address });
+           // console.log(resolveEns.name)
         }catch(e){
             console.log(e)
         }

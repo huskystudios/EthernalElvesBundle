@@ -752,6 +752,22 @@
     box-sizing: border-box;
     padding: 1.6em 3.5em 1.5em;
 }
+.collection-panel-max {
+    background-image: url(../../assets/images/collection.png);
+    background-size: 95% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: calc(100vw - 20px);
+    max-width: 1600px;
+    bottom: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 70px;
+    position: relative;
+    box-sizing: border-box;
+    padding: 1.6em 3.5em 1.5em;
+}
 .filter-panel {
     width: 1366px;
     margin:  auto;
