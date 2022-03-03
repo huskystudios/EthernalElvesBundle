@@ -567,7 +567,7 @@ function handleMoralisError(err) {
 
         return (
             <div className="alert-bar" >
-                <img src={data[0].image} alt="alert" />
+                <img src={data[0]?.image} alt="alert" />
                 <h3>{title}</h3>
                 <pre>{content}</pre>
                 <div className="close-modal" onClick={() => setAlert({ show: false })}>X</div>

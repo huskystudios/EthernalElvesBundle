@@ -182,7 +182,7 @@ const TableMode = ({setAlert, nftData, owner, clicked, toggle, chain, toggleChai
             const params =  {ids: ids, renAmount: (renToSend).toString()}
             let {success, status, txHash} = await checkIn(params)
      
-            setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
+            success && setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
 
         }else{
 
