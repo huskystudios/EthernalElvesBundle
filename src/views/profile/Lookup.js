@@ -1,38 +1,76 @@
 import { useState, useMemo } from "react";
 import React from 'react';
 import { toPng } from 'html-to-image';
-import {lookupMultipleElves} from '../../utils/interact'
+import {lookupMultipleElves, polygonContract, nftContract} from '../../utils/interact'
 import Countdown from "react-countdown";
 import "./style.css"
 import { useMoralis } from "react-moralis"
 import Modal from "../../components/Modal"
+import Loader from "../../components/Loader";
 
 function Lookup() {
 
-const [textAreaSample, setTextArea] = useState(69)
+const [tokenId, setTokenId] = useState(69)
 const { Moralis } = useMoralis();
-const [showMetaImage, setShowMetaImage] = useState(false)  
 const [elfObject, setElfObject] = useState(null)
 const [showModal, setShowModal] = useState(true)
+const [loading, setLoading] = useState(true)
+const [loadingText , setLoadingText] = useState("")
 
 const getMeta = async () => {
-
-  let chain = "eth"
+  setShowModal(!showModal)
+  setLoading(true)
+  
+  setLoadingText("Locating elf...")
+  let chain = "eth" //set default chain to eth
+  //find out what the Dapp sees...
   const Elves = Moralis.Object.extend("Elves");
   let query = new Moralis.Query(Elves);
-  query.equalTo("token_id", parseInt(textAreaSample));
-  const response = await query.find();
+  query.equalTo("token_id", parseInt(tokenId));
+  const response = await query.first();
+  setLoadingText("Dapp sees elf in " + response.attributes.chain + ". Confirming with chain...")
+  //look up token Id on both chains to determine what chain the elf is on
+  const pElves = await polygonContract.methods.elves(tokenId).call();
+  setLoadingText("Checked Polygon, checking Eth...")
+  const eElves = await nftContract.methods.elves(tokenId).call();
+  console.log("db response:", response)
+  console.log("pElves:", pElves)
+  console.log("eElves:", eElves)
 
-  if(response[0].attributes.chain === "polygon"){   
-    chain="polygon"
+  if(pElves.owner === eElves.owner) {//if owners match and are not equal to null address then the elf must be on polygon
+      if(pElves.owner === "0x0000000000000000000000000000000000000000" && eElves.owner === "0x0000000000000000000000000000000000000000") {
+        //since owners match but are equal to null address then the elf is unstaked in eth  
+          chain = "eth";
+          console.log("unstaked in eth")
+          setLoadingText("Found Elf unstaked in eth")
+      }else{
+          chain = "polygon";
+          console.log("active in polygon")
+          setLoadingText("Found Elf Active in Polygon")
+      }
+      
   }
 
-  const lookupParams = {array: [parseInt(textAreaSample)], chain: chain}
+  const lookupParams = {array: [parseInt(tokenId)], chain: chain}
+  setLoadingText("Getting elf data from chain...")
   const data = await lookupMultipleElves(lookupParams)
+  
+ 
+
+  //after idenifying the chain, lookup the elf on that chain to confirm that the owner is correct
+  response.set("owner_of", data[0].owner);
+  response.set("chain", chain);
+  response.save().then((obj) => {
+      let message = `${tokenId} is now on ${chain}`
+     // alert(message)
+         console.log("object saved") 
+         console.log("chain:", chain, pElves.owner, eElves.owner, "owner:", data[0].owner)
+         console.log("lookup Elf data", data[0])
+          setLoadingText("Updating elf data on dApp... Done.")
+  })
 
   setElfObject(data[0])  
-  setShowMetaImage(true)
-  setShowModal(!showModal)
+  setLoading(false)
   
 }
 
@@ -84,9 +122,9 @@ return (
       <div className="flex mb-1">
        
       <input
-        value={textAreaSample}
+        value={tokenId}
         type="number"
-        onChange={(e) => setTextArea(e.target.value)}
+        onChange={(e) => setTokenId(e.target.value)}
         id="text"
       />
       <button className="btn btn-green" onClick={() => getMeta()}>Fetch Elf</button>{"  "}
@@ -97,8 +135,10 @@ return (
     <div className="flex flex-wrap">
       
       
-      {showMetaImage &&
+ 
       <Modal show={showModal}>
+        {!loading ?
+        <>
       <div id="elf" className={`w-25 mh-auto ${raceClassName}`}>
       <h2 className="text-center">{elfObject.name}</h2>
       <img src={elfObject.image}/>
@@ -143,9 +183,9 @@ return (
         link.click();
       });
     }}>Download</button>
+      </> : <Loader text={loadingText} />}
 
-
-      </Modal>}
+      </Modal>
 
       
       
