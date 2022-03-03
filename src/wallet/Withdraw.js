@@ -68,19 +68,43 @@ const claimCustomAmountPolygon = async () => {
 
             let txHashLink = `https://polygonscan.com/tx/${fixString}`
         
-            let successMessage = <>Check out your transaction on <a target="_blank" href={txHashLink}>Polyscan</a>. Confirming tx.</>
+            let successMessage = <>Ren claimed on polygon, sending to eth. Check out your transaction on <a target="_blank" href={txHashLink}>Polyscan</a>. Confirming tx.</>
             setStatus(successMessage)
             console.log("Submitted transaction with hash: ", txHashLink)
-              let transactionReceipt = null
+             
+            let transactionReceipt = null
+             
               while (transactionReceipt == null) { // Waiting expectedBlockTime until the transaction is mined
                   transactionReceipt = await polyweb3.eth.getTransactionReceipt(fixString);
                   await sleep(1000)
               }
-        
-            console.log("Got the transaction receipt: ", transactionReceipt)
+
+              //let transactionReceipt = await polyweb3.eth.getTransactionReceipt("0xfc1826a58ef85687d9e02868b986d0c74330073f3f9f5cf169df9a92fdeefab4");
               
-             
-            setStatus(successMessage)
+              let from = transactionReceipt.logs[0].topics[1]
+              //convert from hex to string
+              from = from.substring(26)
+              from = "0x" + from
+              console.log(from)
+          
+              let amount = transactionReceipt.logs[0].topics[2]
+              //convert amount from hex to decimal
+              amount = parseInt(amount, 16)
+              let ts = parseInt(transactionReceipt.logs[1].data, 16)
+
+              let getsignature = await Moralis.Cloud.run("claimRenWithHash", {txHash: transactionReceipt}) 
+
+              const ethClaimParams =  {renAmount: getsignature.renAmount.toString() , signature: getsignature.signature.signature, timestamp: getsignature.timestamp}
+              
+              console.log(ethClaimParams)
+            
+              let {success, status, txHash} = await checkOutRen(ethClaimParams)  
+            
+            txHashLink = `https://etherscan.io/tx/${txHash}`
+        
+            successMessage = <>Ren claimed on polygon, sending to eth. Check out your transaction on <a target="_blank" href={txHashLink}>Polyscan</a>. Confirming tx.</>
+            success && setStatus(successMessage)
+
             await getRenBalance(owner.address)
             setPolyBalanceToClaim(0)
             setModal(!modal)            
