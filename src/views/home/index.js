@@ -30,13 +30,14 @@ import {
 } from "../../utils/interact"
 
 
-import { useMoralis } from "react-moralis";
+import { useMoralis, useMoralisQuery } from "react-moralis";
 import Staking from "./components/Staking"
 import Help from "./components/Help"
 import TableMode from "./components/TableMode"
 import Bloodthirst from "./components/Bloodthirst"
 import Modal from "../../components/Modal"
 import Heal from "./components/Heal"
+
 
 const Home = () => {
 
@@ -67,7 +68,21 @@ const Home = () => {
     const [miren, setMiren] = useState(0);
     
     const [modalActions, setModalActions] = useState({ show: false, value: null })    
-  
+   
+   /* const [limit, setLimit] = useState(3);
+const { data, error, isLoading } = useMoralisQuery(
+  "Elves",
+  query =>
+    query
+      .greaterThanOrEqualTo("score", 100)
+      .descending("score")
+      .limit(limit),
+  [limit],
+  {
+    live: true,
+  },
+);
+  */
   
     const getRenBalance = async (address) => {
 
