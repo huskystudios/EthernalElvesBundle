@@ -353,7 +353,7 @@ const TableMode = ({setAlert, nftData, owner, clicked, toggle, chain, toggleChai
                         
                     </div>
                     <div className="flex mt-1">
-                    {/*chain === "eth" && */<input type={"text"} placeholder={"Ren To Transfer"} value={renTransfer} onChange={(e) => setRenTransfer(e.target.value)}/>}
+                    {chain === "eth" && <input type={"text"} placeholder={"Ren To Transfer"} value={renTransfer} onChange={(e) => setRenTransfer(e.target.value)}/>}
                     <button className="btn-whale"  onClick={checkinElf}>
                         Confirm Transfer
                      </button>
