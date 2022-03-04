@@ -41,8 +41,8 @@ export const actionString =
 ]
 
 export const rollCosts =[
-    {action:"forging", ren: 200, eth:.01},
-    {action:"merchant", ren: 50, eth:.01},
+    {action:"forging", ren: 200, eth:.04},
+    {action:"merchant", ren: 10, eth:.01},
     {action:"synergize", ren: 5, eth:0}
 
 ]

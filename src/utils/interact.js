@@ -465,7 +465,7 @@ export const unStake = async({ids}) => {
 
 export const forging = async({ids}) => {
 
-  let reRollPrice = .01 * 10**18
+  let reRollPrice = .04 * 10**18
   let hexString = reRollPrice.toString(16);
   const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
     

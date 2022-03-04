@@ -30,13 +30,14 @@ import {
 } from "../../utils/interact"
 
 
-import { useMoralis } from "react-moralis";
+import { useMoralis, useMoralisQuery } from "react-moralis";
 import Staking from "./components/Staking"
 import Help from "./components/Help"
 import TableMode from "./components/TableMode"
 import Bloodthirst from "./components/Bloodthirst"
 import Modal from "../../components/Modal"
 import Heal from "./components/Heal"
+
 
 const Home = () => {
 
@@ -68,7 +69,6 @@ const Home = () => {
     const [consoleOpen, setConsoleOpen] = useState(false)
 
     const [modalActions, setModalActions] = useState({ show: false, value: null })
-
 
     const getRenBalance = async (address) => {
 
@@ -367,7 +367,7 @@ const Home = () => {
 
     const getElvesfromMoralis = async (address, userData) => {
 
-        let activeChain = userData.get("ownerChainPref")
+        let activeChain = userData.attributes.ownerChainPref ? userData.attributes.ownerChainPref : "eth"
         setLoading(true)
         setClicked([])
         console.log("1")
