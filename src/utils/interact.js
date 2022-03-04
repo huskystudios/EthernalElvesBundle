@@ -37,7 +37,9 @@ const ercContract = new web3.eth.Contract(mirenAbi.abi, mirenContract);
 const gameContract = new web3.eth.Contract(campaignAbi.abi, campaignsContract);
 export const polygonContract = new polyweb3.eth.Contract(polyElvesAbi.abi, polyElvesContract);
 
-
+const sleep = (milliseconds) => {
+  return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
 
 ////////ETH FUNCTIONS////////////////////////////
 export const txReceipt = async ({ txHash, interval }) => {
@@ -640,17 +642,25 @@ export const checkOut = async(props) => {
 
 export const checkOutRen = async(props) => {
 
-  console.log(props)
+
   
   let tx = await txPayload(nftContract.methods.checkOutRen(props.renAmount, props.signature, props.timestamp).encodeABI())
  
   try {
     const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx],})
+
+    let transactionReceipt = null
+     
+      while (transactionReceipt == null) { // Waiting expectedBlockTime until the transaction is mined
+          transactionReceipt = await web3.eth.getTransactionReceipt(txHash);
+          await sleep(12000)
+      }
         
   return {
         success: true,
         status: (<>Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
         txHash: txHash,
+        receipt: transactionReceipt
     }
   } catch (error) {
     return {

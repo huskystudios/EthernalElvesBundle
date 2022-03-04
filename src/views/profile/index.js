@@ -10,36 +10,13 @@ import Lookup from "./Lookup"
 const Profile = () => {
     const [loading, setLoading] = useState(true)
     const [supply, setSupply] = useState("3000")
-    const [totalUnstaked, setTotalUnstaked] = useState("3000")
-    const [totalPassive, setTotalPassive] = useState("3000")
-    const [totalCampaign, setTotalCampaign] = useState("3000")
-    const [totalBloodthirst, setTotalBloodthirst] = useState("3000")
-    const [totalStaked, setTotalStaked] = useState("3000")
+    const [renTransfers, setRenTransfers] = useState([])
     const [data, setData] = useState({})
     const [actionData, setActionData] = useState({})
     const { Moralis, authenticate } = useMoralis();
     const [status, setStatus] = useState("")
-    const [balance, setBalance] = useState(0);
-    const [balanceToClaim, setBalanceToClaim] = useState(0);
-    const [miren, setMiren] = useState(0);
-  
-  const getRenBalance = async (address) => {
-    //await Moralis.enableWeb3();
-    //const renBalanceContract = await Moralis.Cloud.run("getBalance", {address});//in contract
-    //const renBalanceWallet = await Moralis.Cloud.run("getMiren", {address});//in wallet
-  
-    
-   // setBalance(renBalanceContract/1000000000000000000);
-  //  setMiren(renBalanceWallet/1000000000000000000);
-  }
     
 
-    const claimCustomAmount = async () => {
-      
-      const params = {amount: Moralis.Units.ETH(balanceToClaim)}
-      await withdrawSomeTokenBalance(params)
-                      
-    }
 
     const getUserData = async (address) => {
 
@@ -47,6 +24,7 @@ const Profile = () => {
         const RenTransfers = Moralis.Object.extend("RenTransfers");
         const ElfActionsPolygon = Moralis.Object.extend("ElfActionsPolygon");
         const RenTransfersPolygon = Moralis.Object.extend("RenTransfersPolygon");
+      
         
 
         let query = new Moralis.Query(ElfActions);  
@@ -108,7 +86,9 @@ const Profile = () => {
         setData(elves)        
 
         setStatus("done")
-        elves && setLoading(false)
+    
+
+        setLoading(false)
     
     }
         
