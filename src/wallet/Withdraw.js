@@ -133,8 +133,7 @@ const claimCustomAmountPolygon = async () => {
               await claimPendingTxhash(transactionReceipt)
               await getRenBalance(owner.address)
               setPolyBalanceToClaim(0)
-              setConfirm(!confirm)
-              setLoading(false)
+              setConfirm(!confirm)          
             }           
 
 
@@ -178,21 +177,24 @@ const claimCustomAmountPolygon = async () => {
                                       let query = new Moralis.Query(ClaimRen);
                                       query.equalTo("txHash", txHashinClaimRen);
                       
-                                      query.first().then((res) => {
+                                        query.first().then((res) => {
 
                                         res.set("txHashCompleted", r.txHash);
                                         res.set("transferTo", "eth");
                                         res.set("signature", getsignature.signature.signature);
                                         res.set("status", "completed");
-                                        res.save();  
-
+                                        res.save().then(() => {
+                                          setStatus("Success - updating db...")
+                                          setPolyBalanceToClaim(0)                            
+                                          setLoading(false)
+                                        })  
+                                        console.log("this step", r)
+                                        
                                       });
                                       
                             }
                 
-                            console.log("this step", r)
-                            setPolyBalanceToClaim(0)                            
-                            setLoading(false)
+                            
 
                           })  
                   
