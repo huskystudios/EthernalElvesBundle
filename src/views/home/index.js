@@ -83,6 +83,10 @@ const { data, error, isLoading } = useMoralisQuery(
   },
 );
   */
+
+const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+  }
   
     const getRenBalance = async (address) => {
 
@@ -112,9 +116,20 @@ const { data, error, isLoading } = useMoralisQuery(
             console.log(tx)
             if(tx.data.status){
 
-            let fixString = tx.data.result.replaceAll("\"", "")
-            let txHashLink = `https://polygonscan.com/tx/${fixString}`
+            let polyTxHash = tx.data.result.replaceAll("\"", "")
+            let txHashLink = `https://polygonscan.com/tx/${polyTxHash}`
             let successMessage = <>Check out your transaction on <a target="_blank" href={txHashLink}>Polyscan</a> </>
+            
+            setLoadingText(successMessage)
+            await sleep(7000)
+            let transactionReceipt = null
+             
+              while (transactionReceipt == null) { // Waiting expectedBlockTime until the transaction is mined
+                  transactionReceipt = await polyweb3.eth.getTransactionReceipt(polyTxHash);
+                  setLoadingText("Waiting for tx to be mined...")
+                  await sleep(12000)
+              }
+
             
             setAlert({show: true, value: {title: "Tx Sent", content: (successMessage)}})
             setReloadData(!reloadData)
