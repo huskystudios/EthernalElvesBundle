@@ -816,7 +816,7 @@ const Home = () => {
 
                         </div>
                     </div>
-                    {/* {index === 0 && data && wallet &&
+                    {index === 0 && data && wallet &&
                         <div className="d-flex justify-center items-center">
                             <Control
                                 data={data}
@@ -837,7 +837,7 @@ const Home = () => {
                                 consoleOpen={consoleOpen}
                                 setConsoleOpen={setConsoleOpen}
                             />
-                        </div>} */}
+                        </div>}
 
                 </>
             }
