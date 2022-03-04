@@ -16,7 +16,7 @@ const Withdraw = () => {
   const [balanceToClaim, setBalanceToClaim] = useState(0);
   const [miren, setMiren] = useState(0);
   const [modal, setModal] = useState(false);
-  const [RenTransfersIn, setRenTransfersIn] = useState(0);
+  const [renTransfersIn, setRenTransfersIn] = useState(0);
   const [loading, setLoading] = useState(true);
   const [confirm, setConfirm] = useState(false);
   const [pendingTxHash, setPendingTxHash] = useState("");
@@ -104,7 +104,7 @@ const claimCustomAmountPolygon = async () => {
 
               let getsignature = await Moralis.Cloud.run("claimRenWithHash", {txHash: transactionReceipt}) 
               
-              setStatus("Signature received, calling web3, look for wallet promot...")
+              setStatus("Signature received, calling web3, look for wallet prompt...")
               await sleep(3000)
               const ethClaimParams =  {renAmount: getsignature.renAmount.toString() , signature: getsignature.signature.signature, timestamp: getsignature.timestamp}
               
@@ -182,11 +182,11 @@ const claimCustomAmountPolygon = async () => {
     
             }catch(e){
                 console.log(e)
-                setConfirm(!confirm)
+        
                 setLoading(false)
                 setStatus("An error occured, please try again.")
             }
-            setConfirm(!confirm)
+        
             setLoading(false)
     
         }
@@ -200,12 +200,11 @@ const getTxs = async (address) => {
      const query = new Moralis.Query(ClaimRen);
      query.equalTo("from", address);
      query.notEqualTo("status", "completed");
-     const renResponse = await query.first();
+     query.descending("createdAt")
+     const renResponse = await query.find();
      setRenTransfersIn(renResponse)
      console.log("pending claim from polygon:", renResponse ? renResponse : 0)
 }
-
-
 
 
 useEffect( () => {
@@ -221,7 +220,60 @@ useEffect( () => {
   
 },[modal])
 
+const ShowPendingTransfers = () => {
 
+
+
+  return(
+
+<div className="table">          
+<table style={{width: '100%'}}>
+<thead style={{textAlign: "left"}}>
+  <tr>
+  <th>Date/Time</th>
+  <th>Status</th>
+  <th>$REN</th>    
+  <th>TX Link</th>       
+  <th>TX Hash</th>     
+  </tr>
+</thead>
+<tbody>
+    
+      {renTransfersIn && renTransfersIn.map((line, index) => {
+          
+          let createDate = new Date( Date.parse(line.createdAt))
+          let txHash = line.attributes.txHash
+          let txLink = `https://polygonscan.com/tx/${txHash}`
+
+     
+          return(
+              <tr key={index}> 
+              <td>{createDate.toGMTString()}</td>
+              <td>{line.attributes.status}</td>
+              <td>{line.attributes.renAmount/1000000000000000000}</td>                          
+              <td><a target="_blank" href={txLink}>View Tx</a></td>
+              <td>{txHash}</td>
+             
+             
+     
+          </tr>
+          )
+      }
+       
+       
+       
+      )}
+ 
+
+      
+</tbody>
+</table>
+
+
+</div>
+
+  )
+}
 
 /*
 
@@ -258,17 +310,17 @@ const claimPolyRen = async () => {
 
   
 
-  if(RenTransfersIn.attributes.status === "pending"){
+  if(renTransfersIn.attributes.status === "pending"){
 
   
-    const params =  {renAmount:RenTransfersIn.attributes.renAmount , signature:RenTransfersIn.attributes.signature, timestamp:RenTransfersIn.attributes.timestamp}
+    const params =  {renAmount:renTransfersIn.attributes.renAmount , signature:renTransfersIn.attributes.signature, timestamp:renTransfersIn.attributes.timestamp}
     console.log(params)
   
     let {success, status, txHash} = await checkOutRen(params)       
     
       if(success){
-        RenTransfersIn.set("status", "initiated")
-        RenTransfersIn.save()
+        renTransfersIn.set("status", "initiated")
+        renTransfersIn.save()
         console.log("success")
         setModal(!modal)
       }
@@ -301,7 +353,7 @@ const claimPolyRen = async () => {
     <li>This is a two step process that can take upto 5 minutes. The first step is to deduct REN from your Polygon Credit balance.</li>
     <li>After the dApp submits the gasless function, it will use the receipt from the polygon trasnaction to generate the proof to mint the REN on ETH.</li>
     <li>Please leave the modal/dialog box open while the transaction completes. Please note down the polygon tx when it prompts. You will need this if the claim fails midway </li>
-    <li>If the transaction does not go through, don't worry, you can use the "complete pending transaction" button to finish the second step</li>
+    <li>If the transaction does not go through, don't worry, you can use the "complete pending transaction" button on the previous page to finish the second step</li>
   </ul>
 <div className={"flex"}>
 <button className="btn btn-grey" onClick={resetVariables}>Back</button>
@@ -384,13 +436,20 @@ const claimPolyRen = async () => {
 </div>
                 </div>
 
-      <div className="p-4">
+      <div className="p-1">
+      <div className="flex items-center justify-center">
+      <h2>PENDING TRANSFERS</h2>
+      </div>
+      <div className="p-2">
       <p>If a polygon REN credit claim tx did not complete, please put the polygon tx hash in here and complete the second step</p>
+      </div>
           <div className="flex items-center justify-center">
           <input type="text" placeholder="Polygon tx hash" onChange={(e) => setPendingTxHash(e.target.value)}/>
           <button className="btn btn-grey" onClick={claimPendingTxhash}> Complete pending transaction</button>
           </div>
-
+          <div className="flex items-center justify-center p-1">
+          <ShowPendingTransfers />
+          </div>
       </div>
 
     </> : <Loader text={status}/>} </>}           
