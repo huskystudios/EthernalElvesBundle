@@ -172,7 +172,7 @@ const claimCustomAmountPolygon = async () => {
                 
                 let txHashLink = `https://etherscan.io/tx/${txHash}`
             
-                let successMessage = <>Ren claimed on polygon, sending to eth. Check out your transaction on <a target="_blank" href={txHashLink}>Polyscan</a>. Confirming tx.</>
+                let successMessage = <>Check out your transaction on <a target="_blank" href={txHashLink}>Etherscan</a>.</>
                 success && setStatus(successMessage)
     
                 await getRenBalance(owner.address)
@@ -252,7 +252,7 @@ const ShowPendingTransfers = () => {
               <td>{line.attributes.status}</td>
               <td>{line.attributes.renAmount/1000000000000000000}</td>                          
               <td><a target="_blank" href={txLink}>View Tx</a></td>
-              <td>{txHash}</td>
+              <td style={{textTransform: `lowercase`}} >{txHash}</td>
              
              
      
