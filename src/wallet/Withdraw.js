@@ -165,14 +165,16 @@ const claimCustomAmountPolygon = async () => {
                   
                   const txHashinClaimRen = transactionReceipt.transactionHash
                   setStatus("Brining up web3, please confirm the claim on your wallet. After confirmation, this dialog will wait for the transaction to be mined.")
-                          checkOutRen(ethClaimParams).then((r) => {
+                        
+                  
+                 checkOutRen(ethClaimParams).then((r) => {
 
-                            r. success && setStatus(r.status)  
-                            setStatus("Success - updating db...")
+                            r.success && setStatus(r.status)  
+                           
                             //r.txHash
                             //
-                            if(r.receipt.status){
-                            
+                            if(r){
+                              if(r.receipt?.status){
                                       const ClaimRen = Moralis.Object.extend("ClaimRen");
                                       let query = new Moralis.Query(ClaimRen);
                                       query.equalTo("txHash", txHashinClaimRen);
@@ -193,10 +195,20 @@ const claimCustomAmountPolygon = async () => {
                                       });
                                       
                             }
-                
+                            }else{
+                              setStatus("Error - transaction failed")
+                              setLoading(false)
+                            }
                             
 
-                          })  
+                          }, ((e) => {
+
+
+                            setStatus("Error - transaction failed. ", e.message)
+                            setLoading(false)
+                            console.log(e)
+
+                          }))  
                   
 
                  },(e) => {
