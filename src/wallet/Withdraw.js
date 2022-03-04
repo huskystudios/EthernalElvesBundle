@@ -59,67 +59,82 @@ const claimCustomAmountPolygon = async () => {
 
   setLoading(true)
   setStatus("Claiming REN credits from Polygon contract...")
-  const owner = await getCurrentWalletConnected()
+  const owner = await getCurrentWalletConnected() 
+   
 
   const params =  {functionCall: polygonContract.methods.checkIn([], Moralis.Units.ETH(polyBalanceToClaim), owner.address).encodeABI()}
 
-  let tx     
-        
-        try{
-            tx = await Moralis.Cloud.run("defenderRelay", params) 
+      try{
+            const tx = await Moralis.Cloud.run("defenderRelay", params) 
 
-            console.log(tx)
-            if(tx.data.status){
+            if(tx.data.status){             
+            
+            let polyTxHash = tx.data.result.replaceAll("\"", "")
 
-            let fixString = tx.data.result.replaceAll("\"", "")
-
-            let txHashLink = `https://polygonscan.com/tx/${fixString}`
+            let txHashLink = `https://polygonscan.com/tx/${polyTxHash}`
         
             let successMessage = <>Ren claimed on polygon, sending to Eth. Note down your transaction hash on <a target="_blank" href={txHashLink}>Polyscan</a>. Waiting for receipt.</>
             setStatus(successMessage)
             console.log("Submitted transaction with hash: ", txHashLink)
+
             await sleep(7000)
             let transactionReceipt = null
              
               while (transactionReceipt == null) { // Waiting expectedBlockTime until the transaction is mined
-                  transactionReceipt = await polyweb3.eth.getTransactionReceipt(fixString);
+                  transactionReceipt = await polyweb3.eth.getTransactionReceipt(polyTxHash);
                   setStatus("Waiting for transaction to be mined...")
                   await sleep(2000)
               }
               setStatus("Transaction mined, getting signature for transfer to Eth...")
-
-
-              //let transactionReceipt = await polyweb3.eth.getTransactionReceipt("0xfc1826a58ef85687d9e02868b986d0c74330073f3f9f5cf169df9a92fdeefab4");
-              
+   
               let from = transactionReceipt.logs[0].topics[1]
               //convert from hex to string
               from = from.substring(26)
               from = "0x" + from
               console.log(from)
           
-              let amount = transactionReceipt.logs[0].topics[2]
+              let renAmount = transactionReceipt.logs[0].topics[2]
               //convert amount from hex to decimal
-              amount = parseInt(amount, 16)
-              let ts = parseInt(transactionReceipt.logs[1].data, 16)
-
-              let getsignature = await Moralis.Cloud.run("claimRenWithHash", {txHash: transactionReceipt}) 
+              renAmount = parseInt(renAmount, 16)
+              let timestamp = parseInt(transactionReceipt.logs[1].data, 16)
               
-              setStatus("Signature received, calling web3, look for wallet prompt...")
-              await sleep(3000)
-              const ethClaimParams =  {renAmount: getsignature.renAmount.toString() , signature: getsignature.signature.signature, timestamp: getsignature.timestamp}
+              timestamp = timestamp.toString()
+              renAmount = renAmount.toString()
               
-              console.log(ethClaimParams)
-            
-              let {success, status, txHash} = await checkOutRen(ethClaimParams)  
-            
-            txHashLink = `https://etherscan.io/tx/${txHash}`
-        
-            successMessage = <>Ren claimed on polygon, sending to eth. Check out your transaction on <a target="_blank" href={txHashLink}>Polyscan</a>. Confirming tx.</>
-            success ? setStatus(successMessage) : setStatus(status)
+              const ClaimRen = Moralis.Object.extend("ClaimRen");
+              let query = new Moralis.Query(ClaimRen);
+              query.equalTo("from", owner.address);
+              query.equalTo("timestamp", timestamp);
+              query.equalTo("renAmount", renAmount);
+              const res = await query.first();
 
-            await getRenBalance(owner.address)
-            setPolyBalanceToClaim(0)
-            setConfirm(!confirm)
+              const transferObject = new ClaimRen();
+
+              if(!res){   
+
+                  transferObject.set("from", owner.address);
+                  transferObject.set("timestamp", timestamp);
+                  transferObject.set("renAmount", renAmount);
+                  transferObject.set("txHash", polyTxHash);
+                  transferObject.set("transferTo", "eth");
+                  transferObject.set("status", "pending");
+                  transferObject.save();  
+
+                }else{
+                  res.set("from", owner.address);
+                  res.set("timestamp", timestamp);
+                  res.set("renAmount", renAmount);
+                  res.set("txHash", polyTxHash);
+                  res.set("transferTo", "eth");
+                  res.set("status", "pending");
+                  res.save();  
+                }
+
+              await claimPendingTxhash(transactionReceipt)
+              await getRenBalance(owner.address)
+              setPolyBalanceToClaim(0)
+              setConfirm(!confirm)
+              setLoading(false)
             }           
 
 
@@ -130,64 +145,73 @@ const claimCustomAmountPolygon = async () => {
             setStatus("An error occured, please check to see if a transfer is pending before trying again.")
         }
         //setConfirm(false)
-        setLoading(false)
+        
 
     }
+    
+    const claimPendingTxhash = async (_transactionReceipt) => {
 
-
-    const claimPendingTxhash = async () => {
-
-      console.log(polyBalanceToClaim)
       setLoading(true)
-      setStatus("Claiming Polygon Ren...")
-      const owner = await getCurrentWalletConnected()
-    
-    
-    
-      let tx     
+      setStatus("Confirmeing REN on ETH...")
+      const owner = await getCurrentWalletConnected()      
             
-            try{
-              
-    
-                  let transactionReceipt = await polyweb3.eth.getTransactionReceipt(pendingTxHash);
+            try{              
+                  //Check if tx receipt is includes, else fetch from polyhash provided by user.
+                  let transactionReceipt = pendingTxHash ? await polyweb3.eth.getTransactionReceipt(pendingTxHash) : _transactionReceipt
+                  console.log("Transaction receipt: ", transactionReceipt)
+
+                  Moralis.Cloud.run("claimRenWithHash", {txHash: transactionReceipt}).then((getsignature) => {
+                  setStatus("Getting signature for REN claim on Eth")
+                  const ethClaimParams =  {renAmount: getsignature.renAmount.toString(), signature: getsignature.signature.signature, timestamp: getsignature.timestamp}
                   
-                  let from = transactionReceipt.logs[0].topics[1]
-                  //convert from hex to string
-                  from = from.substring(26)
-                  from = "0x" + from
-                  console.log(from)
-              
-                  let amount = transactionReceipt.logs[0].topics[2]
-                  //convert amount from hex to decimal
-                  amount = parseInt(amount, 16)
-                  let ts = parseInt(transactionReceipt.logs[1].data, 16)
-    
-                  let getsignature = await Moralis.Cloud.run("claimRenWithHash", {txHash: transactionReceipt}) 
-    
-                  const ethClaimParams =  {renAmount: getsignature.renAmount.toString() , signature: getsignature.signature.signature, timestamp: getsignature.timestamp}
+                  const txHashinClaimRen = transactionReceipt.transactionHash
+                  setStatus("Brining up web3, please confirm the claim on your wallet...")
+                          checkOutRen(ethClaimParams).then((r) => {
+
+                            r. success && setStatus(r.status)  
+                            setStatus("Success - updating db...")
+                            //r.txHash
+                            //
+                            if(r.receipt.status){
+                            
+                                      const ClaimRen = Moralis.Object.extend("ClaimRen");
+                                      let query = new Moralis.Query(ClaimRen);
+                                      query.equalTo("txHash", txHashinClaimRen);
+                      
+                                      query.first().then((res) => {
+
+                                        res.set("txHashCompleted", r.txHash);
+                                        res.set("transferTo", "eth");
+                                        res.set("signature", getsignature.signature.signature);
+                                        res.set("status", "completed");
+                                        res.save();  
+
+                                      });
+                                      
+                            }
+                
+                            console.log("this step", r)
+                            setPolyBalanceToClaim(0)                            
+                            setLoading(false)
+
+                          })  
                   
-                  console.log(ethClaimParams)
+
+                 },(e) => {
+                  console.log("failed at signature:", e)
+                  setStatus("Failed, please look for pending transfers and try again.")
+                 })     
+                  
+                 await getRenBalance(owner.address)
                 
-                  let {success, status, txHash} = await checkOutRen(ethClaimParams)  
-                
-                let txHashLink = `https://etherscan.io/tx/${txHash}`
-            
-                let successMessage = <>Check out your transaction on <a target="_blank" href={txHashLink}>Etherscan</a>.</>
-                success && setStatus(successMessage)
-    
-                await getRenBalance(owner.address)
-                setPolyBalanceToClaim(0)
-                setModal(!modal)            
-         
     
             }catch(e){
-                console.log(e)
-        
+                console.log(e)        
                 setLoading(false)
                 setStatus("An error occured, please try again.")
             }
         
-            setLoading(false)
+          
     
         }
   
