@@ -48,7 +48,23 @@
     align-items: center;
     font-size: 16px;
   }
-  
+
+  .mobile-header {
+    background-image: url(./assets/images/navbar_mobile.png);
+    background-size: 100% 86px;
+    background-repeat: no-repeat;
+    min-height: 86px;
+    /*width: 1366px;*/
+    position: relative;
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    font-size: 16px;
+    padding: 0px 16px;
+    box-sizing: border-box;
+  }
   .header-body {
     display: none;
     position: absolute;
@@ -66,19 +82,19 @@
     background-image: url(./assets/images/btn_connect.png);
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    width: 280px;
-    height: 65px;
+    width: 200px;
+    height: 50px;
     display: flex;
     align-items: center;
-    /* margin-top: 60px; */
     color: white;
     justify-content: center;
     font-size: 18px;
   }
   .btn-connect:hover {
-    -webkit-text-shadow: 1px 1px 3px cyan;
-    -moz-text-shadow: 1px 1px 3px cyan;
-    text-shadow: 1px 1px 3px cyan;
+    -webkit-text-shadow: -0.2rem -0.2rem 1rem #fff, 0.2rem 0.2rem 1rem #fff, 0 0 2rem cyan, 0 0 4rem cyan, 0 0 6rem cyan, 0 0 8rem cyan, 0 0 10rem cyan;
+    -moz-text-shadow: -0.2rem -0.2rem 1rem #fff, 0.2rem 0.2rem 1rem #fff, 0 0 2rem cyan, 0 0 4rem cyan, 0 0 6rem cyan, 0 0 8rem cyan, 0 0 10rem cyan;
+    text-shadow: -0.2rem -0.2rem 1rem #fff, 0.2rem 0.2rem 1rem #fff, 0 0 2rem cyan, 0 0 4rem cyan, 0 0 6rem cyan, 0 0 8rem cyan, 0 0 10rem cyan;
+
     /* color: cyan; */
   }
   
@@ -95,9 +111,13 @@
 
   }
   .nav-item:hover, .nav-item.active {
-    -webkit-box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
+    /* -webkit-box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
     -moz-box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
-    box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
+    box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43); */
+    -webkit-text-shadow: -0.2rem -0.2rem 1rem #fff, 0.2rem 0.2rem 1rem #fff, 0 0 2rem cyan, 0 0 4rem cyan, 0 0 6rem cyan, 0 0 8rem cyan, 0 0 10rem cyan;
+    -moz-text-shadow: -0.2rem -0.2rem 1rem #fff, 0.2rem 0.2rem 1rem #fff, 0 0 2rem cyan, 0 0 4rem cyan, 0 0 6rem cyan, 0 0 8rem cyan, 0 0 10rem cyan;
+    text-shadow: -0.2rem -0.2rem 1rem #fff, 0.2rem 0.2rem 1rem #fff, 0 0 2rem cyan, 0 0 4rem cyan, 0 0 6rem cyan, 0 0 8rem cyan, 0 0 10rem cyan;
+
 }
 
   .menu {
@@ -160,15 +180,6 @@
     align-items: center;
   }
 
-  .mobile-header {
-    left: 20%;
-    position: fixed;
-    bottom: 0;
-
-  }
-  
-
-  
   .search button {
     background-image: url(./assets/images/REN_Button.png);
     background-size: 100% 100%;
@@ -189,10 +200,8 @@
   .app-logo {
     height: 55px;
     pointer-events: none;
-    position: absolute;
-    left: 50px;
-    margin-top: 15px;
-    display: none;
+    position: relative;
+    display: flex;
   }
 
   .break-all {
@@ -214,7 +223,11 @@
   
       }
       .app-logo {
-        display: flex;
+        position: absolute;
+        height: 55px;
+        pointer-events: none;
+        left: 50px;
+        margin-top: 15px;
       }
 
       .app-body {
@@ -223,7 +236,21 @@
         background-position: center;
       }
       .app-header {
-      display: flex;
+        display: flex;
+      }
+      .btn-connect {
+        cursor: pointer;
+        background-image: url(./assets/images/btn_connect.png);
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        width: 200px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        margin-top: 16px;
+        color: white;
+        justify-content: center;
+        font-size: 18px;
       }
     }
 
