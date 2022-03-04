@@ -78,13 +78,13 @@ const claimCustomAmountPolygon = async () => {
             let successMessage = <>Ren claimed on polygon, sending to Eth. Note down your transaction hash on <a target="_blank" href={txHashLink}>Polyscan</a>. Waiting for receipt.</>
             setStatus(successMessage)
             console.log("Submitted transaction with hash: ", txHashLink)
-             
+            await sleep(7000)
             let transactionReceipt = null
              
               while (transactionReceipt == null) { // Waiting expectedBlockTime until the transaction is mined
                   transactionReceipt = await polyweb3.eth.getTransactionReceipt(fixString);
                   setStatus("Waiting for transaction to be mined...")
-                  await sleep(1000)
+                  await sleep(2000)
               }
               setStatus("Transaction mined, getting signature for transfer to Eth...")
 
@@ -103,7 +103,9 @@ const claimCustomAmountPolygon = async () => {
               let ts = parseInt(transactionReceipt.logs[1].data, 16)
 
               let getsignature = await Moralis.Cloud.run("claimRenWithHash", {txHash: transactionReceipt}) 
-              setStatus("Signature received, calling web3...")
+              
+              setStatus("Signature received, calling web3, look for wallet promot...")
+              await sleep(3000)
               const ethClaimParams =  {renAmount: getsignature.renAmount.toString() , signature: getsignature.signature.signature, timestamp: getsignature.timestamp}
               
               console.log(ethClaimParams)
@@ -296,14 +298,15 @@ const claimPolyRen = async () => {
 
   <ul>
   <li>IMPORTANT! THE SECOND STEP OF THIS PROCESS IS NOT GASLESS. PLEASE DONT INITIATE IT IF YOU DO NOT INTEND TO CLAIM REN TO ETH AT THIS POINT</li>
-    <li>This is a two step process. The first step is to deduct REN from your Polygon Credit balance.</li>
+    <li>This is a two step process that can take upto 5 minutes. The first step is to deduct REN from your Polygon Credit balance.</li>
     <li>After the dApp submits the gasless function, it will use the receipt from the polygon trasnaction to generate the proof to mint the REN on ETH.</li>
     <li>Please leave the modal/dialog box open while the transaction completes. Please note down the polygon tx when it prompts. You will need this if the claim fails midway </li>
     <li>If the transaction does not go through, don't worry, you can use the "complete pending transaction" button to finish the second step</li>
   </ul>
 <div className={"flex"}>
-<button className="btn btn-grey" onClick={claimCustomAmountPolygon}>Confirm</button>
 <button className="btn btn-grey" onClick={resetVariables}>Back</button>
+<button className="btn btn-grey" onClick={claimCustomAmountPolygon}>Confirm</button>
+
 </div>
 
   </div>
