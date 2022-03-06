@@ -6,31 +6,16 @@ import { CSVLink } from "react-csv";
 
 
 
-
-  
-
-
 const ExportGame = ({text, size}) => {
 
 	const { Moralis, authenticate, isAuthenticated, user} = useMoralis();
 	const [csvReport, setCsvReport] = useState([1,2,3])
 	const [loading, setLoading] = useState(true)
 	const [progress, setProgress] = useState(0)
-const [tokenSupply, setTokenSupply] = useState(0);
+
 	const Elves = Moralis.Object.extend("ElvesAdmin");
 
-	function readOptions(contractMethod) {
 
-		const options = {
-	  contractAddress: elvesContract,
-	  functionName: contractMethod,
-	  abi: elvesAbi.abi
-	  
-	  };
-	  
-	  return options
-	  }
-	  
 
 
 
@@ -41,7 +26,7 @@ const getElfMetaData = async () => {
 	setProgress(1)
 	setLoading(true)
 	await Moralis.enableWeb3();     
-	const totalSupply = await Moralis.executeFunction(readOptions("totalSupply"));
+	const totalSupply = 6666
 	
 	let results = []
 	
@@ -120,12 +105,104 @@ const getElfMetaData = async () => {
 	  setProgress(counter/supply*100)
 	  i++
 	}
+   
+	await getpElfMetaData()
+  setProgress(100)
+  setLoading(false)
+	
+  };
+
+  
+
+const getpElfMetaData = async () => {
+
+	setProgress(1)
+	setLoading(true)
+	await Moralis.enableWeb3();     
+	const totalSupply = 6666
+	
+	let results = []
+	
+	let start = 1
+	let supply = totalSupply//parseInt(cloudSupply.supply) ///tokenSupply
+	let stop = 0
+	let steps = supply < 44 ? supply : 44
+  
+   
+	let counter = 0
+	let i = 0
+  
+	while(counter<supply){
+		   
+	  start = i*steps + 1
+	  stop = start + steps - 1
+  
+	  const tokenArray = []
+		for (var j = start; j <= stop; j++) {
+		  tokenArray.push(j);
+		  counter++
+		}
+	
+	const params = {array: tokenArray, chain: "polygon"}
+	  
+	 results = await lookupMultipleElves(params)
+	 console.log(results)
+	 results.map(async (elf)=>{
+	  
+	  let query = new Moralis.Query(Elves);  
+	  query.equalTo("token_id", elf.id);
+	  const res = await query.first();
+	  if(!res){
+		const elvesObject = new Elves();
+		elvesObject.set("token_id", elf.id)
+		elvesObject.set("owner_of", elf.owner)
+		elvesObject.set("status", elf.elfStatus)
+		elvesObject.set("timestamp", elf.time)
+		elvesObject.set("action", elf.action)
+		elvesObject.set("actionString", elf.actionString)
+		elvesObject.set("level", elf.level)
+		elvesObject.set("class", elf.classString)
+		elvesObject.set("inventory", elf.inventoryString)
+		elvesObject.set("weapon", elf.primaryWeapon)
+		elvesObject.set("weaponTier", elf.weaponTier)
+		elvesObject.set("attack", elf.attack)
+		elvesObject.set("accessories", elf.accessories)
+		elvesObject.set("health", elf.health)
+		elvesObject.set("attributes", elf.attributes)
+
+		elvesObject.save() 
+		console.log("object created")
+		}else{
+			res.set("owner_of", elf.owner)
+			res.set("status", elf.elfStatus)
+			res.set("timestamp", elf.time)
+			res.set("action", elf.action)
+			res.set("actionString", elf.actionString)
+			res.set("level", elf.level)
+			res.set("class", elf.classString)
+			res.set("inventory", elf.inventoryString)
+			res.set("weapon", elf.primaryWeapon)
+			res.set("weaponTier", elf.weaponTier)
+			res.set("attack", elf.attack)
+			res.set("accessories", elf.accessories)
+			res.set("health", elf.health)
+			res.set("attributes", elf.attributes)
+		  res.save()
+		  console.log("object saved")
+		}
+  
+	  // const elves = new Elves();
+	  // updateMoralisDb({elf, elves}) 
+	  })
+	 
+	  setProgress(counter/supply*100)
+	  i++
+	}
   
   setProgress(100)
  // setLoading(false)
 	
   };
-
 
 
 	const exportData = async () => {
