@@ -4,12 +4,14 @@ import { NavLink } from "react-router-dom"
 import ConnectWallet from "../wallet/ConnectWallet"
 import Withdraw from "../wallet/Withdraw"
 import ToggleChain from "../wallet/ChangeChain"
+import menuImg from "../assets/images/menu.png"
 
 
 const MainLayout = (props) => {
 
     const [wallet, setWallet] = useState("");
     const [status, setStatus] = useState("");
+    const [showMenu, setShowMenu] = useState(false);
 
     const onClickHome = () => {
         window.location.href = '/';
@@ -55,12 +57,20 @@ const MainLayout = (props) => {
             </div>
 
             <div className="mobile-header">
-                <img className="app-logo" src={logoImg} alt="logo" />
+                <img onClick={() => setShowMenu(true)} className="app-logo" src={menuImg} alt="logo" />
                 <ConnectWallet />
             </div>
 
             <div className="app-body">
                 {props.children}
+            </div>
+            <div className={showMenu ? "sidenav active" : "sidenav"}>
+                <button className="closebtn" onClick={() => setShowMenu(false)}>&times;</button>
+                <div onClick={onClickHome} className="nav-item" to="/">play</div>
+                <NavLink className="nav-item" to="/profile">profile</NavLink>
+                <div style={{ width: 160 }}></div>
+                <NavLink className="nav-item" to={{ pathname: "https://transfers.ethernalElves.com" }} target="_blank">confirm transfers</NavLink>
+                <NavLink className="nav-item" to="/faq">faq</NavLink>
             </div>
         </div>
     )

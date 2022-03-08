@@ -88,9 +88,9 @@ button {
   font-weight: 600;
   cursor: pointer;
   background-size: 100% 100%;
-  padding: 12px 36px;
-  font-size: 16px;
-  min-width: 184px;
+  padding: 12px 16px;
+  font-size: 12px;
+  min-width: 120px;
   margin: 0px 12px;
   text-align: center;
 }
@@ -256,10 +256,10 @@ button {
   border-radius: 5px;
   /*border: 1px solid white;*/
   color: white;
-  padding: 6px 16px;
-  font-size: 14px;
+  padding: 2px 6px;
+  font-size: 10px;
   cursor: pointer;
-  min-width: 200px;
+  min-width: 150px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -305,11 +305,12 @@ button {
         inset 0 0 0.5rem var(--neon-border-color);
   box-sizing: border-box;
   padding: 0px;
+  font-size: 10px;
 }
 
 .mul-dropdown-content li {
   color: white;
-  padding: 14px 20px;
+  padding: 6px 10px;
   text-decoration: none;
   display: block;
   cursor: pointer;
@@ -319,3 +320,32 @@ button {
 }
 .mul-dropdown li:hover {background-color: #0088ff3c;}
 
+
+@media (min-width: 1168px) {
+  .dropdown-btn {
+    font-size: 14px;
+    min-width: 200px;
+    padding: 6px 16px;
+  }
+  .mul-dropdown-content {
+    font-size: 14px;
+  }
+  .mul-dropdown-content li {
+    color: white;
+    padding: 14px 20px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+  }
+  .btn {
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    background-size: 100% 100%;
+    padding: 12px 36px;
+    font-size: 16px;
+    min-width: 184px;
+    margin: 0px 12px;
+    text-align: center;
+  }
+}

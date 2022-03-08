@@ -647,7 +647,6 @@ const Home = () => {
                     })
                     return
                 }
-
                 healing()
                 console.log("heal someoone", tokenId)
 
@@ -675,7 +674,6 @@ const Home = () => {
                 <div className="modal-content items-center">
                     <span className="close-modal" onClick={() => { setHealModal(false); setMulti(false) }}>X</span>
                     <h3>Confirm Heal</h3>
-
                     {!multi ? <>Heal {clicked[1].classString} #{clicked[1].id} with {clicked[0].classString} #{clicked[0].id}?</> :
                         <div className="flex flex-column w-full items-center">
                             <h4>Select healers</h4>
@@ -687,7 +685,6 @@ const Home = () => {
                             <h4>Select targets</h4>
                             <div className="nft-grid">
                                 {targetSelect.map((nft) =>
-
                                     <img onClick={() => handleClickTarget(nft)} className={targets.includes(nft) ? "active" : null} src={nft.image} alt={nft.id} key={nft.id} />
                                 )}
                             </div>
@@ -706,14 +703,11 @@ const Home = () => {
         const handleEthClick = () => {
             reRoll(modal.action)
         }
-
         //get object from rollcosts that matches modal.action
         const cost = rollCosts.find(cost => cost.action === modal.action)
         console.log(cost, modal.action)
         let costString = chain === "polygon" ? `${cost.ren} REN` : `${cost.eth} ETH`
-
         console.log(cost)
-
         return (
             <div className="modal">
                 <div className="modal-content">
@@ -735,7 +729,6 @@ const Home = () => {
                             <p>there is 10% chance you will reduce your druid cooldown by 50% and a 60% chance to reduce cooldown by 33%. There is a 30% chance you'll get a 5 minute penalty.</p>
                         </>
                     }
-
                     <div className="d-flex flex-row justify-around align-center">
                         <div className="d-flex flex-column">
 
@@ -743,9 +736,6 @@ const Home = () => {
                             <button className="btn-modal" onClick={handleEthClick} >{modal.content} </button>
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
         )
@@ -754,13 +744,9 @@ const Home = () => {
         <>
             {loading ? <Loader text={loadingText} /> :
                 <>
-
-
                     <div className="dark-1000 h-full d-flex home justify-center">
                         <div className="flex-column w-full">
                             {alert.show && showAlert(alert.value)}
-
-
                             {visualMode ?
                                 <>
                                     {index === 0 && <Help chain={chain} data={data} toggle={toggle} clicked={clicked} selectAll={selectAll} />}
@@ -800,10 +786,7 @@ const Home = () => {
                                         setTargets={setTargets}
                                     />}
                             </Modal>
-
                             {/* 
-                       
-                       
                         {index === 1 && activeNfts.length > 1 ? <Collection nft={activeNfts} onChangeIndex={onChangeIndex} /> : null}
                         {index === 1 && activeNfts.length === 1 ? <Overview nft={activeNfts} onRunWeb3={doAction} onChangeIndex={onChangeIndex} /> : null}
                         {index === 2 && <Actions doAction={doAction} actions={actions} onChangeIndex={onChangeIndex} setGameMode={setGameMode} />}
@@ -813,7 +796,6 @@ const Home = () => {
                         {index === 6 && <Bloodthirst chain={chain} campaign={campaign} data={activeNfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} mode={gameMode} />}
                         {index === 7 && <Receive onChangeIndex={onChangeIndex} />}
                     */}
-
                         </div>
                     </div>
                     {index === 0 && data && wallet &&
@@ -838,13 +820,10 @@ const Home = () => {
                                 setConsoleOpen={setConsoleOpen}
                             />
                         </div>}
-
                 </>
             }
-
             {renderModal()}
             {renderHealModal()}
-
         </>
     )
 }

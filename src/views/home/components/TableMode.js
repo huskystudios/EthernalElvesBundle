@@ -72,7 +72,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
             countClasses[nft.classString] = (countClasses[nft.classString] || 0) + 1
             countActions[actionText] = (countActions[actionText] || 0) + 1
             countLevels[nft.level] = (countLevels[nft.level] || 0) + 1
-            if(nft.attributes) countWeapons[nft.attributes[3].value] = (countWeapons[nft.attributes[3].value] || 0) + 1
+            if (nft.attributes) countWeapons[nft.attributes[3].value] = (countWeapons[nft.attributes[3].value] || 0) + 1
         })
         setClassCnt(countClasses)
         setActionCnt(countActions)
@@ -265,7 +265,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
         if (levels.length) {
             tmpData = tmpData.filter(element => levels.includes(element.level.toString()))
         }
-        if(weapons.length) {
+        if (weapons.length) {
             tmpData = tmpData.filter(element => weapons.includes(element.attributes[3]?.value))
         }
         setSortedElves([...tmpData?.sort(sortByFunction)]);
@@ -365,6 +365,11 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
                 <button className="btn btn-green" onClick={() => setReloadData(!reloadData)}>Reload Data</button>
                 <button className="btn btn-blue" onClick={toggleChain}>Active: {chain}</button>
             </div>
+            <div className="mobile-footer">
+                <button className="btn btn-blue mobile" onClick={toggleChain}>Active: {chain}</button>
+                <button className="btn btn-blue mobile" onClick={() => setTransfersModal(!transfersModal)}>Transfers</button>
+            </div>
+            
             <div className="filter-panel justify-center p-1">
                 <Dropdown title="Action" options={["unstake", "stake", "campaign", "passive mode", "return", "re-roll weapon", "re-roll item", "healing", "polygon", "synergize", "bloodthirst"]} count={actionCnt} onChange={setActions} selected={actions} />
                 <Dropdown title="Class" options={["Assassin", "Druid", "Ranger"]} onChange={setClasses} selected={classes} count={classCnt} />
@@ -492,13 +497,75 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
                                         <td>{!isActive && !passiveFlag && <Countdown date={date} />}
                                             {passiveString}
                                         </td>
-                                    </tr>)}
+                                    </tr>)
+                                }
                                 )}
-                                
+
                             </tbody>
                         </table>
                     </div>
                 </div>
+            </div>
+            <div className="card-view">
+                {sortedElves.map((line) => {
+
+                    const date = new Date(line.time * 1000)
+                    const isActive = new Date() > date
+                    let passiveString = ""
+
+                    let passiveFlag = false
+
+                    ///turn date in tto hours if less than 24 then into days    
+                    if (line.action === 3) {
+                        let timesince = Math.floor(((new Date() - date) / 1000) / (60 * 60))
+                        if (timesince < 24) {
+                            passiveString = `${timesince} hours`
+                        } else {
+                            let timesince = Math.floor(((new Date() - date) / 1000) / (60 * 60 * 24))
+                            passiveString = `${timesince} days`
+                        }
+                    }
+
+                    let rowSelected = clicked.includes(line) ? "active" : ""
+
+                    return (<div key={line.id} className={`${rowSelected} card-rect`} onClick={() => handleClick(line)}  >
+                        {line.image && <img className="card-image" src={line.image} alt="elf" />}
+                        <div className="card-attr">
+                            <div><span>name:</span><span>{line.name}</span></div>
+                            <div><span>Location:</span><span>{line.elfStatus}</span></div>
+                            <div>
+                                <span>Inventory</span>
+                                <span>{line.inventoryString !== "Empty" ? (
+                                    <div className="item-info">
+                                        {line.inventoryImage && <img src={line.inventoryImage} alt="Item" />}
+                                        <strong>{line.inventoryString}</strong>
+                                        {line.inventoryDescription && <span>{line.inventoryDescription}</span>}
+                                    </div>
+                                ) : (
+                                    <strong>-</strong>
+                                )}</span>
+                            </div>
+                            {/*<div>{line.primaryWeapon}</div>        */}
+                            <div><span>Weapon:</span><span>{line.attributes && line.attributes[3].value} +{line.weaponTier}</span></div>
+                            <div>
+                                <span>HP:</span>
+                                <span>{line.health}</span>
+                                <span>AP:</span>
+                                <span>{line.attack}</span>
+                                <span>Level:</span>
+                                <span>{line.level}</span>
+                            </div>
+                            <div><span>Class:</span><span>{line.classString}</span></div>
+                            <div><span>Action Taken:</span><span>{line.actionString}</span></div>
+                            <div>
+                                <span>Cooldown(-)/<br />Passive(+):</span><span>{!isActive && !passiveFlag && <Countdown date={date} />}
+                                    {passiveString}
+                                </span>
+                            </div>
+                        </div>
+                    </div>)
+                }
+                )}
             </div>
             {renderMintModal()}
             {renderTransfersModal()}
