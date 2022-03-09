@@ -4,28 +4,27 @@ import { NavLink } from "react-router-dom"
 import ConnectWallet from "../wallet/ConnectWallet"
 import Withdraw from "../wallet/Withdraw"
 import ToggleChain from "../wallet/ChangeChain"
+import menuImg from "../assets/images/menu.png"
 
 
 const MainLayout = (props) => {
 
-    const [wallet, setWallet] = useState("");   
-    const [status ,setStatus] = useState("");
+    const [wallet, setWallet] = useState("");
+    const [status, setStatus] = useState("");
+    const [showMenu, setShowMenu] = useState(false);
 
     const onClickHome = () => {
-        window.location.href='/';
+        window.location.href = '/';
         //window.location.reload(false);
     }
 
     return (
         <div className="app">
-              
+
             <div className="app-header">
-         
                 <img className="app-logo" src={logoImg} alt="logo" />
-                <div className="header-body"> 
-                <Withdraw />
-                    
-                    
+                <div className="header-body">
+                    <Withdraw />
                     <div onClick={onClickHome} className="nav-item" to="/">play</div>
                     {/*}<div className="nav-item menu">
                         <span>Play</span>
@@ -41,34 +40,37 @@ const MainLayout = (props) => {
                             </NavLink>
                               </div>
                               </div>
-                    */} 
+                    */}
                     <NavLink className="nav-item" to="/profile">profile</NavLink>
-                    <ConnectWallet />
-                    <NavLink className="nav-item" to={{ pathname: "https://transfers.ethernalElves.com"}} target="_blank">confirm transfers</NavLink>
-                   
+                    {/* <ConnectWallet /> */}
+                    <div style={{ width: 160 }}></div>
+                    <NavLink className="nav-item" to={{ pathname: "https://transfers.ethernalElves.com" }} target="_blank">confirm transfers</NavLink>
                     <NavLink className="nav-item" to="/faq">faq</NavLink>
-               
                 </div>
-              
-               {/**<ToggleChain /> 
+
+                {/**<ToggleChain /> 
                 *  <div onClick={onClickHome} className="nav-item" to="/">play</div>
                 *  <NavLink className="nav-item" to="/mint">mint</NavLink>
                 * 
-               */} 
-
-           
-               
-               
+               */}
+                <div className="connect-wallet"><ConnectWallet /></div>
             </div>
-           
+
             <div className="mobile-header">
-                        <ConnectWallet />
-                       
-             </div>    
-            
+                <img onClick={() => setShowMenu(true)} className="app-logo" src={menuImg} alt="logo" />
+                <ConnectWallet />
+            </div>
+
             <div className="app-body">
-           
                 {props.children}
+            </div>
+            <div className={showMenu ? "sidenav active" : "sidenav"}>
+                <button className="closebtn" onClick={() => setShowMenu(false)}>&times;</button>
+                <div onClick={onClickHome} className="nav-item" to="/">play</div>
+                <NavLink className="nav-item" to="/profile">profile</NavLink>
+                <div style={{ width: 160 }}></div>
+                <NavLink className="nav-item" to={{ pathname: "https://transfers.ethernalElves.com" }} target="_blank">confirm transfers</NavLink>
+                <NavLink className="nav-item" to="/faq">faq</NavLink>
             </div>
         </div>
     )

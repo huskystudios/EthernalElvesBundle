@@ -8,7 +8,7 @@ const PAGE_COUNT = 3
 const MAX_HEALTH = 100
 const MAX_LEVEL = 100
 
-const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3, onForge, onMerchant, onHeal, onSynergize, toggleChain, chain,
+const Control = ({ consoleOpen, setConsoleOpen, data, activities, onSelect, clicked, onChangeIndex, onRunWeb3, onForge, onMerchant, onHeal, onSynergize, toggleChain, chain,
     onCampaign, onPassiveMode, onBloodthirst
 }) => {
     const [currentPage, setCurrentPage] = useState(0)
@@ -17,7 +17,6 @@ const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3
     const [activeNft, setActiveNft] = useState()
     const [activeNftHealth, setActiveNftHealth] = useState(0)
     const [open, setOpen] = useState(false)
-    const [consoleOpen, setConsoleOpen] = useState(true)
     const [tooltip, setTooltip] = useState({
         show: false,
         value: null
@@ -97,25 +96,25 @@ const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3
     }
     const drop = useRef("actions");
     const handleClick = (e) => {
-        if(!drop.current) return;
+        if (!drop.current) return;
         if (!e.target.closest(`#${drop.current.id}`) && open) {
-          setOpen(false);
+            setOpen(false);
         }
     }
     React.useEffect(() => {
         document.addEventListener("click", handleClick);
         return () => {
-          document.removeEventListener("click", handleClick);
+            document.removeEventListener("click", handleClick);
         };
     });
 
     return (
         <>
-             <span className="btn-select">
+            <span className="btn-select">
                 <div className="dropdown" ref={drop} id="actions">
                     <button className="btn btn-blue" onClick={() => setOpen(open => !open)}>Actions</button>
                     {open && <div className="dropdown-content">
-                        
+
                         <span onClick={onForge}>forge</span>
                         <span onClick={onMerchant}>merchant</span>
                         <span onClick={onCampaign}>campaign</span>
@@ -127,54 +126,55 @@ const Control = ({ data, activities, onSelect, clicked, onChangeIndex, onRunWeb3
                         
                         
                         */}
-                                       
+
                     </div>}
                 </div>
             </span>
-            {!consoleOpen && <span className="btn-control-open">                
-                        <button className="btn btn-blue" onClick={() => setConsoleOpen(consoleOpen => !consoleOpen)}>Maximize</button>
-               </span>
+            {!consoleOpen && <span className="btn-control-open">
+                <button className="btn btn-blue" onClick={() => setConsoleOpen(consoleOpen => !consoleOpen)}>Maximize</button>
+            </span>
             }
-    {consoleOpen &&     
-        <div className="control-panel">      
+            {consoleOpen &&
+                <div className="control-panel">
 
-                <span className="btn-control-close">                
-                        <button className="dropbtn" onClick={() => setConsoleOpen(consoleOpen => !consoleOpen)}>Minimize</button>
-               </span>
-            
-            <div className="active-attributes d-flex flex-column">
-                    {activeNft?.attributes.map((attribute, index) => {
-                        if(index < 6) return <div className="d-flex flex-row justify-between" key={index}>
-                            <span className="attribute-name">{attribute.trait_type}:</span>
-                            <span className="attribute-value">{attribute.value}</span>
-                        </div>})}
-                    {activeNft && <div className="d-flex flex-row justify-between">
-                        <span className="attribute-name">$Ren Earned:</span>
-                        <span className="attribute-value">0</span>
-                    </div>}
-                    {activeNft && <div className="d-flex flex-row justify-between">
-                        <span className="attribute-name">Last Action:</span>
-                        <span className="attribute-value">0</span>
-                    </div>}
-                </div>  
-            {activeNft && <>
-                <img className="health-bar" style={activeNft ? { clipPath: `polygon(0 0, ${activeNftHealth / MAX_HEALTH * 100}% 0, ${activeNftHealth / MAX_HEALTH * 100}% 100%, 0% 100%)` } : null} src={hBar} alt="health bar" />
-                <img className="level-bar" style={activeNft ? { clipPath: `polygon(0 0, ${activeNft.level / MAX_LEVEL * 100}% 0, ${activeNft.level / MAX_LEVEL * 100}% 100%, 0% 100%)` } : null} src={lBar} alt="level bar" />
-            </>}
-            {activeNft && <img className="active-thumb" src={activeNft.image} alt="level bar" />}
-            <span className="active-id">{activeNft ? `#${activeNft.id}` : ''}</span>
-            <button className="btn-prev" onClick={() => onPageChange(-1)} />
-            <button className="btn-next" onClick={() => onPageChange(1)} />
-            {tooltip.show && showTooltip(tooltip.value)}
-            {activeNft && activeNft.inventoryImage && (
-                <div className="activities">
-                    <img src={activeNft.inventoryImage} alt="Item" title={`${activeNft.inventoryString}: ${activeNft.inventoryDescription}`} />
-                    <strong>{activeNft.inventoryString}</strong>
-                    <span>{activeNft.inventoryDescription}</span>
+                    <span className="btn-control-close">
+                        <button className="btn" onClick={() => setConsoleOpen(consoleOpen => !consoleOpen)}>Minimize</button>
+                    </span>
+
+                    <div className="active-attributes d-flex flex-column">
+                        {activeNft?.attributes.map((attribute, index) => {
+                            if (index < 6) return <div className="d-flex flex-row justify-between" key={index}>
+                                <span className="attribute-name">{attribute.trait_type}:</span>
+                                <span className="attribute-value">{attribute.value}</span>
+                            </div>
+                        })}
+                        {activeNft && <div className="d-flex flex-row justify-between">
+                            <span className="attribute-name">$Ren Earned:</span>
+                            <span className="attribute-value">0</span>
+                        </div>}
+                        {activeNft && <div className="d-flex flex-row justify-between">
+                            <span className="attribute-name">Last Action:</span>
+                            <span className="attribute-value">0</span>
+                        </div>}
+                    </div>
+                    {activeNft && <>
+                        <img className="health-bar" style={activeNft ? { clipPath: `polygon(0 0, ${activeNftHealth / MAX_HEALTH * 100}% 0, ${activeNftHealth / MAX_HEALTH * 100}% 100%, 0% 100%)` } : null} src={hBar} alt="health bar" />
+                        <img className="level-bar" style={activeNft ? { clipPath: `polygon(0 0, ${activeNft.level / MAX_LEVEL * 100}% 0, ${activeNft.level / MAX_LEVEL * 100}% 100%, 0% 100%)` } : null} src={lBar} alt="level bar" />
+                    </>}
+                    {activeNft && <img className="active-thumb" src={activeNft.image} alt="level bar" />}
+                    <span className="active-id">{activeNft ? `#${activeNft.id}` : ''}</span>
+                    <button className="btn-prev" onClick={() => onPageChange(-1)} />
+                    <button className="btn-next" onClick={() => onPageChange(1)} />
+                    {tooltip.show && showTooltip(tooltip.value)}
+                    {activeNft && activeNft.inventoryImage && (
+                        <div className="activities">
+                            <img src={activeNft.inventoryImage} alt="Item" title={`${activeNft.inventoryString}: ${activeNft.inventoryDescription}`} />
+                            <strong>{activeNft.inventoryString}</strong>
+                            <span>{activeNft.inventoryDescription}</span>
+                        </div>
+                    )}
                 </div>
-            )}           
-        </div>
-        }
+            }
         </>
     )
 }
