@@ -95,17 +95,21 @@ const claimCustomAmountPolygon = async () => {
           
               let renAmount = transactionReceipt.logs[0].topics[2]
               //convert amount from hex to decimal
-              renAmount = parseInt(renAmount, 16)
+              renAmount = parseInt(parseInt(renAmount, 16)/1000000000000000000)
               let timestamp = parseInt(transactionReceipt.logs[1].data, 16)
+
+              
+              let numberString = renAmount.toString()
+              numberString = numberString + "000000000000000000"
               
               timestamp = timestamp.toString()
-              renAmount = renAmount.toString()
+            
               
               const ClaimRen = Moralis.Object.extend("ClaimRen");
               let query = new Moralis.Query(ClaimRen);
               query.equalTo("from", owner.address);
               query.equalTo("timestamp", timestamp);
-              query.equalTo("renAmount", renAmount);
+              query.equalTo("renAmount", numberString);
               const res = await query.first();
 
               const transferObject = new ClaimRen();
@@ -114,7 +118,7 @@ const claimCustomAmountPolygon = async () => {
 
                   transferObject.set("from", owner.address);
                   transferObject.set("timestamp", timestamp);
-                  transferObject.set("renAmount", renAmount);
+                  transferObject.set("renAmount", numberString);
                   transferObject.set("txHash", polyTxHash);
                   transferObject.set("transferTo", "eth");
                   transferObject.set("status", "pending");
@@ -123,7 +127,7 @@ const claimCustomAmountPolygon = async () => {
                 }else{
                   res.set("from", owner.address);
                   res.set("timestamp", timestamp);
-                  res.set("renAmount", renAmount);
+                  res.set("renAmount", numberString);
                   res.set("txHash", polyTxHash);
                   res.set("transferTo", "eth");
                   res.set("status", "pending");
