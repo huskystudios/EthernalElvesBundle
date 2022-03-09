@@ -131,14 +131,14 @@ const Control = ({ consoleOpen, setConsoleOpen, data, activities, onSelect, clic
                 </div>
             </span>
             {!consoleOpen && <span className="btn-control-open">
-                <button className="btn btn-blue" onClick={() => setConsoleOpen(consoleOpen => !consoleOpen)}>Maximize</button>
+                <button className="btn btn-blue" onClick={() => setConsoleOpen(consoleOpen => !consoleOpen)}>Open HUD</button>
             </span>
             }
             {consoleOpen &&
                 <div className="control-panel">
 
                     <span className="btn-control-close">
-                        <button className="btn" onClick={() => setConsoleOpen(consoleOpen => !consoleOpen)}>Minimize</button>
+                        <button className="btn" onClick={() => setConsoleOpen(consoleOpen => !consoleOpen)}>Hide HUD</button>
                     </span>
 
                     <div className="active-attributes d-flex flex-column">

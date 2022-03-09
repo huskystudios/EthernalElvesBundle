@@ -1722,3 +1722,17 @@ background-image: url(../../assets/images/stats_back_hover.png);
     top: 3px;
     right: 180px;
 }
+
+ 
+    .item-info img {
+        display: none;
+    }
+  
+
+@media (min-width: 1168px) {
+ 
+    .item-info img {
+      display: flex;
+  }
+
+}  
