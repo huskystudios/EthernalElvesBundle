@@ -227,7 +227,7 @@
       position: absolute;
       height: 55px;
       pointer-events: none;
-      left: 50px;
+      left: 70px;
       margin-top: 15px;
       filter: invert(0);
       margin-left: 0px;
@@ -299,4 +299,19 @@
     font-size: 22px;
     width: 100%;
     text-align: center;
+  }
+
+  .sidenav-btn{
+
+    position: fixed;
+    left: 20px;
+    top: 35px;
+    /* background: white; */
+    height: 16px;
+    cursor: pointer;
+    /* position: relative; */
+    display: flex;
+    filter: invert(1);
+    margin-left: 16px;
+
   }

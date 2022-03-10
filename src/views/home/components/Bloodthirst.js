@@ -96,10 +96,10 @@ const Bloodthirst = ({setAlert,onChangeIndex, onSendCampaign, data, chain}) => {
     
        
     return (
-        <div>
-
+    
+            <>
             <div className="d-flex flex-column overview-content">         
-                <div className="sector-panel">
+                <div>
                          <div className="overview-heading">
                                  Bloodthirst
                      
@@ -215,7 +215,7 @@ const Bloodthirst = ({setAlert,onChangeIndex, onSendCampaign, data, chain}) => {
             
             {renderModal(modal)}
            
-        </div>
+        </>
         
     ) 
 }

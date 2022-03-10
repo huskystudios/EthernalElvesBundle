@@ -22,11 +22,17 @@ const MainLayout = (props) => {
         <div className="app">
 
             <div className="app-header">
+           
                 <img className="app-logo" src={logoImg} alt="logo" />
+                <div className="sidenav-btn">
+                <img onClick={() => setShowMenu(true)} src={menuImg} alt="menu" />
+                </div>
                 <div className="header-body">
+                
                     <Withdraw />
+                    {/*
                     <div onClick={onClickHome} className="nav-item" to="/">play</div>
-                    {/*}<div className="nav-item menu">
+                    <div className="nav-item menu">
                         <span>Play</span>
                         <div className="menu__items">
                             <NavLink to="/">
@@ -40,12 +46,13 @@ const MainLayout = (props) => {
                             </NavLink>
                               </div>
                               </div>
-                    */}
+                   
                     <NavLink className="nav-item" to="/profile">profile</NavLink>
-                    {/* <ConnectWallet /> */}
+                    <ConnectWallet /> 
                     <div style={{ width: 160 }}></div>
                     <NavLink className="nav-item" to={{ pathname: "https://transfers.ethernalElves.com" }} target="_blank">confirm transfers</NavLink>
                     <NavLink className="nav-item" to="/faq">faq</NavLink>
+                */}
                 </div>
 
                 {/**<ToggleChain /> 
