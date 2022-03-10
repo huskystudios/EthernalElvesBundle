@@ -51,7 +51,6 @@ const MainLayout = (props) => {
                     <ConnectWallet /> 
                     <div style={{ width: 160 }}></div>
                     <NavLink className="nav-item" to={{ pathname: "https://transfers.ethernalElves.com" }} target="_blank">confirm transfers</NavLink>
-                    <NavLink className="nav-item" to="/faq">faq</NavLink>
                 */}
                 </div>
 
@@ -77,7 +76,7 @@ const MainLayout = (props) => {
                 <NavLink className="nav-item" to="/profile">profile</NavLink>
                 <div style={{ width: 160 }}></div>
                 <NavLink className="nav-item" to={{ pathname: "https://transfers.ethernalElves.com" }} target="_blank">confirm transfers</NavLink>
-                <NavLink className="nav-item" to="/faq">faq</NavLink>
+                <a className="nav-item" href="https://docs.ethernalelves.com/" target="_blank" rel="noreferrer">Docs</a>
             </div>
         </div>
     )
