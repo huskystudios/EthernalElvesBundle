@@ -24,9 +24,9 @@ const MainLayout = (props) => {
             <div className="app-header">
            
                 <img className="app-logo" src={logoImg} alt="logo" />
-                <div className="sidenav-btn">
-                <img onClick={() => setShowMenu(true)} src={menuImg} alt="menu" />
-                </div>
+      
+                <img onClick={() => setShowMenu(true)} className="sidenav-btn" src={menuImg} alt="logo" />
+      
                 <div className="header-body">
                 
                     <Withdraw />

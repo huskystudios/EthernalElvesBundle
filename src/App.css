@@ -304,14 +304,11 @@
   .sidenav-btn{
 
     position: fixed;
-    left: 20px;
-    top: 35px;
-    /* background: white; */
+    top: 32px;
+    left: 32px;
     height: 16px;
     cursor: pointer;
-    /* position: relative; */
-    display: flex;
     filter: invert(1);
-    margin-left: 16px;
+    z-index: 1000;
 
   }
