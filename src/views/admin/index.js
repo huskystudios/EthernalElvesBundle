@@ -202,9 +202,9 @@ return (
 
            
             <div className="d-flex flex-row justify-center">
-            {!loading ? ( 
+            {/*!loading ? ( 
             <button className="btn btn-blue" onClick={refreshMetaData}>Update Elf Metadata</button>) : ( 
-            <button disabled><div className="animate-bounce">Loading... {progress.toFixed(0)} %</div></button>)}
+            <button disabled><div className="animate-bounce">Loading... {progress.toFixed(0)} %</div></button>)*/}
             </div>
     
             <ExportGame />

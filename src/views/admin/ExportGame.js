@@ -107,9 +107,11 @@ const ExportGame = ({text, size}) => {
 			res.set("elf_hp", elfHp)
 			res.set("elf_action", elfAction)
 			res.set("elf_timestamp", timestamp)
-			res.set("chain", "eth")
+			res.set("elf_image", elfTokenObj.image)
+			res.set("chain", chain)
+			
 			res.save().then((obj) => {
-				console.log("updated elf", obj.id)
+				console.log("updated elf", obj.id, "on chain", chain)
 			}, (error) => {
 				console.log("error updating elf", error)
 			});
@@ -479,7 +481,7 @@ const getpElfMetaData = async () => {
 
       
 {/*
-<button className="btn btn-blue"  onClick={updateElf}>Update Elf2 Data</button>
+
 	<button className="btn btn-blue" onClick={getElfMetaData}>UpdateDB</button>
 	<button className="btn btn-blue"  onClick={getOrcMetaData}>Update Orc Owner Data</button>
 */}
@@ -488,7 +490,9 @@ const getpElfMetaData = async () => {
 	
 
 
+	<button className="btn btn-blue"  onClick={updateElf}>Update Elf Data (5 hrs, dont use)</button>
 
+	<button className="btn btn-blue"  onClick={getOrcMetaData}>Update Orc Owner Data</button>
 
 {!loading && <CSVLink {...csvReport}>Export to CSV</CSVLink> }
 {<button className="btn btn-blue" onClick={exportData}>Export Game</button>}
