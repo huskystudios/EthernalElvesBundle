@@ -29,7 +29,7 @@ const ExportGame = ({text, size}) => {
 		let tokenId = i
 		const pElves = await polygonContract.methods.elves(tokenId).call();
 		const eElves = await nftContract.methods.elves(tokenId).call();
-		let chain = "";
+		let chain = "eth";
 	  
 		if(pElves.owner === eElves.owner) {
 			if(pElves.owner === "0x0000000000000000000000000000000000000000" && eElves.owner === "0x0000000000000000000000000000000000000000") {
