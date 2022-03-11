@@ -481,10 +481,11 @@ const getpElfMetaData = async () => {
 {/*
 <button className="btn btn-blue"  onClick={updateElf}>Update Elf2 Data</button>
 	<button className="btn btn-blue" onClick={getElfMetaData}>UpdateDB</button>
+	<button className="btn btn-blue"  onClick={getOrcMetaData}>Update Orc Owner Data</button>
 */}
 	
 
-	<button className="btn btn-blue"  onClick={getOrcMetaData}>Update Orc Owner Data</button>
+	
 
 
 
