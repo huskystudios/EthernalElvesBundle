@@ -9,7 +9,6 @@ import Home from './views/home';
 import Mint from './views/mint';
 import Admin from './views/admin';
 import Profile from './views/profile';
-import Faq from './views/faq';
 import { getCurrentWalletConnected } from './utils/interact'
 import { useState, useEffect } from 'react';
 import PlayEth from './views/PlayEth';
@@ -56,9 +55,6 @@ const [flip, setFlip] = useState(false)
               </Route>
               <Route exact path="/profile">
                 <Profile />
-              </Route>
-              <Route exact path="/faq">
-                <Faq />               
               </Route>
               {/*
                  <Route exact path="/playeth">
