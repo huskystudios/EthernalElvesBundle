@@ -13,6 +13,7 @@ import Loader from "../../components/Loader";
 import PendingTransfers from "./PendingTransfers";
 import PendingRenTransfers from "./PendingRenTransfers";
 import Polygon from "./Polygon";
+import Lookup from "../profile/Lookup";
 
 const Admin = () => {
 
@@ -190,6 +191,7 @@ setLoading(false)
 
 
 
+
 return (
 <>
        <div className="dark-1000 h-full d-flex home justify-center items-center black">
@@ -198,11 +200,7 @@ return (
             <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
             <p>ADMIN CONSOLE</p>
 
-            <div>Sentinel Supply: {tokenSupply} <br/> Current Price:{currentPrice.mintCost/1000000000000000000}</div>
-            <div>$REN in circulation{renSupply}</div>
-            <div className="mint-instructions">
-                <p>Press this button if peoples elves dont show up. It will loop through the current supply so be patient</p>
-            </div>
+           
             <div className="d-flex flex-row justify-center">
             {!loading ? ( 
             <button className="btn btn-blue" onClick={refreshMetaData}>Update Elf Metadata</button>) : ( 
@@ -219,14 +217,16 @@ return (
              
         <div className="d-flex flex-column text-white justify-center px-4 text-uppercase dialog">
          
-              <p>HODLERS</p>
-              {ownerCount && ownerCount}
+              <p>HODLERS:  {ownerCount && ownerCount}</p>
+             
+
+              <Lookup />  
              
           </div>
 
          
             
-            <Polygon />
+           
          
 
 

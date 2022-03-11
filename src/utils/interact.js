@@ -21,11 +21,15 @@ export const elvesContract = "0xA351B769A01B445C04AA1b8E6275e03ec05C1E75"
 const mirenContract = "0xe6b055abb1c40b6c0bf3a4ae126b6b8dbe6c5f3f"
 const campaignsContract = "0x367Dd3A23451B8Cc94F7EC1ecc5b3db3745D254e"
 const polyElvesContract = "0x4DeAb743F79b582c9b1d46b4aF61A69477185dd5"
+const orcsContractAddress = "0x3abedba3052845ce3f57818032bfa747cded3fca"
+const orcsCastleContract = "0x2f3f840d17eb61020680c1f4b00510c3caa7df63"
 
 export const elvesAbi = require('./ABI/elves.json')
 const mirenAbi = require('./ABI/miren.json') 
 const campaignAbi = require('./ABI/campaigns.json')
 const polyElvesAbi = require('./ABI/polyElves.json')
+const orcsAbi = require('./ABI/orcs.json')
+const orcsCastleAbi = require('./ABI/orcsCastle.json')
 
 
 
@@ -36,6 +40,8 @@ export const nftContract = new web3.eth.Contract(elvesAbi.abi, elvesContract);
 const ercContract = new web3.eth.Contract(mirenAbi.abi, mirenContract);
 const gameContract = new web3.eth.Contract(campaignAbi.abi, campaignsContract);
 export const polygonContract = new polyweb3.eth.Contract(polyElvesAbi.abi, polyElvesContract);
+export const orcsContract = new web3.eth.Contract(orcsAbi.abi, orcsContractAddress);
+export const orcsCastle = new web3.eth.Contract(orcsCastleAbi, orcsCastleContract);
 
 const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
@@ -990,6 +996,81 @@ export const completePolyRenTransfer = async(props) => {
 
 }
 
-///////////////
+///////////////ORCS//////////////////////////////////////////////////////////////////
+export const lookupMultipleOrcs = async ({array})=>{
+
+
+   let tempArr = []
+ 
+   if(array){
+   array.map((i, index)=>{
+     var tx = {
+       reference: 'EtherOrcs'+i.toString(),
+       contractAddress: orcsContractAddress,
+       abi: orcsAbi.abi,
+       calls: [{ reference: 'orcsCall'+i.toString(), methodName: 'orcs', methodParameters: [i]},
+       { reference: 'claimableCall'+i.toString(), methodName: 'claimable', methodParameters: [i]},
+       { reference: 'activitiesCall'+i.toString(), methodName: 'activities', methodParameters: [i]},
+       { reference: 'ownerOfCall'+i.toString(), methodName: 'ownerOf', methodParameters: [i]},
+       { reference: 'tokenURI'+i.toString(), methodName: 'tokenURI', methodParameters: [i]},
+      ]
+     };
+     tempArr.push(tx);
+   })
+ }
+ 
+ const multicall = new Multicall({ web3Instance: web3, tryAggregate: true });
+ const contractCallContext: ContractCallContext[] = tempArr
+ const results: ContractCallResults = await multicall.call(contractCallContext);
+ 
+ let orcObj 
+ let orcArry = []
+ 
+ array.forEach(i => {
+   
+   let orcData = results.results[`EtherOrcs${i}`].callsReturnContext[0].returnValues
+   let activity = results.results[`EtherOrcs${i}`].callsReturnContext[2].returnValues[2]
+   let claimable = parseInt(results.results[`EtherOrcs${i}`].callsReturnContext[1].returnValues[0].hex, 16)
+ 
+   let orcTokenData = results.results[`EtherOrcs${i}`].callsReturnContext[4].returnValues[0]
+   var b 
+   var orcTokenObj
+   try {
+     b = orcTokenData.split(",")
+     orcTokenObj = JSON.parse(atob(b[1]))
+     console.log(orcTokenObj)
+   } catch (error) {
+     orcTokenObj = {image: null, name: null, body: null, helm: null, mainhand: null, offhand: null, attributes: null}
+   }
+  
+
+
+ let ownerAdd = results.results[`EtherOrcs${i}`].callsReturnContext[2].returnValues[0]
+ if(ownerAdd === "0x0000000000000000000000000000000000000000" || parseInt(activity) === 0 ){
+   ownerAdd = results.results[`EtherOrcs${i}`].callsReturnContext[3].returnValues[0]
+ }
+
+ 
+ orcObj = {
+     owner: ownerAdd.toLowerCase(),
+     id: i,
+     level:orcData[4], 
+     claimable: claimable,
+     name: orcTokenObj.name ? orcTokenObj.name : `Orc #${i}`,
+     body: orcData[0],
+     helm: orcData[1],
+     mainhand: orcData[2],
+     offhand: orcData[3],
+     zugModifier: orcData[5], 
+     attributes: orcTokenObj.attributes
+   }
+ 
+   orcArry.push(orcObj)
+ })
+ 
+ return orcArry
+ 
+ }
+ 
 
 

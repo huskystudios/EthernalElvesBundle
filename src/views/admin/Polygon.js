@@ -80,7 +80,7 @@ const Polygon = () => {
 
         
         <div className="d-flex flex-column text-white justify-center px-4 text-uppercase wl-dialog">
-            <Lookup />
+           
           
             Locate and save chain
             <div className="wl-role">

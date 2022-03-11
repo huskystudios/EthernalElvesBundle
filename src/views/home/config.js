@@ -138,3 +138,52 @@ export const campaigns =
     }
 ]
 
+
+export const rampages =
+
+[
+    {
+        "id": 1,
+        "name": "Wandering Souls",
+        "image": woods,
+        "time": 1.2,
+        "maxLevel": 100
+    },
+    {
+        "id": 2,
+        "name": "Fervorous Hollow",
+        "image": meadows,
+        "time": 1.5,
+        "maxLevel": 100
+    },
+    {
+        "id": 3,
+        "name": "Hidden Grove",
+        "image": mount,
+        "time": 0.6,
+        "maxLevel": 100
+    },
+    {
+        "id": 4,
+        "name": "Tomb of Vitality",
+        "image": fallout,
+        "time": 0.6,
+        "maxLevel": 30
+    },
+    {
+        "id": 5,
+        "name": "Inferno Abyss  ",
+        "image": cove,
+        "time": 0.6,
+        "maxLevel": 50
+    },
+    {
+        "id": 6,
+        "name": "Untamed Ether",
+        "image": mammon,
+        "time": 0.6,
+        "maxLevel": 100
+    }
+]
+
+
