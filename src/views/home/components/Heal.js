@@ -55,6 +55,8 @@ const Heal = ({ healing, healMany, healers, targets, data, chain, setAlert, setH
 
             //if chain === eth only allow one to be clicked
             if(chain === "eth") {
+                if(healers.includes(nft)) setHealers(healers.filter(item => item !== nft))
+                else setHealers(state => [...state, nft])
                 if(healers.length > 0) {
                     setAlert({
                         show: true, value: {
@@ -63,13 +65,18 @@ const Heal = ({ healing, healMany, healers, targets, data, chain, setAlert, setH
                         }})
                     return
                 }
+            }else{
+                if(healers.includes(nft)) setHealers(healers.filter(item => item !== nft))
+                else setHealers(state => [...state, nft])
             }
-            if(healers.includes(nft)) setHealers(healers.filter(item => item !== nft))
-            else setHealers(state => [...state, nft])
+            
         }
+        
         const handleClickTarget = (nft) => {
             if(chain === "eth") {
-                if(healers.length > 0) {
+                if(targets.includes(nft)) setTargets(targets.filter(item => item !== nft))
+                else setTargets(state => [...state, nft])
+                if(targets.length > 0) {
                     setAlert({
                         show: true, value: {
                             title: "Error",
@@ -77,9 +84,11 @@ const Heal = ({ healing, healMany, healers, targets, data, chain, setAlert, setH
                         }})
                     return
                 }
+            }else{
+                if(targets.includes(nft)) setTargets(targets.filter(item => item !== nft))
+                else setTargets(state => [...state, nft])
             }
-            if(targets.includes(nft)) setTargets(targets.filter(item => item !== nft))
-            else setTargets(state => [...state, nft])
+            
         }
         //filter druids whos have no cooldown
         let healerSelect = data.filter(item => item.cooldown === false && item.classString === "Druid")
