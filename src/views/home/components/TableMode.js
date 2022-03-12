@@ -187,23 +187,27 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
             return
         }
         let renToSend = renTransfer === "" ? 0 : renTransfer
+        console.log(renToSend, renTransfer)
         let ids = clicked.map((elf) => elf.id)
         renToSend = Moralis.Units.ETH(renToSend)
-        
+           
 
         if(chain === "eth"){
             const params =  {ids: ids, renAmount: (renToSend).toString()}
+
+            console.log(params)
             let {success, status, txHash} = await checkIn(params)
      
             success && setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
 
         }else{
 
-            if(Moralis.Units.ETH(polyBalance) < renToSend){
+            /*if(Moralis.Units.ETH(polyBalance) < renToSend){
                 setAlert({show: true, value: {title: "Not enough REN", content: (`You need ${(renToSend -polyBalance)/1000000000000000000 } more REN`)}})
                 return
-            }
-            const params = { functionCall: polygonContract.methods.checkIn(ids, renToSend, owner).encodeABI() }
+            }*/
+            const params = { functionCall: polygonContract.methods.checkIn(ids, 0, owner).encodeABI() }
+            console.log(renToSend, params)
             sendGaslessFunction(params)
         }
         setTransfersModal(!transfersModal)
