@@ -1,4 +1,4 @@
-import { items, sentinelClass, campaigns } from "./config/config";
+import { items, sentinelClass, campaigns } from "../views/home/config.js"
 
 
 require('dotenv').config();
