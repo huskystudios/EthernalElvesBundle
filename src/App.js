@@ -11,9 +11,7 @@ import Admin from './views/admin';
 import Profile from './views/profile';
 import { getCurrentWalletConnected } from './utils/interact'
 import { useState, useEffect } from 'react';
-import PlayEth from './views/PlayEth';
-import PlayPolygon from './views/PlayPolygon';
-import Transfers from './views/Transfers';
+import {app, analytics} from './utils/initFirebase'
 
 require('dotenv').config();
 
@@ -26,6 +24,7 @@ const [flip, setFlip] = useState(false)
   let dev2 = process.env.REACT_APP_DEV2
   let dev3 = process.env.REACT_APP_DEV3
 
+  
 
   let adminWallet = [dev1.toLowerCase(), dev2.toLowerCase(), dev3.toLowerCase()]
 
