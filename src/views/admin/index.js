@@ -14,6 +14,7 @@ import PendingTransfers from "./PendingTransfers";
 import PendingRenTransfers from "./PendingRenTransfers";
 import Polygon from "./Polygon";
 import Lookup from "../profile/Lookup";
+import ExportOwners from "./ExportOwners";
 
 const Admin = () => {
 
@@ -208,6 +209,7 @@ return (
             </div>
     
             <ExportGame />
+            <ExportOwners />
 
             
 
