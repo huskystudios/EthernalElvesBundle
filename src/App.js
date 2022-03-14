@@ -11,6 +11,7 @@ import Admin from './views/admin';
 import Profile from './views/profile';
 import { getCurrentWalletConnected } from './utils/interact'
 import { useState, useEffect } from 'react';
+import Explore from './views/home/components/Explore';
 import {app, analytics} from './utils/initFirebase'
 
 require('dotenv').config();
@@ -54,6 +55,9 @@ const [flip, setFlip] = useState(false)
               </Route>
               <Route exact path="/profile">
                 <Profile />
+              </Route>
+              <Route exact path="/explore">
+                <Explore />
               </Route>
               {/*
                  <Route exact path="/playeth">

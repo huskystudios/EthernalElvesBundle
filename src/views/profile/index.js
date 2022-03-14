@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import Loader from "../../components/Loader"
 import { useMoralis } from "react-moralis"
 import "./style.css"
-import { actionString } from "../home/config"
+import { actionString, items } from "../home/config"
 import {lookupMultipleElves, getCurrentWalletConnected, withdrawSomeTokenBalance} from "../../utils/interact"
 import Countdown from 'react-countdown';
 import Lookup from "./Lookup"
@@ -79,10 +79,18 @@ const Profile = () => {
         setStatus("army of " + userTokenArray.length + " elves")
 
         const lookupParams = {array: userTokenArray, chain: "eth"}
-        const elves = await lookupMultipleElves(lookupParams)
+        //const elves = await lookupMultipleElves(lookupParams)
         
-        elves.sort((a, b) => a.time - b.time) 
+        let q = new Moralis.Query("ElvesAdmin");  
+       
+        q.equalTo("owner_of", address.toLowerCase());
+        setStatus("getting elves")
+        const elves = await q.find();
+
+        //elves.sort((a, b) => a.time - b.time) 
         console.log(elves)
+
+
         setData(elves)        
 
         setStatus("done")
@@ -114,15 +122,15 @@ const Profile = () => {
       <table style={{width: '100%'}}>
       <thead style={{textAlign: "left"}}>
         <tr>
-        <th>NAME</th>
+        <th>Token Id</th>
         <th>Inventory</th>
         {/*<th>Weapon Index</th>*/}
         <th>Weapon Name</th>
          {/*<th>Weapon Tier</th>*/}
         <th>level</th>
         <th>class</th>
-        <th>Action Taken</th>
-        <th>Ready In</th>
+        
+        <th>Timestamp</th>
         </tr>
       </thead>
       <tbody>
@@ -131,33 +139,57 @@ const Profile = () => {
             {data.map((line, index) => {
 
 
-                const date = new Date(line.time * 1000)
-                const isActive = new Date() > date
-                let passiveString = ""
-                
-                let passiveFlag = false
-                
-                    ///turn date in tto hours if less than 24 then into days    
-                    if(line.action === 3){
-                        let timesince = Math.floor(((new Date() - date) / 1000)/(60*60))
-                        if(timesince < 24){
-                            passiveString = `${timesince} hours`
-                        }else{
-                            let timesince = Math.floor(((new Date() - date) / 1000)/(60*60*24))
-                            passiveString = `${timesince} days`
+                        const date = new Date(line.get("elf_timestamp") * 1000)
+                        const isActive = new Date() > date
+                        let passiveString = ""
+
+                        let passiveFlag = false
+
+                        let action = parseInt(line.get("elf_action"))
+
+                        //get text from actionString where action is the key
+                        actionString.forEach((item) => {
+                            if(item.action === action){
+                                action = item.text
+                                //passiveFlag = true
+                            }
+                        })
+
+                        let inventory = parseInt(line.get("elf_inventory"))
+                        let inventoryString
+
+                        let inventoryDescription
+                        items.forEach((item) => {
+                            if(item.item === inventory){
+                                inventoryDescription = item.description
+                                inventoryString = item.text
+                            
+                            }
+                        })
+
+                        console.log(line, action, date)
+
+                        ///turn date in tto hours if less than 24 then into days    
+                        if (parseInt(line.get("elf_action")) === 3) {
+                            let timesince = Math.floor(((new Date() - date) / 1000) / (60 * 60))
+                            if (timesince < 24) {
+                                passiveString = `${timesince} hours`
+                            } else {
+                                let timesince = Math.floor(((new Date() - date) / 1000) / (60 * 60 * 24))
+                                passiveString = `${timesince} days`
+                            }
                         }
-                    }
 
-
-                return( <tr key={index}> 
-                    <td>{line.name}</td>
-                    <td>{line.inventoryString}</td>
+                  
+                return( <tr key={line.id}> 
+                    <td>{line.get("token_id")}</td>
+                    <td>{inventoryString}</td>
                     {/*<td>{line.primaryWeapon}</td>        */} 
-                    <td>{line.attributes[3].value} +{line.weaponTier}</td>        
+                    <td>{line.get("elf_weapon")} +{line.get("elf_weaponTier")}</td>        
                     
-                    <td>{line.level}</td>
-                    <td>{line.classString}</td>
-                    <td>{line.actionString}</td>
+                    <td>{line.get("elf_level")}</td>
+                    <td>{line.get("elf_class")}</td>
+                   
                     <td>{!isActive &&  !passiveFlag && <pre> {<Countdown date={date} />} </pre>}
                     <pre>{passiveString}</pre>
                     

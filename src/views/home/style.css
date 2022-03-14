@@ -830,6 +830,26 @@
 	background-color: #333;
 }
 
+.explore-view::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: rgba(255,255,255,0.2);
+}
+
+.explore-view::-webkit-scrollbar
+{
+	width: 12px;
+    height: 12px;
+	background-color: rgba(255,255,255,0.2);
+}
+
+.explore-view::-webkit-scrollbar-thumb
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #333;
+}
+
+
 .collection-item {
     width: 200px;
     display: grid;
@@ -1644,6 +1664,20 @@ background-image: url(../../assets/images/stats_back_hover.png);
     display: flex;
     flex-direction: column;
 
+}
+
+.explore-view {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    padding: 0px 8px;
+    max-height: calc(100vh - 203px);
+    overflow-y: auto;
+    padding-bottom: 16px;
+    padding-top: 8px;
+    box-sizing: border-box;
 }
 
 .alert-bar {
