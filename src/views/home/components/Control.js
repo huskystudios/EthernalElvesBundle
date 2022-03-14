@@ -115,12 +115,12 @@ const Control = ({ consoleOpen, setConsoleOpen, data, activities, onSelect, clic
                     <button className="btn btn-blue" onClick={() => setOpen(open => !open)}>Actions</button>
                     {open && <div className="dropdown-content">
 
-                        <span onClick={onForge}>forge</span>
-                        <span onClick={onMerchant}>merchant</span>
-                        <span onClick={onCampaign}>campaign</span>
-                        {chain === "polygon" && <span onClick={onBloodthirst}>bloodthirst</span>}
-                        <span onClick={onPassiveMode}>passive mode</span>
-                        <span onClick={onHeal}>heal</span>
+                        <span onClick={() => { onForge(); setOpen(false);}}>forge</span>
+                        <span onClick={() => { onMerchant(); setOpen(false);}}>merchant</span>
+                        <span onClick={() => { onCampaign(); setOpen(false);}}>campaign</span>
+                        {chain === "polygon" && <span onClick={() => { onBloodthirst(); setOpen(false);}}>bloodthirst</span>}
+                        <span onClick={() => { onPassiveMode(); setOpen(false);}}>passive mode</span>
+                        <span onClick={() => { onHeal(); setOpen(false);}}>heal</span>
                         {chain === "polygon" && <span onClick={onSynergize}>synergize</span>}
                         {/*
                         
