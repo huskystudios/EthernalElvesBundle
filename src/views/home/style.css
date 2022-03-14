@@ -1394,7 +1394,6 @@
     flex-wrap: wrap;
     margin: 4px 1px;
     width: 85%;
-    min-width: 675px;
     gap: 12px;
 }
 .nft-grid img {
