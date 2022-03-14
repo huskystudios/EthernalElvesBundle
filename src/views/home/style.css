@@ -1046,22 +1046,21 @@
 }
 
 .card-view {
-    margin-top: 22px;
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
     justify-content: center;
-    padding: 0px 8px;
     max-height: calc(100vh - 203px);
     overflow-y: auto;
     padding-bottom: 16px;
     padding-top: 8px;
     box-sizing: border-box;
+    margin-top: 22px;
 }
 .card-rect {
     display: flex;
-    max-width: 332px;
-    min-width: 332px;
+    width: 312px;
+    min-width: 312px;
     gap: 16px;
     align-items: center;
     padding: 8px;
@@ -1083,7 +1082,7 @@
     background-color: rgba(255,255,255,0.2);
 } */
 .card-image {
-    width: 140px;
+    width: 120px;
 }
 .card-attr {
     display: flex;
@@ -1130,6 +1129,9 @@
     padding: 12px 8px;
 }
 @media (min-width: 1168px) {
+    .alert-bar img, .alert-bar h3 {
+        display: block !important;
+    }
     .btn-select .btn {
         font-size: 14px;
     }
@@ -1152,7 +1154,7 @@
         box-shadow: 0px 4px 20px 0px rgba(17, 148, 249, 0.63);
         z-index: 1;
         margin-top: 10px;
-        margin-left: -12px;
+        margin-left: -36px !important;
         bottom: unset !important;
         /* top: 40px !important; */
     }
@@ -1313,8 +1315,9 @@
     box-shadow: 0px 4px 20px 0px rgba(17, 148, 249, 0.63);
     z-index: 1;
     margin-top: 10px;
-    margin-left: -12px;
+    margin-left: calc(-50% - 12px);
     bottom: 80px;
+    border-radius: 4px;
 }
 .dropdown-content span {
     font-size: 14px;
@@ -1646,17 +1649,21 @@ background-image: url(../../assets/images/stats_back_hover.png);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 55px;
-    background-color:rgba(0, 0, 0, 1);
+    background-color: rgba(0, 0, 0, 1);
     padding: 14px;
     margin: 20px;
-    max-width: 1490px;
     border-radius: 8px;
     z-index: 33;
     font-size: 12px;
-    -webkit-box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
-    -moz-box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
-    box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
+    box-shadow: 0px 0px 13px 4px rgb(17 148 249 / 43%);
+    align-self: center;
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    background: rgba(0, 0, 0, 0.8);
+}
+.alert-bar img, .alert-bar h3 {
+    display: none;
 }
 .alert-bar pre {
     font-family: "Montserrat";

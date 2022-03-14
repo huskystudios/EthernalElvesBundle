@@ -322,7 +322,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
         return (
             <Modal show={transfersModal}>
                 <h4>Prism Transfer Module</h4>
-                <img src={thevoid} alt="elfTerminus" className="w-3/4" />
+                <img src={thevoid} alt="elfTerminus" className="w-full" />
                 <p className="text-danger">(Using the Elf Terminus can result in losing access to your elf. Please read instructions carefully.)</p>
                 <div className="flex flex-column w-full items-center">
                     <h4>Travellers Selected</h4>
@@ -337,7 +337,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
                         )}
                     </div>
                 </div>
-                <div className="flex mt-1">
+                <div className="flex items-center mt-1 flex-wrap justify-center gap-1">
                     {/*chain === "eth" && */<input type={"text"} placeholder={"Ren To Transfer"} value={renTransfer} onChange={(e) => setRenTransfer(e.target.value)} />}
                     <button className="btn-whale" onClick={checkinElf}>
                         Confirm Transfer
