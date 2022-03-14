@@ -48,7 +48,7 @@ const ExportOwners = ({text, size}) => {
 			{ label: "owner", key: "owner" },
 			{ label: "miren", key: "miren" },
 			{ label: "contractRen", key: "contractRen" },
-			{ label: "polyRen", key: "polyMiren"},
+			{ label: "polyRen", key: "polyRen"},
 			{ label: "elvesCount", key: "elvesCount"},
 			
 		
