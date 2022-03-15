@@ -331,7 +331,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
         return (
             <Modal show={transfersModal}>
                 <h4>Prism Transfer Module</h4>
-                <img src={thevoid} alt="elfTerminus" className="w-3/4" />
+                <img src={thevoid} alt="elfTerminus" className="w-full" />
                 <p className="text-danger">(Using the Elf Terminus can result in losing access to your elf. Please read instructions carefully.)</p>
                 <div className="flex flex-column w-full items-center">
                     <h4>Travellers Selected</h4>
@@ -345,11 +345,10 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
                             </div>
                         )}
                     </div>
-                        
-                    </div>
-                    <div className="flex mt-1">
-                    {chain === "eth" && <input type={"text"} placeholder={"Ren To Transfer"} value={renTransfer} onChange={(e) => setRenTransfer(e.target.value)}/>}
-                    <button className="btn-whale"  onClick={checkinElf}>
+                </div>
+                <div className="flex items-center mt-1 flex-wrap justify-center gap-1">
+                    {chain === "eth" && <input type={"text"} placeholder={"Ren To Transfer"} value={renTransfer} onChange={(e) => setRenTransfer(e.target.value)} />}
+                    <button className="btn-whale" onClick={checkinElf}>
                         Confirm Transfer
                     </button>
                 </div>
@@ -367,10 +366,10 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
     return !loading ? (
         <>
             <div className="flex justify-center p-1 tool-panel">
-              {/*  */}
+              {/*  <button className="btn-whale" onClick={() => setMintModal(!mintModal)}> Mint </button> */}
               <button className="btn-whale" onClick={() => setTransfersModal(!transfersModal)}> Transfers </button>
-                <button className="btn-whale" onClick={unStakeElf}> Unstake </button>
-                <button className="btn-whale" onClick={() => setMintModal(!mintModal)}> Mint </button>
+               {chain === "eth" && <button className="btn-whale" onClick={unStakeElf}> Unstake </button>}
+               
                 {/* <button className="btn-whale" onClick={() => setMaximize(!maximize)}> {!maximize ? "expand table" : "minimize table"} </button> */}
                 {/*<button disabled className="btn-whale" onClick={() => setVisualMode(!visualMode)}>Visual mode</button>*/}
                 <button className="btn btn-green" onClick={() => setReloadData(!reloadData)}>Reload Data</button>
