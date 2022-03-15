@@ -3,6 +3,7 @@ import hBar from "../../../assets/images/health_bar.png"
 import lBar from "../../../assets/images/level_bar.png"
 import Countdown from 'react-countdown';
 import { useMoralis } from "react-moralis"
+import Withdraw from "../../../wallet/Withdraw"
 
 const PAGE_COUNT = 3
 const MAX_HEALTH = 100
@@ -117,10 +118,11 @@ const Control = ({ consoleOpen, setConsoleOpen, data, activities, onSelect, clic
 
                         <span onClick={onForge}>forge</span>
                         <span onClick={onMerchant}>merchant</span>
-                        <span onClick={onCampaign}>campaign</span>
+                        <span onClick={(e) => {e.preventDefault(); onCampaign() }}>campaign</span>
                         {chain === "polygon" && <span onClick={onBloodthirst}>bloodthirst</span>}
                         <span onClick={onPassiveMode}>passive mode</span>
                         <span onClick={onHeal}>heal</span>
+                        <Withdraw />
                         {chain === "polygon" && <span onClick={onSynergize}>synergize</span>}
                         {/*
                         

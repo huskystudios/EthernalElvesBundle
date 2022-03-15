@@ -39,7 +39,7 @@ const Staking = ({onChangeIndex, nft, onRunWeb3}) => {
         
                         <div className="d-flex flex-column w-full items-center">
                             <p>Rewards ($REN)</p>
-                            <table width={400}>
+                            <table cellSpacing={6}>
                                 <thead>
                                     <tr>
                                         <th>1 Week</th>
@@ -69,8 +69,7 @@ const Staking = ({onChangeIndex, nft, onRunWeb3}) => {
                             <p>level: 1 level per day</p>
                         </div>
                     </div>
-                    <div className="d-flex flex-row justify-between">
-                        <div></div>
+                    <div className="d-flex flex-row justify-center">
                         {enableReturn ? <button className="btn btn-green" onClick={() => onRunWeb3({action: "returnPassive"})} >return</button>
                         : <button className="btn btn-green" onClick={() => onRunWeb3({action:"sendPassive"})} >send</button>    
                     }
