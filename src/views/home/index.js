@@ -599,14 +599,14 @@ const sleep = (milliseconds) => {
         if (clicked.includes(character)) {
             setClicked(clicked.filter(char => char !== character))
         } else {
-            if (clicked.length <= 9) {
+            if (clicked.length <= 19) {
                 setClicked([...clicked, character])
             }
             else {
                 setAlert({
                     show: true, value: {
-                        title: "Too many characters",
-                        content: "You can only select 10 characters at a time"
+                        title: "Too many elves",
+                        content: "You can only select 20 eleves at a time"
                     }
                 })
 
