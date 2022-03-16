@@ -37,6 +37,7 @@ import TableMode from "./components/TableMode"
 import Bloodthirst from "./components/Bloodthirst"
 import Modal from "../../components/Modal"
 import Heal from "./components/Heal"
+import InstantKill from "./components/InstantKill"
 
 
 const Home = () => {
@@ -829,7 +830,7 @@ const sleep = (milliseconds) => {
                     */}
                         </div>
                     </div>
-                    {index === 0 && data && wallet &&
+                    {index === 100 && data && wallet &&
                         <div className="d-flex justify-center items-center">
                             <Control
                                 data={data}
@@ -855,6 +856,7 @@ const sleep = (milliseconds) => {
             }
             {renderModal()}
             {renderHealModal()}
+            {/*wallet && <InstantKill  setAlert={setAlert} owner={wallet} />*/}
         </>
     )
 }

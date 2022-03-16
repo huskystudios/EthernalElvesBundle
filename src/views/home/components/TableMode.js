@@ -367,7 +367,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
         <>
             <div className="flex justify-center p-1 tool-panel">
               {/*  <button className="btn-whale" onClick={() => setMintModal(!mintModal)}> Mint </button> */}
-              <button className="btn-whale" onClick={() => setTransfersModal(!transfersModal)}> Transfers </button>
+              <button disabled className="btn-whale" onClick={() => setTransfersModal(!transfersModal)}> Transfers </button>
                {chain === "eth" && <button className="btn-whale" onClick={unStakeElf}> Unstake </button>}
                
                 {/* <button className="btn-whale" onClick={() => setMaximize(!maximize)}> {!maximize ? "expand table" : "minimize table"} </button> */}
@@ -377,7 +377,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
             </div>
             <div className="mobile-footer">
                 <button className="btn btn-blue mobile" onClick={toggleChain}>Active: {chain}</button>
-                <button className="btn btn-blue mobile" onClick={() => setTransfersModal(!transfersModal)}>Transfers</button>
+                <button disabled className="btn btn-blue mobile" onClick={() => setTransfersModal(!transfersModal)}>Transfers</button>
             </div>
             
             <div className="filter-panel justify-center p-1">
