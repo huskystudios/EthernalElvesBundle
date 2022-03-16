@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "PolyEthernalElvesV2",
-  "sourceName": "contracts/Polygon/EthernalElvesPoly.sol",
+  "contractName": "PolyEthernalElvesV4",
+  "sourceName": "contracts/Polygon/EthernalElvesPolyL2v4.sol",
   "abi": [
     {
       "anonymous": false,
@@ -618,6 +618,78 @@
     {
       "inputs": [
         {
+          "internalType": "uint8",
+          "name": "accessoryIndex",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "changeElfAccessory",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint8",
+          "name": "inventory",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "changeElfItem",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint8",
+          "name": "level",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "changeElfLevel",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "elfOwner",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "changeElfOwner",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "uint256[]",
           "name": "ids",
           "type": "uint256[]"
@@ -960,7 +1032,7 @@
     },
     {
       "inputs": [],
-      "name": "initialize",
+      "name": "initializeRampage",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -1161,6 +1233,116 @@
           "type": "uint256[]"
         },
         {
+          "internalType": "uint256[]",
+          "name": "sentinel",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "prismBridge",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "ids",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256",
+          "name": "campaign_",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "tryWeapon_",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "tryAccessories_",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "useitem_",
+          "type": "bool"
+        },
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "rampage",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "rampages",
+      "outputs": [
+        {
+          "internalType": "uint16",
+          "name": "probDown",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "probSame",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "propUp",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "levelsGained",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "minLevel",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "maxLevel",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "renCost",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "count",
+          "type": "uint16"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "ids",
+          "type": "uint256[]"
+        },
+        {
           "internalType": "address",
           "name": "owner",
           "type": "address"
@@ -1247,24 +1429,6 @@
         }
       ],
       "name": "setAccountBalance",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address[]",
-          "name": "_owners",
-          "type": "address[]"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "_amounts",
-          "type": "uint256[]"
-        }
-      ],
-      "name": "setAccountBalances",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
