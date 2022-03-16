@@ -159,25 +159,26 @@
     background-size: 95% 100%;
     background-position: center;
     background-repeat: no-repeat;
-    width: 1140px;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 10px;
-    padding: 25px 80px;
+    padding: 25px 0px;
+    padding-bottom: 10px;
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 6px;
-
+    box-sizing: border-box;
 }
 
 .sector-options {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    flex-direction: column;
+    gap: 16px;
     margin-top: 24px;
-    justify-content: space-around;
-    padding: 10px;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 
