@@ -153,7 +153,7 @@ const Withdraw = () => {
       <div className="search">
         <button onClick={() => setModal(!modal)}>REN</button>
       </div>
-      <span onClick={() => setModal(!modal)}>$REN</span>
+      <span className="mobile" onClick={() => setModal(!modal)}>$REN</span>
       <Modal show={modal}>
         {!loading ?
           <>

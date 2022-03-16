@@ -1,8 +1,18 @@
 import { useEffect, useState } from "react";
 import {  getCurrentWalletConnected, connectWallet} from "../utils/interact.js";
 import { useMoralis, useChain } from "react-moralis";
+import Web3 from "web3";
+import eth from "../assets/images/eth.png"
+import polygon from "../assets/images/polygon.png"
 
-
+const Network = {
+  1: "Ethereum",
+  137: "Polygon"
+}
+const logo = {
+  1: eth,
+  137: polygon
+}
 const ConnectWallet = () => {
  
   //State variables
@@ -10,7 +20,7 @@ const ConnectWallet = () => {
   const [status, setStatus] = useState("");
   const {authenticate, isAuthenticated, user, isWeb3Enabled, enableWeb3, Moralis  } = useMoralis()
   const [isMetamask, setIsMetamask] = useState(false);
-
+  const [chainId, setChainId] = useState()
   const authParams = {signingMessage: "Hi Elf, this signature is required to use the Moralis database to fetch your Elves and enable L2 when ready. The dApp will work without this step, but with limited features." }
 
 
@@ -57,7 +67,10 @@ function handleMoralisError(err) {
   
 
   useEffect(() => {
-    
+    const getChainId = async () => {
+      const chain_id = await new Web3(window.ethereum).eth.getChainId()
+      setChainId(chain_id)
+    }
     const createUser = async () => {
       const {address, status} = await getCurrentWalletConnected();
        Moralis.Cloud.run("createUser", {ownerAddress: address}).then(function(results) {
@@ -68,7 +81,7 @@ function handleMoralisError(err) {
           handleMoralisError(err);
       });
     }    
-
+    if(walletAddress) getChainId()
    createUser()
 }, [walletAddress]);
 
@@ -141,17 +154,19 @@ return (
     <>
 {isMetamask ? (
 <>
-<button variant="light" className="btn-connect" onClick={connectWalletPressed}>
 {walletAddress.length > 0 ? (
-  
-  String(walletAddress).substring(0, 4) +
-  "..." +
-  String(walletAddress).substring(38)
-
+  <div className="network-info">
+    <img src={logo[chainId]} alt="currency" />
+    <div className="flex flex-column">
+      <span className="font-size-md">{Network[chainId]}</span>
+      <span className="font-size-sm">{String(walletAddress).substring(0, 4) + "..." + String(walletAddress).substring(38)}</span>
+    </div>
+  </div>
 ) : (
+<button variant="light" className="btn-connect" onClick={connectWalletPressed}>
   <span>Connect</span>
-)}
 </button>
+)}
 
 </>
 

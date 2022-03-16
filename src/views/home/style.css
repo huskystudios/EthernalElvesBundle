@@ -1164,7 +1164,17 @@
         0 0 1.5rem var(--neon-border-color),
         inset 0 0 1.5rem var(--neon-border-color);  
 }
+.network-info {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    margin-right: 12px;
+}
 @media (min-width: 1168px) {
+    .network-info {
+        margin-top: 26px;
+        margin-right: 0px;
+    }
     .nft-grid {
         display: flex;
         flex-wrap: wrap;

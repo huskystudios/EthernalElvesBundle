@@ -32,6 +32,7 @@ import {
 
 import { useMoralis, useMoralisQuery } from "react-moralis";
 import Staking from "./components/Staking"
+import Info from "./components/Info"
 import Help from "./components/Help"
 import TableMode from "./components/TableMode"
 import Bloodthirst from "./components/Bloodthirst"
@@ -480,7 +481,6 @@ const Home = () => {
             setIndex(2)
         }
     }
-
     const toggleChain = async () => {
 
         const { address } = await getCurrentWalletConnected()
@@ -769,6 +769,7 @@ const Home = () => {
                                     />}
                                 </>}
                             <Modal show={modalActions.show}>
+                                {modalActions.value === 0 && <Info />}
                                 {modalActions.value === 1 && <Staking nft={activeNfts} onRunWeb3={doAction} onChangeIndex={onChangeIndex} />}
                                 {modalActions.value === 2 && <Sector chain={chain} campaign={campaign} data={activeNfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} />}
                                 {modalActions.value === 3 && <Bloodthirst setAlert={setAlert} chain={chain} campaign={campaign} data={activeNfts} onSendCampaign={bloodthirstFunction} onChangeIndex={onChangeIndex} />}
@@ -818,6 +819,7 @@ const Home = () => {
                                 chain={chain}
                                 consoleOpen={consoleOpen}
                                 setConsoleOpen={setConsoleOpen}
+                                onInfo={() => setModalActions({show: !modalActions.show, action: "info", value: 0})}
                             />
                         </div>}
                 </>

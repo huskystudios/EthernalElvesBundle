@@ -10,7 +10,7 @@ const MAX_HEALTH = 100
 const MAX_LEVEL = 100
 
 const Control = ({ consoleOpen, setConsoleOpen, data, activities, onSelect, clicked, onChangeIndex, onRunWeb3, onForge, onMerchant, onHeal, onSynergize, toggleChain, chain,
-    onCampaign, onPassiveMode, onBloodthirst
+    onCampaign, onPassiveMode, onBloodthirst, onInfo
 }) => {
     const [currentPage, setCurrentPage] = useState(0)
     const [nfts, setNfts] = useState([])
@@ -118,11 +118,12 @@ const Control = ({ consoleOpen, setConsoleOpen, data, activities, onSelect, clic
 
                         <span onClick={onForge}>forge</span>
                         <span onClick={onMerchant}>merchant</span>
-                        <span onClick={(e) => {e.preventDefault(); onCampaign() }}>campaign</span>
+                        <span onClick={(e) => { e.preventDefault(); onCampaign() }}>campaign</span>
                         {chain === "polygon" && <span onClick={onBloodthirst}>bloodthirst</span>}
                         <span onClick={onPassiveMode}>passive mode</span>
                         <span onClick={onHeal}>heal</span>
                         <Withdraw />
+                        <span className="mobile" onClick={() => onInfo()}>INFO</span>
                         {chain === "polygon" && <span onClick={onSynergize}>synergize</span>}
                         {/*
                         
@@ -136,6 +137,10 @@ const Control = ({ consoleOpen, setConsoleOpen, data, activities, onSelect, clic
                 <button className="btn btn-blue" onClick={() => setConsoleOpen(consoleOpen => !consoleOpen)}>Maximize</button>
             </span>
             }
+
+            <div className="info">
+                <button onClick={onInfo}>INFO</button>
+            </div>
             {consoleOpen &&
                 <div className="control-panel">
 
