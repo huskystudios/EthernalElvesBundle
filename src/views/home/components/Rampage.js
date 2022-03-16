@@ -129,11 +129,6 @@ const Rampage = ({onRampage, data, chain}) => {
             setRerollAccessories(false)
         }
 
-        
-
-        
-
-
     }
 
         useEffect(() => {
@@ -143,7 +138,7 @@ const Rampage = ({onRampage, data, chain}) => {
                 for(let i = 0; i < rampages.length; i++){
     
                     await getRampages(rampages[i].id).then(res => {
-                        setLoadingStatus("found camp " + rampages[i].name)
+                        setLoadingStatus("found rampage " + rampages[i].name)
                     const camoObj = {
                             name: rampages[i].name,
                             id: rampages[i].id,

@@ -475,17 +475,9 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
 
                                     let showTier = line.sentinelClass !== 0 ? true : false
 
-                                    
-                                    //console.log(accessoriesString, accessoriesIndex, classIndex, accessoriesImIndex)
-
-
-
-                                    ///turn date in tto hours if less than 24 then into days    
                                     if (line.action === 3) {
                                         const hours = Math.floor(((new Date() - date) / 1000) / (60 * 60))
                                         let timesince = hours
-
-                                        console.log(hours, hours%24)
 
                                        
                                         if (timesince < 24) {

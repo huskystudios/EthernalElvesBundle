@@ -83,17 +83,6 @@ const Bloodthirst = ({setAlert,onChangeIndex, onSendCampaign, data, chain}) => {
 
         
 
-        const showAlert = ({ title, content }) => {
-
-            return (
-                <div className="alert">
-                    <h3>{title}</h3>
-                    <pre>{content}</pre>
-                    <button className="btn btn-red" onClick={() => setAlert({ show: false })}>close</button>
-                </div>
-            )
-        }
-    
        
     return (
     
@@ -147,7 +136,7 @@ const Bloodthirst = ({setAlert,onChangeIndex, onSendCampaign, data, chain}) => {
                         <div 
                             className={useItemValue ? "btn-sector-option active" : "btn-sector-option"} 
                             onClick={() => setUseItemValue(state => !state)}
-                            onMouseEnter={() => setTooltip(`Do you use your item in {${"item in stash"}}?`)}
+                            onMouseEnter={() => setTooltip(`Do you use your item?`)}
                             onMouseLeave={() => setTooltip("")}
                         >
                             use item
