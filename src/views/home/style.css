@@ -136,7 +136,7 @@
 }
 
 .overview-content {
-    margin-bottom: 50px;
+    margin-bottom: 10px;
     width: 100%;
     /* position: relative; */
 }
@@ -248,10 +248,11 @@
     
 }
 .selection-content {
-    margin-bottom: 200px;
-    padding: 54px 54px;
+    padding:24px 0px;
     gap: 12px;
     position: relative;
+    box-sizing: border-box;
+    width: 100%;
 }
 .selection-content img {
     width: 100px;
@@ -265,7 +266,6 @@
     align-items: center;
     cursor: pointer;
     border: 1px solid #454545;
-    margin-right: 12px;
     padding: 10px;
 }
 /* .choose-sector {
@@ -280,9 +280,10 @@
 .btn-sector-option {
     cursor: pointer;
     background-size: 100% 100%;
-    padding: 20px 36px;
+    padding: 20px 16px;
     font-size: 14px;
-    min-width: 100px;
+    width: 120px;
+    box-sizing: border-box;
     text-align: center;
     font-stretch:expanded;
     background-image: url(../../assets/images/btn_stake.png);
@@ -382,10 +383,10 @@
 }
 
 .campaign-panel {
-    margin-bottom: 50px;
-    width: 1200px;
+    margin-bottom: 50px;   
     text-align: center;
     position: relative;
+    width: 100%;
 }
 .receive-panel {
     margin-bottom: 200px;
@@ -423,10 +424,9 @@
     background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
-    height: 280px;
-    width: 420px;
     padding: 24px;
-    margin: auto;
+    max-width: 420px;
+    margin: 0px;
 }
 .campaign-slide-sector {
     background-image: url(../../assets/images/panel.png);
@@ -469,11 +469,11 @@
     width: 140px;
     padding: 16px;
     margin: auto;
+    display: none;
 }
 .campaign-thumb {
     border-radius: 8px;
     width: 100%;
-    height: 220px;
 }
 .campaign-thumb-passive {
     border-radius: 8px;
@@ -494,7 +494,7 @@
     justify-content: center;
     align-items: center;
     margin-top: 12px;
-    gap: 18px;
+    gap: 12px;
 }
 .btn_prev {
     background-image: url(../../assets/images/arrow_left.png);
@@ -653,9 +653,9 @@
 }
 
 .sector-selection {
-    /* width: 520px; */
+    width: 100%;
     margin: auto;
-    margin-top: 80px;
+    margin-top: 40px;
     position: relative;
 }
 .sector-selection .selection-content {
@@ -748,7 +748,7 @@
     position: relative;
     box-sizing: border-box;
     padding: 2%;
-    margin: 16px 12px 0px 12px;
+   /* margin: 16px 12px 0px 12px; */
     display: none;
 }
 .collection-panel-max {
@@ -917,12 +917,12 @@
     text-align: center;
     background-color:rgba(0, 0, 0, 0.7);
     padding: 24px;
-    position: absolute;
-    top: 100px;
-    left: 50px;
+    position: fixed;
+    top: 80px;
     border-radius: 8px;
     z-index: 1000000000;
     font-size: 12px;
+    left: 30px;
     -webkit-box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
     -moz-box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
     box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
@@ -981,7 +981,7 @@
 
 .game-info {
     display: flex;
-    width: 340px;
+    width: 250px;
     padding-bottom: 10px;
     font-size: 16px;
     display: flex;
@@ -1002,10 +1002,10 @@
 
     width: 320px;
     height: 230px;
-    font-size: 16px;
-    display: flex;
+    font-size: 16px;    
     flex-wrap: wrap;
     gap: 10px;
+    display: none;
 }
 .elves-panel-success {
     width: 320px;
@@ -1151,7 +1151,104 @@
     font-size: 10px !important;
     padding: 12px 8px;
 }
+
+.sector-flex {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.nft-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 4px 1px;
+    width: 85%;
+    /* min-width: 675px; */
+    gap: 12px;
+}
+.nft-grid img {
+    width: 70px;
+    height: 70px;
+    border-radius: 5px;
+    border: 1px solid white;
+    cursor: pointer;
+}
+.nft-grid img.active {
+    border-color: white;
+    box-shadow:
+        0 0 0.5rem #fff,
+        inset 0 0 .5rem #fff,
+        0 0 0.5rem var(--neon-border-color),
+        inset 0 0 0.5rem var(--neon-border-color),
+        0 0 1.5rem var(--neon-border-color),
+        inset 0 0 1.5rem var(--neon-border-color);  
+}
 @media (min-width: 1168px) {
+    .nft-grid {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 4px 1px;
+        width: 85%;
+        width: 795px;
+        gap: 12px;
+        justify-content: flex-start;
+    }
+    .nft-grid img {
+        width: 100px ;
+        height: 100px ;
+    }
+    .campaign-panel {
+        margin-bottom: 50px;
+        width: 1120px;
+        text-align: center;
+        position: relative;
+    }
+    .sector-flex {
+        width: auto;
+    }
+    .carousel {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 12px;
+        gap: 18px;
+    }
+    .campaign-slide {
+        background-image: url(../../assets/images/panel.png);
+        background-size: 100% 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 280px;
+        width: 420px;
+        padding: 24px;
+        margin: auto;
+    }
+    .campaign-thumb {
+        border-radius: 8px;
+        width: 100%;
+        height: 220px;
+    }
+    .elves-panel {
+        display: flex;
+    }
+    .sector-options {
+        flex-direction: row;
+        gap: 0px;
+        margin-top: 24px;
+        justify-content: space-between;
+        padding: 10px;
+        flex-wrap: nowrap;
+    }
+    .overview-content {
+        width: 1120px;
+        margin: auto;
+    }
+    .campaign-slide-passive {
+        display: block;
+    }
     .alert-bar img, .alert-bar h3 {
         display: block !important;
     }
@@ -1208,8 +1305,8 @@
         box-sizing: border-box;
         padding: 2%;
         border: none;
-        margin-left: 0px;
-        margin-right: 0px;
+        margin-left: auto;
+        margin-right: auto;
         display: block;
     }
     .collection-panel-max {
@@ -1699,7 +1796,7 @@ background-image: url(../../assets/images/stats_back_hover.png);
     padding: 14px;
     margin: 20px;
     border-radius: 8px;
-    z-index: 33;
+    z-index: 1111133;
     font-size: 12px;
     box-shadow: 0px 0px 13px 4px rgb(17 148 249 / 43%);
     align-self: center;
@@ -1769,6 +1866,7 @@ background-image: url(../../assets/images/stats_back_hover.png);
     padding-top: 18px;
     display: none;
 }
+
 
 .connect-wallet {
     position: absolute;
