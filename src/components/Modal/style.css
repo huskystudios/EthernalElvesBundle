@@ -1,35 +1,44 @@
 .globalModal {
    
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  position: fixed; /* Stay in place */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  z-index: 1000;
+  background-color: rgba(255,255,255,0.2);
 }
-  
+
 .globalModal .globalModal-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: black;
-      border-radius: 5px;
-      padding: 20px;
-      box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
-      background-color: #000000;
-      margin: 13% auto; /* 15% from the top and centered */
-      width: 80%; /* Could be more or less, depending on screen size */
-      min-height: 400px;
-  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: black;
+    border-radius: 5px;
+    padding: 20px 8px;
+    box-shadow: 0px 0px 13px 4px rgba(17, 148, 249, 0.43);
+    background-color: #000000;
+    margin: 12% 24px; /* 15% from the top and centered */
+    min-height: 400px;
+    box-sizing: border-box;
+
 }
 
 .globalModal .close-modal {
-  align-self: flex-end;
-  width: 25px;
-  height: 25px;
-  cursor: pointer;
+align-self: flex-end;
+width: 25px;
+height: 25px;
+cursor: pointer;
 }
 
+
+@media (min-width: 1168px) {
+.globalModal .globalModal-content {
+  width: 80%; /* Could be more or less, depending on screen size */
+  min-width: 1160px;
+  padding: 20px;
+  margin: 13% auto; /* 15% from the top and centered */
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+}
