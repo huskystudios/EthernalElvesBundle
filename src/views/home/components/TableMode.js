@@ -366,6 +366,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
     return !loading ? (
         <>
             <div className="flex justify-center p-1 tool-panel">
+                <p>Game Paused</p>
               {/*  <button className="btn-whale" onClick={() => setMintModal(!mintModal)}> Mint </button> */}
               <button disabled className="btn-whale" onClick={() => setTransfersModal(!transfersModal)}> Transfers </button>
                {chain === "eth" && <button className="btn-whale" onClick={unStakeElf}> Unstake </button>}
