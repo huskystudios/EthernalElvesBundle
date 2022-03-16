@@ -14,7 +14,7 @@ import Loader from "../../../components/Loader";
 import thevoid from "../../../assets/images/thevoid.png";
 import Dropdown from "../../../components/Dropdown/";
 import Button from "../../../components/Dropdown/button";
-import { actionString } from "../config";
+import { actionString, sentinelClass } from "../config";
 
 const allowedWallets = ["0xccb6d1e4acec2373077cb4a6151b1506f873a1a5"]
 
@@ -473,6 +473,8 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
 
                                     let passiveFlag = false
 
+                                    let showTier = line.sentinelClass !== 0 ? true : false
+
                                     
                                     //console.log(accessoriesString, accessoriesIndex, classIndex, accessoriesImIndex)
 
@@ -480,12 +482,17 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
 
                                     ///turn date in tto hours if less than 24 then into days    
                                     if (line.action === 3) {
-                                        let timesince = Math.floor(((new Date() - date) / 1000) / (60 * 60))
+                                        const hours = Math.floor(((new Date() - date) / 1000) / (60 * 60))
+                                        let timesince = hours
+
+                                        console.log(hours, hours%24)
+
+                                       
                                         if (timesince < 24) {
                                             passiveString = `${timesince} hours`
                                         } else {
                                             let timesince = Math.floor(((new Date() - date) / 1000) / (60 * 60 * 24))
-                                            passiveString = `${timesince} days`
+                                            passiveString = `${timesince} days ${hours % 24} hours`
                                         }
                                     }
 
@@ -516,7 +523,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
                                             <br/>
                                             {line.accessoriesAbility && <span>{line.accessoriesAbility}</span>}
                                             <br/>
-                                            {line.accessoriesTier && <span>Tier: {line.accessoriesTier}</span>}
+                                            {showTier && <span>Tier: {line.accessoriesTier}</span>}
                                             </div>
                                         </td>
                                         <td>{line.health}</td>

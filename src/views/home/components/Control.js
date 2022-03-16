@@ -9,7 +9,7 @@ const MAX_HEALTH = 100
 const MAX_LEVEL = 100
 
 const Control = ({ consoleOpen, setConsoleOpen, data, activities, onSelect, clicked, onChangeIndex, onRunWeb3, onForge, onMerchant, onHeal, onSynergize, toggleChain, chain,
-    onCampaign, onPassiveMode, onBloodthirst
+    onCampaign, onPassiveMode, onBloodthirst, onRampage
 }) => {
     const [currentPage, setCurrentPage] = useState(0)
     const [nfts, setNfts] = useState([])
@@ -119,6 +119,7 @@ const Control = ({ consoleOpen, setConsoleOpen, data, activities, onSelect, clic
                         <span onClick={() => { onMerchant(); setOpen(false);}}>merchant</span>
                         <span onClick={() => { onCampaign(); setOpen(false);}}>campaign</span>
                         {chain === "polygon" && <span onClick={() => { onBloodthirst(); setOpen(false);}}>bloodthirst</span>}
+                        {chain === "polygon" && <span onClick={() => { onRampage(); setOpen(false);}}>rampage</span>}
                         <span onClick={() => { onPassiveMode(); setOpen(false);}}>passive mode</span>
                         <span onClick={() => { onHeal(); setOpen(false);}}>heal</span>
                         {chain === "polygon" && <span onClick={onSynergize}>synergize</span>}

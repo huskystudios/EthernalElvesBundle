@@ -9,6 +9,7 @@ import Receive from "./components/Receive"
 import Sector from "./components/Sector"
 import Success from "./components/Success"
 import Collection from "./components/Collection"
+import Rampage from "./components/Rampage"
 
 import {
     elvesAbi,
@@ -193,6 +194,39 @@ const sleep = (milliseconds) => {
 
         const btParams = { functionCall: polygonContract.methods.bloodThirst(params.tryTokenids, params.tryItem, params.useItem, params.address).encodeABI() }
         await sendGaslessFunction(btParams)
+
+    }
+
+    const rampage = async (params) => {
+
+        //list clicked items who have cooldown
+        let cooldown = clicked.filter(item => item.cooldown === true)
+        if (cooldown.length > 0) {
+            setAlert({ show: true, value: { title: "Cooldown", content: "You have cooldown on some elves. Please reselect elves with no cooldown." } })
+            return
+        }
+
+
+        if (chain === "eth") {
+            console.log("sendCampaignFunction", params)
+            let { success, status, txHash } = await sendCampaign(params)
+
+            success && resetVariables()
+
+            setAlert({
+                show: true, value: {
+                    title: "Tx Sent",
+                    content: (status)
+                }
+            })
+
+        } else {
+            const polyParams = { functionCall: polygonContract.methods.rampage(params.tryTokenids, params.tryCampaign, params.trySection, params.tryWeapon, params.tryItem, params.useItem, params.address).encodeABI() }
+            await sendGaslessFunction(polyParams)
+        }
+
+        console.log("sendCampaign", params)
+
 
     }
 
@@ -817,6 +851,7 @@ const sleep = (milliseconds) => {
                                         setHealers={setHealers}
                                         setTargets={setTargets}
                                     />}
+                                {modalActions.value === 5 && <Rampage data={activeNfts} onRampage={rampage}/>}
                             </Modal>
                             {/* 
                         {index === 1 && activeNfts.length > 1 ? <Collection nft={activeNfts} onChangeIndex={onChangeIndex} /> : null}
@@ -842,6 +877,7 @@ const sleep = (milliseconds) => {
                                 onChangeIndex={onChangeIndex}
                                 onForge={() => setModal({ show: true, action: "forging", heading: "DO YOU WANT TO FORGE A NEW WEAPON?", content: "forge" })}
                                 onMerchant={() => setModal({ show: true, action: "merchant", heading: "DO YOU WANT TO TRY FOR A NEW ITEM?", content: "buy" })}
+                                onRampage={() => setModalActions({ show: !modalActions.show, action: "rampage", value: 5 })}
                                 onHeal={() => setModalActions({ show: !modalActions.show, action: "bloodthirst", value: 4 })}
                                 onBloodthirst={() => setModalActions({ show: !modalActions.show, action: "bloodthirst", value: 3 })}
                                 onCampaign={() => setModalActions({ show: !modalActions.show, action: "campaign", value: 2 })}

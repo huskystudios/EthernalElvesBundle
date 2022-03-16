@@ -10,6 +10,10 @@ import cove from "../../assets/images/cove.png"
 import mammon from "../../assets/images/mammon.png"
 import fallout from "../../assets/images/fallout.png"
 
+import hidden from "../../assets/images/hidden.png"
+import hollow from "../../assets/images/hollow.png"
+import souls from "../../assets/images/souls.png"
+
 import AuraOfImmunity from "../../assets/images/items/Aura_of_Immunity.png"
 import DemonicRupture from "../../assets/images/items/Demonic_Rupture.png"
 import MidasRing from "../../assets/images/items/Midas_Ring.png"
@@ -145,51 +149,44 @@ export const rampages =
     {
         "id": 1,
         "name": "Wandering Souls",
-        "image": woods,
-        "time": 1.2,
-        "maxLevel": 100
+        "image": souls,
+   
     },
     {
         "id": 2,
         "name": "Fervorous Hollow",
-        "image": meadows,
-        "time": 1.5,
-        "maxLevel": 100
+        "image": hollow,
+   
     },
     {
         "id": 3,
         "name": "Hidden Grove",
-        "image": mount,
-        "time": 0.6,
-        "maxLevel": 100
+        "image": hidden,
+
     },
     {
         "id": 4,
         "name": "Tomb of Vitality",
         "image": fallout,
-        "time": 0.6,
-        "maxLevel": 30
+  
     },
     {
         "id": 5,
         "name": "Inferno Abyss  ",
         "image": cove,
-        "time": 0.6,
-        "maxLevel": 50
+
     },
     {
         "id": 6,
         "name": "Untamed Ether",
         "image": mammon,
-        "time": 0.6,
-        "maxLevel": 100
+
     },
     {
         "id": 7,
         "name": " Dark Untamed Ether",
         "image": mammon,
-        "time": 0.6,
-        "maxLevel": 100
+  
     }
 
 ]
@@ -243,31 +240,31 @@ export const accessoriesAbilities = [
 {
     id: 10,
     name: "Crown of Dahagon",
-    ability: "Increases IK by 15%",
+    ability: "Increases Instant Kill probability by 15%",
     tier: 3,
 },
 {
     id: 11,
     name: "Mechadon's Vizard",
-    ability: "Increases IK by 25%",
+    ability: "Increases Instant Kill probability by 25%",
     tier: 4,
 },
 {
     id: 12,
     name: "Euriel The Protector",
-    ability: "Increases IK by 35%",
+    ability: "Increases Instant Kill probability by 35%",
     tier: 5,
 },
 {
     id: 13,
     name: "Kidor The Slayer of Demons",
-    ability: "Increases IK by 35%",
+    ability: "Increases Instant Kill probability by 35%",
     tier: 5,
 },
 {
     id: 14,
     name: "Lord Mecha Aker",
-    ability: "Increases IK by 35%",
+    ability: "Increases Instant Kill probability by 35%",
     tier: 5,
 },
 {

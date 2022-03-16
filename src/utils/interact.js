@@ -949,6 +949,32 @@ export const updateMoralisDb = async ({elf, elves}) => {
 
 /////POLYGON FUNCTIONS////
 
+
+export const getRampages = async(id) => {
+      
+  let response //= await gameContract.methods.camps(id).call()
+  
+    response = await polygonContract.methods.rampages(id).call()
+
+  let rampageObj = {
+      
+      id: id,
+      probDown: response[0], 
+      probSame: response[1], 
+      probUp: response[2], 
+      levelsGained: response[3], 
+      minLevel: response[4],
+      maxLevel: response[5],
+      renCost: response[6],
+      count: response[7],
+
+    }
+
+
+return rampageObj
+
+}
+
 export const completePolyTransfer = async(props) => {
 
   console.log(props)
