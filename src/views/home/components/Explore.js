@@ -81,6 +81,7 @@ const Explore = ({  }) => {
           .lessThanOrEqualTo("elf_weaponTier", parseInt(weaponTierMax))
           .greaterThanOrEqualTo("elf_level", parseInt(levelMin))
           .lessThanOrEqualTo("elf_level", parseInt(levelMax))
+          .equalTo("elf_accessories", "Claws")
           .containedIn("elf_class", sentinelClass)
           .containedIn("elf_race", race)
           .containedIn("chain", chain)
@@ -231,7 +232,7 @@ const Explore = ({  }) => {
                     <div key={line.get("token_id")} className={`card-rect`}>
                         <img className="card-image" src={line.get("elf_image")} alt="elf" />
                         <div className="card-attr">
-                            
+                        <div><span>SentinelElf:</span><span>#{line.get("token_id")}</span></div>
                             <div><span>Status:</span><span>{line.get("elf_status")}</span></div>
                             <div>
                                 <span>Inventory</span>

@@ -830,7 +830,7 @@ const sleep = (milliseconds) => {
                     */}
                         </div>
                     </div>
-                    {index === 100 && data && wallet &&
+                    {index === 0 && data && wallet &&
                         <div className="d-flex justify-center items-center">
                             <Control
                                 data={data}

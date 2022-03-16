@@ -366,9 +366,9 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
     return !loading ? (
         <>
             <div className="flex justify-center p-1 tool-panel">
-                <p>Game Paused</p>
+                
               {/*  <button className="btn-whale" onClick={() => setMintModal(!mintModal)}> Mint </button> */}
-              <button disabled className="btn-whale" onClick={() => setTransfersModal(!transfersModal)}> Transfers </button>
+              <button className="btn-whale" onClick={() => setTransfersModal(!transfersModal)}> Transfers </button>
                {chain === "eth" && <button className="btn-whale" onClick={unStakeElf}> Unstake </button>}
                
                 {/* <button className="btn-whale" onClick={() => setMaximize(!maximize)}> {!maximize ? "expand table" : "minimize table"} </button> */}
@@ -378,7 +378,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
             </div>
             <div className="mobile-footer">
                 <button className="btn btn-blue mobile" onClick={toggleChain}>Active: {chain}</button>
-                <button disabled className="btn btn-blue mobile" onClick={() => setTransfersModal(!transfersModal)}>Transfers</button>
+                <button className="btn btn-blue mobile" onClick={() => setTransfersModal(!transfersModal)}>Transfers</button>
             </div>
             
             <div className="filter-panel justify-center p-1">
@@ -423,6 +423,11 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
                                     </th>
                                     <th>
                                         <div className="flex">
+                                            <span>Accessories / Morphs</span>                                           
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div className="flex">
                                             <span>HP+</span>
                                             <SortColumnButtons value="hp" />
                                         </div>
@@ -456,17 +461,22 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
                                             <span>Cooldown (-) /<br />Passive (+)</span>
                                             <SortColumnButtons value="cooldown" />
                                         </div>
-                                    </th>
+                                    </th>                                
                                 </tr>
                             </thead>
                             <tbody>
                                 {sortedElves.map((line, index) => {
-
+                                        
                                     const date = new Date(line.time * 1000)
                                     const isActive = new Date() > date
                                     let passiveString = ""
 
                                     let passiveFlag = false
+
+                                    
+                                    //console.log(accessoriesString, accessoriesIndex, classIndex, accessoriesImIndex)
+
+
 
                                     ///turn date in tto hours if less than 24 then into days    
                                     if (line.action === 3) {
@@ -500,6 +510,15 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
                                         </td>
                                         {/*<td>{line.primaryWeapon}</td>        */}
                                         <td>{line.attributes && line.attributes[3].value} +{line.weaponTier}</td>
+                                        <td>
+                                            <div className="acc-info">
+                                            <strong>{line.accessoriesName}</strong>
+                                            <br/>
+                                            {line.accessoriesAbility && <span>{line.accessoriesAbility}</span>}
+                                            <br/>
+                                            {line.accessoriesTier && <span>Tier: {line.accessoriesTier}</span>}
+                                            </div>
+                                        </td>
                                         <td>{line.health}</td>
                                         <td>{line.attack}</td>
                                         <td>{line.level}</td>

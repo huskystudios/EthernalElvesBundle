@@ -1,4 +1,4 @@
-import { items, sentinelClass, campaigns } from "../views/home/config.js"
+import { items, sentinelClass, campaigns, accessoriesAbilities } from "../views/home/config.js"
 
 
 require('dotenv').config();
@@ -255,6 +255,25 @@ switch(parseInt(elfAction)){
     
 }
 
+//elfAccessories
+
+const accessoriesImIndex = ((elfSentinelClass * 7) + elfAccessories) + 1 
+
+const accessoriesAbility = accessoriesAbilities.find(i => i.id === accessoriesImIndex)
+const accessoriesName = accessoriesAbility ? accessoriesAbility.name : "Unknown"
+const accessoriesAbilityString = accessoriesAbility ? accessoriesAbility.ability : "Unknown"
+const accessoriesTier = accessoriesAbility ? accessoriesAbility.tier : "Unknown"
+const accessoriesImage = accessoriesAbility ? accessoriesAbility.image : "Unknown"
+
+let image = elfTokenObj.image
+if(accessoriesImIndex === 2 || accessoriesImIndex ===3){
+
+  image = accessoriesImage
+
+}
+
+
+
 elfObj = {
     owner: elfOwner.toLowerCase(),
     elfStatus: elfStatus,
@@ -263,7 +282,7 @@ elfObj = {
     action: elfAction,
     actionString: elfActionString,
     level: elfLevel, 
-    image: elfTokenObj.image,
+    image: image,
     name: elfTokenObj.name ? elfTokenObj.name : `Elf #${i}`,
     sentinelClass: elfSentinelClass,
     classString: sentinelClass[elfSentinelClass],
@@ -277,6 +296,9 @@ elfObj = {
     weaponTier: elfWeaponTier,
     attack: elfAttackPoints, 
     accessories: elfAccessories,
+    accessoriesName: accessoriesName,
+    accessoriesAbility: accessoriesAbilityString,
+    accessoriesTier: accessoriesTier,
     health: elfHealthPoints,
     attributes: elfTokenObj.attributes,
     chain: chain,

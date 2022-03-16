@@ -183,7 +183,134 @@ export const rampages =
         "image": mammon,
         "time": 0.6,
         "maxLevel": 100
+    },
+    {
+        "id": 7,
+        "name": " Dark Untamed Ether",
+        "image": mammon,
+        "time": 0.6,
+        "maxLevel": 100
     }
+
 ]
 
+export const accessoriesAbilities = [
 
+{
+    id: 2,
+    name: "Bear",
+    ability: "increases attack points by 30+",
+    tier: 4,
+    image: "https://i.imgur.com/XQZQZqF.png"
+},
+{
+    id: 3,
+    name: "Liger",
+    ability: "decreases druid heal cooldown to 4 hours",
+    tier: 4,
+    image: "https://i.imgur.com/XQZQZqF.png"
+},
+{
+    id: 4,
+    name: "None",
+    ability: "",
+    tier: 0,
+},
+{
+    id: 5,
+    name: "Claws",
+    ability: "cosmetic",
+    tier: 1,
+},
+{
+    id: 6,
+    name: "Drus Ruler of The Oaks",
+    ability: "cosmetic",
+    tier: 5,
+},
+{
+    id: 8,
+    name: "Necklace",
+    ability: "cosmetic",
+    tier: 1,
+},
+{
+    id: 9,
+    name: "Necklace & Armband",
+    ability: "cosmetic",
+    tier: 2,
+},
+{
+    id: 10,
+    name: "Crown of Dahagon",
+    ability: "Increases IK by 15%",
+    tier: 3,
+},
+{
+    id: 11,
+    name: "Mechadon's Vizard",
+    ability: "Increases IK by 25%",
+    tier: 4,
+},
+{
+    id: 12,
+    name: "Euriel The Protector",
+    ability: "Increases IK by 35%",
+    tier: 5,
+},
+{
+    id: 13,
+    name: "Kidor The Slayer of Demons",
+    ability: "Increases IK by 35%",
+    tier: 5,
+},
+{
+    id: 14,
+    name: "Lord Mecha Aker",
+    ability: "Increases IK by 35%",
+    tier: 5,
+},
+{
+    id: 15,
+    name: "Wristband",
+    ability: "cosmetic",
+    tier: 1,
+},
+{
+    id: 16,
+    name: "Wristband & Necklace",
+    ability: "cosmetic",
+    tier: 2,
+},
+{
+    id: 17,
+    name: "Azrael's Crest",
+    ability: "Increases attack points by 15%",
+    tier: 3,
+},
+{
+    id: 18,
+    name: "El Machina",
+    ability: "Increases attack points by 25%",
+    tier: 4,
+},
+{
+    id: 19,
+    name: "Eriel Angel of Nature",
+    ability: "Increases attack points by 35%",
+    tier: 5,
+},
+{
+    id: 20,
+    name: "Khonsuna Demon Destroyer",
+    ability: "Increases attack points by 35%",
+    tier: 5,
+},
+{
+    id: 21,
+    name: "Lord Machina Ethena",
+    ability: "Increases attack points by 35%",
+    tier: 5,
+}
+
+]

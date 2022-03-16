@@ -1668,6 +1668,13 @@ background-image: url(../../assets/images/stats_back_hover.png);
 
 }
 
+.table-whale .acc-info span {
+    font-size: 0.8em;
+    opacity: 0.8;
+}
+
+
+
 .explore-view {
     margin-top: 22px;
     display: flex;

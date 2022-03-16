@@ -29,9 +29,9 @@ const MainLayout = (props) => {
       
                 <div className="header-body">
                 
-                   
+                <Withdraw />
                     {/*
-                     <Withdraw />
+                     
                     <div onClick={onClickHome} className="nav-item" to="/">play</div>
                     <div className="nav-item menu">
                         <span>Play</span>
