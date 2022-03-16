@@ -9,9 +9,26 @@ const Info = () => {
             <div className="d-flex flex-column">
                 <div className="sector-selection">
                     <h2>Creature Supply</h2>
-                    <p>
-                        Enter passive mode and earn rewards for keeping your elf staked. You need to come back here and return from passive mode once the required time has passed.
-                    </p>
+                    <div className="flex justify-between gap-2 w-half" style={{marginTop: 64}}>
+                        <div className="flex flex-column gap-1 items-start" style={{textAlign: "left"}}>
+                            <span>Wandering Souls</span>
+                            <span>Fervorous hollow</span>
+                            <span>hidden grove</span>
+                            <span>tomb of vitality</span>
+                            <span>inferno abyss</span>
+                            <span>untamed ether</span>
+                            <span>dark untamed ether</span>
+                        </div>
+                        <div className="flex flex-column gap-1 items-end">
+                            <span>10,000</span>
+                            <span>8,000</span>
+                            <span>4,000</span>
+                            <span>2,000</span>
+                            <span>600</span>
+                            <span>100</span>
+                            <span>100</span>                            
+                        </div>
+                    </div>
                     {/* <div className="d-flex flex-row justify-center">
                         <button className="btn btn-green" onClick={() => onRunWeb3({ action: "returnPassive" })} >return</button>
                     </div> */}

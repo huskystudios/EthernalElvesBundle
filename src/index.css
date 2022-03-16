@@ -57,11 +57,22 @@ button {
 .items-center {
   align-items: center;
 }
+.items-start {
+  align-items: flex-start;
+}
+.items-end {
+  align-items: flex-end;
+}
 .h-full {
   height: 100%
 }
 .w-full {
   width: 100%
+}
+.w-half{
+  width: 50%;
+  margin: auto;
+  min-width: 280px;
 }
 .dark-500 {
   background-color: rgba(0, 0, 0, 0.7)
