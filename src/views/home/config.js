@@ -25,6 +25,9 @@ import MoonElixir from "../../assets/images/items/Moon_Elixir.png"
 import SpiritBand from "../../assets/images/items/Spirit_Band.png"
 import TalismanOfEnragement from "../../assets/images/items/Talisman_of_Enragement.png"
 
+import zBearGui from "../../assets/images/bear.png"   
+import zLigerGui from "../../assets/images/liger.png"
+
 export const sentinelClass = ["Druid", "Assassin", "Ranger"] 
 
 export const actions = 
@@ -202,14 +205,14 @@ export const accessoriesAbilities = [
     name: "Bear",
     ability: "increases attack points by 30+",
     tier: 4,
-    image: "https://i.imgur.com/XQZQZqF.png"
+    image: zBearGui
 },
 {
     id: 3,
     name: "Liger",
     ability: "decreases druid heal cooldown to 4 hours",
     tier: 4,
-    image: "https://i.imgur.com/XQZQZqF.png"
+    image: zLigerGui
 },
 {
     id: 4,

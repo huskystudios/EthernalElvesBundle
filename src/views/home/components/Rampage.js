@@ -212,7 +212,7 @@ const Rampage = ({onRampage, data, chain}) => {
                    <br/>
                   
                     
-                    {showTooltip(tooltip)}
+                   
                    
                     <>
                     <div style={{width: 380}}>

@@ -282,7 +282,7 @@
     background-size: 100% 100%;
     padding: 20px 16px;
     font-size: 14px;
-    width: 120px;
+    width: 145px;
     box-sizing: border-box;
     text-align: center;
     font-stretch:expanded;
@@ -1447,6 +1447,7 @@
     padding: 10px 12px;
     text-decoration: none;
     display: block;
+    cursor: pointer;
 }
 .dropdown-content span:hover {
     /* background-color: rgba(255,255,255,0.2); */
