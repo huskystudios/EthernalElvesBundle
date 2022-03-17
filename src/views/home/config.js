@@ -13,6 +13,10 @@ import fallout from "../../assets/images/fallout.png"
 import hidden from "../../assets/images/hidden.png"
 import hollow from "../../assets/images/hollow.png"
 import souls from "../../assets/images/souls.png"
+import tomb from "../../assets/images/tomb.png"
+import darkuntamed from "../../assets/images/darkuntamed.png"
+import inferno from "../../assets/images/inferno.png"
+import untamed from "../../assets/images/untamed.png"
 
 import AuraOfImmunity from "../../assets/images/items/Aura_of_Immunity.png"
 import DemonicRupture from "../../assets/images/items/Demonic_Rupture.png"
@@ -167,25 +171,25 @@ export const rampages =
     {
         "id": 4,
         "name": "Tomb of Vitality",
-        "image": fallout,
+        "image": tomb,
   
     },
     {
         "id": 5,
         "name": "Inferno Abyss  ",
-        "image": cove,
+        "image": inferno,
 
     },
     {
         "id": 6,
         "name": "Untamed Ether",
-        "image": mammon,
+        "image": untamed,
 
     },
     {
         "id": 7,
         "name": " Dark Untamed Ether",
-        "image": mammon,
+        "image": darkuntamed,
   
     }
 
