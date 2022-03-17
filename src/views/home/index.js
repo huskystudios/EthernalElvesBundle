@@ -851,7 +851,7 @@ const sleep = (milliseconds) => {
                                         setHealers={setHealers}
                                         setTargets={setTargets}
                                     />}
-                                {modalActions.value === 5 && <Rampage data={activeNfts} onRampage={rampage}/>}
+                                {modalActions.value === 5 && <Rampage polyBalance={polyBalance} data={activeNfts} onRampage={rampage}/>}
                             </Modal>
                             {/* 
                         {index === 1 && activeNfts.length > 1 ? <Collection nft={activeNfts} onChangeIndex={onChangeIndex} /> : null}

@@ -3,7 +3,7 @@ import {rampages} from "../config"
 import {getRampages, getCurrentWalletConnected} from "../../../utils/interact"
 import Loader from "../../../components/Loader";
 
-const Rampage = ({onRampage, data, chain}) => {
+const Rampage = ({onRampage, data, polyBalance}) => {
 
     const [rerollWeapon, setRerollWeapon] = useState(false);
     const [rerollAccessories, setRerollAccessories] = useState(true);
@@ -19,17 +19,12 @@ const Rampage = ({onRampage, data, chain}) => {
     const [activeCampaign, setActiveCampaign] = useState(0)
     const [campaignArray, setCampaignArray] = useState(0)
     const [loadingStatus, setLoadingStatus] = useState(true)
+    const [morph, setMorph] = useState(false)
 
-    const setSectorChange = (value) => {
-    
-    setSector(value)
-    setMirenRewards(parseInt(activeCampaign.renCost) + (2 * (parseInt(value) - 1)))
-    setCreatureHealth(((parseInt(value) - 1) * 12) + parseInt(activeCampaign.levelsGained))
-    
-    }
+
     const handleChangeIndex = async (value) => {
 
-
+        
         let {address} = await getCurrentWalletConnected()
         let levelValidation = []
         
@@ -46,7 +41,7 @@ const Rampage = ({onRampage, data, chain}) => {
         if(levelValidation.length > 0){
             setAlert({show: true, value: {
                 title: "Levels not in range", 
-                content: `You can't use this campaign because you have anElf with level ${levelValidation[0].level} in this sector and the campaign requires level ${activeCampaign.minLevel} to ${activeCampaign.maxLevel}`
+                content: `You can't use this rampage because you have an Elf with level ${levelValidation[0].level} and the rampage requires level ${activeCampaign.minLevel} to ${activeCampaign.maxLevel}`
             }})
 
             return
@@ -54,8 +49,8 @@ const Rampage = ({onRampage, data, chain}) => {
 
         if(parseInt(activeCampaign.count) === 0){
             setAlert({show: true, value: {
-                title: "No creatures left", 
-                content: `No creatures left in this campaign`
+                title: "No supply left", 
+                content: `No supply left in this rampage`
             }})
 
             return
@@ -64,24 +59,45 @@ const Rampage = ({onRampage, data, chain}) => {
         let tryTokenids = data.map(nft => {return(nft.id)})
         if(tryTokenids.length === 0){
             setAlert({show: true, value: {
-                title: "No creatures left",
-                content: `Select atleast one elf to enter this campaign`
+                title: "No elves selected",
+                content: `Select atleast one elf to enter this rampage`
             }})
             return
         }
 
+        if(activeCampaign.id === 6 || activeCampaign.id === 7){
+            if(tryTokenids.length > 1){
+                setAlert({show: true, value: {
+                    title: "Too many elves",
+                    content: `You can only morph one Druid at a time.`
+                }})
+                return
+            }
+    }
+
+        let rampageTotalCost = parseInt(activeCampaign.renCost) * tryTokenids.length 
+        
+        if(parseInt(polyBalance) < rampageTotalCost ){
+            
+            setAlert({show: true, value: {
+                title: "Not enough REN",
+                content: `You need ${rampageTotalCost} REN to enter this rampage`
+            }})
+            return
+        }
+
+  
+
 
         let tryCampaign = activeCampaign.id.toString()
-        let trySection = sector.toString()
         let tryWeapon = rerollWeapon
-        let tryItem = rerollAccessories
+        let tryAccessories = rerollAccessories
         let useItem = useItemValue
 
+       console.log(tryTokenids, tryCampaign, tryWeapon, tryAccessories, useItem, address)
+        //onRampage({tryTokenids, tryCampaign, tryWeapon, tryAccessories, useItem, address})
        
-        onRampage({tryTokenids, tryCampaign, trySection, tryWeapon, tryItem, useItem, address})
-       
-        
-       // onChangeIndex(value)
+      
     }
 
 
@@ -89,19 +105,17 @@ const Rampage = ({onRampage, data, chain}) => {
     const handleCampaignChange = async (value) => {
         setCampaign(value)
         setActiveCampaign(campaignArray[value])
-        setSectorChange(1)
+
+        if(campaignArray[value].id === 6 || campaignArray[value].id === 7){
+            setMorph(true)
+        }else{
+            setMorph(false)
+        }
+      
 
     }
 
-    const showTooltip = (content) => {
-        if(content === "") return <></>
-        return (
-            <div className="sector-tooltip">
-                {/* <h3>{title}</h3> */}
-                <pre>{content}</pre>
-            </div>
-        )
-    }
+
     const renderModal = (modal) => {
         if(!modal.show) return <></>
         return (
@@ -208,17 +222,14 @@ const Rampage = ({onRampage, data, chain}) => {
                  <div className="sector-options">
 
                  <div>
-                   <span>Sector Selector</span>
+                   <p>Select Loot to scout for in Rampage</p>
                    <br/>
                   
                     
                    
                    
                     <>
-                    <div style={{width: 380}}>
-                    <p>weapons &amp; items - look for new stuff when you campaign?</p>
-                    </div>
-                    
+      
                     <div className="d-flex items-center">
                         <div 
                             className={rerollWeapon ? "btn-sector-option active" : "btn-sector-option"} 
@@ -251,9 +262,14 @@ const Rampage = ({onRampage, data, chain}) => {
                 </div>
 
 
-                    <div className="game-info">
-                     
-                      
+                    <div className="game-info">     
+
+                     <span>{`Rampage cost: ${mirenRewards}`} $REN</span>
+                        <span> Rampage remaining: {activeCampaign.count}</span>                        
+                        <span>{`Levels gained: ${creatureHealth}`}</span>
+                        <span> Min Level Required: {activeCampaign.minLevel}</span>
+                        <span> Max Level Allowed: {activeCampaign.maxLevel}</span>             
+                        <br/>
                         <span>
                             roll weapon:
                             {" "}
@@ -269,14 +285,10 @@ const Rampage = ({onRampage, data, chain}) => {
                             {" "}
                             {useItemValue ? <b>YES</b> : <strong>NO</strong>}
                         </span>
-                        <br/>
+                        
                       
 
-                        <span>{`Rampage cost: ${mirenRewards}`} $REN</span>
-                        <span> Rampage remaining: {activeCampaign.count}</span>                        
-                        <span>{`Levels gained: ${creatureHealth}`}</span>
-                        <span> Min Level Required: {activeCampaign.minLevel}</span>
-                        <span> Max Level Allowed: {activeCampaign.maxLevel}</span>
+                       
                      
                     </div>
 
@@ -313,7 +325,7 @@ const Rampage = ({onRampage, data, chain}) => {
            
             <div className="d-flex flex-row justify-around">
                   
-                    <button className="btn btn-green" onClick={() => handleChangeIndex(1)}>Confirm</button>
+                    <button className="btn btn-green" onClick={() => handleChangeIndex(1)}>{morph ? `Morph` : `Rampage!`}</button>
             </div>
             
             {renderModal(modal)}
