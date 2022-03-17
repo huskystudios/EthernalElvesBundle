@@ -1276,7 +1276,7 @@
         box-shadow: 0px 4px 20px 0px rgba(17, 148, 249, 0.63);
         z-index: 1;
         margin-top: 10px;
-        margin-left: -36px !important;
+        margin-left: 0px !important;
         bottom: unset !important;
         /* top: 40px !important; */
     }
