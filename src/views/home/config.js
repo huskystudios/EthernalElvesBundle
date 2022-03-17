@@ -48,7 +48,8 @@ export const actionString =
   {action: 7, text: 'healing'},
   {action: 8, text: 'polygon'},
   {action: 9, text: 'synergize'},
-  {action: 10, text: 'bloodthirst'}
+  {action: 10, text: 'bloodthirst'},
+  {action: 11, text: 'rampage'}
 ]
 
 export const rollCosts =[

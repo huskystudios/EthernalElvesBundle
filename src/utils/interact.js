@@ -249,6 +249,9 @@ switch(parseInt(elfAction)){
   case 10:
     elfActionString = "Bloodthirst"
     break;
+  case 11:
+    elfActionString = "Rampage"
+    break;
   default:
     elfActionString = "Unknown"
 
