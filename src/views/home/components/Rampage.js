@@ -264,7 +264,7 @@ const Rampage = ({onRampage, data, polyBalance}) => {
 
                     <div className="game-info">     
 
-                     <span>{`Rampage cost: ${mirenRewards}`} $REN</span>
+                   
                         <span> Rampage remaining: {activeCampaign.count}</span>                        
                         <span>{`Levels gained: ${creatureHealth}`}</span>
                         <span> Min Level Required: {activeCampaign.minLevel}</span>
