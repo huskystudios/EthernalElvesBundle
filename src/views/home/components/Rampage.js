@@ -94,8 +94,7 @@ const Rampage = ({onRampage, data, polyBalance}) => {
         let tryAccessories = rerollAccessories
         let useItem = useItemValue
 
-       console.log(tryTokenids, tryCampaign, tryWeapon, tryAccessories, useItem, address)
-        //onRampage({tryTokenids, tryCampaign, tryWeapon, tryAccessories, useItem, address})
+       onRampage({tryTokenids, tryCampaign, tryWeapon, tryAccessories, useItem, address})
        
       
     }
