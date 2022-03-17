@@ -88,11 +88,12 @@ const Rampage = ({onRampage, data, polyBalance}) => {
 
   
 
-
         let tryCampaign = activeCampaign.id.toString()
         let tryWeapon = rerollWeapon
         let tryAccessories = rerollAccessories
         let useItem = useItemValue
+
+        console.log(tryTokenids, tryCampaign, tryWeapon, tryAccessories, useItem, address)
 
        onRampage({tryTokenids, tryCampaign, tryWeapon, tryAccessories, useItem, address})
        
@@ -147,7 +148,7 @@ const Rampage = ({onRampage, data, polyBalance}) => {
         useEffect(() => {
             const getCampaignData = async() => {
                 const campaignArry = []
-                setLoadingStatus("finding creatures to slay")
+                setLoadingStatus("finding creatures to rampage")
                 for(let i = 0; i < rampages.length; i++){
     
                     await getRampages(rampages[i].id).then(res => {

@@ -204,28 +204,12 @@ const sleep = (milliseconds) => {
         if (cooldown.length > 0) {
             setAlert({ show: true, value: { title: "Cooldown", content: "You have cooldown on some elves. Please reselect elves with no cooldown." } })
             return
-        }
-
-
-        if (chain === "eth") {
-            console.log("sendCampaignFunction", params)
-            let { success, status, txHash } = await sendCampaign(params)
-
-            success && resetVariables()
-
-            setAlert({
-                show: true, value: {
-                    title: "Tx Sent",
-                    content: (status)
-                }
-            })
-
-        } else {
-            const polyParams = { functionCall: polygonContract.methods.rampage(params.tryTokenids, params.tryCampaign, params.trySection, params.tryWeapon, params.tryItem, params.useItem, params.address).encodeABI() }
+        }     
+            const polyParams = { functionCall: polygonContract.methods.rampage(params.tryTokenids, params.tryCampaign, params.tryWeapon, params.tryAccessories, params.useItem, params.address).encodeABI() }
             await sendGaslessFunction(polyParams)
-        }
+        
 
-        console.log("sendCampaign", params)
+        
 
 
     }

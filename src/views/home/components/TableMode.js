@@ -331,7 +331,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
         return (
             <Modal show={transfersModal}>
                 <h4>Prism Transfer Module</h4>
-                <img src={thevoid} alt="elfTerminus" className="w-full" />
+                <img src={thevoid} alt="elfTerminus" />
                 <p className="text-danger">(Using the Elf Terminus can result in losing access to your elf. Please read instructions carefully.)</p>
                 <div className="flex flex-column w-full items-center">
                     <h4>Travellers Selected</h4>
