@@ -6,7 +6,7 @@ import Loader from "../../../components/Loader";
 const Rampage = ({onRampage, data, polyBalance}) => {
 
     const [rerollWeapon, setRerollWeapon] = useState(false);
-    const [rerollAccessories, setRerollAccessories] = useState(true);
+    const [rerollAccessories, setRerollAccessories] = useState(false);
     const [useItemValue, setUseItemValue] = useState(false);
     const [sector, setSector] = useState(1)
     const [tooltip, setTooltip] = useState("");
@@ -20,6 +20,7 @@ const Rampage = ({onRampage, data, polyBalance}) => {
     const [campaignArray, setCampaignArray] = useState(0)
     const [loadingStatus, setLoadingStatus] = useState(true)
     const [morph, setMorph] = useState(false)
+    const [hideButtons, setHideButtons] = useState(true)
 
 
     const handleChangeIndex = async (value) => {
@@ -108,8 +109,15 @@ const Rampage = ({onRampage, data, polyBalance}) => {
 
         if(campaignArray[value].id === 6 || campaignArray[value].id === 7){
             setMorph(true)
+            setHideButtons(true)
         }else{
             setMorph(false)
+        }
+
+        if(campaignArray[value].id === 1 || campaignArray[value].id === 2){
+            setHideButtons(true)
+        }else{
+            setHideButtons(false)  
         }
       
 
@@ -173,9 +181,6 @@ const Rampage = ({onRampage, data, polyBalance}) => {
                 //initialize campaign array
                 setCampaignArray(campaignArry)
                 setActiveCampaign(campaignArry[campaign])
-                setSector(1)
-                setMirenRewards(parseInt(campaignArry[campaign].renCost) + (2 * (parseInt(1) - 1)))
-                setCreatureHealth(((parseInt(1) - 1) * 12) + parseInt(campaignArry[campaign].levelsGained))
                 setLoadingStatus("done")
                 
             }
@@ -222,15 +227,20 @@ const Rampage = ({onRampage, data, polyBalance}) => {
                  <div className="sector-options">
 
                  <div>
-                   <p>Select Loot to scout for in Rampage</p>
-                   <br/>
+                  
                   
                     
                    
                    
                     <>
-      
-                    <div className="d-flex items-center">
+                  
+                  
+                    {!hideButtons && <>
+
+                        <p>Select Rampage Loot</p>
+                   <br/>
+                   <div className="d-flex items-center">
+
                         <div 
                             className={rerollWeapon ? "btn-sector-option active" : "btn-sector-option"} 
                             onClick={() => handleRollChoice("weapon")}
@@ -248,8 +258,14 @@ const Rampage = ({onRampage, data, polyBalance}) => {
                             accessories
                         </div>
                         </div>
-                        <div className="d-flex items-center">
-                        <div 
+                    </>}
+                        
+                       
+                      {hideButtons && <>
+                        <p>Use equipped item here?</p><p> Only the Spirit Band can help</p>
+                   <br/>
+                   <div className="d-flex items-center">
+                       <div 
                             className={useItemValue ? "btn-sector-option active" : "btn-sector-option"} 
                             onClick={() => setUseItemValue(state => !state)}
                             onMouseEnter={() => setTooltip(`Do you use your item in {${"item in stash"}}?`)}
@@ -257,7 +273,10 @@ const Rampage = ({onRampage, data, polyBalance}) => {
                         >
                             use item
                         </div>
-                    </div>
+                        </div>
+                        </>
+                        }
+                   
                     </>
                 </div>
 

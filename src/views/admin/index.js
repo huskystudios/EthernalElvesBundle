@@ -15,6 +15,7 @@ import PendingRenTransfers from "./PendingRenTransfers";
 import Polygon from "./Polygon";
 import Lookup from "../profile/Lookup";
 import ExportOwners from "./ExportOwners";
+import RampageFix from "./RampageFix";
 
 const Admin = () => {
 
@@ -226,7 +227,7 @@ return (
              
           </div>
 
-         
+        
             
            
          
