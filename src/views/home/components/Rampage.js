@@ -8,13 +8,9 @@ const Rampage = ({onRampage, data, polyBalance}) => {
     const [rerollWeapon, setRerollWeapon] = useState(false);
     const [rerollAccessories, setRerollAccessories] = useState(false);
     const [useItemValue, setUseItemValue] = useState(false);
-    const [sector, setSector] = useState(1)
-    const [tooltip, setTooltip] = useState("");
     const [modal, setModal] = useState({show: false, nft: null})
-    const [creatureHealth, setCreatureHealth] = useState("")
-    const [mirenRewards, setMirenRewards] = useState("")
     const [alert, setAlert] = useState({ show: false, value: null })
-
+    const [tooltip, setTooltip] = useState("");
     const [campaign, setCampaign] = useState(0)
     const [activeCampaign, setActiveCampaign] = useState(0)
     const [campaignArray, setCampaignArray] = useState(0)
@@ -342,21 +338,11 @@ const Rampage = ({onRampage, data, polyBalance}) => {
                    
                     <div className="elves-panel">
                         {data.map((character) => {
-                         
-                            let attackTime = creatureHealth/parseInt(character.attack);
-                            attackTime = attackTime > 0 ? attackTime * 1 : 0;
-                            
-                            let time = (300/(parseInt(character.health))) +  attackTime;
-                            time = Math.ceil(time)
-                            
-                            
-                            
+                                                     
                            return(
                             
                             <div key={character.id} className="elf-rect">
-                                <img src={character.image} 
-                                onMouseEnter={() => setTooltip(`Expected regeneration time: ${time} hours. Elf level: ${character.level} `)}
-                                onMouseLeave={() => setTooltip("")} 
+                                <img src={character.image}                              
                                 alt="elf" onClick={() => setModal({show: true, nft: character})} />
                             </div>
                             )}   
