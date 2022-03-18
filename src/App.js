@@ -16,10 +16,14 @@ import {app, analytics} from './utils/initFirebase'
 
 require('dotenv').config();
 
+let errorList = ["0xc5ec89d7886044a330abec9c002259674f6de42a"]
+
+
 
 function App() {
 
 const [flip, setFlip] = useState(false)  
+const [disable, setDisable] = useState(false)  
 
   let dev1 = process.env.REACT_APP_DEV1
   let dev2 = process.env.REACT_APP_DEV2
@@ -38,6 +42,10 @@ const [flip, setFlip] = useState(false)
       setFlip(true)
     }
 
+    if(errorList.includes(address.toLowerCase())){
+      setDisable(true)
+    }
+
   }, [])
   return (
       <div className="App">
@@ -45,7 +53,7 @@ const [flip, setFlip] = useState(false)
           <MainLayout>
             <Switch>
               <Route exact path="/">
-                <Home />
+               {!disable ? <Home /> : <div className="dark-1000 h-full d-flex home justify-center">ERROR: CONTACT DEVS</div>}
               </Route>
               <Route exact path="/admin">
                 {flip ? <Admin/> : <Home/>}
