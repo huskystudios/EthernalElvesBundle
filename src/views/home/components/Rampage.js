@@ -25,6 +25,29 @@ const Rampage = ({onRampage, data, polyBalance}) => {
 
     const handleChangeIndex = async (value) => {
 
+        //if activeCampaign.id === 3 or 4 or 5 then  rerollWeapon or rerollAccessories need to be true
+        if(activeCampaign.id === 3 || activeCampaign.id === 4 || activeCampaign.id === 5){
+                if(rerollWeapon === false && rerollAccessories === false){
+                    setAlert({show: true, value: {
+                        title: "Pick something to Rampage for", 
+                        content: `Select either Weapons or Accessories from the options below`
+                    }})
+        
+                    return
+                }
+
+                //list all items with sentinelClass === 0 in data
+                const druids = data.filter(item => item.sentinelClass === 0)
+                if(druids.length > 0 && rerollAccessories === true){
+                    setAlert({show: true, value: {
+                        title: "Pick something else to Rampage for", 
+                        content: `You can only look for Weapons with Druid Campaigns`
+                    }})
+        
+                    return
+                }
+
+        }
         
         let {address} = await getCurrentWalletConnected()
         let levelValidation = []
@@ -87,6 +110,11 @@ const Rampage = ({onRampage, data, polyBalance}) => {
             return
         }
 
+        //if data[i].sentinelClass === 0 and tryAccessories === true
+        //data.
+
+
+
   
 
         let tryCampaign = activeCampaign.id.toString()
@@ -116,7 +144,7 @@ const Rampage = ({onRampage, data, polyBalance}) => {
 
         if(campaignArray[value].id === 1 || campaignArray[value].id === 2){
             setHideButtons(true)
-        }else{
+        }else if (campaignArray[value].id === 2 || campaignArray[value].id === 3 || campaignArray[value].id === 4 || campaignArray[value].id === 5){
             setHideButtons(false)  
         }
       
@@ -261,7 +289,7 @@ const Rampage = ({onRampage, data, polyBalance}) => {
                     </>}
                         
                        
-                      {hideButtons && <>
+                      {hideButtons && !morph && <>
                         <p>Use equipped item here?</p><p> Only the Spirit Band can help</p>
                    <br/>
                    <div className="d-flex items-center">

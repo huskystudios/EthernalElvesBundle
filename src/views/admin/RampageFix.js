@@ -34,7 +34,7 @@ console.log(tokens)
 
 			query.limit(limit);
 			query.skip(limit * (page - 1));
-            query.containedIn("tokenId", tokens2);
+            //query.containedIn("tokenId", tokens2);
             query.equalTo("action", "11");
 			query.withCount();
 			const response = await query.find();
@@ -92,12 +92,6 @@ console.log(tokens)
         <>
 
       
-{/*
-
-	<button className="btn btn-blue" onClick={getElfMetaData}>UpdateDB</button>
-	<button className="btn btn-blue"  onClick={getOrcMetaData}>Update Orc Owner Data</button>
-*/}
-	
 
 	
 

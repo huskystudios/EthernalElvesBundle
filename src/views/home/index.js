@@ -114,7 +114,7 @@ const sleep = (milliseconds) => {
         setLoading(true)
         setLoadingText("Sending transaction...")
         try {
-            tx = await Moralis.Cloud.run("defenderRelay", params)
+            tx = await Moralis.Cloud.run("defenderRelayDev", params) // CHANGE THIS. VERY IMPORTANT
 
             console.log(tx)
             if (tx.data.status) {

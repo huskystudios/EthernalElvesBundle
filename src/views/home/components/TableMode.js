@@ -6,6 +6,7 @@ import {
     checkIn,
     unStake,
     polygonContract,
+    polyweb3
 } from "../../../utils/interact"
 
 import Modal from "../../../components/Modal"
@@ -50,6 +51,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
     const [transfersModal, setTransfersModal] = useState(false)
     const [confirm, setConfirm] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [status, setStatus] = useState("")
 
     const [classes, setClasses] = useState([])
     const [actions, setActions] = useState([])
@@ -144,13 +146,18 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
         setIsButtonEnabled(buttonEnabledState);
     }, [clicked, nftData]);
 
+    const sleep = (milliseconds) => {
+        return new Promise(resolve => setTimeout(resolve, milliseconds))
+      }
+
     const sendGaslessFunction = async (params) => {
 
         setLoading(true)
+        setStatus("Loading...")
         let tx
 
         try {
-            tx = await Moralis.Cloud.run("defenderRelay", params)
+            tx = await Moralis.Cloud.run("defenderRelayDev", params)
 
             console.log(tx)
             if (tx.data.status) {
@@ -159,6 +166,18 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
 
                 let txHashLink = `https://polygonscan.com/tx/${fixString}`
                 let successMessage = <>Check out your transaction on <a target="_blank" href={txHashLink}>Polyscan</a> </>
+
+                await sleep(7000)
+                let transactionReceipt = null
+                 
+                  while (transactionReceipt == null) { // Waiting expectedBlockTime until the transaction is mined
+                      transactionReceipt = await polyweb3.eth.getTransactionReceipt(fixString);
+                      setStatus("Waiting for transaction to be mined...")
+                      await sleep(2000)
+                  }
+                  setStatus("Transaction mined...")
+
+
                 resetVariables()
                 setAlert({ show: true, value: { title: "Tx Sent", content: (successMessage) } })
             }
@@ -197,6 +216,8 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
 
             console.log(params)
             let {success, status, txHash} = await checkIn(params)
+
+            
      
             success && setAlert({show: true, value: {title: "Tx Sent", content: (status)}})
 
@@ -208,6 +229,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
             }*/
             const params = { functionCall: polygonContract.methods.checkIn(ids, 0, owner).encodeABI() }
             console.log(renToSend, params)
+            
             sendGaslessFunction(params)
         }
         setTransfersModal(!transfersModal)
@@ -600,7 +622,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
             {renderTransfersModal()}
             {/*alert.show && showAlert(alert.value)*/}
         </>
-    ) : <Loader />
+    ) : <Loader text={status} />
 }
 
 export default TableMode
