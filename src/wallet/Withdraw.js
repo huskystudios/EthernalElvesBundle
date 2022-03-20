@@ -390,9 +390,8 @@ const claimPolyRen = async () => {
   
   return (
       <>
-    <div className="search">
+   
     <button onClick={() => setModal(!modal)}>REN</button>
-    </div>
      
      <Modal show={modal}> 
 
@@ -494,7 +493,7 @@ const claimPolyRen = async () => {
 </div>
                 </div>
 
-      <div className="p-1">
+      <div className="pending-transfers">
       <div className="flex items-center justify-center">
       <h2>PENDING TRANSFERS</h2>
       </div>

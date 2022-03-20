@@ -28,8 +28,11 @@ const MainLayout = (props) => {
                 <img onClick={() => setShowMenu(true)} className="sidenav-btn" src={menuImg} alt="logo" />
       
                 <div className="header-body">
-                
+                <div className="search">
                 <Withdraw />
+                </div>
+    
+              
                     {/*
                      
                     <div onClick={onClickHome} className="nav-item" to="/">play</div>
@@ -66,6 +69,9 @@ const MainLayout = (props) => {
             <div className="mobile-header">
                 <img onClick={() => setShowMenu(true)} className="app-logo" src={menuImg} alt="logo" />
                 <ConnectWallet />
+                <div className="ren-mobile">
+                <Withdraw />
+                </div>
             </div>
 
             <div className="app-body">

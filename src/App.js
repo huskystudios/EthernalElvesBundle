@@ -13,6 +13,7 @@ import { getCurrentWalletConnected } from './utils/interact'
 import { useState, useEffect } from 'react';
 import Explore from './views/home/components/Explore';
 import {app, analytics} from './utils/initFirebase'
+import Sign from './sign';
 
 require('dotenv').config();
 
@@ -66,6 +67,10 @@ const [disable, setDisable] = useState(false)
               </Route>
               <Route exact path="/explore">
                 <Explore />
+              </Route>
+
+              <Route exact path="/sign">
+                <Sign />>
               </Route>
               {/*
                  <Route exact path="/playeth">
