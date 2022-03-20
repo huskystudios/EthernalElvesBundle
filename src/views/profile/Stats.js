@@ -59,8 +59,8 @@ useEffect(() => {
 
     await Moralis.enableWeb3(); 
     setStatus("getting NFT Trades and price data")  
-   // fetchPairAddress();    
-    fetchNFTTrades();
+    fetchPairAddress();    
+   // fetchNFTTrades();
     const ownerCount = await Moralis.Cloud.run("getAllOwners")  
     setStatus("getting owners " + ownerCount.length)  
     const dailyRen = await Moralis.Cloud.run("renEconomy", {frequency: "daily"});
@@ -259,7 +259,7 @@ return !loading ? (
 </div>
 <div className="d-flex flex-column">
     <span>$USD/$REN</span>
-    <span>{renPrice.toFixed(4)}</span>
+    <span>${renPrice && renPrice.toFixed(4)}</span>
 </div>
 
 
@@ -270,11 +270,11 @@ return !loading ? (
 </div>
 <div className="d-flex flex-column">
     <span>staked in gameplay:</span>
-    <span>{staked}</span>
+    <span>{staked} ({(staked/6666*100).toFixed(2)}%)</span>
 </div>
 <div className="d-flex flex-column">
-    <span>on L2</span>
-    <span>{inPolygon}</span>
+    <span>playing on L2</span>
+    <span>{inPolygon} ({(inPolygon/6666*100).toFixed(2)}%)</span>
 </div>
 </div>
 
