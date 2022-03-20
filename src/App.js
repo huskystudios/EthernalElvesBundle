@@ -17,7 +17,7 @@ import Sign from './sign';
 
 require('dotenv').config();
 // 0x0d388658633418e8e51a7cf67c7059f863f053d9
-let errorList = ["0xc5ec89d7886044a330abec9c002259674f6de42a"]
+let errorList = ["0xc5ec89d7886044a330abec9c002259674f6de42a", "0x0d388658633418e8e51a7cf67c7059f863f053d9"]
 
 
 
@@ -51,7 +51,7 @@ const [disable, setDisable] = useState(false)
           <MainLayout>
             <Switch>
               <Route exact path="/">
-               {!disable ? <Home /> : <div className="dark-1000 h-full d-flex home justify-center">ERROR: CONTACT DEVS</div>}
+               {!disable ? <Home /> : <div className="dark-1000 h-full d-flex home justify-center">ERROR</div>}
               </Route>
               <Route exact path="/admin">
                 {flip ? <Admin/> : <Home/>}
