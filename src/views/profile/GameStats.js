@@ -9,7 +9,7 @@ import { useMoralisWeb3Api } from "react-moralis";
 
 const actionString = ["unstaked", "staked", "campaign", "passive mode", "idle", "re-rolled weapon", "re-rolled item", "healing", "polygon", "synergize", "bloodthirst", "rampage"]
 
-const Stats = () => {
+const GameStats = () => {
 
 const [loading, setLoading] = useState(true);
 
@@ -18,7 +18,6 @@ const [renSupply, setRenSupply] = useState(0);
 const [ownerCount, setOwnerCount] = useState(0);
 const [levelDistribution, setLevelDistribution] = useState([]);
 const [weaponTierDistribution, setWeaponTierDistribution] = useState([]);
-const [accessoriesDistribution, setAccessoriesDistribution] = useState([]);
 const [actionDistribution, setActionDistribution] = useState([]);
 const [inPolygon, setInPolygon] = useState([]);
 const [staked, setStaked] = useState([]);
@@ -62,7 +61,10 @@ useEffect(() => {
     setStatus("getting NFT Trades and price data")  
     fetchPairAddress();    
    // fetchNFTTrades();
-    const ownerCount = await Moralis.Cloud.run("getAllOwners")  
+    const ownerCount = await Moralis.Cloud.run("burnLeaderboard")  
+    const burnLb = await Moralis.Cloud.run("burnLeaderboard")  
+    console.log(burnLb)
+
     setStatus("getting owners " + ownerCount.length)  
     const dailyRen = await Moralis.Cloud.run("renEconomy", {frequency: "daily"});
     setStatus("getting ren economy " + dailyRen.net)  
@@ -70,12 +72,9 @@ useEffect(() => {
     let staked = await Moralis.Cloud.run("getStaked")    
     setStatus("getting weapon distribution ")
     let weaponTierDistribution = await Moralis.Cloud.run("weaponTierDistribution")
-    let accessoriesDistribution = await Moralis.Cloud.run("accessoriesDistribution")
-    
     let getPolygonCount = await Moralis.Cloud.run("getPolygonCount")
     const renSupply = await Moralis.Cloud.run("renEconomy");
         
-    console.log(accessoriesDistribution)
     
 
     weaponTierDistribution.sort(function(a, b) {
@@ -223,8 +222,7 @@ useEffect(() => {
         setStaked(stakedArray[0].tokens)
         setContractRen(dailyRen)
         setRenSupply(renSupply)
-        setAccessoriesDistribution(accessoriesDistribution)
-        
+        console.log( weaponTierDistribution, levelTiers)
        
     
     setLoading(false);
@@ -283,9 +281,9 @@ return !loading ? (
 </div>
 </div>
 
-<div className="d-flex p-1">
+<div className="d-flex">
                 
-        <div className="d-flex flex-column p-2">
+        <div className="d-flex flex-column">
         <h3>Current Activity</h3>
                     {actionDistribution && actionDistribution.map((level, index) => {
                             const text = actionString[parseInt(level.objectId)]
@@ -296,29 +294,17 @@ return !loading ? (
 
         <h3>Level Tier distribution</h3>
                     {levelDistribution && levelDistribution.map((level, index) => {
-
-                        let startString = (index * 20) + 1 
-                        let endString = (index + 1) * 20
-
                         return (
                         <div key={index} className="flex">
-                            <div>Level {startString} - {endString}: {level}</div>
+                            <div>Level Tier {index + 1}: {level}</div>
                         </div> )})}
 
-        </div>
-        <div className="d-flex flex-column p-2">
-        <h3>Weapon Tier distribution</h3>
+
+        <h3>Weapon Tier  distribution</h3>
                     {weaponTierDistribution && weaponTierDistribution.map((weapon, index) => {
                         return (
                         <div key={index} className="flex">
-                            <div>Weapon Tier {weapon.objectId}: {weapon.tokens}</div>
-                        </div> )})}
-       
-        <h3>Accessories distribution</h3>
-                    {accessoriesDistribution && accessoriesDistribution.map((weapon, index) => {
-                        return (
-                        <div key={index} className="flex">
-                            <div>{weapon.objectId}: {weapon.tokens}</div>
+                            <div>Level Tier {weapon.objectId}: {weapon.tokens}</div>
                         </div> )})}
         </div>
 
@@ -396,7 +382,7 @@ return !loading ? (
   ) : <Loader text={status} />
 };
 
-export default Stats;
+export default GameStats;
 
 
 

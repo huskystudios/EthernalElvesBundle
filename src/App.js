@@ -16,7 +16,7 @@ import {app, analytics} from './utils/initFirebase'
 import Sign from './sign';
 
 require('dotenv').config();
-
+// 0x0d388658633418e8e51a7cf67c7059f863f053d9
 let errorList = ["0xc5ec89d7886044a330abec9c002259674f6de42a"]
 
 
@@ -28,14 +28,11 @@ const [disable, setDisable] = useState(false)
 
   let dev1 = process.env.REACT_APP_DEV1
   let dev2 = process.env.REACT_APP_DEV2
-  let dev3 = process.env.REACT_APP_DEV3
-
-  
+  let dev3 = process.env.REACT_APP_DEV3  
 
   let adminWallet = [dev1.toLowerCase(), dev2.toLowerCase(), dev3.toLowerCase()]
 
   useEffect(async() => {
-
 
     const {address} = await getCurrentWalletConnected()
 

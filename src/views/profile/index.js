@@ -10,6 +10,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import Stats from "./Stats"
 import ActivityLog from "./ActivityLog"
+import GameStats from "./GameStats"
 
 const Profile = () => {
     const [loading, setLoading] = useState(true)
@@ -236,6 +237,7 @@ const Profile = () => {
                 <Tab>My Elves</Tab>
                 <Tab>Activity Log</Tab>
                 <Tab>Statistics & Data</Tab>
+                <Tab>Leaderboards</Tab>
                 <Tab>Lookup Elf</Tab>
                 </TabList>
 
@@ -250,8 +252,12 @@ const Profile = () => {
                 <TabPanel>
                <Stats />
                </TabPanel>
-                <TabPanel>
-               
+               <TabPanel>
+               <GameStats />
+
+               </TabPanel>
+                
+                <TabPanel>               
                 <Lookup />
                 </TabPanel>
             </Tabs>
