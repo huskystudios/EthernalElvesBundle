@@ -39,6 +39,7 @@ import Bloodthirst from "./components/Bloodthirst"
 import Modal from "../../components/Modal"
 import Heal from "./components/Heal"
 import InstantKill from "./components/InstantKill"
+import Info from "./components/Info"
 
 
 const Home = () => {
@@ -792,6 +793,9 @@ const sleep = (milliseconds) => {
     }
     return (
         <>
+             <div className="info">
+                    <button onClick={() => setModalActions({show: !modalActions.show, action: "info", value: 0})}>INFO</button>
+                </div>
             {loading ? <Loader text={loadingText} /> :
                 <>
                     <div className="dark-1000 h-full d-flex home justify-center">
@@ -819,6 +823,7 @@ const sleep = (milliseconds) => {
                                     />}
                                 </>}
                             <Modal show={modalActions.show}>
+                                {modalActions.value === 0 && <Info />}
                                 {modalActions.value === 1 && <Staking nft={activeNfts} onRunWeb3={doAction} onChangeIndex={onChangeIndex} />}
                                 {modalActions.value === 2 && <Sector chain={chain} campaign={campaign} data={activeNfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} />}
                                 {modalActions.value === 3 && <Bloodthirst setAlert={setAlert} chain={chain} campaign={campaign} data={activeNfts} onSendCampaign={bloodthirstFunction} onChangeIndex={onChangeIndex} />}
@@ -870,6 +875,7 @@ const sleep = (milliseconds) => {
                                 chain={chain}
                                 consoleOpen={consoleOpen}
                                 setConsoleOpen={setConsoleOpen}
+                                onInfo={() => setModalActions({show: !modalActions.show, action: "info", value: 0})}
                             />
                         </div>}
                 </>

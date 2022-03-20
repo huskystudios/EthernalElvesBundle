@@ -172,7 +172,7 @@
   
   .search {
     position: absolute;
-    right: 50px;
+    right: 20px;
     height: 100%;
     display: none;
     flex-direction: row;
@@ -184,10 +184,10 @@
     background-size: 100% 100%;
     border: none;
     height: 40px;
+    width: 70px;
     border-radius: 5px;
     padding: 4px 12px;
     font-size: 14px;
-    width: 110px;
     cursor: pointer;
   }
   .search button:hover {

@@ -3,13 +3,14 @@ import hBar from "../../../assets/images/health_bar.png"
 import lBar from "../../../assets/images/level_bar.png"
 import Countdown from 'react-countdown';
 import { useMoralis } from "react-moralis"
+import Withdraw from "../../../wallet/Withdraw";
 
 const PAGE_COUNT = 3
 const MAX_HEALTH = 100
 const MAX_LEVEL = 100
 
 const Control = ({ consoleOpen, setConsoleOpen, data, activities, onSelect, clicked, onChangeIndex, onRunWeb3, onForge, onMerchant, onHeal, onSynergize, toggleChain, chain,
-    onCampaign, onPassiveMode, onBloodthirst, onRampage
+    onCampaign, onPassiveMode, onBloodthirst, onRampage, onInfo
 }) => {
     const [currentPage, setCurrentPage] = useState(0)
     const [nfts, setNfts] = useState([])
@@ -45,9 +46,6 @@ const Control = ({ consoleOpen, setConsoleOpen, data, activities, onSelect, clic
                 string: "Last Campaign was in camp " + res.campaign + " and in sector " + res.sector + ". You earned " + Moralis.Units.FromWei(res.amount) + " $REN"
             }
         }
-
-
-
 
     }
     useEffect(() => {
@@ -122,6 +120,8 @@ const Control = ({ consoleOpen, setConsoleOpen, data, activities, onSelect, clic
                         {chain === "polygon" && <span onClick={() => { onRampage(); setOpen(false);}}>rampage</span>}
                         <span onClick={() => { onPassiveMode(); setOpen(false);}}>passive mode</span>
                         <span onClick={() => { onHeal(); setOpen(false);}}>heal</span>
+                        <div className="mobile"><Withdraw /></div>
+                        <span className="mobile" onClick={() => onInfo()}>INFO</span>
                         {chain === "polygon" && <span onClick={onSynergize}>synergize</span>}
                         {/*
                         
@@ -135,6 +135,9 @@ const Control = ({ consoleOpen, setConsoleOpen, data, activities, onSelect, clic
                 <button className="btn btn-blue" onClick={() => setConsoleOpen(consoleOpen => !consoleOpen)}>Open HUD</button>
             </span>
             }
+            <div className="info">
+                <button onClick={onInfo}>INFO</button>
+            </div>
             {consoleOpen &&
                 <div className="control-panel">
 
