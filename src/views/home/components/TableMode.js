@@ -584,6 +584,9 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
                         <div className="card-attr">
                             <div><span>name:</span><span>{line.name}</span></div>
                             <div><span>Location:</span><span>{line.elfStatus}</span></div>
+                          
+
+                            
                             <div>
                                 <span>Inventory</span>
                                 <span>{line.inventoryString !== "Empty" ? (
@@ -598,6 +601,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
                             </div>
                             {/*<div>{line.primaryWeapon}</div>        */}
                             <div><span>Weapon:</span><span>{line.attributes && line.attributes[3].value} +{line.weaponTier}</span></div>
+                            <div><span>Accessories:</span><span>{line.accessoriesName} Tier:{line.accessoriesTier}</span></div>
                             <div>
                                 <span>HP:</span>
                                 <span>{line.health}</span>
@@ -606,8 +610,10 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
                                 <span>Level:</span>
                                 <span>{line.level}</span>
                             </div>
+
                             <div><span>Class:</span><span>{line.classString}</span></div>
                             <div><span>Action Taken:</span><span>{line.actionString}</span></div>
+                            
                             <div>
                                 <span>Cooldown(-)/<br />Passive(+):</span><span>{!isActive && !passiveFlag && <Countdown date={date} />}
                                     {passiveString}
