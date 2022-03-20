@@ -6,6 +6,10 @@ import { actionString, items } from "../home/config"
 import {lookupMultipleElves, getCurrentWalletConnected, withdrawSomeTokenBalance} from "../../utils/interact"
 import Countdown from 'react-countdown';
 import Lookup from "./Lookup"
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
+import Stats from "./Stats"
+import ActivityLog from "./ActivityLog"
 
 const Profile = () => {
     const [loading, setLoading] = useState(true)
@@ -20,76 +24,16 @@ const Profile = () => {
 
     const getUserData = async (address) => {
 
-        const ElfActions = Moralis.Object.extend("ElfActions");        
-        const RenTransfers = Moralis.Object.extend("RenTransfers");
-        const ElfActionsPolygon = Moralis.Object.extend("ElfActionsPolygon");
-        const RenTransfersPolygon = Moralis.Object.extend("RenTransfersPolygon");
-      
-        
-
-        let query = new Moralis.Query(ElfActions);  
-       
-        query.equalTo("from", address.toLowerCase());
-        query.limit(25)
-        query.descending("createdAt")
-        setStatus("getting eth actions")
-        const res = await query.find();
-
-        query = new Moralis.Query(RenTransfers);  
-       
-        query.equalTo("owner", address.toLowerCase());
-        query.limit(25)
-        query.descending("createdAt")
-        setStatus("getting eth REN transfers")
-        const ren = await query.find();
-
-        query = new Moralis.Query(ElfActionsPolygon);  
-       
-        query.equalTo("owner", address.toLowerCase());
-        query.limit(25)
-        query.descending("createdAt")
-        setStatus("getting polygon actions")
-        const resPoly = await query.find();
-
-        query = new Moralis.Query(RenTransfersPolygon);  
-       
-        query.equalTo("owner", address.toLowerCase());
-        query.limit(25)
-        query.descending("createdAt")
-        setStatus("getting polygon REN transfers")
-        const renPoly = await query.find();
-
-
-        //concat ren and res
-        let data = res.concat(ren).concat(resPoly).concat(renPoly)
-        console.log(data)
-        
-
-
-
-        ///sort by createdAt
-        data.sort((b,a)=>{
-            return new Date(a.createdAt) - new Date(b.createdAt)
-        })
-        //[0].attributes.action
-        setActionData(data)
-    
         const params =  {address: address}
         const userTokenArray = await Moralis.Cloud.run("getElvesFromDb", params);
         setStatus("army of " + userTokenArray.length + " elves")
 
-        const lookupParams = {array: userTokenArray, chain: "eth"}
-        //const elves = await lookupMultipleElves(lookupParams)
         
         let q = new Moralis.Query("ElvesAdmin");  
        
         q.equalTo("owner_of", address.toLowerCase());
         setStatus("getting elves")
         const elves = await q.find();
-
-        //elves.sort((a, b) => a.time - b.time) 
-        console.log(elves)
-
 
         setData(elves)        
 
@@ -167,8 +111,7 @@ const Profile = () => {
                             }
                         })
 
-                        console.log(line, action, date)
-
+                       
                         ///turn date in tto hours if less than 24 then into days    
                         if (parseInt(line.get("elf_action")) === 3) {
                             let timesince = Math.floor(((new Date() - date) / 1000) / (60 * 60))
@@ -286,136 +229,43 @@ const Profile = () => {
 
             <div className="dark-1000 h-full d-flex flex-column profile">           
 
-     {/*     <div className="d-flex statistic justify-start">
-                    <div className="d-flex flex-column">
-                        <span>current supply:</span>
-                        <span>{supply.current}</span>
-                    </div>
-                    <div className="d-flex flex-column">
-                        <span>total supply:</span>
-                        <span>{supply.total}</span>
-                    </div>
-                    <div className="d-flex flex-column">
-                        <span>total passive:</span>
-                        <span>{null}</span>
-                    </div>
-                    <div className="d-flex flex-column">
-                        <span>total campaign:</span>
-                        <span>{null}</span>
-                    </div>
-                    <div className="d-flex flex-column">
-                        <span>total bloodthirst:</span>
-                        <span>{null}</span>
-                    </div>
-                    <div className="d-flex flex-column">
-                        <span>total staked:</span>
-                        <span>{null}</span>
-                    </div>
-                </div>
-    */}
-                <div className="d-flex">           
-                <div className="column">
+            <h1>Profile</h1>
+
+                <Tabs>
+                <TabList>
+                <Tab>My Elves</Tab>
+                <Tab>Activity Log</Tab>
+                <Tab>Statistics & Data</Tab>
+                <Tab>Lookup Elf</Tab>
+                </TabList>
+
+                <TabPanel>
                 <h2>My Elves</h2>
                 <ShowElfTable  />
-                <Lookup />
-                </div>
-           
-                <div className="column">
+                </TabPanel>
+                <TabPanel>
                 <h2>Activity Log</h2>
-                <ShowTransactionTable /> 
-                </div>
-
-
-              
-                
-                </div>
-              
-                   
+                <ActivityLog />
+                </TabPanel>
+                <TabPanel>
+               <Stats />
+               </TabPanel>
+                <TabPanel>
+               
+                <Lookup />
+                </TabPanel>
+            </Tabs>
+    
+       
                  
 
-                {/* 
+                 
 
-                  <MintPass />  
-                <div className="elves d-flex">
-                    {elves.map((elf) => 
-                        <div key={elf.id} className="elf-card d-flex flex-column">
-                            <img src={elf.image} />
-                            <div className="d-flex justify-between w-full flex-wrap">
-                                <span>token id:</span>
-                                <span>{elf.id}</span>
-                            </div>
-                            <div className="d-flex justify-between w-full flex-wrap">
-                                <span>class:</span>
-                                <span>{elf.class}</span>
-                            </div>   
-                            <div className="d-flex justify-between w-full flex-wrap">
-                                <span>race:</span>
-                                <span>{elf.race}</span>
-                            </div>   
-                            <div className="d-flex justify-between w-full flex-wrap">
-                                <span>level:</span>
-                                <span>{elf.level}</span>
-                            </div>   
-                            <div className="d-flex justify-between w-full flex-wrap">
-                                <span>weapon:</span>
-                                <span>{elf.weapon}</span>
-                            </div>
-                            <div className="d-flex justify-between w-full flex-wrap">
-                                <span>activity:</span>
-                                <span>{elf.activity}</span>
-                            </div>                    
-                        </div>
-                    )}
+                 
+                
+              
+
                     
-                </div>
-      
-                <div className="table">
-                    {history.map((line, index) => 
-                        <div className="d-flex w-full justify-between" key={index}>
-                            <span>{line.timestamp}</span>
-                            <span>{line.tokenId}</span>
-                            <span>{line.class}</span>
-                            <span>{line.action}</span>
-                            <span>{line.ren}</span>
-                            <span>{line.cost}</span>
-                            <span>{line.network}</span>
-                        </div>
-                    )}
-                </div>
-        
-                <div className="stats d-flex flex-column">
-                    <span className="stats-label">stats</span>
-                    <div className="d-flex justify-between w-full flex-wrap">
-                        <span>miren bank:</span>
-                        <span>{"miren bank"}</span>
-                    </div>
-                    <div className="d-flex justify-between w-full flex-wrap">
-                        <span>wallet:</span>
-                        <span>{"wallet"}</span>
-                    </div>
-                    <div className="d-flex justify-between w-full flex-wrap">
-                        <span>total characters:</span>
-                        <span>{"total"}</span>
-                    </div>
-                    <div className="d-flex justify-between w-full flex-wrap">
-                        <span>druids:</span>
-                        <span>{"druids"}</span>
-                    </div>
-                    <div className="d-flex justify-between w-full flex-wrap">
-                        <span>assasins:</span>
-                        <span>{"assasins"}</span>
-                    </div>
-                    <div className="d-flex justify-between w-full flex-wrap">
-                        <span>rangers:</span>
-                        <span>{"rangers"}</span>
-                    </div>
-                    <div className="d-flex justify-between w-full flex-wrap">
-                        <span>daily $ren:</span>
-                        <span>{"daily ren"}</span>
-                    </div>
-                </div>
-
-                    */}
             </div>
         </>
         }
