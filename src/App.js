@@ -16,7 +16,7 @@ import {app, analytics} from './utils/initFirebase'
 
 require('dotenv').config();
 
-let testwallet = ["0xc5ec89d7886044a330abec9c002259674f6de42a"] //,"0xCcB6D1e4ACec2373077Cb4A6151b1506F873a1a5"]
+let testwallet = ["0xc5ec89d7886044a330abec9c002259674f6de42a"] //,"0xccb6d1e4acec2373077cb4a6151b1506f873a1a5"]
 
 function App() {
 
