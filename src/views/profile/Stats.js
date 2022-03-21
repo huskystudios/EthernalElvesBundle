@@ -43,12 +43,11 @@ const fetchPairAddress = async () => {
 const fetchNFTTrades = async () => {
     const options = {
       address: "0xA351B769A01B445C04AA1b8E6275e03ec05C1E75",
-      limit: "10",
-      chain: "eth",
+      days:1
     };
-    const trades = await Web3Api.token.getNFTTrades(options);
-    console.log(trades);
-    setNftTrades(trades);
+    const trades = await Web3Api.token.getNFTLowestPrice(options);
+    let floorprice = trades.price/1000000000000000000
+    setNftTrades(floorprice);
   };
 
 
@@ -61,7 +60,7 @@ useEffect(() => {
     await Moralis.enableWeb3(); 
     setStatus("getting NFT Trades and price data")  
     fetchPairAddress();    
-   // fetchNFTTrades();
+    fetchNFTTrades();
     const ownerCount = await Moralis.Cloud.run("getAllOwners")  
     setStatus("getting owners " + ownerCount.length)  
     const dailyRen = await Moralis.Cloud.run("renEconomy", {frequency: "daily"});
@@ -265,6 +264,10 @@ return !loading ? (
 <div className="d-flex flex-column">
     <span>$USD/$REN</span>
     <span>${renPrice && renPrice.toFixed(4)}</span>
+</div>
+<div className="d-flex flex-column">
+    <span>Sentinel Elves Floor</span>
+    <span>{nftTrades && nftTrades.toFixed(2)} Eth</span>
 </div>
 
 
