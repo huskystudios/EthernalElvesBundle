@@ -291,6 +291,10 @@
       justify-content: center;
       font-size: 18px;
     }
+
+    .sidenav.active {
+      width: 33%!important;
+    } 
   }
 
   .sidenav {

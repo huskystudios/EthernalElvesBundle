@@ -1812,7 +1812,7 @@ background-image: url(../../assets/images/stats_back_hover.png);
     position: absolute;
     left: 0px;
     right: 0px;
-    bottom: 0px;
+    bottom: 50px;
     background: rgba(0, 0, 0, 0.8);
 }
 .alert-bar img, .alert-bar h3 {
