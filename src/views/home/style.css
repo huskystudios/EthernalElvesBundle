@@ -1810,7 +1810,7 @@ background-image: url(../../assets/images/stats_back_hover.png);
     box-shadow: 0px 0px 13px 4px rgb(17 148 249 / 43%);
     align-self: center;
     position: absolute;
-    left: 0px;
+   /* left: 0px;*/
     right: 0px;
     bottom: 50px;
     background: rgba(0, 0, 0, 0.8);
