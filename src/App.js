@@ -16,7 +16,7 @@ import {app, analytics} from './utils/initFirebase'
 
 require('dotenv').config();
 
-let testwallet = ["0xc5ec89d7886044a330abec9c002259674f6de42a"]
+let testwallet = ["0xc5ec89d7886044a330abec9c002259674f6de42a", "0xCcB6D1e4ACec2373077Cb4A6151b1506F873a1a5"]
 
 function App() {
 
@@ -48,7 +48,7 @@ const [flip1, setflip1] = useState(false)
           <MainLayout>
             <Switch>
               <Route exact path="/">
-               {!flip1 ? <Home /> : <div className="dark-1000 h-full d-flex home justify-center"></div>}
+               {flip1 ? <Home /> : <>{/* * remember to remove any test code from here before deployment * */}</>}
               </Route>
               <Route exact path="/admin">
                 {flip ? <Admin/> : <Home/>}
