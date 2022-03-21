@@ -3,7 +3,6 @@ import { lookupMultipleElves } from "../../utils/interact";
 import { useMoralis } from "react-moralis";
 import {elvesAbi, elvesContract} from "../../utils/interact"
 import './style.css'
-import Signature from "./Signature";
 import WhitelistExport from "./WhitelistExport";
 import AddToWhitelist from "./AddToWhitelist";
 import CheckWhitelist from "./CheckWhitelist";

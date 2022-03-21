@@ -13,18 +13,15 @@ import { getCurrentWalletConnected } from './utils/interact'
 import { useState, useEffect } from 'react';
 import Explore from './views/home/components/Explore';
 import {app, analytics} from './utils/initFirebase'
-import Sign from './sign';
 
 require('dotenv').config();
 
-let errorList = ["0xc5ec89d7886044a330abec9c002259674f6de42a"]
-
-
+let testwallet = ["0xc5ec89d7886044a330abec9c002259674f6de42a"]
 
 function App() {
 
 const [flip, setFlip] = useState(false)  
-const [disable, setDisable] = useState(false)  
+const [flip1, setflip1] = useState(false)  
 
   let dev1 = process.env.REACT_APP_DEV1
   let dev2 = process.env.REACT_APP_DEV2
@@ -40,8 +37,8 @@ const [disable, setDisable] = useState(false)
       setFlip(true)
     }
 
-    if(errorList.includes(address.toLowerCase())){
-      setDisable(true)
+    if(testwallet.includes(address.toLowerCase())){
+      setflip1(true)
     }
 
   }, [])
@@ -51,7 +48,7 @@ const [disable, setDisable] = useState(false)
           <MainLayout>
             <Switch>
               <Route exact path="/">
-               {!disable ? <Home /> : <div className="dark-1000 h-full d-flex home justify-center">ERROR</div>}
+               {!flip1 ? <Home /> : <div className="dark-1000 h-full d-flex home justify-center"></div>}
               </Route>
               <Route exact path="/admin">
                 {flip ? <Admin/> : <Home/>}
@@ -65,21 +62,6 @@ const [disable, setDisable] = useState(false)
               <Route exact path="/explore">
                 <Explore />
               </Route>
-
-              <Route exact path="/sign">
-                <Sign />>
-              </Route>
-              {/*
-                 <Route exact path="/playeth">
-                <PlayEth />
-               </Route>
-               <Route exact path="/playpoly">
-                <PlayPolygon />
-               </Route>
-            
-              */}
-             
-              
              </Switch>
           </MainLayout>
         </Router>
