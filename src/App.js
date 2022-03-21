@@ -48,7 +48,7 @@ const [flip1, setflip1] = useState(false)
           <MainLayout>
             <Switch>
               <Route exact path="/">
-               {flip1 ? <Home /> : <>{/* * remember to remove any test code from here before deployment * */}</>}
+               {!flip1 ? <Home /> : <>{/* * remember to remove any test code from here before deployment * */}</>}
               </Route>
               <Route exact path="/admin">
                 {flip ? <Admin/> : <Home/>}
