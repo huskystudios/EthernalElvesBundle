@@ -171,10 +171,6 @@ const Sector = ({ onChangeIndex, onSendCampaign, data, chain }) => {
         )
     }
 
-
-
-
-
     return campaignArray ? (
         <div className="w-full">
 
@@ -202,7 +198,7 @@ const Sector = ({ onChangeIndex, onSendCampaign, data, chain }) => {
                         <div className="sector-flex">
                             <span>Sector Selector</span>
                             <br />
-                            <div className="d-flex w-full justify-center" style={{gap: 6}}>
+                            <div className="d-flex w-full justify-center" style={{ gap: 6 }}>
                                 {[1, 2, 3, 4, 5].map((value) => {
                                     return (
                                         <span key={value} className={sector === value ? "btn-sector active" : "btn-sector"} onClick={() => setSectorChange(value)}
@@ -215,8 +211,6 @@ const Sector = ({ onChangeIndex, onSendCampaign, data, chain }) => {
                                 }
                                 )
                                 }
-
-
                             </div>
 
                             {showTooltip(tooltip)}
@@ -257,9 +251,7 @@ const Sector = ({ onChangeIndex, onSendCampaign, data, chain }) => {
                             </>
                         </div>
 
-
                         <div className="game-info">
-
 
                             <span>{`sector: ${sector}`}</span>
                             <span>
@@ -279,7 +271,6 @@ const Sector = ({ onChangeIndex, onSendCampaign, data, chain }) => {
                             </span>
                             <br />
 
-
                             <span> Creatures remaining: {activeCampaign.creatureCount}</span>
                             <span>{`miren rewards: ${mirenRewards}`} $REN</span>
                             <span>{`creature health: ${creatureHealth}`}</span>
@@ -287,7 +278,6 @@ const Sector = ({ onChangeIndex, onSendCampaign, data, chain }) => {
                             {activeCampaign.maxLevel && <span> Max Level Allowed: {activeCampaign.maxLevel}</span>}
 
                         </div>
-
 
                         <div className="elves-panel">
                             {data.map((character) => {
@@ -297,8 +287,6 @@ const Sector = ({ onChangeIndex, onSendCampaign, data, chain }) => {
 
                                 let time = (300 / (parseInt(character.health))) + attackTime;
                                 time = Math.ceil(time)
-
-
 
                                 return (
 
@@ -312,16 +300,11 @@ const Sector = ({ onChangeIndex, onSendCampaign, data, chain }) => {
                             }
                             )}
                         </div>
-
-
                     </div>
                 </div>
-
             </div>
 
-
             <div className="d-flex flex-row justify-around">
-
                 <button className="btn btn-green" onClick={() => handleChangeIndex(1)}>Confirm</button>
             </div>
 

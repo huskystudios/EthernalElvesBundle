@@ -1540,7 +1540,6 @@
     background-color: #333;
 }
 
-
 .profile {
     padding: 0px 40px;
 
@@ -1552,10 +1551,12 @@
     font-size: 12px;
     gap: 16px;
 }
+
 .statistic>div {
     width: 140px;
     gap: 16px;
 }
+
 .elf-card {
     border: 1px solid #454545;
     min-width: 160px;
@@ -1563,6 +1564,7 @@
     padding: 18px 8px;
     gap: 10px;
 }
+
 .elf-card img {
     width: 120px;
     align-self: center;
