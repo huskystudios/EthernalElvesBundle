@@ -64,6 +64,7 @@ const MainLayout = (props) => {
                 * 
                */}
                 <div className="connect-wallet"><ConnectWallet /></div>
+               
             </div>
 
             <div className="mobile-header">
