@@ -157,7 +157,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
         let tx
 
         try {
-            tx = await Moralis.Cloud.run("defenderRelayDev", params)
+            tx = await Moralis.Cloud.run("defenderRelay", params)
 
             console.log(tx)
             if (tx.data.status) {
