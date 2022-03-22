@@ -141,7 +141,9 @@ return (
         <>
       <div id="elf" className={`w-25 mh-auto ${raceClassName}`}>
       <h2 className="text-center">{elfObject.name}</h2>
+      <div className="d-flex justify-center">
       <img src={elfObject.image}/>
+      </div>
       <GetAttributes elfData={elfObject} />     
       <br/>
       <div className="flex justify-between mt-1">
