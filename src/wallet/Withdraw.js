@@ -449,16 +449,17 @@ const Withdraw = () => {
                     <div>
                       <p>REN credits: {polyBalance.toFixed()}</p>
                     </div>
-                    <div>
+                    <div className="w-full">
                       <input
-                        type="range"
+                        type="number"
+                        className="w-full border-box"
                         min="0"
                         max={polyBalance}
                         value={polyBalanceToClaim}
                         onChange={(e) => setPolyBalanceToClaim(e.target.value)}
-                        step="1"
+                        // step="1"
                       />
-                      <div className="flex justify-center">
+                      <div className="flex justify-center mt-2">
                         <button
                           className="btn btn-grey"
                           onClick={() => setConfirm(!confirm)}
@@ -473,16 +474,18 @@ const Withdraw = () => {
                   <div className="columns">
                     <h2>ETH REN CREDITS</h2>
                     <div><p>REN credits: {balance} {balanceToClaim > 0 && `- ${balanceToClaim}`}</p></div>
-                    <div><input
-                      type="range"
+                    <div className="w-full">
+                      <input
+                      type="number"
+                      className="w-full border-box"
                       min="0"
                       max={balance}
                       value={balanceToClaim}
                       onChange={(e) => setBalanceToClaim(e.target.value)}
-                      step="1"
+                      // step="1"
                     />
 
-                      <div className="flex justify-center">
+                      <div className="flex justify-center mt-2">
                         <button
                           className="btn btn-grey"
                           onClick={claimCustomAmount}

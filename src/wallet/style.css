@@ -40,3 +40,18 @@
     width: 100%;
     justify-content: space-around;
   }
+
+  .columns {
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: auto;
+  }
+
+  @media (min-width: 1168px) {
+      .columns {
+        max-width: 240px !important;
+      }
+    }
