@@ -23,6 +23,29 @@ const ConnectWallet = () => {
   const [isMetamask, setIsMetamask] = useState(false);
   const [chainId, setChainId] = useState()
 
+  useEffect(() => {
+      if (window.ethereum) {
+        // use MetaMask's provider
+        window.ethereum.enable(); // get permission to access accounts
+    
+        // detect Metamask account change
+        window.ethereum.on('accountsChanged', function (accounts) {
+          console.log('accountsChanges', accounts);
+    
+        });
+    
+         // detect Network account change
+        window.ethereum.on('networkChanged', function(networkId){
+          console.log('networkChanged', networkId);
+          document.location.reload();
+        });
+      } else {
+        console.warn(
+          "No web3 detected. Falling back to http://127.0.0.1:8545. You should remove this fallback when you deploy live",
+        );
+      }
+  }, [])
+  
   const authParams = { signingMessage: "Hi Elf, this signature is required to use the Moralis database to fetch your Elves and enable L2 when ready. The dApp will work without this step, but with limited features." }
 
 
