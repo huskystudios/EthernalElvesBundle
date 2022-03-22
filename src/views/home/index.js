@@ -829,9 +829,9 @@ const sleep = (milliseconds) => {
 
         
         <>
-             <div className="info">
+             {/*<div className="info">
                     <button onClick={() => setModalActions({show: !modalActions.show, action: "info", value: 0})}>INFO</button>
-             </div>
+           </div>*/}
             {loading ? <Loader text={loadingText} /> :
                 <>
                     <div className="dark-1000 h-full d-flex home justify-center">
