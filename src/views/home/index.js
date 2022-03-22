@@ -72,9 +72,10 @@ const Home = () => {
     const [consoleOpen, setConsoleOpen] = useState(false);
     
     const [modalActions, setModalActions] = useState({ show: false, value: null })    
+    const [chainModal, setChainModal] = useState(false)
   
   
-    const {authenticate, isAuthenticated, account, user, setUserData, userError, isUserUpdating,  isWeb3Enabled, enableWeb3, Moralis  } = useMoralis()
+    const {authenticate, isAuthenticated, account, user, setUserData, chainId, userError, isUserUpdating,  isWeb3Enabled, enableWeb3, Moralis  } = useMoralis()
    
    /* const [limit, setLimit] = useState(3);
 const { data, error, isLoading } = useMoralisQuery(
@@ -805,11 +806,32 @@ const sleep = (milliseconds) => {
             </div>
         )
     }
+    const renderChainModal = () => {
+        return (
+            <Modal show={chainModal}>
+                <h4>Please switch chains</h4>
+               
+              
+                <div className="flex flex-column w-full items-center">
+                    <h4>You need to be connected to Ethereum</h4>
+                
+                </div>
+                <div className="flex items-center mt-1 flex-wrap justify-center gap-1">
+               {/* <button className="btn btn-connect" onClick={switchChains}>
+                  Switch Chains
+                </button> */}
+                </div>
+            </Modal>
+      
+        )
+      }
     return isAuthenticated ? (
+
+        
         <>
              <div className="info">
                     <button onClick={() => setModalActions({show: !modalActions.show, action: "info", value: 0})}>INFO</button>
-                </div>
+             </div>
             {loading ? <Loader text={loadingText} /> :
                 <>
                     <div className="dark-1000 h-full d-flex home justify-center">

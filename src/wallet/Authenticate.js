@@ -64,30 +64,8 @@ function addWalletListener() {
 
 
 
-const renderModal = () => {
-  return (
-      <Modal show={chainModal}>
-          <h4>Please switch chains</h4>
-         
-        
-          <div className="flex flex-column w-full items-center">
-              <h4>You need to be connected to Ethereum</h4>
-          
-          </div>
-          <div className="flex items-center mt-1 flex-wrap justify-center gap-1">
-         {/* <button className="btn btn-connect" onClick={switchChains}>
-            Switch Chains
-          </button> */}
-          </div>
-      </Modal>
-
-  )
-}
 
 
-const logOut = async () => {
-  await Moralis.User.logOut();
-}
 
 useEffect(() => {
   addWalletListener()
@@ -100,7 +78,7 @@ if (!isAuthenticated) {
     <>
     <button    
     className="btn-connect"onClick={()=> authenticate(authParams) }>Connect Wallet</button>
-     {renderModal()}
+    
     </>
   );
 }
