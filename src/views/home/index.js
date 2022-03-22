@@ -72,6 +72,9 @@ const Home = () => {
     const [consoleOpen, setConsoleOpen] = useState(false);
     
     const [modalActions, setModalActions] = useState({ show: false, value: null })    
+  
+  
+    const {authenticate, isAuthenticated, account, user, setUserData, userError, isUserUpdating,  isWeb3Enabled, enableWeb3, Moralis  } = useMoralis()
    
    /* const [limit, setLimit] = useState(3);
 const { data, error, isLoading } = useMoralisQuery(
@@ -100,12 +103,13 @@ const sleep = (milliseconds) => {
         setMiren(allbalances.miren / 1000000000000000000);
         setPolyBalance(allbalances.polyMiren / 1000000000000000000);
 
+        setUserData({
+            ownerBalances: allbalances,
+          })
+
     }
 
 
-
-
-    const { Moralis } = useMoralis();
 
 
     const sendGaslessFunction = async (params) => {
@@ -115,7 +119,7 @@ const sleep = (milliseconds) => {
         setLoading(true)
         setLoadingText("Sending transaction...")
         try {
-            tx = await Moralis.Cloud.run("defenderRelay", params) // CHANGE THIS. VERY IMPORTANT
+            tx = await Moralis.Cloud.run("defenderRelay", params)
 
             console.log(tx)
             if (tx.data.status) {
@@ -191,8 +195,6 @@ const sleep = (milliseconds) => {
 
     const bloodthirstFunction = async (params) => {
 
-
-
         const btParams = { functionCall: polygonContract.methods.bloodThirst(params.tryTokenids, params.tryItem, params.useItem, params.address).encodeABI() }
         await sendGaslessFunction(btParams)
 
@@ -208,10 +210,7 @@ const sleep = (milliseconds) => {
         }     
             const polyParams = { functionCall: polygonContract.methods.rampage(params.tryTokenids, params.tryCampaign, params.tryWeapon, params.tryAccessories, params.useItem, params.address).encodeABI() }
             await sendGaslessFunction(polyParams)
-        
-
-        
-
+       
 
     }
 
@@ -390,7 +389,6 @@ const sleep = (milliseconds) => {
                 const params = { functionCall: polygonContract.methods.returnPassive(ids, wallet).encodeABI() }
                 await sendGaslessFunction(params)
 
-
             }
 
         }
@@ -415,10 +413,9 @@ const sleep = (milliseconds) => {
 
 
 
+    const getElvesfromMoralis = async (address) => {
 
-    const getElvesfromMoralis = async (address, userData) => {
-
-        let activeChain = userData.attributes.ownerChainPref ? userData.attributes.ownerChainPref : "eth"
+        let activeChain = user.attributes.ownerChainPref ? user.attributes.ownerChainPref : "eth"
         setLoading(true)
         setClicked([])
         console.log("1")
@@ -504,16 +501,17 @@ const sleep = (milliseconds) => {
         // setData(elves)
         let resolveEns
         try {
-            // resolveEns = await Moralis.Web3API.resolve.resolveAddress({ address: address });
-            // console.log(resolveEns.name)
+             resolveEns = await Moralis.Web3API.resolve.resolveAddress({ address: address });
+             console.log("welcome!", resolveEns.name)
         } catch (e) {
             console.log(e)
         }
 
 
-
-        Moralis.Cloud.run("updateUser", { ownerAddress: address, ownerElves: results.length, ensName: resolveEns ? resolveEns.name : "" })
-
+        setUserData({
+            ownerElves: results.length,
+            ensName: resolveEns ? resolveEns.name : "",            
+          })
 
         setLoadingText(`100% Done!`)
         setLoading(false)
@@ -534,14 +532,19 @@ const sleep = (milliseconds) => {
 
     const toggleChain = async () => {
 
-        const { address } = await getCurrentWalletConnected()
+        //const { address } = await getCurrentWalletConnected()
+
+        const address = user.get("ethAddress")
+        
+        
         if (chain === "eth") {
             setChain("polygon")
             setBlockscan("polyscan.com")
             setExcludeAction(0)
             setData(polyElves)
             setClicked([])
-            Moralis.Cloud.run("updateUser", { ownerAddress: address, ownerChainPref: "polygon" })
+            setUserData({ ownerChainPref: "polygon" })
+            //Moralis.Cloud.run("updateUser", { ownerAddress: address, ownerChainPref: "polygon" })
 
         } else {
             setChain("eth")
@@ -549,7 +552,8 @@ const sleep = (milliseconds) => {
             setExcludeAction(8)
             setData(ethElves)
             setClicked([])
-            Moralis.Cloud.run("updateUser", { ownerAddress: address, ownerChainPref: "eth" })
+            setUserData({ ownerChainPref: "eth" })
+            //Moralis.Cloud.run("updateUser", { ownerAddress: address, ownerChainPref: "eth" })
         }
 
     }
@@ -576,18 +580,28 @@ const sleep = (milliseconds) => {
     useEffect(() => {
 
         const getData = async () => {
-            const { address } = await getCurrentWalletConnected();
+            //const { address } = await getCurrentWalletConnected();
+           
+            
+
+            if(isAuthenticated){ 
+
+                const address = user?.attributes.ethAddress
+
             setWallet(address)
             getRenBalance(address)
-            let userData = await Moralis.Cloud.run("getUserData", { ownerAddress: address })
-            userData.attributes.ownerChainPref ? setChain(userData.attributes.ownerChainPref) : setChain("eth")
+            console.log("Corrected address:", address)
+            //let userData = await Moralis.Cloud.run("getUserData", { ownerAddress: address })
+            user.get("ownerChainPref") ? setChain(user.get("ownerChainPref")) : setChain("eth")
 
             address && setLoadingText(`10% Wallet connected`)
-            address && await getElvesfromMoralis(address, userData)
+            address && await getElvesfromMoralis(address)
+            }
+            
         }
 
         getData()
-    }, [txreceipt, reloadData])
+    }, [txreceipt, reloadData, isAuthenticated])
 
     const resetVariables = async () => {
         setIndex(0)
@@ -791,7 +805,7 @@ const sleep = (milliseconds) => {
             </div>
         )
     }
-    return (
+    return isAuthenticated ? (
         <>
              <div className="info">
                     <button onClick={() => setModalActions({show: !modalActions.show, action: "info", value: 0})}>INFO</button>
@@ -884,7 +898,13 @@ const sleep = (milliseconds) => {
             {renderHealModal()}
             {/*wallet && <InstantKill  setAlert={setAlert} owner={wallet} />*/}
         </>
-    )
+    ) : <>
+     <div className="dark-1000 h-full d-flex home justify-center">
+                        <div className="flex-column w-full">
+                            Login First
+                            </div>
+    </div>
+    </>
 }
 
 export default Home

@@ -1604,7 +1604,7 @@
 	background-color: #333;
 }
 .table {
-    overflow-y: unset !important;
+  /*  overflow-y: unset !important;*/
 }
 .table-whale {
   

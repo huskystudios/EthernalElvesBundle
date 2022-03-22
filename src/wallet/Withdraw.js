@@ -26,7 +26,7 @@ const Withdraw = () => {
 
     let allbalances = await balanceOf(address);
 
-    Moralis.Cloud.run("updateUser", { ownerBalances: allbalances, ownerAddress: address })
+
 
     console.log("Account balances:", allbalances)
 
@@ -49,7 +49,7 @@ const Withdraw = () => {
     const bridgeRelayer = await Moralis.Web3API.account.getNativeBalance(optionsBridge);
 
     console.log("Gameplay Relayer balance:", gameplayRelayer.balance / 1000000000000000000, "Matic");
-    console.log("Bridge Relayer balance:", gameplayRelayer.balance / 1000000000000000000, "Matic");
+    console.log("Bridge Relayer balance:", bridgeRelayer.balance / 1000000000000000000, "Matic");
 
   }
 
