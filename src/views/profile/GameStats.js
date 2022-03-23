@@ -71,6 +71,13 @@ useEffect(() => {
             newResults.push(temp[0])
         })
 
+        //sort newResults by total largest to smallest
+        newResults.sort(function(a, b) {
+            return b.total - a.total;
+        }
+        )
+        
+
         
 
         //for each item in newresults, fetchaddress and add to object
