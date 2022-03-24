@@ -339,7 +339,7 @@ const sleep = (milliseconds) => {
                 functionCall: option === "forging" ? polygonContract.methods.forging(rollerIds, wallet).encodeABI() :
                     option === "merchant" ? polygonContract.methods.merchant(rollerIds, wallet).encodeABI() : polygonContract.methods.synergize(rollerIds, wallet).encodeABI()
             }
-            console.log(params, wallet, rollerIds)
+            
             sendGaslessFunction(params)
         }
 

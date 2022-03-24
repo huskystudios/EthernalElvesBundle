@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
 import Loader from "../../components/Loader";
 import { useMoralisWeb3Api } from "react-moralis";
+import { lookupMultipleElves } from "../../utils/interact";
 
 
 
@@ -15,6 +16,7 @@ const [loading, setLoading] = useState(true);
 const { Moralis } = useMoralis();
 const [burnLeader, setBurnLeader] = useState(0);
 const [status, setStatus] = useState("");
+const [btlb, setBtlb] = useState([]);
 
 function uniq(a) {
     var seen = {};
@@ -36,15 +38,8 @@ const fetchAddress = async (add) => {
   const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
   }
-  
 
-useEffect(() => {
-    async function init() {
-
-
-    await Moralis.enableWeb3(); 
-    setStatus("getting NFT Trades and price data")  
-   
+  const burnLeaders = async () => {
     const burnLb = await Moralis.Cloud.run("burnLeaderboard")  
     let results = []
     
@@ -76,39 +71,53 @@ useEffect(() => {
             return b.total - a.total;
         }
         )
-        
-
-        
-
-        //for each item in newresults, fetchaddress and add to object
-
-//        fetchAddress
-
-/*
-        let newResults2 = []
-        newResults.forEach(function(item) {
-            let temp = item
-            fetchAddress(item.objectId).then((res) => {
-                temp.address = res
-                newResults2.push(temp)
-            },(err) => {
-                console.log(err)
-                newResults2.push(temp)
-            })
-            sleep(1000)
-        })     
-
-        newResults2.sort(function(a, b) {
-            return b.total - a.total;
-        });
-
-*/
-
-      
-
-    
     
         setBurnLeader(newResults)
+  };
+
+
+  const bloodthirstLeaderboard = async () => {
+    const btleaderboard = await Moralis.Cloud.run("bloodthirstLeaderboard")  
+
+    //find all unique objectIds and put in an array
+    let tempArray = []
+    btleaderboard.forEach(function(item) {
+        tempArray.push(parseInt(item.objectId))
+    }
+    )
+
+    console.log(btleaderboard)
+
+    let params = { array: tempArray, chain: "polygon" }
+    let elfMeta = await lookupMultipleElves(params)
+    
+    //for each item in elfMeta, add tokens from btleaderboard to a new field
+    let newResults = []
+    elfMeta.forEach(function(item) {
+        let temp = btleaderboard.filter(function(obj) {
+            return obj.objectId === item.id.toString()
+        }
+        )
+       
+        item.tokens = temp[0].tokens
+        newResults.push(item)
+    }
+    )
+    console.log(newResults)
+    setBtlb(newResults)
+
+  };
+  
+
+useEffect(() => {
+    async function init() {
+
+
+    await Moralis.enableWeb3(); 
+    setStatus("getting data")  
+
+    await burnLeaders()
+    await bloodthirstLeaderboard()    
       
      
     
@@ -132,26 +141,49 @@ return !loading ? (
 
 <div className="d-flex">
                 
-        <div className="d-flex flex-column">
+        <div className="d-flex flex-column p-1">
         <h3>REN Burners</h3>
+        <table>
+        <thead>
+        <tr>
+        <th>Rank</th>
+        <th>Address</th>
+        <th>$REN</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        
        
     {burnLeader.map((item, index) => (
         
-        <div className="d-flex flex-column" key={index}>
-        <div className="d-flex justify-left">
-           <span className="p-1">{index + 1}. </span>
-           <span className="p-1">{item.objectId}</span>
-           <span className="p-1">{item.total.toLocaleString()}</span>
-       
-        </div>
-        </div>
+        <tr key={item.objectId}>
+        <td>{index+1}</td>
+        <td>{item.objectId}</td>
+        <td>{item.total.toLocaleString()}</td>
+        </tr>
+    
     ))}
 
-
-
-        
+        </tbody>
+        </table>
+ 
 
 </div>
+
+        <div className="d-flex flex-column p-1">
+                <h3>Instant Kill Hall of Fame</h3>
+                <div style={{width: `900px`}} className="d-flex flex-wrap p-1">
+                        {btlb.map((item, index) => (
+                                <div className="w-25 d-flex flex-column p-2" key={item.id}>
+                                     <span>{index + 1}. Elf#{item.id}</span>  
+                                      <img src={item.image} alt={item.name} />
+                                      <span>Career Kills: {item.tokens}</span>  
+                                      </div>
+                        ))}
+                 </div>
+        </div>
+
 </div>
 
 
