@@ -139,7 +139,7 @@ return !loading ? (
     <>
 
 
-<div className="d-flex">
+<div className="d-flex flex-wrap">
                 
         <div className="d-flex flex-column p-1">
         <h3>REN Burners</h3>
@@ -173,7 +173,7 @@ return !loading ? (
 
         <div className="d-flex flex-column p-1">
                 <h3>Instant Kill Hall of Fame</h3>
-                <div style={{width: `900px`}} className="d-flex flex-wrap p-1">
+                <div style={{maxWidth: `800px`}} className="d-flex flex-wrap p-1">
                         {btlb.map((item, index) => (
                                 <div className="w-25 d-flex flex-column p-2" key={item.id}>
                                      <span>{index + 1}. Elf#{item.id}</span>  
