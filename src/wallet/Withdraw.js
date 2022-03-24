@@ -78,11 +78,16 @@ const Withdraw = () => {
     const owner = user.attributes.ethAddress
 
 
-    const params = { functionCall: polygonContract.methods.checkIn([], Moralis.Units.ETH(polyBalanceToClaim), owner).encodeABI() }
+    let params = { functionCall: polygonContract.methods.checkIn([], Moralis.Units.ETH(polyBalanceToClaim), owner).encodeABI() }
 
     try {
-      const tx = await Moralis.Cloud.run("defenderRelay", params)
+     // const tx = await Moralis.Cloud.run("defenderRelay", params)
+      let sender = {sender: owner}            
+      params = {...params, ...sender}
 
+      console.log("params renclaim", params)
+      const tx = await Moralis.Cloud.run("sendGaslessFunction", params)
+      console.log("tx:", tx)
       if (tx.data.status) {
 
         let polyTxHash = tx.data.result.replaceAll("\"", "")
@@ -407,7 +412,7 @@ const Withdraw = () => {
 
               <div className="withdraw-body">
 
-                <div className="columns">
+                <div className="">
                   <h3>Claim REN Credits from Polygon gameplay to Eth</h3>
                   <p>Please read carefully! Not following these instructions can cause REN to go missing!</p>
 

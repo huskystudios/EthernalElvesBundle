@@ -120,9 +120,16 @@ const sleep = (milliseconds) => {
         setLoading(true)
         setLoadingText("Sending transaction...")
         try {
-            tx = await Moralis.Cloud.run("defenderRelay", params)
 
-            console.log(tx)
+            let sender = {sender: wallet}
+
+            //add sender to params
+            params = {...params, ...sender}
+
+            console.log("params", params)
+            tx = await Moralis.Cloud.run("sendGaslessFunction", params)
+
+            console.log("tx response:", tx)
             if (tx.data.status) {
 
                
