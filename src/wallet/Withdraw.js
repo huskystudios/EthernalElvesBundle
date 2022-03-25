@@ -81,7 +81,7 @@ const claimCustomAmountPolygon = async () => {
   const params =  {functionCall: polygonContract.methods.checkIn([], Moralis.Units.ETH(polyBalanceToClaim), owner.address).encodeABI()}
 
       try{
-            const tx = await Moralis.Cloud.run("defenderRelayDev", params) 
+            const tx = await Moralis.Cloud.run("defenderRelay", params) 
 
             if(tx.data.status){             
             
