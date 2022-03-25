@@ -136,7 +136,7 @@ return (
       
       
  
-      <Modal show={showModal}>
+      <Modal show={showModal} setShow={setShowModal}>
         {!loading ?
         <>
       <div id="elf" className={`w-25 mh-auto ${raceClassName}`}>

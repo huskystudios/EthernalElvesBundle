@@ -354,7 +354,7 @@ const PlayEth = () => {
 
            //
             return(
-               <Modal show={campaignModal}>
+               <Modal show={campaignModal} setShow={setCampaignModal}>
                        <Sector showpagination={true} data={nfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} mode={"campaign"} />
 
                         
@@ -366,7 +366,7 @@ const PlayEth = () => {
         const renderMintModal = () => {
            
             return(
-                 <Modal show={mintModal}>
+                 <Modal show={mintModal} setShow={setMintModal} >
                      <div style={{"display": "flex", "minHeight": "600px",  "flexDirection": "column"}}>
                     <Mint />
                     </div>

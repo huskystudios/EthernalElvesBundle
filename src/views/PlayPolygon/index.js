@@ -424,7 +424,7 @@ const PlayPolygon = () => {
         const renderModal = () => {
 
             return(
-                <Modal show={campaignModal}>
+                <Modal show={campaignModal} setShow={setCampaignModal}>
                         <Sector showpagination={true} chain={"polygon"} data={nfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} mode={"campaign"} />
                 </Modal>
              )
@@ -449,7 +449,7 @@ const PlayPolygon = () => {
         const renderBTModal = () => {
         
             return(
-                <Modal show={campaignBTModal}>
+                <Modal show={campaignBTModal} setShow={setCampaignBTModal}>
                         <h3>Bloodthirst!</h3>
                         
                         Creature Health is 400HP
