@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
 import Loader from "../../components/Loader";
 import { useMoralisWeb3Api } from "react-moralis";
+import RNGOutcome from "./rngOutcomes";
 
 
 
@@ -325,6 +326,8 @@ return !loading ? (
                         </div> )})}
         </div>
 
+     
+
        {/* <div className="d-flex flex-column">
         <h3>Recent NFT trades</h3>
         
@@ -350,7 +353,6 @@ return !loading ? (
         
 
 </div>
-
 
 
 

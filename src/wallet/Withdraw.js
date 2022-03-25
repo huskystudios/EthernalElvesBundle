@@ -184,7 +184,7 @@ const claimCustomAmountPolygon = async () => {
                   const ethClaimParams =  {renAmount: getsignature.renAmount.toString(), signature: getsignature.signature.signature, timestamp: getsignature.timestamp}
                   
                   const txHashinClaimRen = transactionReceipt.transactionHash
-                  setStatus("Brining up web3, please confirm the claim on your wallet. After confirmation, this dialog will wait for the transaction to be mined.")
+                  setStatus("Bringing up web3, please confirm the claim on your wallet. After confirmation, this dialog will wait for the transaction to be mined.")
                         
                   
                  checkOutRen(ethClaimParams).then((r) => {

@@ -172,13 +172,13 @@ return !loading ? (
 </div>
 
         <div className="d-flex flex-column p-1">
-                <h3>Instant Kill Hall of Fame</h3>
+                <h3>Instant Kill Leaderboard</h3>
                 <div style={{maxWidth: `800px`}} className="d-flex flex-wrap p-1">
                         {btlb.map((item, index) => (
                                 <div className="w-25 d-flex flex-column p-2" key={item.id}>
                                      <span>{index + 1}. Elf#{item.id}</span>  
                                       <img src={item.image} alt={item.name} />
-                                      <span>Career Kills: {item.tokens}</span>  
+                                      <span>Career Instant Kills: {item.tokens}</span>  
                                       </div>
                         ))}
                  </div>
