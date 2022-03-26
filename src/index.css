@@ -58,7 +58,7 @@ button {
   height: 100%
 }
 .w-full {
-  width: 100%
+  width: 100% !important;
 }
 .dark-500 {
   background-color: rgba(0, 0, 0, 0.7)
@@ -182,10 +182,6 @@ button {
   font-size: 12px;
 }
 
-.w-full {
-  width: 100%;
-}
-
 .h-64{
   height: 64px;
 }
@@ -216,6 +212,10 @@ button {
 
 .font-semi-bold {
   font-weight: 600;
+}
+
+.border-box {
+  box-sizing: border-box;
 }
 
 #text {

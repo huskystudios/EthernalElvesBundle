@@ -157,7 +157,14 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
         let tx
 
         try {
-            tx = await Moralis.Cloud.run("defenderRelay", params)
+            //tx = await Moralis.Cloud.run("defenderRelay", params)
+
+            let sender = {sender: owner}            
+            params = {...params, ...sender}
+
+            console.log("params transfers", params)
+            tx = await Moralis.Cloud.run("sendGaslessFunction", params)
+
 
             console.log(tx)
             if (tx.data.status) {

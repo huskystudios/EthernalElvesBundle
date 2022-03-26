@@ -38,7 +38,7 @@ cursor: pointer;
   width: 80%; /* Could be more or less, depending on screen size */
   min-width: 1160px;
   padding: 20px;
-  margin: 13% auto; /* 15% from the top and centered */
+  margin: 10% auto; /* 15% from the top and centered */
   width: 80%; /* Could be more or less, depending on screen size */
 }
 }

@@ -26,17 +26,13 @@ const Profile = () => {
 
     const getUserData = async (address) => {
 
-        const params =  {address: address}
-        const userTokenArray = await Moralis.Cloud.run("getElvesFromDb", params);
-        setStatus("army of " + userTokenArray.length + " elves")
-
         
         let q = new Moralis.Query("ElvesAdmin");  
        
         q.equalTo("owner_of", address.toLowerCase());
         setStatus("getting elves")
         const elves = await q.find();
-
+        setStatus("army of " + elves.length + " elves")
         setData(elves)        
 
         setStatus("done")

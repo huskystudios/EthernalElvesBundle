@@ -1,22 +1,34 @@
 import { useEffect, useState } from "react";
 import {  getCurrentWalletConnected, connectWallet} from "../utils/interact.js";
 import { useMoralis, useChain } from "react-moralis";
+import eth from "../assets/images/eth.png"
+import polygon from "../assets/images/polygon.png"
+import Modal from "../components/Modal/index.js";
+
+const Network = {
+  1: "Ethereum",
+  137: "Polygon"
+}
+const logo = {
+  1: eth,
+  137: polygon
+}
+
+const mainnet = "0x1"; //Ethereum Mainnet
+const polygonS ="0x89"//PolygonChain
 
 
 const Authenticate = () => {
  
   //State variables
-  const [walletAddress, setWallet] = useState("");
-  const [status, setStatus] = useState("");
-  const {authenticate, isAuthenticated, user, isWeb3Enabled, enableWeb3, Moralis  } = useMoralis()
-  const [isMetamask, setIsMetamask] = useState(false);
-
+  const {authenticate, isAuthenticated, user, setUserData, userError, isUserUpdating, logout,  isWeb3Enabled, enableWeb3, Moralis  } = useMoralis()
+ 
   const authParams = {signingMessage: "Hi Elf, this signature is required to confirm that you own the wallet you are trying to connect with. We need to know this to prevent misuse of gasless functions" }
-
-  const { authenticate, isAuthenticated, user } = useMoralis();
-
-
-
+  const { switchNetwork, chainId, chain, account } = useChain();
+  const [chainInt, setChainInt] = useState() 
+  const [chainModal, setChainModal] = useState(false)
+  
+  
 function handleMoralisError(err) {
   switch (err.code) {
     case Moralis.Error.INVALID_SESSION_TOKEN:
@@ -30,79 +42,53 @@ function handleMoralisError(err) {
   }
 }
 
-
+const switchChains = async () => {
   
-
-
+  await switchNetwork("0x1")
   
-const connectWalletPressed = async () => {
-  
-  if(isAuthenticated){
+  setChainModal(!chainModal)
+  console.log(chainId)
+ 
+}
 
-    window.location.reload(false);
-
-  
-   
-  }else{
-    authenticate(authParams).then((user)=>{
-    setWallet(user.attributes.ethAddress);
-    onSetWallet(user.get("ethAddress"));
-    
-     
-  })
-
-  }
-
-
-  
-};
-
-
-
-const isMetaMaskInstalled = async () => {
-  if (window.ethereum){     
-    setIsMetamask(true)
+function addWalletListener() {
+  if (window.ethereum) {
+    window.ethereum.on("accountsChanged", (accounts) => {
+      if (accounts.length > 0) {      
+        window.location.reload(false);
+        logout()	
+      }
+    });
   }
 }
 
-return (
-   
+
+
+
+
+
+useEffect(() => {
+  addWalletListener()
+}, [])
+
+
+
+if (!isAuthenticated) {
+  return (
     <>
-{isMetamask ? (
-<>
-<button variant="light" className="btn-connect" onClick={connectWalletPressed}>
-{walletAddress.length > 0 ? (
-  
-  String(walletAddress).substring(0, 4) +
-  "..." +
-  String(walletAddress).substring(38)
+    <button    
+    className="btn-connect"onClick={()=> authenticate(authParams) }>Connect Wallet</button>
+    
+    </>
+  );
+}
 
-) : (
-  <span>Connect</span>
-)}
-</button>
-
+return (
+  <>
+<button  className="btn-connect"onClick={()=> logout()}>Logout ...{String(user.get("ethAddress")).substring(38)}</button>
 </>
 
-    ) : (
-
-      <button 
-      variant="light"
-      className="btn-connect"
-      onClick={(e) => {
-        e.preventDefault();
-        window.location.href='https://metamask.app.link/dapp/app.ethernalelves.com/';
-        }}
-  >Get Metamask</button>
-
-    ) }
-
-
-
-
-</>  
-
-  );
+);
 };
 
 export default Authenticate;
