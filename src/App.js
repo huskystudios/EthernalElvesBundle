@@ -13,6 +13,7 @@ import { getCurrentWalletConnected } from './utils/interact'
 import { useState, useEffect } from 'react';
 import Explore from './views/home/components/Explore';
 import {app, analytics} from './utils/initFirebase'
+import Discord from './views/profile/Discord';
 
 require('dotenv').config();
 
@@ -58,6 +59,9 @@ const [flip1, setflip1] = useState(false)
               </Route>
               <Route exact path="/profile">
                 <Profile />
+              </Route>
+              <Route exact path="/discord">
+                <Discord />
               </Route>
               <Route exact path="/explore">
                 <Explore />

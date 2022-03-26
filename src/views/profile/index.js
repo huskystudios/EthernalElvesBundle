@@ -12,6 +12,7 @@ import Stats from "./Stats"
 import ActivityLog from "./ActivityLog"
 import GameStats from "./GameStats"
 import RNGOutcome from "./rngOutcomes"
+import Discord from "./Discord"
 
 const Profile = () => {
     const [loading, setLoading] = useState(true)
@@ -237,6 +238,7 @@ const Profile = () => {
                 <Tab>Leaderboards</Tab>
                 <Tab>Lookup Elf</Tab>
                 <Tab>Random Number Analysis</Tab>
+                <Tab>Connect Discord</Tab>
                 </TabList>
 
                 <TabPanel>
@@ -261,6 +263,10 @@ const Profile = () => {
 
                 <TabPanel>               
                <RNGOutcome />
+                </TabPanel>
+
+                <TabPanel>               
+               <Discord />
                 </TabPanel>
 
 
