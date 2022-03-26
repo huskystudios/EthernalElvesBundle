@@ -81,7 +81,7 @@ const Withdraw = () => {
     let params = { functionCall: polygonContract.methods.checkIn([], Moralis.Units.ETH(polyBalanceToClaim), owner).encodeABI() }
 
     try {
-     // const tx = await Moralis.Cloud.run("defenderRelay", params)
+     
       let sender = {sender: owner}            
       params = {...params, ...sender}
 
