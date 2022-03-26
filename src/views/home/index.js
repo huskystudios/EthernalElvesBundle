@@ -930,7 +930,12 @@ const sleep = (milliseconds) => {
     ) : <>
      <div className="dark-1000 h-full d-flex home justify-center">
                         <div className="flex-column w-full">
-                            Login First
+                          <div className="d-flex justify-center items-center">
+                              <br />
+                              <br />
+                              <br />
+                            Please connect wallet 
+                            </div>
                             </div>
     </div>
     </>
