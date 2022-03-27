@@ -152,6 +152,7 @@ const sleep = (milliseconds) => {
 
             
             setAlert({show: true, value: {title: "Tx Sent", content: (successMessage)}})
+            setModalActions({show: false, value: null})
             setReloadData(!reloadData)
             setClicked([]);
             setIndex(0)
