@@ -88,7 +88,7 @@ function addWalletListener() {
 
 
 useEffect(() => {
- // getMaticBalances()
+  getMaticBalances()
 }, [isAuthenticated])
 
 
