@@ -20,7 +20,7 @@ const Profile = () => {
     const [renTransfers, setRenTransfers] = useState([])
     const [data, setData] = useState({})
     const [actionData, setActionData] = useState({})
-    const { Moralis, authenticate } = useMoralis();
+    const { Moralis, authenticate, user, isAuthenticated } = useMoralis();
     const [status, setStatus] = useState("")
     
 
@@ -46,14 +46,18 @@ const Profile = () => {
         
         useEffect(() => {
             const getData = async () => {
-                const {address} = await getCurrentWalletConnected();
+                if(isAuthenticated) {
+                const address = user.attributes.ethAddress
                 setStatus("connected to address: " + address)
      
                 address && await getUserData(address)
+            }else{
+                setStatus("not connected")
+            }
             }
             
             getData()
-          },[])
+          },[isAuthenticated])
 
     const ShowElfTable = () => {
 

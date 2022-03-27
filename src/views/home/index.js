@@ -426,7 +426,7 @@ const sleep = (milliseconds) => {
         let activeChain = user.attributes.ownerChainPref ? user.attributes.ownerChainPref : "eth"
         setLoading(true)
         setClicked([])
-        console.log("1")
+        
         setLoadingText(`25% Fetching elves for address ${address}`)
 
         const Elves = Moralis.Object.extend("Elves");
@@ -878,7 +878,7 @@ const sleep = (milliseconds) => {
                                         consoleOpen={consoleOpen}
                                     />}
                                 </>}
-                            <Modal show={modalActions.show} setShow={(e) => setModal({show: e, value: null})}>
+                            <Modal show={modalActions.show} setShow={(e) => setModalActions({show: e, value: null})}>
                                 {modalActions.value === 0 && <Info />}
                                 {modalActions.value === 1 && <Staking nft={activeNfts} onRunWeb3={doAction} onChangeIndex={onChangeIndex} />}
                                 {modalActions.value === 2 && <Sector chain={chain} campaign={campaign} data={activeNfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} />}

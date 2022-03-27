@@ -13,7 +13,7 @@ function Lookup() {
 const [tokenId, setTokenId] = useState(69)
 const { Moralis } = useMoralis();
 const [elfObject, setElfObject] = useState(null)
-const [showModal, setShowModal] = useState(true)
+const [showModal, setShowModal] = useState(false)
 const [loading, setLoading] = useState(true)
 const [loadingText , setLoadingText] = useState("")
 

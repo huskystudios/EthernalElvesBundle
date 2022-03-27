@@ -11,7 +11,6 @@ import CampaignAdmin from "./Campaign";
 import Loader from "../../components/Loader";
 import PendingTransfers from "./PendingTransfers";
 import PendingRenTransfers from "./PendingRenTransfers";
-import Polygon from "./Polygon";
 import Lookup from "../profile/Lookup";
 import ExportOwners from "./ExportOwners";
 import RampageFix from "./RampageFix";
@@ -78,116 +77,6 @@ useEffect(() => {
     }
     init();
 }, [])
-
-
-const refreshMetaData = async () => {
-
-  const Elves = Moralis.Object.extend("Elves");
-  setProgress(1)
-
-  let results = []
-
-  let start = 1
-  let supply = tokenSupply//parseInt(cloudSupply.supply) ///tokenSupply
-  let stop = 0
-  let steps = 33
-
- 
-  let counter = 0
-  let i = 0
-
-  while(counter<6666){
-         
-    start = i*steps + 1
-    stop = start + steps - 1
-
-    const tokenArray = []
-      for (var j = start; j <= stop; j++) {
-        tokenArray.push(j);
-        counter++
-      }
-   const params = {array: tokenArray, chain: "eth"}
-  
-   results = await lookupMultipleElves(params)
-   console.log(results)
-   results.map(async (elf)=>{
-    
-    let query = new Moralis.Query(Elves);  
-    query.equalTo("token_id", elf.id);
-    const res = await query.first();
-    if(!res){
-      const elvesObject = new Elves();
-      elvesObject.set("owner_of", elf.owner)
-      elvesObject.set("token_id", elf.id)
-      elvesObject.save() 
-      console.log("object created")
-      }else{
-        res.set("owner_of", elf.owner);
-        res.save()
-        console.log("object saved")
-      }
-
-    })
-   
-    setProgress(counter/supply*100)
-    i++
-  }
-
-setProgress(100)
-setLoading(false)
-  
-};
-
-
-const checkElfLocation = async () => {
- 
-
-  const ElvesLocation = Moralis.Object.extend("ElvesLocation");
-  setProgress(1)
-
-  let results = []
-
-  let start = 1
-  let supply = 6666//parseInt(cloudSupply.supply) ///tokenSupply
-  
-
-  let i = 1
-  
-  while(i<6667){
-
-  //  const pElves = await polygonContract.methods.elves(tokenId).call();
- //   const eElves = await nftContract.methods.elves(tokenId).call();
-   
-    //owner timestamp action
-   
-    let query = new Moralis.Query(ElvesLocation);  
- //   query.equalTo("token_id", elf.id);
-    const res = await query.first();
-    if(!res){
-      const elvesObject = new ElvesLocation();
-  //    elvesObject.set("ownerPoly", pElves.owner)
-  //    elvesObject.set("tsPoly", pElves.timestamp)
-  //    elvesObject.set("actionPoly", pElves.action)
-//
-   //   elvesObject.set("token_id", elf.id)
-      elvesObject.save() 
-      console.log("object created")
-      }else{
-   //     res.set("owner_of", elf.owner);
-        res.save()
-        console.log("object saved")
-      }
-
-  
-   
-    setProgress(i/supply*100)
-    i++
-  }
-
-setProgress(100)
-setLoading(false)
-  
-};
 
 
 
