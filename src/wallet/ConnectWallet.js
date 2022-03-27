@@ -97,18 +97,9 @@ const ConnectWallet = () => {
       const chain_id = await new Web3(window.ethereum).eth.getChainId()
       setChainId(chain_id)
     }
-    const createUser = async () => {
-      const { address, status } = await getCurrentWalletConnected();
-      Moralis.Cloud.run("createUser", { ownerAddress: address }).then(function (results) {
 
-        return results
-
-      }, function (err) {
-        handleMoralisError(err);
-      });
-    }
     if(walletAddress) getChainId()
-    createUser()
+ 
   }, [walletAddress]);
 
   function addWalletListener() {

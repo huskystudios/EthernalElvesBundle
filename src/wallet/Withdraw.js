@@ -36,20 +36,7 @@ const Withdraw = () => {
     setPolyBalance(allbalances.polyMiren / 1000000000000000000);
 
 
-    const optionsRelayer = {
-      chain: "matic",
-      address: "0xe2223685cd3cbbed5c823ac9f21268a61e9a3789",
-    };
-    const gameplayRelayer = await Moralis.Web3API.account.getNativeBalance(optionsRelayer);
-
-    const optionsBridge = {
-      chain: "matic",
-      address: "0xb054693076b25c9c6619c1e4b24b487663bdb2c2",
-    };
-    const bridgeRelayer = await Moralis.Web3API.account.getNativeBalance(optionsBridge);
-
-    console.log("Gameplay Relayer balance:", gameplayRelayer.balance / 1000000000000000000, "Matic");
-    console.log("Bridge Relayer balance:", bridgeRelayer.balance / 1000000000000000000, "Matic");
+    
 
   }
 

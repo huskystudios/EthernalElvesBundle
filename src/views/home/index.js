@@ -426,7 +426,7 @@ const sleep = (milliseconds) => {
         let activeChain = user.attributes.ownerChainPref ? user.attributes.ownerChainPref : "eth"
         setLoading(true)
         setClicked([])
-        console.log("1")
+        
         setLoadingText(`25% Fetching elves for address ${address}`)
 
         const Elves = Moralis.Object.extend("Elves");

@@ -32,12 +32,7 @@ const Control = ({ consoleOpen, setConsoleOpen, data, activities, onSelect, clic
 
         const res = lastCamp[0]
 
-        //   console.log(tokenId, "tokenId", lastCamp)
-        //   const ElfCampaigns = Moralis.Object.extend("ElfCampaignsActivity");
-        //   let query = new Moralis.Query(ElfCampaigns);  
-        //   query.equalTo("tokenId", tokenId.toString());
-        //   const res = await query.first();
-        // console.log("huh?", tokenId, res.attributes.sector, res.attributes.campaign, Moralis.Units.FromWei(res.attributes.amount))
+        
         if (res) {
             return {
                 sector: res.sector, //res.attributes.sector,
