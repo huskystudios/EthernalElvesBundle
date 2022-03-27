@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { getPawnItems, sendCampaign, getCurrentWalletConnected } from "../../../utils/interact"
 import Loader from "../../../components/Loader";
 
-const BuyItems = ({ selected, onTrade}) => {
+const BuyItems = ({ selected, onTrade, polyBalance}) => {
 
     const [alert, setAlert] = useState({ show: false, value: null })
 
@@ -11,29 +11,62 @@ const BuyItems = ({ selected, onTrade}) => {
     const [itemArray, setitemArray] = useState(0)
     const [loadingStatus, setLoadingStatus] = useState(true)
 
-    
+     
     const handleChangeIndex = async (trade) => {
 
 
         let { address } = await getCurrentWalletConnected()
         let tryTokenids = selected[0].id
-        
+        let itemIndex = activeItem.id.toString()
+        console.log(polyBalance, selected)
+        if(trade === "buy"){
+
+            //validations
+
+            if (activeItem.currentInventory === 0) {
+                setAlert({
+                    show: true, value: {
+                        title: "No items left",
+                        content: `There are no items left in the store`
+                    }
+                })
+                return
+            }
+
+            if (parseInt(polyBalance) < parseInt(activeItem.buyPrice)) {
+                setAlert({ show: true, value: { title: "Error", content: "You require more ren to perform this action" } })
+                return
+            }
+
+
+        }else if(trade === "sell"){
+            if (selected.inventory[0] === 6) {
+                setAlert({
+                    show: true, value: {
+                        title: "Cant sell this item",
+                        content: `This item cannot be bought or sold`
+                    }
+                })
+                return
+            }
+            if (activeItem.maxSupply === activeItem.currentInventory) {
+                setAlert({
+                    show: true, value: {
+                        title: "Cant sell this item",
+                        content: `This items stores are full`
+                    }
+                })
+                return
+            }
+        }
 
         /*
 
         
-        if (tryTokenids.length === 0) {
-            setAlert({
-                show: true, value: {
-                    title: "No creatures left",
-                    content: `Select atleast one elf to enter this campaign`
-                }
-            })
-            return
-        }*/
+        */
 
 
-        let itemIndex = activeItem.id.toString()
+        
        
 
         onTrade({trade, itemIndex, tryTokenids, address})

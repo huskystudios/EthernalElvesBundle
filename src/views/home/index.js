@@ -109,6 +109,8 @@ const sleep = (milliseconds) => {
             ownerBalances: allbalances,
           })
 
+          console.log(allbalances)
+
     }
 
 
@@ -225,17 +227,14 @@ const sleep = (milliseconds) => {
 
     const tradeItems = async (params) => {
 
-        console.log(params)
-
-            let polyParams = { functionCall: polygonContract.methods.sellItem(params.tryTokenids, params.address).encodeABI() }
+            let polyParams
             if(params.trade === "buy"){
               polyParams = { functionCall: polygonContract.methods.buyItem(params.tryTokenids, params.itemIndex, params.address).encodeABI() }
+            }else if(params.trade === "sell"){
+              polyParams = { functionCall: polygonContract.methods.sellItem(params.tryTokenids, params.address).encodeABI() }
             }
-
-           
             
-            await sendGaslessFunction(polyParams)
-       
+            await sendGaslessFunction(polyParams)      
 
     }
 

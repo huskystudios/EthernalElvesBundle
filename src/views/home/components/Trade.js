@@ -101,7 +101,7 @@ const Trade = ({ data, setAlert, polyBalance, clicked, onTrade }) => {
             </div>
            
         </>
-    ) : <BuyItems onTrade={onTrade} selected={select}/>
+    ) : <BuyItems polyBalance={polyBalance} onTrade={onTrade} selected={select}/>
 }
 
 
