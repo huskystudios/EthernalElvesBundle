@@ -70,9 +70,8 @@ const BuyItems = ({ selected, onTrade, polyBalance}) => {
             }
         }
 
-        console.log({trade, itemIndex, tryTokenids, address})
       
-      //  onTrade({trade, itemIndex, tryTokenids, address})
+        onTrade({trade, itemIndex, tryTokenids, address})
      
 
         // onChangeIndex(value)
@@ -154,8 +153,9 @@ const BuyItems = ({ selected, onTrade, polyBalance}) => {
                                 <div className="d-flex flex-column" >
                                 <span> SELL FOR $REN {activeItem.buyPrice}</span>
                                 <span> BUY FOR $REN {activeItem.sellPrice}</span>
+                                <br/>
                                 <span> Current Stock: {activeItem.currentInventory} items(s)</span>
-                               
+                                <br/>
                                 <span> MAX ITEM SUPPLY: {activeItem.maxSupply}</span>
                                 </div>
                                 
