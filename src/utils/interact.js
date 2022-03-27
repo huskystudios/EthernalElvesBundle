@@ -280,6 +280,12 @@ switch(parseInt(elfAction)){
   case 11:
     elfActionString = "Rampage"
     break;
+  case 12:
+    elfActionString = "Sold Item"
+    break;
+  case 13:
+    elfActionString = "Bought Item"
+    break;      
   default:
     elfActionString = "Unknown"
 
@@ -756,6 +762,28 @@ export const getCampaign = async(id, chain) => {
 
 
   return campaignObj
+
+}
+
+export const getPawnItems = async(id) => {
+
+     
+  let response = await polygonContract.methods.pawnItems(id).call()
+       
+  let pawnItemSupply = {
+      
+      id: id,
+      buyPrice: response[0], 
+      sellPrice: response[1], 
+      maxSupply: response[2], 
+      currentInventory: response[3], 
+      image: items[id].image,
+      inventoryString: items[id].text,
+      inventoryDescription: items[id].description,
+    }
+
+
+return pawnItemSupply
 
 }
 

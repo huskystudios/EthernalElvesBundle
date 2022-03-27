@@ -314,6 +314,31 @@
       "inputs": [
         {
           "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "roll",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "action",
+          "type": "uint256"
+        }
+      ],
+      "name": "RollOutcome",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
           "internalType": "address",
           "name": "from",
           "type": "address"
@@ -425,6 +450,92 @@
         }
       ],
       "name": "addCamp",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint16",
+          "name": "buyPrice_",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "sellPrice_",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "maxSupply_",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "currentInventory_",
+          "type": "uint16"
+        }
+      ],
+      "name": "addPawnItem",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint16",
+          "name": "probDown_",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "probSame_",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "propUp_",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "levelsGained_",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "minLevel_",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "maxLevel_",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "renCost_",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "count_",
+          "type": "uint16"
+        }
+      ],
+      "name": "addRampage",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -575,6 +686,29 @@
       "inputs": [
         {
           "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "itemIndex_",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "buyItem",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
           "name": "",
           "type": "uint256"
         }
@@ -683,6 +817,34 @@
         }
       ],
       "name": "changeElfOwner",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint8",
+          "name": "_primaryWeapon",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "_weaponTier",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "_attackPoints",
+          "type": "uint8"
+        }
+      ],
+      "name": "changeElfWeapons",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -1031,20 +1193,6 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "initialize",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "initializeRampage",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
           "internalType": "address",
@@ -1220,6 +1368,40 @@
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "pawnItems",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "buyPrice",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "sellPrice",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "maxSupply",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "currentInventory",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "price",
       "outputs": [
@@ -1356,6 +1538,24 @@
         }
       ],
       "name": "returnPassive",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "sellItem",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

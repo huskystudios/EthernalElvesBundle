@@ -40,6 +40,7 @@ import Modal from "../../components/Modal"
 import Heal from "./components/Heal"
 import InstantKill from "./components/InstantKill"
 import Info from "./components/Info"
+import Trade from "./components/Trade"
 
 
 const Home = () => {
@@ -217,6 +218,22 @@ const sleep = (milliseconds) => {
             return
         }     
             const polyParams = { functionCall: polygonContract.methods.rampage(params.tryTokenids, params.tryCampaign, params.tryWeapon, params.tryAccessories, params.useItem, params.address).encodeABI() }
+            await sendGaslessFunction(polyParams)
+       
+
+    }
+
+    const tradeItems = async (params) => {
+
+        console.log(params)
+
+            let polyParams = { functionCall: polygonContract.methods.sellItem(params.tryTokenids, params.address).encodeABI() }
+            if(params.trade === "buy"){
+              polyParams = { functionCall: polygonContract.methods.buyItem(params.tryTokenids, params.itemIndex, params.address).encodeABI() }
+            }
+
+           
+            
             await sendGaslessFunction(polyParams)
        
 
@@ -897,6 +914,7 @@ const sleep = (milliseconds) => {
                                         setTargets={setTargets}
                                     />}
                                 {modalActions.value === 5 && <Rampage polyBalance={polyBalance} data={activeNfts} onRampage={rampage}/>}
+                                {modalActions.value === 6 && <Trade polyBalance={polyBalance}  setAlert={setAlert} clicked={clicked} data={activeNfts} onTrade={tradeItems}/>}
                             </Modal>
                             {/* 
                         {index === 1 && activeNfts.length > 1 ? <Collection nft={activeNfts} onChangeIndex={onChangeIndex} /> : null}
@@ -923,6 +941,7 @@ const sleep = (milliseconds) => {
                                 onForge={() => setModal({ show: true, action: "forging", heading: "DO YOU WANT TO FORGE A NEW WEAPON?", content: "forge" })}
                                 onMerchant={() => setModal({ show: true, action: "merchant", heading: "DO YOU WANT TO TRY FOR A NEW ITEM?", content: "buy" })}
                                 onRampage={() => setModalActions({ show: !modalActions.show, action: "rampage", value: 5 })}
+                                onTradeItems={() => setModalActions({ show: !modalActions.show, action: "trade items", value: 6 })}
                                 onHeal={() => setModalActions({ show: !modalActions.show, action: "bloodthirst", value: 4 })}
                                 onBloodthirst={() => setModalActions({ show: !modalActions.show, action: "bloodthirst", value: 3 })}
                                 onCampaign={() => setModalActions({ show: !modalActions.show, action: "campaign", value: 2 })}

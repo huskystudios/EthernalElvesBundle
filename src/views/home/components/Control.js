@@ -10,7 +10,7 @@ const MAX_HEALTH = 100
 const MAX_LEVEL = 100
 
 const Control = ({ consoleOpen, setConsoleOpen, data, activities, onSelect, clicked, onChangeIndex, onRunWeb3, onForge, onMerchant, onHeal, onSynergize, toggleChain, chain,
-    onCampaign, onPassiveMode, onBloodthirst, onRampage, onInfo
+    onCampaign, onPassiveMode, onBloodthirst, onRampage, onInfo, onTradeItems
 }) => {
     const [currentPage, setCurrentPage] = useState(0)
     const [nfts, setNfts] = useState([])
@@ -118,6 +118,8 @@ const Control = ({ consoleOpen, setConsoleOpen, data, activities, onSelect, clic
                         <div className="mobile"><Withdraw /></div>
                         <span className="mobile" onClick={() => onInfo()}>INFO</span>
                         {chain === "polygon" && <span onClick={onSynergize}>synergize</span>}
+                        {chain === "polygon" && <span onClick={() => { onTradeItems(); setOpen(false);}}>Trade Items</span>}
+                      
                         {/*
                         
                         
