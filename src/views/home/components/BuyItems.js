@@ -38,9 +38,9 @@ const BuyItems = ({ selected, onTrade, polyBalance}) => {
                 return
             }
 
-
+            
         }else if(trade === "sell"){
-            if (selected.inventory[0] === 6) {
+            if (selected[0].inventory[0] === 6) {
                 setAlert({
                     show: true, value: {
                         title: "Cant sell this item",
