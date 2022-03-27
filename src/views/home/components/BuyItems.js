@@ -152,10 +152,11 @@ const BuyItems = ({ selected, onTrade, polyBalance}) => {
 
             <div className="d-flex justify-center items-center flex-column" >
                                 <div className="d-flex flex-column" >
+                                <span> SELL FOR $REN {activeItem.buyPrice}</span>
+                                <span> BUY FOR $REN {activeItem.sellPrice}</span>
                                 <span> Current Stock: {activeItem.currentInventory} items(s)</span>
-                                <span> We buy at: $REN {activeItem.buyPrice}</span>
-                                <span> We Sell for: $REN {activeItem.sellPrice}</span>
-                                <span> Max of item on hand: {activeItem.maxSupply}</span>
+                               
+                                <span> MAX ITEM SUPPLY: {activeItem.maxSupply}</span>
                                 </div>
                                 
            
