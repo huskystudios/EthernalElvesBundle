@@ -23,7 +23,7 @@ const BuyItems = ({ selected, onTrade, polyBalance}) => {
 
             //validations
 
-            if (activeItem.currentInventory === 0) {
+            if (parseInt(activeItem.currentInventory) === 0) {
                 setAlert({
                     show: true, value: {
                         title: "No items left",
@@ -40,7 +40,17 @@ const BuyItems = ({ selected, onTrade, polyBalance}) => {
 
             
         }else if(trade === "sell"){
-            if (selected[0].inventory[0] === 6) {
+            itemIndex = selected[0].inventory[0].toString()
+            if (itemIndex === "0") {
+                setAlert({
+                    show: true, value: {
+                        title: "No Item!",
+                        content: `You don't have any items to sell`
+                    }
+                })
+                return
+            }
+            if (itemIndex === "6") {
                 setAlert({
                     show: true, value: {
                         title: "Cant sell this item",
@@ -60,16 +70,9 @@ const BuyItems = ({ selected, onTrade, polyBalance}) => {
             }
         }
 
-        /*
-
-        
-        */
-
-
-        
-       
-
-        onTrade({trade, itemIndex, tryTokenids, address})
+        console.log({trade, itemIndex, tryTokenids, address})
+      
+      //  onTrade({trade, itemIndex, tryTokenids, address})
      
 
         // onChangeIndex(value)
