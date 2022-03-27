@@ -236,6 +236,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
             sendGaslessFunction(params)
         }
         setTransfersModal(!transfersModal)
+        alert("Check in successful. Dont forget to go to https://transfers.ethernalelves.com/ to complete the transfer")
     }
 
     const unStakeElf = async () => {
