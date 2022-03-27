@@ -5,6 +5,7 @@ import ConnectWallet from "../wallet/ConnectWallet"
 import Withdraw from "../wallet/Withdraw"
 import ToggleChain from "../wallet/ChangeChain"
 import menuImg from "../assets/images/menu.png"
+import Authenticate from "../wallet/Authenticate"
 
 
 const MainLayout = (props) => {
@@ -28,8 +29,11 @@ const MainLayout = (props) => {
                 <img onClick={() => setShowMenu(true)} className="sidenav-btn" src={menuImg} alt="logo" />
       
                 <div className="header-body">
-                
+                <div className="search">
                 <Withdraw />
+                </div>
+    
+              
                     {/*
                      
                     <div onClick={onClickHome} className="nav-item" to="/">play</div>
@@ -60,13 +64,19 @@ const MainLayout = (props) => {
                 *  <NavLink className="nav-item" to="/mint">mint</NavLink>
                 * 
                */}
-                <div className="connect-wallet"><ConnectWallet /></div>
+                <div className="connect-wallet">{/*<ConnectWallet />*/}
+                <Authenticate />
+                </div>
                
             </div>
 
             <div className="mobile-header">
                 <img onClick={() => setShowMenu(true)} className="app-logo" src={menuImg} alt="logo" />
-                <ConnectWallet />
+                {/*<ConnectWallet />*/}
+                <Authenticate />
+                <div className="ren-mobile">
+                <Withdraw />
+                </div>
             </div>
 
             <div className="app-body">

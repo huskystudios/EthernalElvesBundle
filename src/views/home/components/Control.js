@@ -135,9 +135,9 @@ const Control = ({ consoleOpen, setConsoleOpen, data, activities, onSelect, clic
                 <button className="btn btn-blue" onClick={() => setConsoleOpen(consoleOpen => !consoleOpen)}>Open HUD</button>
             </span>
             }
-            <div className="info">
+            {/*<div className="info">
                 <button onClick={onInfo}>INFO</button>
-            </div>
+            </div>*/}
             {consoleOpen &&
                 <div className="control-panel">
 

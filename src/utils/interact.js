@@ -141,7 +141,6 @@ export const lookupMultipleElves = async ({array, chain})=>{
   web3Instance: chain === "eth" ? web3 : polyweb3
   }
 
-
   if(array){
   array.map((i, index)=>{
     var tx = {
@@ -161,9 +160,38 @@ export const lookupMultipleElves = async ({array, chain})=>{
   })
 }
 
-  const multicall = new Multicall({ web3Instance: params.web3Instance, tryAggregate: true });
-  const contractCallContext: ContractCallContext[] = txArr
-  const results: ContractCallResults = await multicall.call(contractCallContext);
+
+  let splitArray = []
+  let results = []
+  let arrayOfResults = []
+  let i = 0
+  while(i < txArr.length){
+    splitArray.push(txArr.slice(i, i+25))
+    i = i+25
+  }
+  txArr = splitArray
+
+  let j = 0
+ 
+  while(j < txArr.length){    
+ 
+    const multicall = new Multicall({ web3Instance: params.web3Instance, tryAggregate: true });
+    const contractCallContext: ContractCallContext[] = txArr[j]
+    const tempResults: ContractCallResults = await multicall.call(contractCallContext);
+    arrayOfResults.push(tempResults)
+    j++    
+
+  }
+
+//merge results in arrayOfResults into one array object with name results
+  arrayOfResults.map((item, index) => {
+    Object.keys(item.results).map((key, index) => {
+      results[key] = item.results[key]
+    }
+    )
+  }
+  )
+  results = {results: results}   
 
 let elfObj 
 let elfArry = []

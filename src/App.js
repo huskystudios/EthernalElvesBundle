@@ -13,29 +13,33 @@ import { getCurrentWalletConnected } from './utils/interact'
 import { useState, useEffect } from 'react';
 import Explore from './views/home/components/Explore';
 import {app, analytics} from './utils/initFirebase'
+import Discord from './views/profile/Discord';
 
 require('dotenv').config();
 
+let testwallet = ["0xc5ec89d7886044a330abec9c002259674f6de42a"] //,"0xccb6d1e4acec2373077cb4a6151b1506f873a1a5"]
 
 function App() {
 
 const [flip, setFlip] = useState(false)  
+const [flip1, setflip1] = useState(false)  
 
   let dev1 = process.env.REACT_APP_DEV1
   let dev2 = process.env.REACT_APP_DEV2
-  let dev3 = process.env.REACT_APP_DEV3
-
-  
+  let dev3 = process.env.REACT_APP_DEV3  
 
   let adminWallet = [dev1.toLowerCase(), dev2.toLowerCase(), dev3.toLowerCase()]
 
   useEffect(async() => {
 
-
     const {address} = await getCurrentWalletConnected()
 
     if(adminWallet.includes(address.toLowerCase())){
       setFlip(true)
+    }
+
+    if(testwallet.includes(address.toLowerCase())){
+      setflip1(true)
     }
 
   }, [])
@@ -45,7 +49,7 @@ const [flip, setFlip] = useState(false)
           <MainLayout>
             <Switch>
               <Route exact path="/">
-                <Home />
+               {!flip1 ? <Home /> : <>{/* * remember to remove any test code from here before deployment * */}</>}
               </Route>
               <Route exact path="/admin">
                 {flip ? <Admin/> : <Home/>}
@@ -56,20 +60,12 @@ const [flip, setFlip] = useState(false)
               <Route exact path="/profile">
                 <Profile />
               </Route>
+              <Route exact path="/discord">
+                <Discord />
+              </Route>
               <Route exact path="/explore">
                 <Explore />
               </Route>
-              {/*
-                 <Route exact path="/playeth">
-                <PlayEth />
-               </Route>
-               <Route exact path="/playpoly">
-                <PlayPolygon />
-               </Route>
-            
-              */}
-             
-              
              </Switch>
           </MainLayout>
         </Router>

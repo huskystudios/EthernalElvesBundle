@@ -18,12 +18,12 @@ import { actionString, items  } from "../config";
 
 const Explore = ({  }) => {
 
-
     const { Moralis } = useMoralis();
     const [clicked, setClicked] = useState(["Druid" , "Ranger", "Assassin","Primeborne", "Woodborne", "Lightborne", "Darkborne", "eth", "polygon" ]);
 
     const [limit, setLimit] = useState(25);
     const [skip, setSkip] = useState(0);
+    const [page, setPage] = useState(1);
     const [weaponTierMin, setWeaponTierMin] = useState(0);
     const [weaponTierMax, setWeaponTierMax] = useState(5);
     const [levelMin, setLevelMin] = useState(1);
@@ -81,7 +81,7 @@ const Explore = ({  }) => {
           .lessThanOrEqualTo("elf_weaponTier", parseInt(weaponTierMax))
           .greaterThanOrEqualTo("elf_level", parseInt(levelMin))
           .lessThanOrEqualTo("elf_level", parseInt(levelMax))
-          .equalTo("elf_accessories", "Claws")
+         // .equalTo("elf_accessories", "Claws")
           .containedIn("elf_class", sentinelClass)
           .containedIn("elf_race", race)
           .containedIn("chain", chain)
@@ -94,7 +94,13 @@ const Explore = ({  }) => {
     );
 
     
-    
+    const handleNext = () =>{
+
+        setSkip(limit * page)
+        setPage(page + 1)
+        fetch() 
+
+    }
 
     
 
@@ -277,6 +283,8 @@ const Explore = ({  }) => {
                 )}
                 {data.count && <>Total items {data.count}</>}
             </div>
+
+            <button onClick={handleNext} className="btn btn-grey">Load More</button>
 
 
 </div>

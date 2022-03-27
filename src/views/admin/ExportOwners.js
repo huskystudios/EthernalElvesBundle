@@ -16,36 +16,14 @@ const ExportOwners = ({text, size}) => {
 
 	const exportData = async () => {
 		
-		const ElvesWhiteList = Moralis.Object.extend("Owners");
-		const query = new Moralis.Query(ElvesWhiteList);
-		let limit = 100
-
-		//page through the results
-		let results = []
-		let hasMore = true
-		let page = 1
-		while (hasMore) {
-
-			query.limit(limit);
-			query.skip(limit * (page - 1));
-			query.descending("ownerElves");
-			query.withCount();
-			const response = await query.find();
-			let currentIndex = limit * (page)
-			currentIndex > response.count ? hasMore = false : hasMore = true
-			page++
-			setProgress(currentIndex / response.count * 100)
-			
-			console.log(hasMore, response)
-			results = results.concat(response.results)
-			
-		}
-
-		//const results = await query.find();
+		const results = await Moralis.Cloud.run("getAllUsers")
+		
 		
 
 		const headers = [
 			{ label: "owner", key: "owner" },
+			{ label: "ensName", key: "ensName" },
+			{ label: "discordUser", key: "discordUser" },
 			{ label: "miren", key: "miren" },
 			{ label: "contractRen", key: "contractRen" },
 			{ label: "polyRen", key: "polyRen"},
@@ -65,11 +43,13 @@ const ExportOwners = ({text, size}) => {
 			console.log(allRen)
 
 			arrObj.push({
-				owner: 		  object.get('ownerAddress'),
+				owner: 		  object.get('ethAddress'),
 				miren: 		  allRen?.miren/1000000000000000000,
 				contractRen:  allRen?.contractRen/1000000000000000000,  
 				polyRen: 	  allRen?.polyMiren/1000000000000000000,		
 				elvesCount:   object.get('ownerElves'),	
+				discordUser:   object.get('discordUser'),	
+				ensName:  	  object.get('ensName'),
 					
 						})
 							
@@ -107,7 +87,7 @@ const ExportOwners = ({text, size}) => {
 {!loading && <CSVLink {...csvReport}>Export to CSV</CSVLink> }
 {<button className="btn btn-blue" onClick={exportData}>Export Owners</button>}
 
-{progress.toFixed(0)}%
+
 
 
         </>         

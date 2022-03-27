@@ -7,7 +7,7 @@ import Loader from "../components/Loader"
 
 const Withdraw = () => {
 
-  const { Moralis } = useMoralis();
+  const { Moralis, isAuthenticated, user } = useMoralis();
 
   const [status, setStatus] = useState("");
   const [balance, setBalance] = useState(0);
@@ -26,7 +26,7 @@ const Withdraw = () => {
 
     let allbalances = await balanceOf(address);
 
-    Moralis.Cloud.run("updateUser", { ownerBalances: allbalances, ownerAddress: address })
+
 
     console.log("Account balances:", allbalances)
 
@@ -49,7 +49,7 @@ const Withdraw = () => {
     const bridgeRelayer = await Moralis.Web3API.account.getNativeBalance(optionsBridge);
 
     console.log("Gameplay Relayer balance:", gameplayRelayer.balance / 1000000000000000000, "Matic");
-    console.log("Bridge Relayer balance:", gameplayRelayer.balance / 1000000000000000000, "Matic");
+    console.log("Bridge Relayer balance:", bridgeRelayer.balance / 1000000000000000000, "Matic");
 
   }
 
@@ -75,14 +75,19 @@ const Withdraw = () => {
 
     setLoading(true)
     setStatus("Claiming REN credits from Polygon contract...")
-    const owner = await getCurrentWalletConnected()
+    const owner = user.attributes.ethAddress
 
 
-    const params = { functionCall: polygonContract.methods.checkIn([], Moralis.Units.ETH(polyBalanceToClaim), owner.address).encodeABI() }
+    let params = { functionCall: polygonContract.methods.checkIn([], Moralis.Units.ETH(polyBalanceToClaim), owner).encodeABI() }
 
     try {
-      const tx = await Moralis.Cloud.run("defenderRelay", params)
+     
+      let sender = {sender: owner}            
+      params = {...params, ...sender}
 
+      console.log("params renclaim", params)
+      const tx = await Moralis.Cloud.run("sendGaslessFunction", params)
+      console.log("tx:", tx)
       if (tx.data.status) {
 
         let polyTxHash = tx.data.result.replaceAll("\"", "")
@@ -123,7 +128,7 @@ const Withdraw = () => {
 
         const ClaimRen = Moralis.Object.extend("ClaimRen");
         let query = new Moralis.Query(ClaimRen);
-        query.equalTo("from", owner.address);
+        query.equalTo("from", owner);
         query.equalTo("timestamp", timestamp);
         query.equalTo("renAmount", numberString);
         const res = await query.first();
@@ -132,7 +137,7 @@ const Withdraw = () => {
 
         if (!res) {
 
-          transferObject.set("from", owner.address);
+          transferObject.set("from", owner);
           transferObject.set("timestamp", timestamp);
           transferObject.set("renAmount", numberString);
           transferObject.set("txHash", polyTxHash);
@@ -141,7 +146,7 @@ const Withdraw = () => {
           transferObject.save();
 
         } else {
-          res.set("from", owner.address);
+          res.set("from", owner);
           res.set("timestamp", timestamp);
           res.set("renAmount", numberString);
           res.set("txHash", polyTxHash);
@@ -151,7 +156,7 @@ const Withdraw = () => {
         }
 
         await claimPendingTxhash(transactionReceipt)
-        await getRenBalance(owner.address)
+        await getRenBalance(owner)
         setPolyBalanceToClaim(0)
         setConfirm(!confirm)
       }
@@ -172,7 +177,7 @@ const Withdraw = () => {
 
     setLoading(true)
     setStatus("Confirmeing REN on ETH...")
-    const owner = await getCurrentWalletConnected()
+    const owner = user.attributes.ethAddress
 
     try {
       //Check if tx receipt is includes, else fetch from polyhash provided by user.
@@ -236,7 +241,7 @@ const Withdraw = () => {
         setStatus("Failed, please look for pending transfers and try again.")
       })
 
-      await getRenBalance(owner.address)
+      await getRenBalance(owner)
 
 
     } catch (e) {
@@ -244,6 +249,88 @@ const Withdraw = () => {
       setLoading(false)
       setStatus("An error occured, please try again.")
     }
+    
+    const claimPendingTxhash = async (_transactionReceipt) => {
+
+      setLoading(true)
+      setStatus("Confirmeing REN on ETH...")
+      const owner = await getCurrentWalletConnected()      
+            
+            try{              
+                  //Check if tx receipt is includes, else fetch from polyhash provided by user.
+                  let transactionReceipt = pendingTxHash ? await polyweb3.eth.getTransactionReceipt(pendingTxHash) : _transactionReceipt
+                  console.log("Transaction receipt: ", transactionReceipt)
+
+                  Moralis.Cloud.run("claimRenWithHash", {txHash: transactionReceipt}).then((getsignature) => {
+                  setStatus("Getting signature for REN claim on Eth")
+                  const ethClaimParams =  {renAmount: getsignature.renAmount.toString(), signature: getsignature.signature.signature, timestamp: getsignature.timestamp}
+                  
+                  const txHashinClaimRen = transactionReceipt.transactionHash
+                  setStatus("Bringing up web3, please confirm the claim on your wallet. After confirmation, this dialog will wait for the transaction to be mined.")
+                        
+                  
+                 checkOutRen(ethClaimParams).then((r) => {
+
+                            r.success && setStatus(r.status)  
+                           
+                            //r.txHash
+                            //
+                            if(r){
+                              if(r.receipt?.status){
+                                      const ClaimRen = Moralis.Object.extend("ClaimRen");
+                                      let query = new Moralis.Query(ClaimRen);
+                                      query.equalTo("txHash", txHashinClaimRen);
+                      
+                                        query.first().then((res) => {
+
+                                        res.set("txHashCompleted", r.txHash);
+                                        res.set("transferTo", "eth");
+                                        res.set("signature", getsignature.signature.signature);
+                                        res.set("status", "completed");
+                                        res.save().then(() => {
+                                          setStatus("Success - updating db...")
+                                          setPolyBalanceToClaim(0)                            
+                                          setLoading(false)
+                                        })  
+                                        console.log("this step", r)
+                                        
+                                      });
+                                      
+                            }
+                            }else{
+                              setStatus("Error - transaction failed")
+                              setLoading(false)
+                            }
+                            
+
+                          }, ((e) => {
+
+
+                            setStatus("Error - transaction failed. ", e.message)
+                            setLoading(false)
+                            console.log(e)
+
+                          }))  
+                  
+
+                 },(e) => {
+                  console.log("failed at signature:", e)
+                  setStatus("Failed, please look for pending transfers and try again.")
+                 })     
+                  
+                 await getRenBalance(owner.address)
+                
+    
+            }catch(e){
+                console.log(e)        
+                setLoading(false)
+                setStatus("An error occured, please try again.")
+            }
+        
+          
+    
+        }
+  
 
 
 
@@ -267,16 +354,20 @@ const Withdraw = () => {
 
   useEffect(() => {
     const init = async () => {
-      const { address, status } = await getCurrentWalletConnected();
-      address && await getRenBalance(address)
-      address && await getTxs(address)
-      setLoading(false)
+      //const { address, status } = await getCurrentWalletConnected();
+
+      if(isAuthenticated){
+        const address = user.attributes.ethAddress
+        address && await getRenBalance(address)
+        address && await getTxs(address)
+        setLoading(false)
+      }
 
     }
 
     init();
 
-  }, [modal])
+  }, [modal, isAuthenticated])
 
   const ShowPendingTransfers = () => {
 
@@ -403,7 +494,7 @@ const Withdraw = () => {
 
               <div className="withdraw-body">
 
-                <div className="columns">
+                <div className="">
                   <h3>Claim REN Credits from Polygon gameplay to Eth</h3>
                   <p>Please read carefully! Not following these instructions can cause REN to go missing!</p>
 
