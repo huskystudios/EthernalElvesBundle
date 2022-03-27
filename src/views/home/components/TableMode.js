@@ -44,8 +44,6 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
 
     const [sortedElves, setSortedElves] = useState([])
     const [activeNfts, setActiveNfts] = useState(true)
-    const [nfts, setNfts] = useState([])
-    const [txreceipt, setTxReceipt] = useState()
     //  const [alert, setAlert] = useState({show: false, value: null})
     const [mintModal, setMintModal] = useState(false)
     const [transfersModal, setTransfersModal] = useState(false)
@@ -83,8 +81,6 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
     }, [nftData])
     const resetVariables = async () => {
 
-        setNfts([])
-        setTxReceipt([])
         setActiveNfts(!activeNfts)
 
     }
@@ -348,17 +344,17 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
         )
     }
 
-    const renderMintModal = () => {
-        return (
-            <Modal show={mintModal}>
-                <Mint />
-            </Modal>
-        )
-    }
+    // const renderMintModal = () => {
+    //     return (
+    //         <Modal show={mintModal}>
+    //             <Mint />
+    //         </Modal>
+    //     )
+    // }
 
     const renderTransfersModal = () => {
         return (
-            <Modal show={transfersModal}>
+            <Modal show={transfersModal} setShow={setTransfersModal}>
                 <h4>Prism Transfer Module</h4>
                 <img src={thevoid} alt="elfTerminus" />
                 <p className="text-danger">(Using the Elf Terminus can result in losing access to your elf. Please read instructions carefully.)</p>
@@ -404,6 +400,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
                 {/*<button disabled className="btn-whale" onClick={() => setVisualMode(!visualMode)}>Visual mode</button>*/}
                 <button className="btn btn-green" onClick={() => setReloadData(!reloadData)}>Reload Data</button>
                 <button className="btn btn-blue" onClick={toggleChain}>Active: {chain}</button>
+                <button className="btn btn-blue" onClick={() => setVisualMode(!visualMode)}>Visual: {!visualMode ? "Table" : "Card"}</button>
             </div>
             <div className="mobile-footer">
                 <button className="btn btn-blue mobile" onClick={toggleChain}>Active: {chain}</button>
@@ -631,7 +628,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
                 }
                 )}
             </div>
-            {renderMintModal()}
+            {/* {renderMintModal()} */}
             {renderTransfersModal()}
             {/*alert.show && showAlert(alert.value)*/}
         </>

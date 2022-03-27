@@ -846,7 +846,20 @@ const sleep = (milliseconds) => {
                             {alert.show && showAlert(alert.value)}
                             {visualMode ?
                                 <>
-                                    {index === 0 && <Help chain={chain} data={data} toggle={toggle} clicked={clicked} selectAll={selectAll} />}
+                                    {index === 0 && <Help 
+                                    chain={chain}
+                                    toggleChain={toggleChain}
+                                    reloadData={reloadData}
+                                    setReloadData={setReloadData}
+                                    visualMode={visualMode}
+                                    setVisualMode={setVisualMode}
+                                    data={data} 
+                                    toggle={toggle} 
+                                    clicked={clicked} 
+                                    setAlert={setAlert}
+                                    consoleOpen={consoleOpen}
+                                    // nftData={data}
+                                    selectAll={selectAll} />}
                                 </> : <>
                                     {index === 0 && <TableMode
                                         setAlert={setAlert}
@@ -865,7 +878,7 @@ const sleep = (milliseconds) => {
                                         consoleOpen={consoleOpen}
                                     />}
                                 </>}
-                            <Modal show={modalActions.show}>
+                            <Modal show={modalActions.show} setShow={(e) => setModal({show: e, value: null})}>
                                 {modalActions.value === 0 && <Info />}
                                 {modalActions.value === 1 && <Staking nft={activeNfts} onRunWeb3={doAction} onChangeIndex={onChangeIndex} />}
                                 {modalActions.value === 2 && <Sector chain={chain} campaign={campaign} data={activeNfts} onSendCampaign={sendCampaignFunction} onChangeIndex={onChangeIndex} />}

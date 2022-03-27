@@ -486,7 +486,7 @@ const Withdraw = () => {
       </div>
       <span className="mobile" onClick={() => setModal(!modal)}>$REN</span>
 
-      <Modal show={modal}>
+      <Modal show={modal} setShow={setModal}>
 
         {confirm ?
           !loading ?

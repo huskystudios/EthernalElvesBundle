@@ -874,7 +874,7 @@
 }
 
 .collection-content {
-    margin-bottom: 200px;
+    /* margin-bottom: 200px; */
     width: 100%;
     gap: 8px;
 }
@@ -1366,7 +1366,7 @@
     gap: 28px;
     /* width: 1168px; */
     margin: auto;
-    padding: 0px 36px
+    padding: 8px 36px
 }
 
 .character-card {
