@@ -160,7 +160,12 @@ const BuyItems = ({ selected, onTrade, polyBalance}) => {
                                 </div>
                                 
            
-            </div>    
+            </div> 
+
+             <div className="d-flex flex-row justify-around">
+                <button className="btn btn-green" onClick={() => handleChangeIndex("buy")}>Buy Item</button>
+                
+            </div>  
 
             <div className="d-flex justify-center items-center p-2" >
                        
@@ -191,10 +196,10 @@ const BuyItems = ({ selected, onTrade, polyBalance}) => {
             </div>
 
 
-            <div className="d-flex flex-row justify-around">
-                <button className="btn btn-green" onClick={() => handleChangeIndex("buy")}>Buy Item</button>
+          {selected[0].inventory[0] ? <div className="d-flex flex-row justify-around">
+               
                 <button className="btn btn-red" onClick={() => handleChangeIndex("sell")}>Sell Item</button>
-            </div>
+            </div> : null}
                       
 
       

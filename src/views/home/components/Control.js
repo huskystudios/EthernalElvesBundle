@@ -118,7 +118,7 @@ const Control = ({ consoleOpen, setConsoleOpen, data, activities, onSelect, clic
                         <div className="mobile"><Withdraw /></div>
                         <span className="mobile" onClick={() => onInfo()}>INFO</span>
                         {chain === "polygon" && <span onClick={onSynergize}>synergize</span>}
-                        {/*chain === "polygon" && <span onClick={() => { onTradeItems(); setOpen(false);}}>Trade Items</span>*/}
+                        {chain === "polygon" && <span onClick={() => { onTradeItems(); setOpen(false);}}>Trade Items</span>}
                       
                         {/*
                         
