@@ -94,7 +94,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
         }
     }, [owner])
 
-    useEffect(() => {
+  /*  useEffect(() => {
         const headers = [
 			{ label: "token_id", key: "token_id" },
 			{ label: "owner_of", key: "owner_of" },
@@ -150,7 +150,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
                 console.log("export", csv)
                 setExportReady(true)
                 }, [nftData])
-
+*/
 
 
 
