@@ -281,10 +281,10 @@ switch(parseInt(elfAction)){
     elfActionString = "Rampage"
     break;
   case 12:
-    elfActionString = "Sold Item"
+    elfActionString = "Bought Item"
     break;
   case 13:
-    elfActionString = "Bought Item"
+    elfActionString = "Sold Item"
     break;      
   default:
     elfActionString = "Unknown"
