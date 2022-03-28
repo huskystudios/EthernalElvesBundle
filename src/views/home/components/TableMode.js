@@ -16,6 +16,7 @@ import thevoid from "../../../assets/images/thevoid.png";
 import Dropdown from "../../../components/Dropdown/";
 import Button from "../../../components/Dropdown/button";
 import { actionString, sentinelClass } from "../config";
+import { CSVLink } from "react-csv";
 
 const allowedWallets = ["0xccb6d1e4acec2373077cb4a6151b1506f873a1a5"]
 
@@ -27,7 +28,9 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
     const [sortBy, setSortBy] = useState({ value: "cooldown", order: "desc" });
     const [renTransfer, setRenTransfer] = useState("")
     const [allowed, setAllowed] = useState(false)
-    // const [maximize, setMaximize] = useState(false)
+    const [csvReport, setCsvReport] = useState([1,2,3])
+    const [exportReady, setExportReady] = useState(false)
+    
 
     const [isButtonEnabled, setIsButtonEnabled] = useState({
         unstake: false,
@@ -90,6 +93,63 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
             setAllowed(true)
         }
     }, [owner])
+
+    useEffect(() => {
+        const headers = [
+			{ label: "token_id", key: "token_id" },
+			{ label: "owner_of", key: "owner_of" },
+			{ label: "orc_owner_of", key: "orc_owner_of" },
+			{ label: "elf_hair", key: "elf_hair"},
+			{ label: "elf_level", key: "elf_level"},
+			{ label: "elf_hp", key: "elf_hp"},
+			{ label: "elf_ap", key: "elf_ap"},
+			{ label: "elf_accessories", key: "elf_accessories"},
+			{ label: "elf_race", key: "elf_race"},
+			{ label: "elf_timestamp", key: "elf_timestamp"},
+			{ label: "elf_action", key: "elf_action"},
+			{ label: "elf_class", key: "elf_class"},
+			{ label: "elf_weapon", key: "elf_weapon"},
+			{ label: "elf_inventory", key: "elf_inventory"},
+			{ label: "elf_weaponTier", key: "elf_weaponTier"},
+			{ label: "elf_status", key: "elf_status"},			
+		
+		]
+
+		
+		let arrObj = []
+
+			for (let i = 0; i < nftData.length; i++) {
+
+			const object = nftData[i];
+			arrObj.push({
+				token_id: 		 object.id,
+				owner_of: 		 object.owner,
+				
+				elf_hair: 		 object.attributes[2].value,
+				elf_level: 		 object.level,
+				elf_hp: 		 object.health,
+				elf_ap: 		 object.attack,
+				elf_accessories: object.accessoriesName,
+				elf_race: 		 object.attributes[1].value,
+				elf_timestamp: 	 new Date(object.time*1000).toLocaleString(), //object.get('timestamp'),
+				elf_action:		 object.actionString,	
+				elf_class:		 object.classSting,
+				elf_weapon:		 object.attributes[3],
+				elf_inventory:	 object.inventoryString,
+				elf_weaponTier:	 object.weaponTier,
+				elf_status:		 object.elfStatus		
+					
+						})
+							
+						}			
+
+				let csv = {data: arrObj,
+				headers: headers,
+				filename: 'MyElves.csv'}
+				setCsvReport(csv) 
+                console.log("export", csv)
+                setExportReady(true)
+                }, [nftData])
 
 
 
@@ -392,7 +452,7 @@ const TableMode = ({ consoleOpen, setAlert, nftData, owner, clicked, selectAll, 
     return !loading ? (
         <>
             <div className="flex justify-center p-1 tool-panel">
-                
+            {/*exportReady && <CSVLink {...csvReport}>Export to CSV</CSVLink>*/}
               {/*  <button className="btn-whale" onClick={() => setMintModal(!mintModal)}> Mint </button> */}
               <button className="btn-whale" onClick={() => setTransfersModal(!transfersModal)}> Transfers </button>
                {chain === "eth" && <button className="btn-whale" onClick={unStakeElf}> Unstake </button>}

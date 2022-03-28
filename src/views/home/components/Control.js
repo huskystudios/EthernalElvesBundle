@@ -110,6 +110,7 @@ const Control = ({ consoleOpen, setConsoleOpen, data, activities, onSelect, clic
 
                         <span onClick={() => { onForge(); setOpen(false);}}>forge</span>
                         <span onClick={() => { onMerchant(); setOpen(false);}}>merchant</span>
+                        {chain === "polygon" && <span onClick={() => { onTradeItems(); setOpen(false);}}>Trade Items</span>}
                         <span onClick={() => { onCampaign(); setOpen(false);}}>campaign</span>
                         {chain === "polygon" && <span onClick={() => { onBloodthirst(); setOpen(false);}}>bloodthirst</span>}
                         {chain === "polygon" && <span onClick={() => { onRampage(); setOpen(false);}}>rampage</span>}
@@ -118,12 +119,8 @@ const Control = ({ consoleOpen, setConsoleOpen, data, activities, onSelect, clic
                         <div className="mobile"><Withdraw /></div>
                         <span className="mobile" onClick={() => onInfo()}>INFO</span>
                         {chain === "polygon" && <span onClick={onSynergize}>synergize</span>}
-                        {chain === "polygon" && <span onClick={() => { onTradeItems(); setOpen(false);}}>Trade Items</span>}
-                      
-                        {/*
-                        
-                        
-                        */}
+                       
+    
 
                     </div>}
                 </div>

@@ -131,7 +131,7 @@ const BuyItems = ({ selected, onTrade, polyBalance}) => {
                         <div className="campaign-slide-passive">
                             <img className="campaign-thumb-passive" src={itemArray[campaign === 0 ? itemArray.length - 1 : campaign - 1].image} alt="campaign" />
                         </div>
-                        <div >
+                        <div>
                             <img className="campaign-thumb" src={itemArray[campaign].image} alt="campaign" />
                             <div className="campaign-title">{itemArray[campaign].inventoryString}</div>
                             <span style={{fontSize: 12, paddingLeft:10}}>{itemArray[campaign].inventoryDescription}</span>
