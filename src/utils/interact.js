@@ -309,7 +309,7 @@ if(accessoriesImIndex === 2 || accessoriesImIndex ===3){
 
 }
 
-
+let prankId = parseInt(Math.random() * (2999 - 1) + 1)
 
 elfObj = {
     owner: elfOwner.toLowerCase(),
@@ -319,7 +319,7 @@ elfObj = {
     action: elfAction,
     actionString: elfActionString,
     level: elfLevel, 
-    image: image,
+    image: image, //`https://huskies.s3.eu-west-2.amazonaws.com/images/${prankId}.png`, 
     name: elfTokenObj.name ? elfTokenObj.name : `Elf #${i}`,
     sentinelClass: elfSentinelClass,
     classString: sentinelClass[elfSentinelClass],
