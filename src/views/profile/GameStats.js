@@ -71,6 +71,7 @@ const fetchAddress = async (add) => {
             return b.total - a.total;
         }
         )
+        console.log(newResults,)
     
         setBurnLeader(newResults)
   };
@@ -103,7 +104,7 @@ const fetchAddress = async (add) => {
         newResults.push(item)
     }
     )
-    console.log(newResults)
+    
     setBtlb(newResults)
 
   };
@@ -179,6 +180,7 @@ return !loading ? (
                                      <span>{index + 1}. Elf#{item.id}</span>  
                                       <img src={item.image} alt={item.name} />
                                       <span>Career Instant Kills: {item.tokens}</span>  
+                                      {/*<span>Owner: {item.owner}</span>*/}
                                       </div>
                         ))}
                  </div>
