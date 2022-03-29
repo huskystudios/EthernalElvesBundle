@@ -27,7 +27,6 @@ const Withdraw = () => {
     let allbalances = await balanceOf(address);
 
 
-
     console.log("Account balances:", allbalances)
 
 
